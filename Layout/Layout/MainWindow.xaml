@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525"
         WindowState="Maximized"
-        ResizeMode="NoResize">
+        ResizeMode="CanResize">
     <Viewbox Stretch="UniformToFill">
         <Grid>
             <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top" Width="520"/>
