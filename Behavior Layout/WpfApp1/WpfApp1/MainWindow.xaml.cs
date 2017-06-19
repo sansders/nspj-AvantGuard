@@ -23,31 +23,34 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-       
+            rootBox.Source = new Uri(@"\ProfilePages\Page1.xaml", UriKind.RelativeOrAbsolute);
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        //private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        //{
 
-        }
+        //}
 
-        private void MouseDownHandler(object sender, MouseButtonEventArgs e)
-        {
-            //Make a command to transit over to a next page
-        }
+        //private void MouseDownHandler(object sender, MouseButtonEventArgs e)
+        //{
+            
 
-        private void ToggleCheckOption(object sender, RoutedEventArgs e)
-        {
-            var radioButton = sender as RadioButton;
-            if(radioButton == null)
-            {
-                return;
-            }
-            else
-            {
-                String data = radioButton.Content as String;
-                Console.WriteLine(data);
-            }
-        }
+
+        //}
+
+        //private void ToggleCheckOption(object sender, RoutedEventArgs e)
+        //{
+        //    var radioButton = sender as RadioButton;
+        //    if (radioButton == null)
+        //    {
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        String data = radioButton.Content as String;
+        //        Console.WriteLine(data);
+        //    }
+        //}
+
     }
 }
