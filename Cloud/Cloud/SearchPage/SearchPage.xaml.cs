@@ -13,18 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Cloud
+namespace Cloud.SearchPage
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for SearchPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SearchPage : Page
     {
-        public MainWindow()
+        public SearchPage()
         {
             InitializeComponent();
-
-            rootBox.Source = new Uri(@"\StartupPage\StartupPage.xaml", UriKind.RelativeOrAbsolute);
         }
     }
 }

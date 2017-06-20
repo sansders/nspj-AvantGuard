@@ -6,7 +6,12 @@
         xmlns:local="clr-namespace:Cloud"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
+    <Frame x:Name="rootBox" NavigationUIVisibility="Hidden">
         
-    </Grid>
+    </Frame>
+    <!--<Viewbox>
+        <Grid>
+
+        </Grid>
+    </Viewbox>-->
 </Window>
