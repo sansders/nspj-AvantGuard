@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp1
+namespace Layout
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,6 +23,22 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
