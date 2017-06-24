@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace Layout.Upload
 {
     /// <summary>
-    /// Interaction logic for Page1.xaml
+    /// Interaction logic for UploadPage.xaml
     /// </summary>
     public partial class Page1 : Page
     {
