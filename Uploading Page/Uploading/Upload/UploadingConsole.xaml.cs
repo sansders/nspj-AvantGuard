@@ -1,5 +1,4 @@
-﻿using Layout.Upload;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,19 +13,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Layout
+namespace Layout.Upload
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Page2.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Page2 : Page
     {
-        public MainWindow()
+
+        public Page2()
         {
             InitializeComponent();
-            _NavigationFrame.Navigate(new NavigationPage());
         }
-
 
         private void ToggleButton_Checked(object sender, RoutedEventArgs e)
         {
@@ -35,17 +33,13 @@ namespace Layout
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            NavigationService.Navigate(new NavigationPage());
 
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            _NavigationFrame.Navigate(new Page2());
-        }
+       
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            _NavigationFrame.Navigate(new Page1());
-        }
+
     }
 }
+
