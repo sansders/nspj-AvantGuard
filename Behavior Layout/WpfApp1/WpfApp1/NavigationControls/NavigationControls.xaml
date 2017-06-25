@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="WpfApp1.NavigationControls.NavigationControls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp1.NavigationControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="525">
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal"  Margin="420,0,0,0" >
+            <RadioButton GroupName="PageNumberIndicator" x:Name="pg1Button" IsChecked="False" IsEnabled="True" Click="NavigationButton_Click" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+            <RadioButton GroupName="PageNumberIndicator" x:Name="pg2Button" IsChecked="False" IsEnabled="True" Click="NavigationButton_Click" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+            <RadioButton GroupName="PageNumberIndicator" x:Name="pg3Button" IsChecked="False" IsEnabled="True" Click="NavigationButton_Click" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+            <RadioButton GroupName="PageNumberIndicator" x:Name="pg4Button" IsChecked="False" IsEnabled="True" Click="NavigationButton_Click" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+            <RadioButton GroupName="PageNumberIndicator" x:Name="pg5Button" IsChecked="False" IsEnabled="True" Click="NavigationButton_Click" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+            <RadioButton GroupName="PageNumberIndicator" x:Name="pg6Button" IsChecked="False" IsEnabled="True" Click="NavigationButton_Click" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+        </StackPanel>
+        <TextBlock x:Name="PageNumber" Style="{StaticResource PageNumber}">Pg1</TextBlock>
+    </StackPanel>
+      
+</UserControl>

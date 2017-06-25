@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using WpfApp1.Model1;
 namespace WpfApp1
 {
     /// <summary>
@@ -23,8 +23,13 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            rootBox.Source = new Uri(@"\ProfilePages\Page1.xaml", UriKind.RelativeOrAbsolute);
+            CurrentPageModel currentClass = new CurrentPageModel();
+            CurrentPageModel.setMainWindow(this);
+            rootBox.Source = new Uri(@"\ProfilePages\ProfileCreationPage1.xaml", UriKind.RelativeOrAbsolute);
+            
         }
+
+
 
         //private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         //{

@@ -38,6 +38,7 @@
                 <Setter Property="Margin" Value="20,0,0,0"></Setter>
                 <Setter Property="VerticalAlignment" Value="Top"></Setter>
                 <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                
             </Style>
             
             <!--Style for all the Choices-->
@@ -57,12 +58,24 @@
                 <Setter Property="VerticalAlignment" Value="Center"></Setter>
                 <Setter Property="HorizontalAlignment" Value="Right"></Setter>
             </Style>
+            
+            <!-- For the Previous button-->
+            <Style TargetType="{x:Type TextBlock}" x:Key="previousButtonDesign" BasedOn="{StaticResource MaterialDesignButtonTextBlock}">
+                <Setter Property="TextAlignment" Value="Left"></Setter>
+                <Setter Property="Margin" Value="30,0,0,3"></Setter>
+                <Setter Property="Width" Value="250"></Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground" Value="#23aeff"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
             <!--For the next Button-->
             <Style TargetType="{x:Type  TextBlock}" x:Key="nextButtonDesign" BasedOn="{StaticResource MaterialDesignButtonTextBlock}">
-                <Setter Property="VerticalAlignment" Value="Top"></Setter>
-                <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                <Setter Property="TextAlignment" Value="Right"></Setter>
                 <Setter Property="Margin" Value="0,0,30,3"></Setter>
+                <Setter Property="Width" Value="250"></Setter>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Foreground" Value="#23aeff"/>

@@ -5,14 +5,13 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:WpfApp1"
 		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-		
+		xmlns:views="clr-namespace:WpfApp1.NavigationControls"
 		mc:Ignorable="d"
 		Title="MainWindow" Height="350" Width="525">
+        <Frame x:Name="rootBox" NavigationUIVisibility="Hidden">
 
-    <Frame x:Name="rootBox" NavigationUIVisibility="Hidden">
-        
-    </Frame>
-  
+        </Frame>
+       
     <!--<Viewbox>
         <Grid RenderTransformOrigin="0.481,0.392"  >
             <Grid.RowDefinitions>

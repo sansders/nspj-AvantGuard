@@ -1,11 +1,13 @@
-﻿<Page x:Class="WpfApp1.ProfilePages.Page1"
+﻿<Page 
+      x:Class="WpfApp1.ProfilePages.Page1"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp1.ProfilePages"
+      xmlns:views="clr-namespace:WpfApp1.NavigationControls"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="350" d:DesignWidth="525"
       Title="Page1">
 
     <Viewbox>
@@ -28,10 +30,10 @@
                     </TextDecoration>
                 </TextBlock.TextDecorations>
             </TextBlock>
-            <TextBlock Text="Q1: How long do you think you will stay logged in to the application on average?" Grid.Row="1" Style="{StaticResource QuestionDesign}" Margin="20,0,-0.8,0"/>
+            <TextBlock x:Name="page1" x:FieldModifier="public" Text="Q1: How long do you think you will stay logged in to the application on average?" Grid.Row="1" Style="{StaticResource QuestionDesign}" Margin="20,0,-0.8,0"/>
             <StackPanel Grid.Row="2" Margin="0,0,0,0">
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <RadioButton GroupName="One" Grid.Row="2" Content ="Less Than 15 Minutes" IsChecked="True" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}" RenderTransformOrigin="2.168,1.165"/>
+                    <RadioButton GroupName="One" Grid.Row="2" Content ="Less Than 15 Minutes" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}" RenderTransformOrigin="2.168,1.165"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
                     <RadioButton GroupName="One" Grid.Row="2" Content="Around 30 Minutes" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
@@ -44,18 +46,20 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Row="3">
-                <TextBlock Uid="NextButton" MouseLeftButtonDown="MouseDownHandler"  Style="{StaticResource nextButtonDesign}" >
-                    Next
-                </TextBlock>
-                <StackPanel Orientation="Horizontal"  Margin="420,0,0,0">
-                    <RadioButton GroupName="PageNumberIndicator" Uid="pg1Button" IsChecked="True" IsHitTestVisible="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
-                    <RadioButton GroupName="PageNumberIndicator" Uid="pg2Button" IsChecked="False" IsEnabled="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
-                    <RadioButton GroupName="PageNumberIndicator" Uid="pg3Button" IsChecked="False" IsEnabled="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
-                    <RadioButton GroupName="PageNumberIndicator" Uid="pg4Button" IsChecked="False" IsEnabled="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
-                    <RadioButton GroupName="PageNumberIndicator" Uid="pg5Button" IsChecked="False" IsEnabled="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
-                    <RadioButton GroupName="PageNumberIndicator" Uid="pg6Button" IsChecked="False" IsEnabled="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Uid="PreviousButton" MouseLeftButtonDown="PreviousPageHandler"  Style="{StaticResource previousButtonDesign}" Text="Previous"></TextBlock>
+                    <TextBlock Uid="NextButton" MouseLeftButtonDown="NextPageHandler"  Style="{StaticResource nextButtonDesign}" Text="Next" ></TextBlock>
                 </StackPanel>
-                <TextBlock Uid="PageNumber" Style="{StaticResource PageNumber}">Pg1</TextBlock>
+                <views:NavigationControls x:Name="page1Controls"/>
+                <!--<StackPanel Orientation="Horizontal"  Margin="420,0,0,0" >
+                    <RadioButton GroupName="PageNumberIndicator" Uid="pg1Button" IsChecked="False" IsEnabled="True" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                    <RadioButton GroupName="PageNumberIndicator" Uid="pg2Button" IsChecked="False" IsEnabled="True" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                    <RadioButton GroupName="PageNumberIndicator" Uid="pg3Button" IsChecked="False" IsEnabled="True" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                    <RadioButton GroupName="PageNumberIndicator" Uid="pg4Button" IsChecked="False" IsEnabled="True" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                    <RadioButton GroupName="PageNumberIndicator" Uid="pg5Button" IsChecked="False" IsEnabled="True" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                    <RadioButton GroupName="PageNumberIndicator" Uid="pg6Button" IsChecked="False" IsEnabled="True" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                </StackPanel>-->
+                <!--<TextBlock Uid="PageNumber" Style="{StaticResource PageNumber}">Pg1</TextBlock>-->
             </StackPanel>
 
 
