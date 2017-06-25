@@ -147,11 +147,11 @@
 
 
         <fa:ImageAwesome Icon="Spinner" Spin="True" SpinDuration="0.1" Margin="361,51,276,246" />
-        <ToggleButton HorizontalAlignment="Left"  Margin="432,55,0,0" VerticalAlignment="Top" Checked="ToggleButton_Checked" Height="17" Width="43"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="174" Margin="148,100,0,0" VerticalAlignment="Top" Width="353"/>
+        <ToggleButton  x:Name="toggle" HorizontalAlignment="Left"  Margin="432,55,0,0" VerticalAlignment="Top" Unchecked="ToggleButton_unChecked" Checked="ToggleButton_Checked" Height="17" Width="43"/>
+        <Border x:Name="console" Visibility="Hidden" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="174" Margin="148,100,0,0" VerticalAlignment="Top" Width="353"/>
         <Label HorizontalAlignment="Left" Margin="314,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.049,0.491"/>
         <Button Content="Exit" Background="AliceBlue" HorizontalAlignment="Left" Margin="288,279,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" />
-        <Label Content="Console" FontSize="10px"  HorizontalAlignment="Left" Margin="468,51,0,0" VerticalAlignment="Top" Height="26"/>
+        <Label MouseLeftButtonUp="consoleClicked" Content="Console" FontSize="10px"  HorizontalAlignment="Left" Margin="468,51,0,0" VerticalAlignment="Top" Height="26"/>
 
 
 

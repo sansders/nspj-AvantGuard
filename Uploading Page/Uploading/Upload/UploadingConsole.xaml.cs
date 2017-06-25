@@ -20,7 +20,7 @@ namespace Layout.Upload
     /// </summary>
     public partial class Page2 : Page
     {
-
+        private bool isToggled = false;
         public Page2()
         {
             InitializeComponent();
@@ -28,8 +28,50 @@ namespace Layout.Upload
 
         private void ToggleButton_Checked(object sender, RoutedEventArgs e)
         {
+          
+            if (console.Visibility == Visibility.Hidden && isToggled == false)
+            {
+
+                Console.Write(toggle.IsChecked);
+                console.Visibility = Visibility.Visible;
+                isToggled = true;
+
+            }
 
         }
+
+        private void ToggleButton_unChecked(object sender, RoutedEventArgs e)
+        {
+
+            if (console.Visibility == Visibility.Visible && isToggled == true)
+            {
+                console.Visibility = Visibility.Hidden;
+                Console.Write(toggle.IsChecked);
+                isToggled = false;
+
+            }
+
+        }
+
+        private void consoleClicked(object sender, EventArgs e)
+        {
+            if (console.Visibility == Visibility.Hidden && isToggled == false)
+            {
+
+                toggle.IsChecked = true;
+                console.Visibility = Visibility.Visible;
+                isToggled = true;
+
+            }
+            else if (console.Visibility == Visibility.Visible && isToggled == true)
+            {
+                console.Visibility = Visibility.Hidden;
+                toggle.IsChecked = false;
+                isToggled = false;
+
+            }
+        }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
