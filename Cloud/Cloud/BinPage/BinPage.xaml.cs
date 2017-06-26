@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Cloud.StartupPage
+namespace Cloud.BinPage
 {
     /// <summary>
-    /// Interaction logic for StartupPage.xaml
+    /// Interaction logic for BinPage.xaml
     /// </summary>
-    public partial class StartupPage : Page
+    public partial class BinPage : Page
     {
-        public StartupPage()
+        public BinPage()
         {
             InitializeComponent();
         }
@@ -48,11 +48,6 @@ namespace Cloud.StartupPage
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri(@"..\..\FavoritesPage\FavoritesPage.xaml", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Button_Click_5(object sender, RoutedEventArgs e)
-        {
-            this.NavigationService.Navigate(new Uri(@"..\..\BinPage\BinPage.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }

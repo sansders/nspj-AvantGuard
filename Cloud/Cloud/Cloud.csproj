@@ -54,12 +54,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BinPage\BinPage.xaml.cs">
+      <DependentUpon>BinPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FavoritesPage\FavoritesPage.xaml.cs">
+      <DependentUpon>FavoritesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyFoldersPage\MyFoldersPage.xaml.cs">
+      <DependentUpon>MyFoldersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RecentPage\RecentPage.xaml.cs">
+      <DependentUpon>RecentPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SearchPage\SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SharedPage\SharedPage.xaml.cs">
+      <DependentUpon>SharedPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="StartupPage\StartupPage.xaml.cs">
       <DependentUpon>StartupPage.xaml</DependentUpon>
     </Compile>
+    <Page Include="BinPage\BinPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FavoritesPage\FavoritesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -72,7 +95,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MyFoldersPage\MyFoldersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecentPage\RecentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SearchPage\SearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SharedPage\SharedPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

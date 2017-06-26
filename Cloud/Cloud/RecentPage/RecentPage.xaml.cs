@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Cloud.StartupPage
+namespace Cloud.RecentPage
 {
     /// <summary>
-    /// Interaction logic for StartupPage.xaml
+    /// Interaction logic for RecentPage.xaml
     /// </summary>
-    public partial class StartupPage : Page
+    public partial class RecentPage : Page
     {
-        public StartupPage()
+        public RecentPage()
         {
             InitializeComponent();
         }
@@ -37,20 +37,15 @@ namespace Cloud.StartupPage
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri(@"..\..\RecentPage\RecentPage.xaml", UriKind.RelativeOrAbsolute));
+            this.NavigationService.Navigate(new Uri(@"..\..\SharedPage\SharedPage.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri(@"..\..\SharedPage\SharedPage.xaml", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
             this.NavigationService.Navigate(new Uri(@"..\..\FavoritesPage\FavoritesPage.xaml", UriKind.RelativeOrAbsolute));
         }
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri(@"..\..\BinPage\BinPage.xaml", UriKind.RelativeOrAbsolute));
         }

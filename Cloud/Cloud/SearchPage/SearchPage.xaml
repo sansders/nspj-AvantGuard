@@ -33,7 +33,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button Content="MY FOLDERS" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White">
+                <Button Content="MY FOLDERS" HorizontalAlignment="Right" Height="30" Width="131" FontFamily="Arial Black" Foreground="White" Margin="0,0,0.2,0" Click="Button_Click">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#747577"/>
@@ -54,7 +54,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button Content="RECENT" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White">
+                <Button Content="RECENT" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White" Click="Button_Click_1">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#747577"/>
@@ -75,7 +75,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button Content="SHARED" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White">
+                <Button Content="SHARED" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White" Click="Button_Click_2">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#747577"/>
@@ -96,7 +96,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button Content="FAVORITES" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White">
+                <Button Content="FAVORITES" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White" Click="Button_Click_3">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#747577"/>
@@ -117,7 +117,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button Content="BIN" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White">
+                <Button Content="BIN" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White" Click="Button_Click_4">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#747577"/>
@@ -144,8 +144,6 @@
             <Button HorizontalAlignment="Left" Height="28" Margin="69,7,0,0" VerticalAlignment="Top" Width="28"/>
             <Button HorizontalAlignment="Left" Height="28" Margin="101,7,0,0" VerticalAlignment="Top" Width="28"/>
             <TextBox HorizontalAlignment="Left" Height="16" Margin="418,14,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="70" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
-
-
         </Grid>
     </Viewbox>
 </Page>
