@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Layout.Upload
 {
@@ -32,7 +35,15 @@ namespace Layout.Upload
 
         private void uploadButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("c:\\");
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.ShowDialog();
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                string fileName;
+                fileName = dlg.FileName; //Will be useful in the future when selecting files
+                System.Windows.MessageBox.Show(fileName); //For debugging and presentation purposes, can delete when neccessary 
+            }
         }
     }
 }
