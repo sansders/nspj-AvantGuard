@@ -24,8 +24,8 @@ namespace WpfApp1.ProfilePages
         public Page1()
         {
             InitializeComponent();
-            CurrentPageModel.setFirstPage(this);
-            CurrentPageModel.setFirstControl(page1Controls);
+            CurrentPageModel.firstPage = this;
+            CurrentPageModel.firstControl = page1Controls;
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -39,20 +39,20 @@ namespace WpfApp1.ProfilePages
             CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
             currentClass._currentPage = "1";
             //Load the Saved Instance of the second page//
-            Page page2 = CurrentPageModel.getSecondPage();
+            Page page2 = CurrentPageModel.secondPage;
             if(page2 == null)
             {  this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage2.xaml", UriKind.RelativeOrAbsolute));}
             else
             {
                 this.NavigationService.Navigate(page2);
-                WpfApp1.NavigationControls.NavigationControls secondControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.getSecondControl();
+                WpfApp1.NavigationControls.NavigationControls secondControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.secondControl;
                 secondControl.buttonManipulation(currentClass.currentpage);
                 secondControl.PageNumber.Text = secondControl.currentPageNumber(currentClass.currentpage);
             }
             //Save the Instance of the first page
-            CurrentPageModel.setFirstPage(this);
+            CurrentPageModel.firstPage = this;
             //Save the Instance of the first page controls
-            CurrentPageModel.setFirstControl(page1Controls);
+            CurrentPageModel.firstControl = page1Controls;
 
 
 
@@ -61,7 +61,9 @@ namespace WpfApp1.ProfilePages
         private void PreviousPageHandler(object sender, MouseButtonEventArgs e)
         {
             //Save the Instance of the first page
-            CurrentPageModel.setFirstPage(this);
+            CurrentPageModel.firstPage = this;
+            //Save the Instance of the first page controls
+            CurrentPageModel.firstControl = page1Controls;
             //Change
             // Navigate to Xiangjing profile page 
             // this.NavigationService.Navigate();

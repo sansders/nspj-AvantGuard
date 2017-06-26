@@ -112,7 +112,7 @@ namespace WpfApp1.NavigationControls
                 if (currentButton.Name == "pg1Button")
                 {
                     currentClass.currentpage = "0";
-                    Page page1 = CurrentPageModel.getFirstPage();
+                    Page page1 = CurrentPageModel.firstPage;
                     if (page1 == null)
                     {
                         currentWindow.rootBox.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage1.xaml", UriKind.RelativeOrAbsolute));
@@ -121,7 +121,7 @@ namespace WpfApp1.NavigationControls
                     {
                         currentWindow.rootBox.NavigationService.Navigate(page1);
                         PageNumber.Text = currentPageNumber(currentClass.currentpage);
-                        NavigationControls firstControl = (NavigationControls)CurrentPageModel.getFirstControl();
+                        NavigationControls firstControl = (NavigationControls)CurrentPageModel.firstControl;
                         firstControl.buttonManipulation(currentClass.currentpage);
                         firstControl.PageNumber.Text = firstControl.currentPageNumber(currentClass.currentpage);
                     }
@@ -130,7 +130,7 @@ namespace WpfApp1.NavigationControls
                 else if (currentButton.Name == "pg2Button")
                 {
                     currentClass.currentpage = "1";
-                    Page page2 = CurrentPageModel.getSecondPage();
+                    Page page2 = CurrentPageModel.secondPage;
                     if (page2 == null)
                     {
                         currentWindow.rootBox.Source = new Uri(@"\ProfilePages\ProfileCreationPage2.xaml", UriKind.RelativeOrAbsolute);
@@ -140,7 +140,7 @@ namespace WpfApp1.NavigationControls
                     {
                         currentWindow.rootBox.NavigationService.Navigate(page2);
                         PageNumber.Text = currentPageNumber(currentClass.currentpage);
-                        NavigationControls secondControl = (NavigationControls) CurrentPageModel.getSecondControl();
+                        NavigationControls secondControl = (NavigationControls) CurrentPageModel.secondControl;
                         secondControl.buttonManipulation(currentClass.currentpage);
                         secondControl.PageNumber.Text = secondControl.currentPageNumber(currentClass.currentpage);
 
@@ -150,7 +150,7 @@ namespace WpfApp1.NavigationControls
                 else if (currentButton.Name == "pg3Button")
                 {
                     currentClass.currentpage = "2";
-                    Page page3 = CurrentPageModel.getThirdPage();
+                    Page page3 = CurrentPageModel.thirdPage;
                     if (page3 == null)
                     {
                         currentWindow.rootBox.Source = new Uri(@"\ProfilePages\ProfileCreationPage3.xaml", UriKind.RelativeOrAbsolute);
@@ -160,9 +160,49 @@ namespace WpfApp1.NavigationControls
                     {
                         currentWindow.rootBox.NavigationService.Navigate(page3);
                         PageNumber.Text = currentPageNumber(currentClass.currentpage);
-                        NavigationControls thirdControl = (NavigationControls)CurrentPageModel.getThirdControl();
+                        NavigationControls thirdControl = (NavigationControls)CurrentPageModel.thirdControl;
                         thirdControl.buttonManipulation(currentClass.currentpage);
                         thirdControl.PageNumber.Text = thirdControl.currentPageNumber(currentClass.currentpage);
+
+                    }
+                }
+
+                else if (currentButton.Name == "pg4Button")
+                {
+                    currentClass.currentpage = "3";
+                    Page page4 = CurrentPageModel.fourthPage;
+                    if (page4 == null)
+                    {
+                        currentWindow.rootBox.Source = new Uri(@"\ProfilePages\ProfileCreationPage4.xaml", UriKind.RelativeOrAbsolute);
+
+                    }
+                    else
+                    {
+                        currentWindow.rootBox.NavigationService.Navigate(page4);
+                        PageNumber.Text = currentPageNumber(currentClass.currentpage);
+                        NavigationControls fourthControl = (NavigationControls)CurrentPageModel.fourthControl;
+                        fourthControl.buttonManipulation(currentClass.currentpage);
+                        fourthControl.PageNumber.Text = fourthControl.currentPageNumber(currentClass.currentpage);
+
+                    }
+                }
+
+                else if (currentButton.Name == "pg5Button")
+                {
+                    currentClass.currentpage = "4";
+                    Page page5 = CurrentPageModel.fifthPage;
+                    if (page5 == null)
+                    {
+                        currentWindow.rootBox.Source = new Uri(@"\ProfilePages\ProfileCreationPage5.xaml", UriKind.RelativeOrAbsolute);
+
+                    }
+                    else
+                    {
+                        currentWindow.rootBox.NavigationService.Navigate(page5);
+                        PageNumber.Text = currentPageNumber(currentClass.currentpage);
+                        NavigationControls fifthControl = (NavigationControls)CurrentPageModel.fifthControl;
+                        fifthControl.buttonManipulation(currentClass.currentpage);
+                        fifthControl.PageNumber.Text = fifthControl.currentPageNumber(currentClass.currentpage);
 
                     }
                 }

@@ -1,0 +1,76 @@
+﻿<Page x:Class="WpfApp1.ProfilePages.ProfileCreationPage5"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp1.ProfilePages"
+      xmlns:views="clr-namespace:WpfApp1.NavigationControls"
+     
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      Title="ProfileCreationPage5">
+
+    <Viewbox>
+        <Grid RenderTransformOrigin="0.481,0.392"  >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="180"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Profile Creation Survey" Grid.Row="0" Grid.Column="0"   Uid="TextBoxHeader" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Margin="20,10,19.2,0">
+                <TextBlock.TextDecorations>
+                    <TextDecoration Location="Underline" PenOffset="4">
+                        <TextDecoration.Pen>
+                            <Pen Brush="#23aeff" Thickness="2" />
+                        </TextDecoration.Pen>
+                    </TextDecoration>
+                </TextBlock.TextDecorations>
+            </TextBlock>
+            <TextBlock x:Uid="5" Text="Move your mouse to the circle that pops up and click it" Grid.Row="1" Width="525"  Style="{StaticResource QuestionDesign}" Margin="4.2,0,-0.8,0"/>
+            <Canvas Grid.Row="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" ></RowDefinition>
+                        <RowDefinition Height="50" ></RowDefinition>
+                        <RowDefinition Height="Auto" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="0" Grid.Column="0" Click="gameButton_Click" x:Name="gameButton" Style="{StaticResource mouseClickDesign}" Template="{StaticResource mouseClickTemplate}" Height="auto" Width="auto" RenderTransformOrigin="1.011,0.541" Canvas.Left="143" Canvas.Top="33"></Button>
+                </Grid>
+                <Button  x:Name="gameStateControl" Content="Start" Click="gameStateControl_Click" Style="{StaticResource mouseClickDesign}" Canvas.Left="225" Canvas.Top="148" Width="80" RenderTransformOrigin="0.255,0.407"/>
+
+            </Canvas>
+            <StackPanel Grid.Row="3">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Uid="PreviousButton" MouseLeftButtonDown="PreviousPageHandler"  Style="{StaticResource previousButtonDesign}" Text="Previous"></TextBlock>
+                    <TextBlock Uid="NextButton" MouseLeftButtonDown="NextPageHandler"  Style="{StaticResource nextButtonDesign}" Text="Next" ></TextBlock>
+                </StackPanel>
+                <views:NavigationControls x:Name="page5Controls"/>
+                <!--<StackPanel Orientation="Horizontal"  Margin="420,0,0,0">
+                    <RadioButton GroupName="PageNumberIndicator" Uid="pg1Button" IsChecked="False" IsEnabled="True" ClickMode="Press" Click="RadioPrevious" IsHitTestVisible="True" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                    <RadioButton GroupName="PageNumberIndicator" Uid="pg2Button" IsChecked="True"  IsEnabled="True" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                    <RadioButton GroupName="PageNumberIndicator" Uid="pg3Button" IsChecked="False" IsEnabled="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                    <RadioButton GroupName="PageNumberIndicator" Uid="pg4Button" IsChecked="False" IsEnabled="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                    <RadioButton GroupName="PageNumberIndicator" Uid="pg5Button" IsChecked="False" IsEnabled="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                    <RadioButton GroupName="PageNumberIndicator" Uid="pg6Button" IsChecked="False" IsEnabled="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                </StackPanel>-->
+                <!--<TextBlock Uid="PageNumber" Style="{StaticResource PageNumber}">Pg2</TextBlock>-->
+            </StackPanel>
+
+
+        </Grid>
+    </Viewbox>
+</Page>

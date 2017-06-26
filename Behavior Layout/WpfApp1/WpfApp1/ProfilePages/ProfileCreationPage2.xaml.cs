@@ -26,8 +26,8 @@ namespace WpfApp1.ProfilePages
         public Page2()
         {
             InitializeComponent();
-            CurrentPageModel.setSecondPage(this);
-            CurrentPageModel.setSecondControl(page2Controls);
+            CurrentPageModel.secondPage = this;
+            CurrentPageModel.secondControl = page2Controls;
         }
 
         private void Label_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -54,7 +54,7 @@ namespace WpfApp1.ProfilePages
         {
             CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
             currentClass._currentPage = "2";
-            Page page3 = CurrentPageModel.getThirdPage();
+            Page page3 = CurrentPageModel.thirdPage;
             
             if (page3 == null)
             {
@@ -63,15 +63,15 @@ namespace WpfApp1.ProfilePages
             else
             {
                this.NavigationService.Navigate(page3);
-               WpfApp1.NavigationControls.NavigationControls thirdControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.getThirdControl();
+               WpfApp1.NavigationControls.NavigationControls thirdControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.thirdControl;
                thirdControl.buttonManipulation(currentClass.currentpage);
                thirdControl.PageNumber.Text = thirdControl.currentPageNumber(currentClass.currentpage);
             }
             //Save the Instance of the second page//
-            CurrentPageModel.setSecondPage(this);
+            CurrentPageModel.secondPage = this;
             //Save the Instance of the second page controls//
-            CurrentPageModel.setSecondControl(page2Controls);
-            
+            CurrentPageModel.secondControl = page2Controls;
+           
         }
 
         private void PreviousPageHandler(object sender, MouseButtonEventArgs e)
@@ -79,20 +79,20 @@ namespace WpfApp1.ProfilePages
             CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
             currentClass._currentPage = "0";
             //Gets the Saved Instance of the first page and load it//
-            Page page1 = CurrentPageModel.getFirstPage();
+            Page page1 = CurrentPageModel.firstPage;
             if (page1 == null)
             { this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage1.xaml", UriKind.RelativeOrAbsolute)); }
             else
             {
                 this.NavigationService.Navigate(page1);
-                WpfApp1.NavigationControls.NavigationControls firstControl = (WpfApp1.NavigationControls.NavigationControls) CurrentPageModel.getFirstControl();
+                WpfApp1.NavigationControls.NavigationControls firstControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.firstControl;
                 firstControl.buttonManipulation(currentClass.currentpage);
                 firstControl.PageNumber.Text = firstControl.currentPageNumber(currentClass.currentpage);
             }
             //Save the Instance of the second page//
-            CurrentPageModel.setSecondPage(this);
-            //Save the Instance of the second Page control//
-            CurrentPageModel.setSecondControl(page2Controls);
+            CurrentPageModel.secondPage = this;
+            //Save the Instance of the second page controls//
+            CurrentPageModel.secondControl = page2Controls;
         }
 
         
