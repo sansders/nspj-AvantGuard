@@ -29,7 +29,7 @@
             <TextBlock x:Uid="3" Text="Q3: Is your current computer the primary workstation in which you will access this application most of the time?" Grid.Row="1" Width="525"  Style="{StaticResource QuestionDesign}" Margin="4.2,0,-0.8,0"/>
             <StackPanel Grid.Row="2" Margin="0,0,0,0">
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <RadioButton GroupName="One" Grid.Row="2" Content ="Yes" IsChecked="True" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}" RenderTransformOrigin="2.168,1.165"/>
+                    <RadioButton GroupName="One" Grid.Row="2" Content ="Yes" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}" RenderTransformOrigin="2.168,1.165"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
                     <RadioButton GroupName="One" Grid.Row="2" Content="No" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>

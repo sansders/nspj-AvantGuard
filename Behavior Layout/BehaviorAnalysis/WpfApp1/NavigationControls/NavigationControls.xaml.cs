@@ -13,14 +13,19 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApp1.Model1;
+using WpfApp1.NavigationControls;
 
 namespace WpfApp1.NavigationControls
 {
     /// <summary>
     /// Interaction logic for NavigationControls.xaml
     /// </summary>
+    /// 
+    
     public partial class NavigationControls : UserControl
     {
+        
+        
         public NavigationControls()
         {
             InitializeComponent();
@@ -124,7 +129,22 @@ namespace WpfApp1.NavigationControls
                         NavigationControls firstControl = (NavigationControls)CurrentPageModel.firstControl;
                         firstControl.buttonManipulation(currentClass.currentpage);
                         firstControl.PageNumber.Text = firstControl.currentPageNumber(currentClass.currentpage);
-                    }
+                        if (CurrentPageModel.firstValidation == false)
+                        {
+                            Console.WriteLine("Color is set");
+                            Color color = (Color)ColorConverter.ConvertFromString("#ab3334");
+                            
+                        }
+                        else
+                        {
+                            Console.WriteLine("Color is not set");
+                            Color color = (Color)ColorConverter.ConvertFromString("#23aeff");
+                         
+
+                            
+
+                        }
+                     }
 
                 }
                 else if (currentButton.Name == "pg2Button")

@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApp1.NavigationControls;
 using WpfApp1.Model1;
+using System.Collections;
 
 namespace WpfApp1.ProfilePages
 {
@@ -22,6 +23,9 @@ namespace WpfApp1.ProfilePages
     /// </summary>
     public partial class ProfileCreationPage5 : Page
     {
+        Boolean running = false;
+        Boolean isClicked = false;
+        int currentIndex = 1; 
         public ProfileCreationPage5()
         {
             InitializeComponent();
@@ -103,18 +107,41 @@ namespace WpfApp1.ProfilePages
             gameStateControl.Content = "Restart";
             gameStateControl.Click -= new RoutedEventHandler(gameStateControl_Click);
             gameStateControl.Click += new RoutedEventHandler(restartGame);
-            Console.WriteLine("Game has started");
-
+            
             gameButton.MouseEnter += onMouseEnter;
             gameButton.MouseLeave += onMouseExit;
-               
+            
+            
+            Console.WriteLine("Game has started");
+
         }
 
-        //Set the positions for the Circle//
+        private ArrayList generateRow()
+        {
+            ArrayList rows = new ArrayList();
+            rows.Add(0); // For Top Navigation Tracking 
+            rows.Add(1); // For the My Folders Tab 
+            rows.Add(0); // For the Name Tab on the top right 
+            rows.Add(3); // For the controls in the bottom right 
+            rows.Add(3); // For the Shared Tab 
+            rows.Add(0); // For the top navigation Tracking 
+            rows.Add(4); // For the Bin Tab 
+            return rows;
+        }
 
+        private ArrayList generateCol()
+        {
+            ArrayList col = new ArrayList();
+            col.Add(2); // For Top Navigation Tracking 
+            col.Add(1); // For the My Folders Tab 
+            col.Add(15); // For the Name Tab on the top right 
+            col.Add(14); // For the controls in the bottom right 
+            col.Add(0); // For the Shared Tab 
+            col.Add(4); // For the top navigation Tracking 
+            col.Add(0); // For the Bin Tab 
+            return col;
+        }
 
-        //Grid.SetRow(gameButton, 2);
-        //Grid.SetColumn(gameButton, 5);
         private void onMouseExit(object sender, MouseEventArgs e)
         {
             Console.WriteLine("Exit");
@@ -131,10 +158,30 @@ namespace WpfApp1.ProfilePages
 
         private void gameButton_Click(object sender, RoutedEventArgs e)
         {
-            gameButton.Visibility = Visibility.Hidden;
-            gameButton.SetValue(Grid.RowProperty, 2);
-            gameButton.SetValue(Grid.ColumnProperty, 5);
-            gameButton.Visibility = Visibility.Visible;
+            isClicked = true;
+            ArrayList rows = generateRow();
+            ArrayList col = generateCol();
+            running = true;
+            currentIndex++;
+            if (isClicked == true)
+              {
+                if(currentIndex < rows.Count)
+                { 
+                gameButton.SetValue(Grid.RowProperty, rows[currentIndex]);
+                gameButton.SetValue(Grid.ColumnProperty, col[currentIndex]);
+                isClicked = false;
+                }
+                else
+                {
+                    MessageBox.Show("You have successfully finished this survey");
+                    currentIndex = 0;
+                    gameButton.Visibility = Visibility.Hidden;
+                    isClicked = false;
+                    running = false;
+
+                }
+            }
+          
         }
 
 
@@ -142,8 +189,15 @@ namespace WpfApp1.ProfilePages
         {
             gameButton.Visibility = Visibility.Hidden;
             gameStateControl.Content = "Start";
+            ArrayList rows = generateRow();
+            ArrayList col = generateCol();
+            gameButton.SetValue(Grid.RowProperty, rows[0]);
+            gameButton.SetValue(Grid.ColumnProperty, col[0]);
             gameStateControl.Click -= new RoutedEventHandler(restartGame);
             gameStateControl.Click += new RoutedEventHandler(gameStateControl_Click);
+            currentIndex = 1; 
+            isClicked = false;
+            running = false;
             Console.WriteLine("Game has restarted");
 
         }

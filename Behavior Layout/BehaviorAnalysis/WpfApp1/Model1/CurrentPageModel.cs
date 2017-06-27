@@ -14,6 +14,7 @@ namespace WpfApp1.Model1
         public static MainWindow _mainWindow;
         public static System.Windows.Controls.Page _page1;
         public static System.Windows.Controls.UserControl _page1Controls;
+        public static Boolean _page1Validation; 
         public static System.Windows.Controls.Page _page2;
         public static System.Windows.Controls.UserControl _page2Controls;
         public static System.Windows.Controls.Page _page3;
@@ -72,6 +73,14 @@ namespace WpfApp1.Model1
             get { return _page1Controls; }
             set { _page1Controls = value; }
         }
+
+        //Save the current status of validation
+        public static Boolean firstValidation
+        {
+           get { return _page1Validation; }
+           set { _page1Validation = value; }
+        }
+
      
 
         //Save the static instance of the second page 

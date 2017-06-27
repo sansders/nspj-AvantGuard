@@ -21,17 +21,15 @@ namespace WpfApp1.ProfilePages
     /// </summary>
     public partial class Page1 : Page 
 {
+        
         public Page1()
         {
             InitializeComponent();
             CurrentPageModel.firstPage = this;
             CurrentPageModel.firstControl = page1Controls;
+            CurrentPageModel.firstValidation = false;
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
 
         private void NextPageHandler(object sender, MouseButtonEventArgs e)
         {
@@ -54,7 +52,7 @@ namespace WpfApp1.ProfilePages
             //Save the Instance of the first page controls
             CurrentPageModel.firstControl = page1Controls;
 
-
+            
 
         }
 
@@ -71,13 +69,15 @@ namespace WpfApp1.ProfilePages
 
         private void ToggleCheckOption(object sender, RoutedEventArgs e)
         {
+            
             var radioButton = sender as RadioButton;
             if (radioButton == null)
             {
-                return;
+                CurrentPageModel.firstValidation = false;
             }
             else
             {
+                CurrentPageModel.firstValidation = true; 
                 String data = radioButton.Content as String;
                 Console.WriteLine(data);
             }
