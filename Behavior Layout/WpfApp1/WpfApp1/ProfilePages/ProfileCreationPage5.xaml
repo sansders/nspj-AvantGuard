@@ -33,7 +33,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50" ></RowDefinition>
                         <RowDefinition Height="50" ></RowDefinition>
-                        <RowDefinition Height="Auto" ></RowDefinition>
+                        <RowDefinition Height="50" ></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50"></ColumnDefinition>
@@ -48,9 +48,9 @@
                         <ColumnDefinition Width="50"></ColumnDefinition>
                         <ColumnDefinition Width="50"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Row="0" Grid.Column="0" Click="gameButton_Click" x:Name="gameButton" Style="{StaticResource mouseClickDesign}" Template="{StaticResource mouseClickTemplate}" Height="auto" Width="auto" RenderTransformOrigin="1.011,0.541" Canvas.Left="143" Canvas.Top="33"></Button>
+                    <Button Grid.Row="0" Grid.Column="0" Click="gameButton_Click"  x:Name="gameButton" Style="{StaticResource mouseClickDesign}" Template="{StaticResource mouseClickTemplate}" Height="auto" Width="auto" RenderTransformOrigin="1.011,0.541" Canvas.Left="143" Canvas.Top="33"></Button>
                 </Grid>
-                <Button  x:Name="gameStateControl" Content="Start" Click="gameStateControl_Click" Style="{StaticResource mouseClickDesign}" Canvas.Left="225" Canvas.Top="148" Width="80" RenderTransformOrigin="0.255,0.407"/>
+                <Button  x:Name="gameStateControl" Content="Start" Click="gameStateControl_Click" Style="{StaticResource stateButtonDesign}" Canvas.Left="225" Canvas.Top="148" Width="80" RenderTransformOrigin="0.255,0.407"/>
 
             </Canvas>
             <StackPanel Grid.Row="3">

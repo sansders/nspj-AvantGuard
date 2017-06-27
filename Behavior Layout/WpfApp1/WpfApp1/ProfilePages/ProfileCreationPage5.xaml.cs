@@ -106,6 +106,7 @@ namespace WpfApp1.ProfilePages
             Console.WriteLine("Game has started");
 
             gameButton.MouseEnter += onMouseEnter;
+            gameButton.MouseLeave += onMouseExit;
                
         }
 
@@ -114,18 +115,28 @@ namespace WpfApp1.ProfilePages
 
         //Grid.SetRow(gameButton, 2);
         //Grid.SetColumn(gameButton, 5);
+        private void onMouseExit(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine("Exit");
+            Color color = (Color)ColorConverter.ConvertFromString("#c9d1d6");
+            gameButton.Background = new SolidColorBrush(color);
+        }
 
         private void onMouseEnter(object sender, MouseEventArgs e)
         {
-            Console.WriteLine("Hello");
-           
-
+            Console.WriteLine("Enter");
+            Color color = (Color)ColorConverter.ConvertFromString("#23aeff");
+            gameButton.Background = new SolidColorBrush(color);
         }
 
         private void gameButton_Click(object sender, RoutedEventArgs e)
         {
-
+            gameButton.Visibility = Visibility.Hidden;
+            gameButton.SetValue(Grid.RowProperty, 2);
+            gameButton.SetValue(Grid.ColumnProperty, 5);
+            gameButton.Visibility = Visibility.Visible;
         }
+
 
         void restartGame(object sender, RoutedEventArgs e)
         {
