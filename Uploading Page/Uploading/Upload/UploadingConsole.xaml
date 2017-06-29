@@ -8,7 +8,7 @@
       mc:Ignorable="d"
       Title="Page2" Height="322.619" Background="white" Width="527.143">
 
-    <Grid Margin="0,0,-134,0">
+    <Grid>
         <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top" Width="529"/>
         <StackPanel HorizontalAlignment="Left" Height="281" Margin="0,42,0,-0.2" VerticalAlignment="Top" Width="131" Background="#747577">
             <Button Content="SEARCH" HorizontalAlignment="Left" Height="30" Width="131" Margin="0,20,0,0" FontFamily="Arial Black" Foreground="White">
