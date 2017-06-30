@@ -14,6 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Configuration;
+using System.Windows.Forms;
+using System.IO;
 
 namespace Layout.Upload
 {
@@ -22,6 +25,11 @@ namespace Layout.Upload
     /// </summary>
     public partial class NavigationPage : Page
     {
+
+        SqlConnection con;
+        SqlDataReader reader;
+        SqlCommand cmd;
+
         public NavigationPage()
         {
             InitializeComponent();
@@ -39,29 +47,109 @@ namespace Layout.Upload
 
         private void BtnDB(object sender, RoutedEventArgs e)
         {
+
+            ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+            string connectionString = conSettings.ConnectionString;
+
+            try
+            {
+                con = new SqlConnection(connectionString);
+                con.Open();
+                cmd = new SqlCommand("SELECT Username , Name , ContactNo FROM [dbo].[UserAcc]", con);
+                reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Console.WriteLine(" | Username : " + reader.GetString(0) + " | Name : " + reader.GetString(1) + " | Contact No : " + reader.GetString(2));
+                }
+            } catch(Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            } finally
+            {
+                
+                con.Close();
+            }
+
             //SqlConnection conn = new SqlConnection("Server=WIN-P4IU8GMGT91\\SQLEXPRESS;Database=User;Integrated Security=True");
             //SqlConnection conn = new SqlConnection("Server=192.168.205.138,1433\\SQLEXPRESS;Network Library=DBMSSOCN;Initial Catalog = User; User ID = root; Password = ; ");
-            SqlConnection conn = new SqlConnection("Data Source=192.168.205.138,1433;Network Library=DBMSSOCN;Initial Catalog = User; User ID = root; Password = 123;Trusted_Connection = no;Integrated Security=False; ");
+           // SqlConnection conn = new SqlConnection("Data Source=192.168.205.138,1433;Network Library=DBMSSOCN;Initial Catalog = User; User ID = root; Password = ...;Trusted_Connection = no;Integrated Security=False; ");
             //WHY CANNOT CONNECT
 
-            conn.Open();
-            Console.Write(conn.State);
-           SqlCommand cmd = new SqlCommand("SELECT Username , Name , ContactNo FROM [dbo].[UserAcc]" , conn);
-           // SqlCommand cmd = new SqlCommand("SELECT * FROM UserAcc" , conn);
-            SqlDataReader reader = cmd.ExecuteReader();
+            
+
+           // conn.Open();
+           // Console.Write(conn.State);
+         //  SqlCommand cmd = new SqlCommand("SELECT Username , Name , ContactNo FROM [dbo].[UserAcc]" , conn);
+           // SqlCommand cmd = new SqlCommand("SELECT * FROM UserAcc" , conn); 
+         //   SqlDataReader reader = cmd.ExecuteReader();
             //Console.WriteLine(reader.GetString(0));
-            while (reader.Read()) {
+         /*   while (reader.Read()) {
                 
                 Console.WriteLine(" | Username : " + reader.GetString(0) + " | Name : " + reader.GetString(1) + " | Contact No : " + reader.GetString(2));
             }
+            }
             reader.Close();
             conn.Close();
-
+            */
           /*  if (Debugger.IsAttached)
             {
                 Console.ReadLine();
             } */
 
         }
+
+        private void uploadBtn(object sender, RoutedEventArgs e)
+        {
+            
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.ShowDialog();
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                string fileName;
+                fileName = dlg.FileName; //Will be useful in the future when selecting files
+                ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+                string connectionString = conSettings.ConnectionString;
+
+
+                FileStream FS = new FileStream(fileName, FileMode.Open, FileAccess.Read); //create a file stream object associate to user selected file 
+                byte[] img = new byte[FS.Length]; //create a byte array with size of user select file stream length
+                FS.Read(img, 0, Convert.ToInt32(FS.Length));//read user selected file stream in to byte array
+                try
+                {
+                    con = new SqlConnection(connectionString);
+                    con.Open();
+                    cmd = new SqlCommand("", con);
+                   
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+
+                    con.Close();
+                }
+            }
+
+        }
+
+        private byte[] ConvertImageToByteArray(System.Drawing.Image imageToConvert,
+                                       System.Drawing.Imaging.ImageFormat formatOfImage)
+        {
+            byte[] Ret;
+            try
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    imageToConvert.Save(ms, formatOfImage);
+                    Ret = ms.ToArray();
+                }
+            }
+            catch (Exception) { throw; }
+            return Ret;
+        }
+
     }
 }
