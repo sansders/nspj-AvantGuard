@@ -33,7 +33,9 @@ namespace WpfApp1.ProfilePages
 
         private void NextPageHandler(object sender, MouseButtonEventArgs e)
         {
-
+            Boolean isValidated = checkValidation();
+            if(isValidated == true)
+            { 
             CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
             currentClass._currentPage = "1";
             //Load the Saved Instance of the second page//
@@ -47,6 +49,12 @@ namespace WpfApp1.ProfilePages
                 secondControl.buttonManipulation(currentClass.currentpage);
                 secondControl.PageNumber.Text = secondControl.currentPageNumber(currentClass.currentpage);
             }
+            }
+            else
+            {
+                MessageBox.Show("No option have been chosen. Please choose your option");
+            }
+
             //Save the Instance of the first page
             CurrentPageModel.firstPage = this;
             //Save the Instance of the first page controls
@@ -54,6 +62,12 @@ namespace WpfApp1.ProfilePages
 
             
 
+        }
+
+        private Boolean checkValidation()
+        {
+            return CurrentPageModel.firstValidation;
+            
         }
 
         private void PreviousPageHandler(object sender, MouseButtonEventArgs e)

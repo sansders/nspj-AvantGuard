@@ -27,6 +27,7 @@ namespace WpfApp1.ProfilePages
             InitializeComponent();
             CurrentPageModel.fourthPage = this;
             CurrentPageModel.fourthControl = page4Controls;
+            CurrentPageModel.fourthValidation = false;
         }
 
         private void ToggleCheckOption(object sender, RoutedEventArgs e)
@@ -38,36 +39,46 @@ namespace WpfApp1.ProfilePages
             }
             else
             {
+                CurrentPageModel.fourthValidation = true;
                 Console.WriteLine(button.Content);
             }
         }
 
         private void NextPageHandler(object sender, MouseButtonEventArgs e)
         {
-            //Get the current instance of the navigation class
-            CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
-            currentClass.currentpage = "4";
-            Page page5 = CurrentPageModel.fifthPage;
-            if (page5 == null)
-            {
-                this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage5.xaml", UriKind.RelativeOrAbsolute));
+            Boolean isValidated = CurrentPageModel.fourthValidation;
+            if(isValidated == true)
+            { 
+                //Get the current instance of the navigation class
+                CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
+                currentClass.currentpage = "4";
+                Page page5 = CurrentPageModel.fifthPage;
+                if (page5 == null)
+                {
+                    this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage5.xaml", UriKind.RelativeOrAbsolute));
+                }
+                else
+                {
+                    //Load in the instance of the page 
+                    this.NavigationService.Navigate(page5);
+                    //Load in the current navigation control
+                    WpfApp1.NavigationControls.NavigationControls fifthControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.fifthControl;
+                    //Set the button manipulation 
+                    fifthControl.buttonManipulation(currentClass.currentpage);
+                    //Set the page number 
+                    fifthControl.PageNumber.Text = fifthControl.currentPageNumber(currentClass.currentpage);
+              
+                }
             }
             else
             {
-                //Load in the instance of the page 
-                this.NavigationService.Navigate(page5);
-                //Load in the current navigation control
-                WpfApp1.NavigationControls.NavigationControls fifthControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.fifthControl;
-                //Set the button manipulation 
-                fifthControl.buttonManipulation(currentClass.currentpage);
-                //Set the page number 
-                fifthControl.PageNumber.Text = fifthControl.currentPageNumber(currentClass.currentpage);
-              
+                MessageBox.Show("No option have been chosen. Please choose your option");
             }
             //Save current instance of the page
             CurrentPageModel.fourthPage = this;
             //Save current instance of the user control
             CurrentPageModel.fourthControl = page4Controls;
+
         }
 
         private void PreviousPageHandler(object sender, MouseButtonEventArgs e)

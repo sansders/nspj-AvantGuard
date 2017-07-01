@@ -17,12 +17,19 @@ namespace WpfApp1.Model1
         public static Boolean _page1Validation; 
         public static System.Windows.Controls.Page _page2;
         public static System.Windows.Controls.UserControl _page2Controls;
+        public static Boolean _page2Validation;
         public static System.Windows.Controls.Page _page3;
         public static System.Windows.Controls.UserControl _page3Controls;
+        public static Boolean _page3Validation;
         public static System.Windows.Controls.Page _page4;
         public static System.Windows.Controls.UserControl _page4Controls;
+        public static Boolean _page4Validation;
         public static System.Windows.Controls.Page _page5;
         public static System.Windows.Controls.UserControl _page5Controls;
+        public static Boolean _page5Validation;
+        public static System.Windows.Controls.Page _page6;
+        public static System.Windows.Controls.UserControl _page6Controls;
+        public static Boolean _page6Validation;
         //Constructor 
         public CurrentPageModel()
         {
@@ -74,7 +81,7 @@ namespace WpfApp1.Model1
             set { _page1Controls = value; }
         }
 
-        //Save the current status of validation
+        //Save the current status of first validation
         public static Boolean firstValidation
         {
            get { return _page1Validation; }
@@ -97,6 +104,13 @@ namespace WpfApp1.Model1
             set { _page2Controls = value; }
         }
 
+        //Save the current status of second validation
+        public static Boolean secondValidation
+        {
+            get { return _page2Validation; }
+            set { _page2Validation = value; }
+        }
+
         //Save the static instance of the Third page 
         public static System.Windows.Controls.Page thirdPage
         {
@@ -108,6 +122,13 @@ namespace WpfApp1.Model1
         {
             get { return _page3Controls; }
             set { _page3Controls = value; }
+        }
+
+        //Save the current status of third validation
+        public static Boolean thirdValidation
+        {
+            get { return _page3Validation; }
+            set { _page3Validation = value; }
         }
 
         //Save the static instance of the Fourth page
@@ -124,6 +145,13 @@ namespace WpfApp1.Model1
             set { _page4Controls = value; }
         }
 
+        //Save the current status of fourth validation
+        public static Boolean fourthValidation
+        {
+            get { return _page4Validation; }
+            set { _page4Validation = value; }
+        }
+
         //Save the static instance of the Fifth page
         public static System.Windows.Controls.Page fifthPage
         {
@@ -138,6 +166,33 @@ namespace WpfApp1.Model1
             set { _page5Controls = value; }
         }
 
+        //Save the current status of fifth validation
+        public static Boolean fifthhValidation
+        {
+            get { return _page5Validation; }
+            set { _page5Validation = value; }
+        }
+
+        //Save the static instance of the Fifth page
+        public static System.Windows.Controls.Page sixthPage
+        {
+            get { return _page6; }
+            set { _page6 = value; }
+        }
+
+        //Save the static instance of the Fifth page control
+        public static System.Windows.Controls.UserControl sixthControl
+        {
+            get { return _page6Controls; }
+            set { _page6Controls = value; }
+        }
+
+        //Save the current status of sixth validation
+        public static Boolean sixthValidation
+        {
+            get { return _page6Validation; }
+            set { _page6Validation = value; }
+        }
 
 
         //public static void setfirstpage(system.windows.controls.page page1)

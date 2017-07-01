@@ -98,6 +98,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ProfilePages\ProfileCreationPage6.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,6 +110,7 @@
   <ItemGroup>
     <Compile Include="Model1\CurrentPageModel.cs" />
     <Compile Include="Model1\ProfileInterface.cs" />
+    <Compile Include="Model1\TypingModel.cs" />
     <Compile Include="NavigationControls\NavigationControls.xaml.cs">
       <DependentUpon>NavigationControls.xaml</DependentUpon>
     </Compile>
@@ -123,6 +128,9 @@
     </Compile>
     <Compile Include="ProfilePages\ProfileCreationPage5.xaml.cs">
       <DependentUpon>ProfileCreationPage5.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProfilePages\ProfileCreationPage6.xaml.cs">
+      <DependentUpon>ProfileCreationPage6.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -150,6 +158,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Paragraph.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

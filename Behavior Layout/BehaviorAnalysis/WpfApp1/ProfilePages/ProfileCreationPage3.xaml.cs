@@ -29,6 +29,8 @@ namespace WpfApp1.ProfilePages
             CurrentPageModel.thirdPage = this;
             //Set the Instance of the third page contol 
             CurrentPageModel.thirdControl = page3Controls;
+            //Set the current Validation status of this page
+            CurrentPageModel.thirdValidation = false;
         }
 
         private void ToggleCheckOption(object sender, RoutedEventArgs e)
@@ -40,26 +42,36 @@ namespace WpfApp1.ProfilePages
             }
             else
             {
+                CurrentPageModel.thirdValidation = true;
                 Console.WriteLine(button.Content);
             }
         }
 
         private void NextPageHandler(object sender, MouseButtonEventArgs e)
         {
-            CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
-            currentClass._currentPage = "3";
-            Page page4 = CurrentPageModel.fourthPage;
-            if (page4 == null)
-            {
-                this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage4.xaml", UriKind.RelativeOrAbsolute));
+            Boolean isValidated = CurrentPageModel.thirdValidation;
+            if(isValidated == true)
+            { 
+                CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
+                currentClass._currentPage = "3";
+                Page page4 = CurrentPageModel.fourthPage;
+                if (page4 == null)
+                {
+                    this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage4.xaml", UriKind.RelativeOrAbsolute));
+                }
+                else
+                {
+                    this.NavigationService.Navigate(page4);
+                    WpfApp1.NavigationControls.NavigationControls fourthControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.fourthControl;
+                    fourthControl.buttonManipulation(currentClass.currentpage);
+                    fourthControl.PageNumber.Text = fourthControl.currentPageNumber(currentClass.currentpage);
+                }
             }
             else
             {
-                this.NavigationService.Navigate(page4);
-                WpfApp1.NavigationControls.NavigationControls fourthControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.fourthControl;
-                fourthControl.buttonManipulation(currentClass.currentpage);
-                fourthControl.PageNumber.Text = fourthControl.currentPageNumber(currentClass.currentpage);
+                MessageBox.Show("No option have been chosen. Please choose your option");
             }
+
             //Save the Instance of the thirdPage page//
             CurrentPageModel.thirdPage = this;
             //Save the Instance of the second page controls//

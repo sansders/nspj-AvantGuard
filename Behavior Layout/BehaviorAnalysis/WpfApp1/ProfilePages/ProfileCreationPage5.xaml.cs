@@ -35,32 +35,35 @@ namespace WpfApp1.ProfilePages
             CurrentPageModel.fifthPage = this;
             //Save current instance of the user control
             CurrentPageModel.fifthControl = page5Controls;
-
+            CurrentPageModel.fifthhValidation = false;
         }
 
         private void NextPageHandler(object sender, MouseButtonEventArgs e)
         {
             //Get the current instance of the navigation class
-            CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
-            currentClass.currentpage = "5";
-            //Page page6 = CurrentPageModel.sixthPage;
-            //if (page6 == null)
-            //{
-            //    this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage6.xaml", UriKind.RelativeOrAbsolute));
-            //}
-            //else
-            //{
-            //    //Load in the instance of the page 
-            //    this.NavigationService.Navigate(page6);
-            //    //Load in the current navigation control
-            //    WpfApp1.NavigationControls.NavigationControls sixthControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.sixthControl;
-            //    //Set the button manipulation 
-            //    sixthControl.buttonManipulation(currentClass.currentpage);
-            //    //Set the page number 
-            //    sixthControl.PageNumber.Text = sixthControl.currentPageNumber(currentClass.currentpage);
+            Boolean isValidated = CurrentPageModel.fifthhValidation;
+            if (isValidated == true)
+            {
+                CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
+                currentClass.currentpage = "5";
+                Page page6 = CurrentPageModel.sixthPage;
+                if (page6 == null)
+                {
+                    this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage6.xaml", UriKind.RelativeOrAbsolute));
+                }
+                else
+                {
+                    //Load in the instance of the page 
+                    this.NavigationService.Navigate(page6);
+                    //Load in the current navigation control
+                    WpfApp1.NavigationControls.NavigationControls sixthControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.sixthControl;
+                    //Set the button manipulation 
+                    sixthControl.buttonManipulation(currentClass.currentpage);
+                    //Set the page number 
+                    sixthControl.PageNumber.Text = sixthControl.currentPageNumber(currentClass.currentpage);
 
-            //}
-
+                }
+            }
             //Save current instance of the page
             CurrentPageModel.fifthPage = this;
             //Save current instance of the user control
@@ -69,26 +72,27 @@ namespace WpfApp1.ProfilePages
 
         private void PreviousPageHandler(object sender, MouseButtonEventArgs e)
         {
-            //Get the current instance of the navigation class
-            CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
-            currentClass.currentpage = "3";
-            Page page4 = CurrentPageModel.fourthPage;
-            if (page4 == null)
-            {
-                this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage4.xaml", UriKind.RelativeOrAbsolute));
-            }
-            else
-            {
-                //Load in the instance of the page 
-                this.NavigationService.Navigate(page4);
-                //Load in the current navigation control
-                WpfApp1.NavigationControls.NavigationControls fourthControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.fourthControl;
-                //Set the button manipulation 
-                fourthControl.buttonManipulation(currentClass.currentpage);
-                //Set the page number 
-                fourthControl.PageNumber.Text = fourthControl.currentPageNumber(currentClass.currentpage);
+                //Get the current instance of the navigation class
+                CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
+                currentClass.currentpage = "3";
+                Page page4 = CurrentPageModel.fourthPage;
+                if (page4 == null)
+                {
+                    this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage4.xaml", UriKind.RelativeOrAbsolute));
+                }
+                else
+                {
+                    //Load in the instance of the page 
+                    this.NavigationService.Navigate(page4);
+                    //Load in the current navigation control
+                    WpfApp1.NavigationControls.NavigationControls fourthControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.fourthControl;
+                    //Set the button manipulation 
+                    fourthControl.buttonManipulation(currentClass.currentpage);
+                    //Set the page number 
+                    fourthControl.PageNumber.Text = fourthControl.currentPageNumber(currentClass.currentpage);
 
-            }
+                }
+          
             //Save current instance of the page
             CurrentPageModel.fifthPage = this;
             //Save current instance of the user control
@@ -174,6 +178,7 @@ namespace WpfApp1.ProfilePages
                 else
                 {
                     MessageBox.Show("You have successfully finished this survey");
+                    CurrentPageModel.fifthhValidation = true;
                     currentIndex = 0;
                     gameButton.Visibility = Visibility.Hidden;
                     isClicked = false;
