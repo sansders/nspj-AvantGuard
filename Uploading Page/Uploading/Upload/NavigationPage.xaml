@@ -147,8 +147,10 @@
         <Label HorizontalAlignment="Left" Margin="314,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.049,0.491"/>
         <Button Content="See Page 1" Background="LightCyan" HorizontalAlignment="Left" Margin="161,103,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_1"/>
         <Button Content="See Page 2" Background="LightCyan" HorizontalAlignment="Left" Margin="336,103,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_2"/>
-        <Button Content="Test DataBase" Background="LightCyan" HorizontalAlignment="Left" Margin="244,159,0,0" VerticalAlignment="Top" Width="128" Click="BtnDB"/>
-        <Button Content="Upload To Database" Background="LightCyan" HorizontalAlignment="Left" Margin="225,236,0,0" VerticalAlignment="Top" Width="165" Click="uploadBtn" RenderTransformOrigin="-0.279,-0.094" />
+        <Button Content="Test DataBase" Background="LightCyan" HorizontalAlignment="Left" Margin="161,155,0,0" VerticalAlignment="Top" Width="128" Click="BtnDB"/>
+        <Button Content="Upload To Database" Background="LightCyan" HorizontalAlignment="Left" Margin="323,155,0,0" VerticalAlignment="Top" Width="165" Click="uploadBtn" RenderTransformOrigin="-0.279,-0.094" />
+        <Button Content="Database Image" Background="LightCyan" HorizontalAlignment="Left" Margin="365,258,0,0" VerticalAlignment="Top" Width="144" Click="ShowBtn"/>
+        <Image Name="imageViewer" HorizontalAlignment="Left" Height="100" Margin="136,200,0,0" VerticalAlignment="Top" Width="215"/>
 
 
 

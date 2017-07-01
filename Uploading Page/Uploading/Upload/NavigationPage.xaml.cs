@@ -18,6 +18,7 @@ using System.Configuration;
 using System.Windows.Forms;
 using System.IO;
 
+
 namespace Layout.Upload
 {
     /// <summary>
@@ -100,7 +101,8 @@ namespace Layout.Upload
 
         private void uploadBtn(object sender, RoutedEventArgs e)
         {
-            
+
+            String imgLocation = "";
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.ShowDialog();
 
@@ -110,11 +112,34 @@ namespace Layout.Upload
                 fileName = dlg.FileName; //Will be useful in the future when selecting files
                 ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
                 string connectionString = conSettings.ConnectionString;
+                imgLocation = dlg.FileName.ToString();
+
+                con = new SqlConnection(connectionString);
+
+                byte[] images = null;
+
+                FileStream Stream = new FileStream(imgLocation,FileMode.Open,FileAccess.Read);
+                BinaryReader brs = new BinaryReader(Stream);
+                images = brs.ReadBytes((int)Stream.Length);
+
+                con.Open();
+
+                string sqlQuery = "Insert into dbo.UserFiles(Username,Name,Image)Values( '1' , 'man' , @images )";
+                cmd = new SqlCommand(sqlQuery, con);
+                cmd.Parameters.Add(new SqlParameter("@images",images));
+                int N = cmd.ExecuteNonQuery();
+                con.Close();
+                Console.Write("Data Has Been Uploaded");
+                System.Windows.MessageBox.Show(N.ToString() + "Datas Saved Success");
+            
+
+              //  FileStream FS = new FileStream(fileName, FileMode.Open, FileAccess.Read); //create a file stream object associate to user selected file 
+            //    byte[] img = new byte[FS.Length]; //create a byte array with size of user select file stream length
+             //   FS.Read(img, 0, Convert.ToInt32(FS.Length));//read user selected file stream in to byte array
 
 
-                FileStream FS = new FileStream(fileName, FileMode.Open, FileAccess.Read); //create a file stream object associate to user selected file 
-                byte[] img = new byte[FS.Length]; //create a byte array with size of user select file stream length
-                FS.Read(img, 0, Convert.ToInt32(FS.Length));//read user selected file stream in to byte array
+     
+/*
                 try
                 {
                     con = new SqlConnection(connectionString);
@@ -131,12 +156,14 @@ namespace Layout.Upload
 
                     con.Close();
                 }
+
+                */
             }
 
         }
 
-        private byte[] ConvertImageToByteArray(System.Drawing.Image imageToConvert,
-                                       System.Drawing.Imaging.ImageFormat formatOfImage)
+
+        private byte[] ConvertImageToByteArray(System.Drawing.Image imageToConvert,System.Drawing.Imaging.ImageFormat formatOfImage)
         {
             byte[] Ret;
             try
@@ -150,6 +177,39 @@ namespace Layout.Upload
             catch (Exception) { throw; }
             return Ret;
         }
+
+     
+
+        private void ShowBtn(object sender, RoutedEventArgs e)
+        {
+            ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+            string connectionString = conSettings.ConnectionString;
+            con = new SqlConnection(connectionString);
+            con.Open();
+            string sqlQuery = "select Image FROM [dbo].[UserFiles] where Username='Superwoman'";
+            cmd = new SqlCommand(sqlQuery, con);
+            SqlDataReader DataRead = cmd.ExecuteReader();
+            DataRead.Read();
+
+            if (DataRead.HasRows)
+            {
+                //textName.Text = DataRead[0].ToString();
+                byte[] images = ((byte[])DataRead[0]);
+
+
+                if (images == null)
+                {
+                    imageViewer.Source= null;
+                } else {
+                    MemoryStream mstreem = new MemoryStream(images);
+                    imageViewer.Source = BitmapFrame.Create(mstreem);
+                }
+            }
+
+            con.Close();
+        }
+
+        
 
     }
 }
