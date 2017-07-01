@@ -46,10 +46,6 @@ namespace WpfApp1.Model1
         {
 
             string[] words = _paragraphText.ReadToEnd().Split(' ');
-            for(int i = 0; i < words.Length; i++)
-            {
-                Console.WriteLine(words[i]);
-            }
             return words;
         }
 

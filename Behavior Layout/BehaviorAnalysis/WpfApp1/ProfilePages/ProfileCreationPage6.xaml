@@ -40,16 +40,16 @@
                         <FlowDocument>
                             <Paragraph >
                                 <Run>
-                                    This is a simple paragraph that is meant to be nice and easy to type so i guess this means that it cannot really be considered a paragraph but just a series of run on sentences this should help us gauge your usual typing speed and techniques. I think that i will not just tell you a story about the time i went to the zoo and found a monkey and a fox playing together. They were so cute and i think that they were not supposed to be in the same cage but they somehow were. And i loved watching them horse around forgive the pun well i hope that it has been highly enjoyable typing this paragraph and i wish you have a great experience using our application!
+                                    This is a simple paragraph that is meant to be nice and easy to type so i guess this means that it cannot really be considered a paragraph but just a series of run on sentences that should help us gauge your usual typing speed and techniques.
                                 </Run>
-                          
+                                
 
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
                 </ScrollViewer>
                 <TextBox KeyDown="keyboardFunctions" GotFocus="enterField_GotFocus" LostFocus="enterField_LostFocus" x:Name="enterField" Width="525" Height="30" Margin="0,20,0,0"> 
-                   Enter Input Here
+                  Press Enter to Submit
                 </TextBox>
                 
             </StackPanel>
