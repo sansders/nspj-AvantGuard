@@ -148,62 +148,74 @@ namespace WpfApp1.ProfilePages
 
         private void keyboardFunctions(object sender, KeyEventArgs e)
         {
-          
-            if (e.Key == Key.Enter)
+            
+            if (e.Key == Key.Space)
             {
                 Console.WriteLine("Activated ");
-                if (roundNumber == paragraphString.Length - 2)
+                if (roundNumber == paragraphString.Length - 1)
                 {
-                    if(enterField.Text.Equals(paragraphString[roundNumber]) || enterField.Text.Equals(paragraphString[roundNumber] + " "))
+
+                    if (enterField.Text.Equals(paragraphString[roundNumber]) || enterField.Text.Equals(" " + paragraphString[roundNumber]))
                     {
+                        setCorrectTextColor(currentIndex, nextIndex, paragraphBox);
                         currentCorrectList.Add(currentIndex);
                         nextCorrectList.Add(nextIndex);
                     }
                     else
                     {
+                        setErrorTextColor(currentIndex, nextIndex, paragraphBox);
                         currentErrorList.Add(currentIndex);
                         nextErrorList.Add(nextIndex);
                     }
                     nextIndex = setNextIndex(nextIndex);
-                    removeTextColor(paragraphBox);
-                    setCorrect(currentCorrectList, nextCorrectList, paragraphBox);
-                    if (currentErrorList.Count != 0)
+                    //removeTextColor(paragraphBox);
+                    // setCorrect(currentCorrectList, nextCorrectList, paragraphBox);
+                    //if (currentErrorList.Count != 0)
+                    //{
+                    //    setError(currentErrorList, nextErrorList, paragraphBox);
+                    //}
+                    if(nextErrorList.Count() + nextCorrectList.Count() == 47)
                     {
-                        setError(currentErrorList, nextErrorList, paragraphBox);
+                        CurrentPageModel.sixthValidation = true;
+                        MessageBox.Show("You have successfully completed the Typing Test");
+                        Console.WriteLine("Number of Errors are " + nextErrorList.Count());
+                        Console.WriteLine("Number of Corrects are " + nextCorrectList.Count());
                     }
-                    MessageBox.Show("You have successfully completed the Typing Test");
-                   
+
                 }
                 else
                 { 
-                    if (enterField.Text.Equals(paragraphString[roundNumber]) || enterField.Text.Equals(paragraphString[roundNumber] + " "))
+                    if (enterField.Text.Equals(paragraphString[roundNumber]) || enterField.Text.Equals(" " + paragraphString[roundNumber]))
                     {
+                        Console.Write("Hiuhsada");
                         roundNumber++;
                         currentCorrectList.Add(currentIndex);
                         nextCorrectList.Add(nextIndex);
+                        //setCorrectTextColor(current)
+                        setCorrectTextColor(currentIndex, nextIndex, paragraphBox);
                         currentIndex = nextIndex;
                         nextIndex = setNextIndex(nextIndex);
-                        removeTextColor(paragraphBox);
-                        setCorrect(currentCorrectList, nextCorrectList, paragraphBox);
-                        if (currentErrorList.Count != 0)
-                        {
-                            setError(currentErrorList, nextErrorList, paragraphBox);
-                        }
+                        //removeTextColor(paragraphBox);
+                        //if (currentErrorList.Count != 0)
+                        //{
+                        //    setError(currentErrorList, nextErrorList, paragraphBox);
+                        //}
                         setNextTextColor(currentIndex, nextIndex, paragraphBox);
                         enterField.Text = "";
                     
                     }
-                    else
+                    else 
                     {
                         roundNumber++;
                         currentErrorList.Add(currentIndex);
                         nextErrorList.Add(nextIndex);
-                        removeTextColor(paragraphBox);
-                        if(currentCorrectList.Count != 0)
-                        {
-                            setCorrect(currentCorrectList, nextCorrectList, paragraphBox);
-                        }
-                        setError(currentErrorList, nextErrorList, paragraphBox);
+                        //removeTextColor(paragraphBox);
+                        //if (currentCorrectList.Count != 0)
+                        //{
+                        //    setCorrect(currentCorrectList, nextCorrectList, paragraphBox);
+                        //}
+                        //setError(currentErrorList, nextErrorList, paragraphBox);
+                        setErrorTextColor(currentIndex, nextIndex, paragraphBox);
                         currentIndex = nextIndex;
                         nextIndex = setNextIndex(nextIndex);
                         setNextTextColor(currentIndex, nextIndex, paragraphBox);
@@ -213,16 +225,20 @@ namespace WpfApp1.ProfilePages
                 }
 
             }
+      
+        }
+
+        private void enterField_KeyDown(object sender, KeyEventArgs e)
+        {
             if (e.Key == Key.Escape)
             {
                 Keyboard.ClearFocus();
-                if (enterField.Text.Equals(""))
-                {
-                    enterField.Text = "Press Enter to Submit";
-                    header.Focus();
-                }
-
             }
+        }
+
+        private void EnterField_GotFocus(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void setCorrect(List<int> currentCorrectList, List<int> nextCorrectList, RichTextBox paragraphBox)
@@ -247,23 +263,38 @@ namespace WpfApp1.ProfilePages
         {
             if (enterField.Text.Equals(""))
             {
-                enterField.Text = "Press Enter to Submit";
+                enterField.Text = "Press Space to Submit";
+                
             }
         }
 
         private void enterField_GotFocus(object sender, RoutedEventArgs e)
         {
-
-            if (enterField.Text.Equals("Press Enter to Submit"))
+            Console.WriteLine("Testing");
+            if (enterField.Text.Equals("Press Space to Submit"))
             {
-                Console.WriteLine("Testing");
                 enterField.Text = "";
             }
+
         }
 
         private void SubmitPageHandler(object sender, MouseButtonEventArgs e)
         {
-
+            if(
+                CurrentPageModel.firstValidation == true &&
+                CurrentPageModel.secondValidation == true && 
+                CurrentPageModel.thirdValidation == true && 
+                CurrentPageModel.fourthValidation == true && 
+                CurrentPageModel.fifthhValidation == true && 
+                CurrentPageModel.sixthValidation == true 
+                )
+            {
+                MessageBox.Show("Successfully Completed Profiling Survey");
+            }
+            else
+            {
+                MessageBox.Show("Typing test hasn't been completed");
+            }
         }
 
         private void PreviousPageHandler(object sender, MouseButtonEventArgs e)
@@ -295,7 +326,7 @@ namespace WpfApp1.ProfilePages
             CurrentPageModel.sixthControl = page6Controls;
         }
 
-
+     
     }
 
 }

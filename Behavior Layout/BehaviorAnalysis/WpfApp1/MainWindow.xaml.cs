@@ -25,7 +25,7 @@ namespace WpfApp1
             InitializeComponent();
             CurrentPageModel currentClass = new CurrentPageModel();
             CurrentPageModel.setMainWindow(this);
-            rootBox.Source = new Uri(@"\ProfilePages\ProfileCreationPage6.xaml", UriKind.RelativeOrAbsolute);
+            rootBox.Source = new Uri(@"\ProfilePages\ProfileCreationPage1.xaml", UriKind.RelativeOrAbsolute);
             
         }
 

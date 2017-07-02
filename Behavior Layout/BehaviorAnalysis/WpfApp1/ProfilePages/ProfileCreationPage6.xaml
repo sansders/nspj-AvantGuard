@@ -26,16 +26,9 @@
                     </TextDecoration>
                 </TextBlock.TextDecorations>
             </TextBlock>
-            <TextBlock x:Uid="5" Text="Type this passage at your average typing speed" Grid.Row="1" Width="525"  Style="{StaticResource QuestionDesign}" Margin="4.2,0,-0.8,0"/>
+            <TextBlock Grid.Row="1" x:Uid="4" Text="Type the words lighted up in blue and press submit once each woronce each word is typed finished" Width="525"  Style="{StaticResource QuestionDesign}" Margin="4.2,0,-0.8,0"/>
             <StackPanel Grid.Row="2" Orientation="Vertical">
                 <ScrollViewer Width="525" Height="100">
-                    <!--<TextBlock
-                        TextWrapping="Wrap"
-                        ScrollViewer.VerticalScrollBarVisibility="Auto"
-                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                        x:Name="textParagraph"
-                        Text="{Binding paragraphText}">
-                    </TextBlock>-->
                     <RichTextBox x:Name="paragraphBox" IsReadOnly="True" Focusable="False" Style="{StaticResource paragraphDesign}">
                         <FlowDocument>
                             <Paragraph >
@@ -48,8 +41,8 @@
                         </FlowDocument>
                     </RichTextBox>
                 </ScrollViewer>
-                <TextBox KeyDown="keyboardFunctions" GotFocus="enterField_GotFocus" LostFocus="enterField_LostFocus" x:Name="enterField" Width="525" Height="30" Margin="0,20,0,0"> 
-                  Press Enter to Submit
+                <TextBox KeyDown="enterField_KeyDown" PreviewKeyDown="keyboardFunctions" GotFocus="enterField_GotFocus" LostFocus="enterField_LostFocus" x:Name="enterField" Width="525" Height="30" Margin="0,20,0,0">
+                    Press Space to Submit
                 </TextBox>
                 
             </StackPanel>

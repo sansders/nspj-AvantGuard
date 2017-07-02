@@ -53,6 +53,7 @@ namespace WpfApp1.ProfilePages
                 }
                 else
                 {
+                    Console.WriteLine("Hello");
                     //Load in the instance of the page 
                     this.NavigationService.Navigate(page6);
                     //Load in the current navigation control
@@ -63,6 +64,10 @@ namespace WpfApp1.ProfilePages
                     sixthControl.PageNumber.Text = sixthControl.currentPageNumber(currentClass.currentpage);
 
                 }
+            }
+            else
+            {
+                MessageBox.Show("Button Game hasn't been completed. Please complete it first");
             }
             //Save current instance of the page
             CurrentPageModel.fifthPage = this;
@@ -177,7 +182,7 @@ namespace WpfApp1.ProfilePages
                 }
                 else
                 {
-                    MessageBox.Show("You have successfully finished this survey");
+                    MessageBox.Show("Click next to proceed to the next page");
                     CurrentPageModel.fifthhValidation = true;
                     currentIndex = 0;
                     gameButton.Visibility = Visibility.Hidden;
