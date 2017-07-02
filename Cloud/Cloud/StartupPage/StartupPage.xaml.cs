@@ -54,5 +54,21 @@ namespace Cloud.StartupPage
         {
             this.NavigationService.Navigate(new Uri(@"..\..\BinPage\BinPage.xaml", UriKind.RelativeOrAbsolute));
         }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            if (this.NavigationService.CanGoBack)
+            {
+                this.NavigationService.GoBack();
+            }
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            if (this.NavigationService.CanGoForward)
+            {
+                this.NavigationService.GoForward(); 
+            }
+        }
     }
 }
