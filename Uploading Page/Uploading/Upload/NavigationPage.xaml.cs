@@ -17,7 +17,8 @@ using System.Windows.Shapes;
 using System.Configuration;
 using System.Windows.Forms;
 using System.IO;
-
+using Layout.Controllers;
+using Layout.Models;
 
 namespace Layout.Upload
 {
@@ -209,7 +210,23 @@ namespace Layout.Upload
             con.Close();
         }
 
-        
+        string enText;
 
+        private void encryptBtn(object sender, RoutedEventArgs e)
+        {
+            KeyController ks = new KeyController();
+
+            ks.keyCreation();
+
+           enText = ks.encrypt();
+
+        }
+
+        private void decryptBtn(object sender, RoutedEventArgs e)
+        {
+            KeyController ks = new KeyController();
+            ks.decrypt(enText);
+            
+        }
     }
 }

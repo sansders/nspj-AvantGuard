@@ -145,12 +145,14 @@
         <TextBox HorizontalAlignment="Left" Height="21" Margin="418,14,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="70" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
         <Label Content="Navigation" HorizontalAlignment="Left" Margin="271,51,0,0" VerticalAlignment="Top" Width="90"/>
         <Label HorizontalAlignment="Left" Margin="314,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.049,0.491"/>
-        <Button Content="See Page 1" Background="LightCyan" HorizontalAlignment="Left" Margin="161,103,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_1"/>
-        <Button Content="See Page 2" Background="LightCyan" HorizontalAlignment="Left" Margin="336,103,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_2"/>
-        <Button Content="Test DataBase" Background="LightCyan" HorizontalAlignment="Left" Margin="161,155,0,0" VerticalAlignment="Top" Width="128" Click="BtnDB"/>
-        <Button Content="Upload To Database" Background="LightCyan" HorizontalAlignment="Left" Margin="323,155,0,0" VerticalAlignment="Top" Width="165" Click="uploadBtn" RenderTransformOrigin="-0.279,-0.094" />
+        <Button Content="See Page 1" Background="LightCyan" HorizontalAlignment="Left" Margin="161,82,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_1"/>
+        <Button Content="See Page 2" Background="LightCyan" HorizontalAlignment="Left" Margin="336,82,0,0" VerticalAlignment="Top" Width="128" Click="Button_Click_2"/>
+        <Button Content="Test DataBase" Background="LightCyan" HorizontalAlignment="Left" Margin="161,134,0,0" VerticalAlignment="Top" Width="128" Click="BtnDB"/>
+        <Button Content="Upload To Database" Background="LightCyan" HorizontalAlignment="Left" Margin="323,134,0,0" VerticalAlignment="Top" Width="165" Click="uploadBtn" RenderTransformOrigin="-0.279,-0.094" />
         <Button Content="Database Image" Background="LightCyan" HorizontalAlignment="Left" Margin="365,258,0,0" VerticalAlignment="Top" Width="144" Click="ShowBtn"/>
         <Image Name="imageViewer" HorizontalAlignment="Left" Height="100" Margin="136,200,0,0" VerticalAlignment="Top" Width="215"/>
+        <Button Content="Encrypt" Background="LightCyan" HorizontalAlignment="Left" Margin="365,179,0,0" VerticalAlignment="Top" Width="144" Click="encryptBtn" RenderTransformOrigin="0.507,0.219"/>
+        <Button Content="Decrypt" Background="LightCyan" HorizontalAlignment="Left" Margin="365,216,0,0" VerticalAlignment="Top" Width="144" Click="decryptBtn" RenderTransformOrigin="0.507,0.219"/>
 
 
 

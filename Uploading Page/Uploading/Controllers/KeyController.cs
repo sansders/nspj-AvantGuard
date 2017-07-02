@@ -10,7 +10,7 @@ namespace Layout.Controllers
     class KeyController
     {
 
-        static void keyCreation()
+        public void keyCreation()
         {
             //Creates a new CSP with 4096 bit RSA key pair
             var csp = new RSACryptoServiceProvider(4096);
@@ -57,7 +57,7 @@ namespace Layout.Controllers
 
 
 
-        static void encrypt()
+      public string encrypt()
         {
             var csp = new RSACryptoServiceProvider();
 
@@ -76,7 +76,7 @@ namespace Layout.Controllers
 
 
             //HARDCODED, PLEASE CHANGE AT A LATER DATE -S
-            var plainTextData = "Bryan";
+            var plainTextData = "Bryan is Handsome af";
 
             //Translates plainText into Bytes
             var bytesPlainTextData = System.Text.Encoding.Unicode.GetBytes(plainTextData);
@@ -86,6 +86,9 @@ namespace Layout.Controllers
 
             //Translates cipherText into Base64 so it's somewhat legible
             var cipherText = Convert.ToBase64String(bytesCipherText);
+
+            Console.WriteLine("Encrypted String : " + cipherText);
+            return cipherText;
         }
 
 
@@ -108,7 +111,7 @@ namespace Layout.Controllers
 
 
 
-        static void decrypt(String cipherText)
+        public void decrypt(String cipherText)
         {
 
             //Converts cipherText from Base64 back to byte[]
@@ -141,7 +144,9 @@ namespace Layout.Controllers
 
             //Gets plainText back in Unicode
             var plainTextData = System.Text.Encoding.Unicode.GetString(bytesPlainTextData);
-           
+
+            Console.WriteLine(" Decryption Text : " + plainTextData);
+
         }
         
 
@@ -150,6 +155,9 @@ namespace Layout.Controllers
 
         //PROBLEM  : CANNOT CREATE MAIN METHOD TO TEST
         //PROBLEM 2: NEW KEYS WILL BE GENERATED EACH TIME IT IS RUN, NEED TO CREATE A METHOD TO CHECK IF KEY-PAIR ALREADY EXISTS
+
+      
+      
 
     }
 }
