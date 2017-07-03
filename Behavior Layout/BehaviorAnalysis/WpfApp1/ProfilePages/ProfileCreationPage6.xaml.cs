@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using WpfApp1.Model1;
 using WpfApp1.NavigationControls;
 using System.Collections;
+using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace WpfApp1.ProfilePages
 {
@@ -31,6 +33,10 @@ namespace WpfApp1.ProfilePages
         List<int> nextErrorList = new List<int>();
         List<int> currentCorrectList = new List<int>();
         List<int> nextCorrectList = new List<int>();
+        DispatcherTimer myTimer = new DispatcherTimer();
+        Stopwatch sw = new Stopwatch();
+        TimeSpan myTimeSpan;
+  
         public ProfileCreationPage6()
         {
             InitializeComponent();
@@ -43,8 +49,54 @@ namespace WpfApp1.ProfilePages
 
         private void initializeParagraph()
         {
+            //_time = TimeSpan.FromSeconds(60);
+            //myTimer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
+            //{
+            //    timerField.Text = _time.ToString("c");
+            //    if (_time == TimeSpan.Zero)
+            //    {
+            //        myTimer.Stop();
+            //    }
+            //    _time = _time.Add(TimeSpan.FromSeconds(-1));
+            //}, Application.Current.Dispatcher);
+
+            //myTimer.Start();
+           
             nextIndex = setNextIndex(nextIndex);
             setNextTextColor(currentIndex, nextIndex, paragraphBox);
+        }
+
+        private void startTimer()
+        {
+            //Start the StopWatch
+            sw.Start();
+            
+            //Set the Dispatcher Timer to run this method everytime it ticks
+            myTimer.Tick += new EventHandler(dt_Tick);
+            myTimeSpan = new TimeSpan(0, 0, 1);
+            //Set the interval of each ticks to 1 sec
+            myTimer.Interval = myTimeSpan;
+            //Start the dispatcher timer
+            myTimer.Start();
+        }
+
+        private void stopTimer()
+        {
+            //Stop the StopWatch
+            sw.Stop();
+            sw.Reset();
+            //Stop the dispatcher timer
+            myTimer.Stop();
+            timerField.Text = "";
+        }
+
+        private void dt_Tick(object sender, EventArgs e)
+        {
+            DateTime s = new DateTime();
+            //Adds the stop watch to date time.
+            s = s + sw.Elapsed;
+            //Append it to the timerField
+            timerField.Text = s.ToString("mm:ss");
         }
 
         private int setNextIndex(int nextIndex)
@@ -82,7 +134,7 @@ namespace WpfApp1.ProfilePages
             Color color = (Color)ColorConverter.ConvertFromString("#23aeff");
             currentSelection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(color));
             currentSelection.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
-
+            
         }
 
         private void setCorrectTextColor(int starting, int ending, RichTextBox rtb)
@@ -144,11 +196,51 @@ namespace WpfApp1.ProfilePages
             return ret;
         }
 
+        private void restartGame(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("You sure you want to restart the Keyboard Test?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                stopTimer();
+                currentCorrectList.Clear();
+                nextCorrectList.Clear();
+                currentErrorList.Clear();
+                nextErrorList.Clear();
+                removeTextColor(paragraphBox);
+                currentIndex = 0;
+                nextIndex = 0;
+                roundNumber = 0;
+                restartButton.Click -= restartGame;
+                restartButton.Click += startGame;
+                enterField.Visibility = Visibility.Hidden;
+                restartButton.Content = "Start";
+                
+            }
+            else
+            {
+                
+            }
+
+          
+
+        }
+
+        private void startGame(object sender, RoutedEventArgs e)
+        {
+            initializeParagraph();
+            restartButton.Click -= startGame;
+            restartButton.Click += restartGame;
+            restartButton.Content = "Restart";
+            enterField.Visibility = Visibility.Visible;
+        }
+
 
 
         private void keyboardFunctions(object sender, KeyEventArgs e)
         {
-            
+            if(roundNumber == 0)
+            {
+                startTimer();
+            }
             if (e.Key == Key.Space)
             {
                 Console.WriteLine("Activated ");
@@ -326,7 +418,7 @@ namespace WpfApp1.ProfilePages
             CurrentPageModel.sixthControl = page6Controls;
         }
 
-     
+       
     }
 
 }

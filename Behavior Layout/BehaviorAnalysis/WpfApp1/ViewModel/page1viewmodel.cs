@@ -12,35 +12,34 @@ namespace WpfApp1.ViewModel
 {
     class page1viewmodel
     {
+        String value1;
         public page1viewmodel()
         {
-
+            value1 = "Hello";
         }
 
-        private String ToggleCheckOption
+        public String showOption
         {
-            get
-            {
-                String hello = "123";
-                return hello;
-            }
+            get { return "TEds"; }
             set
             {
-                MessageBox.Show("Testing");
-
-                //var radiobutton = sender as radiobutton;
-                //if (radiobutton == null)
-                //{
-                //    currentpagemodel.firstvalidation = false;
-                //}
-                //else
-                //{
-                //    currentpagemodel.firstvalidation = true;
-                //    string data = radiobutton.content as string;
-                //    console.writeline(data);
-                //}
+                value1 = value;
             }
+              
 
+            //var radioButton = sender as RadioButton;
+            //if (radioButton == null)
+            //{
+
+            //    CurrentPageModel.firstValidation = false;
+            //}
+            //else
+            //{
+            //    CurrentPageModel.firstValidation = true;
+            //    String data = radioButton.Content as String;
+            //    Console.WriteLine(data);
+            //}
         }
+
     }
 }

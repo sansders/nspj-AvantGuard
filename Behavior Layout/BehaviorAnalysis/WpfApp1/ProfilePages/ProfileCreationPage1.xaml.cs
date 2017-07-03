@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApp1.Model1;
+using WpfApp1.ViewModel;
 
 namespace WpfApp1.ProfilePages
 {
@@ -28,6 +29,7 @@ namespace WpfApp1.ProfilePages
             CurrentPageModel.firstPage = this;
             CurrentPageModel.firstControl = page1Controls;
             CurrentPageModel.firstValidation = false;
+            this.DataContext = new page1viewmodel();
         }
 
 
@@ -83,15 +85,16 @@ namespace WpfApp1.ProfilePages
 
         private void ToggleCheckOption(object sender, RoutedEventArgs e)
         {
-            
+
             var radioButton = sender as RadioButton;
             if (radioButton == null)
             {
+
                 CurrentPageModel.firstValidation = false;
             }
             else
             {
-                CurrentPageModel.firstValidation = true; 
+                CurrentPageModel.firstValidation = true;
                 String data = radioButton.Content as String;
                 Console.WriteLine(data);
             }
