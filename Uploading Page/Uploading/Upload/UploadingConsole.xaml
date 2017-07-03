@@ -145,8 +145,8 @@
         <TextBox HorizontalAlignment="Left" Height="21" Margin="449,10,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="70" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
         <Label Content="Uploading File" HorizontalAlignment="Left" Margin="271,51,0,0" VerticalAlignment="Top" Width="90"/>
 
-
-        <fa:ImageAwesome Icon="Spinner" Spin="True" SpinDuration="0.1" Margin="361,51,276,246" />
+        <fa:ImageAwesome Icon="Spinner" Spin="True" SpinDuration="0.5" Margin="359,51,145.2,245.8" />
+        
         <ToggleButton  x:Name="toggle" HorizontalAlignment="Left"  Margin="432,55,0,0" VerticalAlignment="Top" Unchecked="ToggleButton_unChecked" Checked="ToggleButton_Checked" Height="17" Width="43"/>
         <Border x:Name="console" Visibility="Hidden" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="174" Margin="148,100,0,0" VerticalAlignment="Top" Width="353"/>
         <Label HorizontalAlignment="Left" Margin="314,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.049,0.491"/>

@@ -125,7 +125,7 @@ namespace Layout.Upload
 
                 con.Open();
 
-                string sqlQuery = "Insert into dbo.UserFiles(Username,Name,Image)Values( '1' , 'man' , @images )";
+                string sqlQuery = "Insert into dbo.UserFiles(Username,Name,Image)Values( 'Random' , 'man' , @images )";
                 cmd = new SqlCommand(sqlQuery, con);
                 cmd.Parameters.Add(new SqlParameter("@images",images));
                 int N = cmd.ExecuteNonQuery();
@@ -187,7 +187,7 @@ namespace Layout.Upload
             string connectionString = conSettings.ConnectionString;
             con = new SqlConnection(connectionString);
             con.Open();
-            string sqlQuery = "select Image FROM [dbo].[UserFiles] where Username='Superwoman'";
+            string sqlQuery = "select Image FROM [dbo].[UserFiles] where Username='Random'";
             cmd = new SqlCommand(sqlQuery, con);
             SqlDataReader DataRead = cmd.ExecuteReader();
             DataRead.Read();
