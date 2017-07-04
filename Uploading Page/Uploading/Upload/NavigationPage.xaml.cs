@@ -214,10 +214,8 @@ namespace Layout.Upload
 
         private void encryptBtn(object sender, RoutedEventArgs e)
         {
-            KeyController ks = new KeyController();
-
-            ks.keyCreation();
-
+           KeyController ks = new KeyController();
+           KeyController.checkForKeys();
            enText = ks.encrypt();
 
         }

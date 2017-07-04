@@ -8,7 +8,18 @@ namespace Layout.Models
 {
     class KeyModel
     {
+        /*
+        * 
+        * 
+        * RENDERED OBSELETE AS OF 4/7/17
+        * 
+        * 
+        * 
+        */
 
+
+        /*
+        
         //Declaration of variables
         private static String _privateKey;
         private static String _publicKey;
@@ -35,6 +46,7 @@ namespace Layout.Models
             get { return _publicKey; }
         }
 
+        */
 
     }
 }
