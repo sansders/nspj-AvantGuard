@@ -8,7 +8,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="350" d:DesignWidth="525"
       Title="ProfileCreationPage6">
-
+      
     <Viewbox>
         <Grid RenderTransformOrigin="0.481,0.392"  >
             <Grid.RowDefinitions>
@@ -26,7 +26,7 @@
                     </TextDecoration>
                 </TextBlock.TextDecorations>
             </TextBlock>
-            <TextBlock Grid.Row="1" x:Uid="4" Text="Type the words lighted up in blue and press spacebar once each word is completed. " Width="525"  Style="{StaticResource QuestionDesign}" Margin="4.2,0,-0.8,0"/>
+            <TextBlock Grid.Row="1" x:Uid="4" Text="Type the following passage at your usual typing pace." Width="525"  Style="{StaticResource QuestionDesign}" Margin="4.2,0,-0.8,0"/>
             <StackPanel Grid.Row="2" Orientation="Vertical">
                 <ScrollViewer Width="525" Height="100">
                     <RichTextBox x:Name="paragraphBox" IsReadOnly="True" Focusable="False" Style="{StaticResource paragraphDesign}">
@@ -38,10 +38,15 @@
                                 
 
                             </Paragraph>
-
                             <Paragraph>
-                                <Run x:Name="timerField"></Run>
+                                <Run x:Name="timerField" ></Run>
                             </Paragraph>
+                            <!--<Paragraph>
+                                <Run x:Name="Keys" Text="Key Inputs"></Run>
+                            </Paragraph>-->
+                            
+                            
+                          
                         </FlowDocument>
                     </RichTextBox>
                     
@@ -49,13 +54,15 @@
                 <TextBox KeyDown="enterField_KeyDown" PreviewKeyDown="keyboardFunctions" GotFocus="enterField_GotFocus" LostFocus="enterField_LostFocus" x:Name="enterField" Width="525" Height="30" Margin="0,0,0,0">
                     Press Space to Submit
                 </TextBox>
-                <Button  x:Name="restartButton" Content="Restart" Click="restartGame" Style="{StaticResource stateButtonDesign}" Canvas.Left="225" Canvas.Top="148" Width="80" RenderTransformOrigin="0.255,0.407" Margin="0,10,0,0"/>
-
+                <StackPanel Orientation="Horizontal">
+                    <TextBox x:Name="Keys" Margin="22,0,200,0">Key Input</TextBox>
+                    <Button  x:Name="restartButton" Content="Restart" Click="restartGame" Style="{StaticResource stateButtonDesign}" Canvas.Left="225" Canvas.Top="148" Width="80" RenderTransformOrigin="0.255,0.407" Margin="0,10,0,0"/>
+                </StackPanel> <!-- Must Remove thi stack panel -->
             </StackPanel>
             <StackPanel Grid.Row="3">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Uid="PreviousButton" MouseLeftButtonDown="PreviousPageHandler"  Style="{StaticResource previousButtonDesign}" Text="Previous"></TextBlock>
-                    <TextBlock Uid="NextButton" MouseLeftButtonDown="SubmitPageHandler"  Style="{StaticResource nextButtonDesign}" Text="Submit" ></TextBlock>
+                    <TextBlock Uid="NextButton" MouseLeftButtonDown="SubmitPageHandler"  Style="{StaticResource submitButtonDesign}" Text="Submit" ></TextBlock>
                 </StackPanel>
                 <views:NavigationControls x:Name="page6Controls"/>
                 <!--<StackPanel Orientation="Horizontal"  Margin="420,0,0,0">

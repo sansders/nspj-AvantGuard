@@ -103,6 +103,18 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            
+              <!--For the next Button-->
+            <Style TargetType="{x:Type  TextBlock}" x:Key="submitButtonDesign" BasedOn="{StaticResource MaterialDesignButtonTextBlock}">
+                <Setter Property="TextAlignment" Value="Right"></Setter>
+                <Setter Property="Margin" Value="175,0,30,3"></Setter>
+                <Setter Property="Width" Value="auto"></Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground" Value="#23aeff"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
             <!--For the Page Number-->
             <Style TargetType="{x:Type  TextBlock}" x:Key="PageNumber" BasedOn="{StaticResource MaterialDesignButtonTextBlock}">
