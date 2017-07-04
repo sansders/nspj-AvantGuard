@@ -24,7 +24,11 @@ namespace Cloud.MyFoldersPage
         {
             InitializeComponent();
 
-            this.listView.Items.Add(new MyItem { Name = "Business Presentation", Owner = "WeiHan9898", LastModified = "27 May 2017", FileSize = "103MB" });
+            this.listView.Items.Add(new MyItem { Name = "Business Presentation", Owner = "WeiHan9898", LastModified = "27 May 2017", FileSize = "903MB" });
+            this.listView.Items.Add(new MyItem { Name = "My Story", Owner = "SohJT", LastModified = "23 May 2017", FileSize = "742MB" });
+            this.listView.Items.Add(new MyItem { Name = "MatthewHo.docx", Owner = "Grymb3l", LastModified = "9 May 2017", FileSize = "103MB" });
+            this.listView.Items.Add(new MyItem { Name = "Chengdu PPT", Owner = "ShonTei", LastModified = "19 April 2017", FileSize = "1.4GB" });
+            this.listView.Items.Add(new MyItem { Name = "My Presentation", Owner = "me", LastModified = "4 April 2017", FileSize = "78KB" });
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -67,5 +71,7 @@ namespace Cloud.MyFoldersPage
                 this.NavigationService.GoForward();
             }
         }
+
+        
     }
 }

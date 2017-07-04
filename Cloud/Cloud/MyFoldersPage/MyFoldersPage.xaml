@@ -153,6 +153,12 @@
                         <GridViewColumn Header="File Size" Width="100" DisplayMemberBinding="{Binding FileSize}"/>
                     </GridView>
                 </ListView.View>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Open"></MenuItem>
+                        <MenuItem Header="Delete"></MenuItem>
+                    </ContextMenu>
+                </ListView.ContextMenu>
             </ListView>
         </Grid>
     </Viewbox>
