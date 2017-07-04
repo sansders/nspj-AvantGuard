@@ -67,6 +67,7 @@
     <Compile Include="MyFoldersPage\MyFoldersPage.xaml.cs">
       <DependentUpon>MyFoldersPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyFoldersPage\MyItem.cs" />
     <Compile Include="RecentPage\RecentPage.xaml.cs">
       <DependentUpon>RecentPage.xaml</DependentUpon>
     </Compile>

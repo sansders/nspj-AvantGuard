@@ -23,6 +23,8 @@ namespace Cloud.MyFoldersPage
         public MyFoldersPage()
         {
             InitializeComponent();
+
+            this.listView.Items.Add(new MyItem { Name = "Business Presentation", Owner = "WeiHan9898", LastModified = "27 May 2017", FileSize = "103MB" });
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

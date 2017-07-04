@@ -144,6 +144,16 @@
             <Button fa:Awesome.Content="Gear" HorizontalAlignment="Left" Height="28" Margin="69,7,0,0" VerticalAlignment="Top" Width="28"/>
             <Button fa:Awesome.Content="File" HorizontalAlignment="Left" Height="28" Margin="101,7,0,0" VerticalAlignment="Top" Width="28"/>
             <TextBox HorizontalAlignment="Left" Height="16" Margin="418,14,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="70" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
+            <ListView x:Name="listView" HorizontalAlignment="Left" Height="281" VerticalAlignment="Top" Width="389" Margin="131,42,0,-0.2">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="90" DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn Header="Owner" Width="90" DisplayMemberBinding="{Binding Owner}"/>
+                        <GridViewColumn Header="Last modified" Width="109" DisplayMemberBinding="{Binding LastModified}"/>
+                        <GridViewColumn Header="File Size" Width="100" DisplayMemberBinding="{Binding FileSize}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
     </Viewbox>
 </Page>
