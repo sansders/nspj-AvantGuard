@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Layout.Controllers
 {
@@ -43,10 +45,26 @@ namespace Layout.Controllers
                 privKeyString = stringWriter.ToString();
             }
 
-            //Sets key pair into KeyModel
-            Models.KeyModel.setPublicKey(pubKeyString);
-            Models.KeyModel.setPrivateKey(privKeyString);
 
+
+            //Sets key pair into txt files
+            FileStream ostrm;
+            StreamWriter writer;
+            TextWriter oldOut = Console.Out;
+            ostrm = new FileStream("C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt", FileMode.OpenOrCreate, FileAccess.Write);
+            writer = new StreamWriter(ostrm);
+            Console.WriteLine(pubKeyString);
+            writer.Close();
+            ostrm.Close();
+
+            FileStream ostrm1;
+            StreamWriter writer1;
+            TextWriter oldOut1 = Console.Out;
+            ostrm1 = new FileStream("C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt", FileMode.OpenOrCreate, FileAccess.Write);
+            writer1 = new StreamWriter(ostrm1);
+            Console.WriteLine(privKeyString);
+            writer1.Close();
+            ostrm1.Close();
 
 
         }
@@ -64,7 +82,8 @@ namespace Layout.Controllers
 
             //Converts Public key back from String object to var(?)
             //Gets a stream from the publicKey string
-            var stringReader1 = new System.IO.StringReader(Models.KeyModel.getPublicKey);
+            string pubKeyReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt");
+            var stringReader1 = new System.IO.StringReader(pubKeyReader);
             //Use a serializer
             var xmlSeralize1 = new System.Xml.Serialization.XmlSerializer(typeof(RSAParameters));
             //Gets the object back from the stream
@@ -126,7 +145,8 @@ namespace Layout.Controllers
 
             //Converts Private key back from String object to var(?)           
             //Gets a stream from the privateKey string
-            var stringReader2 = new System.IO.StringReader(Models.KeyModel.getPrivateKey);
+            string privKeyReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt");
+            var stringReader2 = new System.IO.StringReader(privKeyReader);
             //Use a serializer
             var xmlSeralize2 = new System.Xml.Serialization.XmlSerializer(typeof(RSAParameters));
             //Gets the object back from the stream
@@ -145,19 +165,33 @@ namespace Layout.Controllers
             //Gets plainText back in Unicode
             var plainTextData = System.Text.Encoding.Unicode.GetString(bytesPlainTextData);
 
-            Console.WriteLine(" Decryption Text : " + plainTextData);
+            Console.WriteLine("Decryption Text : " + plainTextData);
 
         }
-        
 
 
 
 
-        //PROBLEM  : CANNOT CREATE MAIN METHOD TO TEST
+
+
+
+	    //Method used to check if usable key pair exists
+	    public static void checkForKeys()
+        {
+            string[] dirs = Directory.GetFiles(@"c:\", "privateKey.txt");
+            if (dirs.Equals(null))
+            {
+                KeyController keyCreation = new KeyController();
+            }
+        }
+
+
+
+        //PROBLEM  : CANNOT CREATE MAIN METHOD TO TEST <SOLVED>
         //PROBLEM 2: NEW KEYS WILL BE GENERATED EACH TIME IT IS RUN, NEED TO CREATE A METHOD TO CHECK IF KEY-PAIR ALREADY EXISTS
 
-      
-      
+
+
 
     }
 }
