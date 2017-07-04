@@ -72,6 +72,32 @@ namespace Cloud.MyFoldersPage
             }
         }
 
-        
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var newList = new List<MyItem>();
+
+            if (newList.Count == 0)
+            {
+                foreach (MyItem item in listView.Items)
+                {
+                    newList.Add(item);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchBar.Text))
+            {
+                listView.Items.Clear();
+
+                for (int i = newList.Count - 1; i >= 0; i--)
+                {
+                    var item = newList[i];
+                    if (item.Name.ToLower().Contains(searchBar.Text.ToLower()))
+                    {
+                        listView.Items.Add(item);
+                    }
+                }
+
+            }
+        }
     }
 }

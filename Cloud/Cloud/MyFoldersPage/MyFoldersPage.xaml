@@ -156,10 +156,14 @@
                 <ListView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Open"></MenuItem>
+                        <MenuItem Header="Favorite"></MenuItem>
+                        <MenuItem Header="Share"></MenuItem>
                         <MenuItem Header="Delete"></MenuItem>
+                        <MenuItem Header="Move To"></MenuItem>
                     </ContextMenu>
                 </ListView.ContextMenu>
             </ListView>
+            <TextBox x:Name="searchBar" HorizontalAlignment="Left" Height="23" Margin="178,10,0,0" TextWrapping="Wrap" Text="search..." VerticalAlignment="Top" Width="199" TextChanged="TextBox_TextChanged"/>
         </Grid>
     </Viewbox>
 </Page>
