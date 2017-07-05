@@ -163,7 +163,7 @@
                     </ContextMenu>
                 </ListView.ContextMenu>
             </ListView>
-            <TextBox x:Name="searchBar" HorizontalAlignment="Left" Height="23" Margin="178,10,0,0" TextWrapping="Wrap" Text="Search..." VerticalAlignment="Top" Width="199" GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged"/>
+            <TextBox x:Name="searchBar" HorizontalAlignment="Left" Height="23" Margin="178,10,0,0" TextWrapping="Wrap" Text="Search..." VerticalAlignment="Top" Width="199" GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged" Foreground="DarkGray"/>
         </Grid>
     </Viewbox>
 </Page>

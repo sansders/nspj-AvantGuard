@@ -83,6 +83,7 @@ namespace Cloud.MyFoldersPage
         { 
             if (!string.IsNullOrWhiteSpace(searchBar.Text))
             {
+                searchBar.SetCurrentValue(ForegroundProperty, Brushes.Black);
                 listView.Items.Clear();
 
                 for (int i = 0; i < newList.Count; i++)
