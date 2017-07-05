@@ -51,23 +51,9 @@ namespace Layout.Controllers
 
 
             //Sets key pair into txt files
-            FileStream ostrm;
-            StreamWriter writer;
-            TextWriter oldOut = Console.Out;
-            ostrm = new FileStream(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt", FileMode.OpenOrCreate, FileAccess.Write);
-            writer = new StreamWriter(ostrm);
-            Console.WriteLine(pubKeyString);
-            writer.Close();
-            ostrm.Close();
-
-            FileStream ostrm1;
-            StreamWriter writer1;
-            TextWriter oldOut1 = Console.Out;
-            ostrm1 = new FileStream(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt", FileMode.OpenOrCreate, FileAccess.Write);
-            writer1 = new StreamWriter(ostrm1);
-            Console.WriteLine(privKeyString);
-            writer1.Close();
-            ostrm1.Close();
+            //CHANGE PATH WHEREVER NECESSARY 
+            System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt", pubKeyString);
+            System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt", privKeyString);
 
 
         }
@@ -85,6 +71,7 @@ namespace Layout.Controllers
 
             //Converts Public key back from String object to var(?)
             //Gets a stream from the publicKey string
+            //CHANGE PATH WHEREVER NECESSARY 
             string pubKeyReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt");
             var stringReader1 = new System.IO.StringReader(pubKeyReader);
             //Use a serializer
@@ -148,6 +135,7 @@ namespace Layout.Controllers
 
             //Converts Private key back from String object to var(?)           
             //Gets a stream from the privateKey string
+            //CHANGE PATH WHEREVER NECESSARY 
             string privKeyReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt");
             var stringReader2 = new System.IO.StringReader(privKeyReader);
             //Use a serializer
@@ -183,6 +171,7 @@ namespace Layout.Controllers
         {
             Console.WriteLine("Checking for keys");
 
+            //CHANGE PATH WHEREVER NECESSARY 
             string path = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt";
             if (!File.Exists(path))
             {
@@ -193,7 +182,7 @@ namespace Layout.Controllers
 
 
         //PROBLEM  : CANNOT CREATE MAIN METHOD TO TEST <SOLVED>
-        //PROBLEM 2: NEW KEYS WILL BE GENERATED EACH TIME IT IS RUN, NEED TO CREATE A METHOD TO CHECK IF KEY-PAIR ALREADY EXISTS
+        //PROBLEM 2: NEW KEYS WILL BE GENERATED EACH TIME IT IS RUN, NEED TO CREATE A METHOD TO CHECK IF KEY-PAIR ALREADY EXISTS <SOLVED>
 
 
 
