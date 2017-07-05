@@ -25,59 +25,11 @@ namespace Layout
         public MainWindow()
         {
             InitializeComponent();
-            ProtectConfiguration();
+            
             _NavigationFrame.Navigate(new NavigationPage());
         }
 
-        private static void ProtectConfiguration()
-        {
-
-            // Get the application configuration file.
-            System.Configuration.Configuration config =
-                    ConfigurationManager.OpenExeConfiguration(
-                    ConfigurationUserLevel.None);
-
-            // Define the Rsa provider name.
-            string provider =
-                "RsaProtectedConfigurationProvider";
-
-            // Get the section to protect.
-            ConfigurationSection connStrings = config.ConnectionStrings;
-
-            if (connStrings != null)
-            {
-                if (!connStrings.SectionInformation.IsProtected)
-                {
-                    if (!connStrings.ElementInformation.IsLocked)
-                    {
-                        // Protect the section.
-                        connStrings.SectionInformation.ProtectSection(provider);
-
-                        connStrings.SectionInformation.ForceSave = true;
-                        config.Save(ConfigurationSaveMode.Full);
-
-                        Console.WriteLine("Section {0} is now protected by {1}",
-                            connStrings.SectionInformation.Name,
-                            connStrings.SectionInformation.ProtectionProvider.Name);
-
-                    }
-                    else
-                        Console.WriteLine(
-                             "Can't protect, section {0} is locked",
-                             connStrings.SectionInformation.Name);
-                }
-                else
-                    Console.WriteLine(
-                        "Section {0} is already protected by {1}",
-                        connStrings.SectionInformation.Name,
-                        connStrings.SectionInformation.ProtectionProvider.Name);
-
-            }
-            else
-                Console.WriteLine("Can't get the section {0}",
-                    connStrings.SectionInformation.Name);
-
-        }
+        
 
 
         private void ToggleButton_Checked(object sender, RoutedEventArgs e)
