@@ -20,6 +20,8 @@ namespace Cloud.MyFoldersPage
     /// </summary>
     public partial class MyFoldersPage : Page
     {
+        private List<MyItem> newList = new List<MyItem>();
+
         public MyFoldersPage()
         {
             InitializeComponent();
@@ -29,6 +31,11 @@ namespace Cloud.MyFoldersPage
             this.listView.Items.Add(new MyItem { Name = "MatthewHo.docx", Owner = "Grymb3l", LastModified = "9 May 2017", FileSize = "103MB" });
             this.listView.Items.Add(new MyItem { Name = "Chengdu PPT", Owner = "ShonTei", LastModified = "19 April 2017", FileSize = "1.4GB" });
             this.listView.Items.Add(new MyItem { Name = "My Presentation", Owner = "me", LastModified = "4 April 2017", FileSize = "78KB" });
+
+            foreach (MyItem item in listView.Items)
+            {
+                newList.Add(item);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -73,22 +80,12 @@ namespace Cloud.MyFoldersPage
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var newList = new List<MyItem>();
-
-            if (newList.Count == 0)
-            {
-                foreach (MyItem item in listView.Items)
-                {
-                    newList.Add(item);
-                }
-            }
-
+        { 
             if (!string.IsNullOrWhiteSpace(searchBar.Text))
             {
                 listView.Items.Clear();
 
-                for (int i = newList.Count - 1; i >= 0; i--)
+                for (int i = 0; i < newList.Count; i++)
                 {
                     var item = newList[i];
                     if (item.Name.ToLower().Contains(searchBar.Text.ToLower()))
@@ -97,6 +94,17 @@ namespace Cloud.MyFoldersPage
                     }
                 }
 
+            }
+
+            else
+            {
+                listView.Items.Clear();
+
+                for (int i = 0; i < newList.Count; i++)
+                {
+                    var item = newList[i];
+                    listView.Items.Add(item);
+                }
             }
         }
     }
