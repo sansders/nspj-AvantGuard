@@ -1,13 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Layout.Controllers
 {
     class KeyController
     {
-
-        public void keyCreation()
+        public KeyController()
+        {
+            checkForKeys();
+        }
+        public static void keyCreation()
         {
             //Creates a new CSP with 4096 bit RSA key pair
             var csp = new RSACryptoServiceProvider(4096);
@@ -46,8 +54,7 @@ namespace Layout.Controllers
             FileStream ostrm;
             StreamWriter writer;
             TextWriter oldOut = Console.Out;
-            //Please change the directory if possible
-            ostrm = new FileStream("C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt", FileMode.OpenOrCreate, FileAccess.Write);
+            ostrm = new FileStream(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt", FileMode.OpenOrCreate, FileAccess.Write);
             writer = new StreamWriter(ostrm);
             Console.WriteLine(pubKeyString);
             writer.Close();
@@ -56,8 +63,7 @@ namespace Layout.Controllers
             FileStream ostrm1;
             StreamWriter writer1;
             TextWriter oldOut1 = Console.Out;
-            //Please change the directory if possible
-            ostrm1 = new FileStream("C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt", FileMode.OpenOrCreate, FileAccess.Write);
+            ostrm1 = new FileStream(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt", FileMode.OpenOrCreate, FileAccess.Write);
             writer1 = new StreamWriter(ostrm1);
             Console.WriteLine(privKeyString);
             writer1.Close();
@@ -72,15 +78,13 @@ namespace Layout.Controllers
 
 
 
-      public string encrypt()
+        public string encrypt()
         {
-            checkForKeys();
             var csp = new RSACryptoServiceProvider();
 
 
             //Converts Public key back from String object to var(?)
             //Gets a stream from the publicKey string
-            //Please change the directory if possible
             string pubKeyReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt");
             var stringReader1 = new System.IO.StringReader(pubKeyReader);
             //Use a serializer
@@ -138,12 +142,12 @@ namespace Layout.Controllers
 
 
 
+
             //Makes another csp thing with privateKey as input parameter
             var csp = new RSACryptoServiceProvider();
 
             //Converts Private key back from String object to var(?)           
             //Gets a stream from the privateKey string
-            //Please change the directory if possible
             string privKeyReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt");
             var stringReader2 = new System.IO.StringReader(privKeyReader);
             //Use a serializer
@@ -153,11 +157,11 @@ namespace Layout.Controllers
 
             //Loads the Private Key
             csp.ImportParameters(privKey);
-            
 
 
 
-   
+
+
             //Where the magic happens
             var bytesPlainTextData = csp.Decrypt(bytesCipherText, false);
 
@@ -174,14 +178,15 @@ namespace Layout.Controllers
 
 
 
-	    //Method used to check if usable key pair exists
-	    public static void checkForKeys()
+        //Method used to check if usable key pair exists
+        public static void checkForKeys()
         {
-            string[] dirs = Directory.GetFiles(@"C:\\Users\\SengokuMedaru\\Desktop\\keys", "privKey.txt");
-            if (dirs.Equals(null))
+            Console.WriteLine("Checking for keys");
+
+            string path = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt";
+            if (!File.Exists(path))
             {
-                KeyController kc = new KeyController();
-                kc.keyCreation();
+                keyCreation();
             }
         }
 
