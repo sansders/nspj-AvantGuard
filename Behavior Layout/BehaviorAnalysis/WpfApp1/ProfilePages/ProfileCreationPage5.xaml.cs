@@ -202,53 +202,12 @@ namespace WpfApp1.ProfilePages
                     Console.WriteLine("Current X Size is " + fullXList.Count());
                     Console.WriteLine("Current Y Size is " + fullYList.Count());
                    
-                    //List<Double> firstX = fullXList[0];
-                    //Console.WriteLine(firstX[0]);
-                    //List<Double> secondX = fullXList[1];
-                    //Console.WriteLine(secondX[1]);
 
+                 
 
-
-
-                    //Console.WriteLine(firstX.Count);
-                    //Console.WriteLine(secondX.Count);
-
-                    //Console.WriteLine("cdescads");
-                    //foreach (List<Double> element in fullXList)
-                    //{
-                    //    Console.WriteLine(element.Count);
-                    //}
-                    //foreach (double element in firstX)
-                    //{
-                    //    Console.WriteLine(element);
-                    //}
-
-                    List<Double> xFirstList = fullXList[1];
-                    List<Double> yFirstList = fullYList[1];
-                    List<Double> xSecondList = fullXList[2];
-                    List<Double> ySecondList = fullYList[2];
-                    //line = drawLine(line, xFirstList[0] , yFirstList[0], xSecondList[0], ySecondList[0]);
-                    var windows = new Window();
-                    windows.Width = 300;
-                    windows.Height = 300;
-                    Canvas newCanvas = new Canvas();
-                    newCanvas.Width = 300;
-                    newCanvas.Height = 300;
-                    newCanvas.Background = new SolidColorBrush(Colors.Green);
-                    TextBlock popUpText = new TextBlock();
-                    popUpText.Text = "Current X Size is " + fullXList.Count() + "\n"
-                       + "Current Y Size is " + fullYList.Count();
-
-                    Line line = new Line();
-                    line = drawLine(line, xFirstList[0], yFirstList[0], xSecondList[0], ySecondList[0]);
-
-                    Console.WriteLine(xFirstList[0]);
-                    Console.WriteLine(xSecondList[0]);
-
-                    windows.Content = newCanvas;
-                    newCanvas.Children.Add(popUpText);
-                    newCanvas.Children.Add(line);
-                    windows.ShowDialog();
+                    Window window =createGraph();
+                    window.ShowDialog();
+                    
 
                     CurrentPageModel.fifthhValidation = true;
                     currentIndex = 0;
@@ -261,6 +220,41 @@ namespace WpfApp1.ProfilePages
           
         }
 
+        private Window createGraph()
+        {
+            var windows = new Window();
+            windows.Width = 525;
+            windows.Height = 350;
+            Canvas newCanvas = new Canvas();
+            newCanvas.Width = 525;
+            newCanvas.Height = 350;
+            newCanvas.Background = new SolidColorBrush(Colors.Green);
+            TextBlock popUpText = new TextBlock();
+            popUpText.Text = "Current X Size is " + fullXList.Count() + "\n"
+               + "Current Y Size is " + fullYList.Count();
+            windows.Content = newCanvas;
+            newCanvas.Children.Add(popUpText);
+
+            for (int i = 0; i < fullXList.Count; i++)
+            {
+                List<Double> xFirstList = fullXList[i];
+                List<Double> yFirstList = fullYList[i];
+
+                for (int a = 0; a < xFirstList.Count; a++)
+                {
+                    if (a < xFirstList.Count - 2)
+                    {
+                        Line line = new Line();
+                        line = drawLine(line, xFirstList[a], yFirstList[a], xFirstList[a + 1], yFirstList[a + 1], i);
+                        newCanvas.Children.Add(line);
+                    }
+                    else
+                    {
+                    }
+                }
+            }
+            return windows;
+        }
 
         private void moveActivated(object sender, MouseEventArgs e)
         {
@@ -271,15 +265,36 @@ namespace WpfApp1.ProfilePages
             Header.Text = "Move your mouse to the circle that pops up and click it" + "\n" + " X: " + pointToScreen.X + " Y: " + pointToScreen.Y;
         }
 
-        private Line drawLine(Line line, double x1, double y1, double x2, double y2)
+        private Line drawLine(Line line, double x1, double y1, double x2, double y2 , int index)
         {
 
             line.X1 = x1;
             line.Y1 = y1;
             line.X2 = x2;
             line.Y2 = y2;
+            if (index == 1)
+            {
+                line.Stroke = new SolidColorBrush(Colors.Red);
+            }
+            else if (index == 2)
+            {
+                line.Stroke = new SolidColorBrush(Colors.Purple);
+            }
+            else if(index ==3)
+            {
+                line.Stroke = new SolidColorBrush(Colors.Orange);
+            }
+            else if(index ==4)
+            {
+                line.Stroke = new SolidColorBrush(Colors.MistyRose);
+            }
+            else
+            {
+                line.Stroke = new SolidColorBrush(Colors.NavajoWhite);
+            }
+
+
             line.StrokeThickness = 5;
-            line.Stroke = new SolidColorBrush(Colors.Black);
             return line;
         }
 
