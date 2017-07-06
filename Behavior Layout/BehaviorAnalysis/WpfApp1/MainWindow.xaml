@@ -7,7 +7,7 @@
 		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 		xmlns:views="clr-namespace:WpfApp1.NavigationControls"
 		mc:Ignorable="d"
-		Title="MainWindow" Height="350" Width="525" WindowState="Maximized">
+		Title="MainWindow" Height="350" Width="525">
         <Frame x:Name="rootBox" NavigationUIVisibility="Hidden">
 
 

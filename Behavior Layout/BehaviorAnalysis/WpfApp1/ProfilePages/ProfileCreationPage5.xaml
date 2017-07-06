@@ -27,12 +27,14 @@
                     </TextDecoration>
                 </TextBlock.TextDecorations>
             </TextBlock>
-            <TextBlock x:Uid="5" Text="Move your mouse to the circle that pops up and click it" Grid.Row="1" Width="525"  Style="{StaticResource QuestionDesign}" Margin="4.2,0,-0.8,0"/>
-            <Canvas Grid.Row="2">
-                <Grid>
+            <TextBlock x:Uid="5" x:Name="Header" Text="Move your mouse to the circle that pops up and click it" Grid.Row="1" Width="525"  Style="{StaticResource QuestionDesign}" Margin="4.2,0,-0.8,0"/>
+          
+            <Canvas x:Name="GameField" Background="White" Grid.Row="2">
+               
+                <Grid x:Name="GameLayout" Width="554" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30" ></RowDefinition>
-                        <RowDefinition Height="Auto" ></RowDefinition>
+                        <RowDefinition Height="30" ></RowDefinition>
                         <RowDefinition Height="30" ></RowDefinition>
                         <RowDefinition Height="30" ></RowDefinition>
                         <RowDefinition Height="30" ></RowDefinition>
@@ -46,8 +48,8 @@
                         <ColumnDefinition Width="30"></ColumnDefinition>
                         <ColumnDefinition Width="30"></ColumnDefinition>
                         <ColumnDefinition Width="30"></ColumnDefinition>
-                        <ColumnDefinition Width="29.84"></ColumnDefinition>
-                        <ColumnDefinition Width="0.16"/>
+                        <ColumnDefinition Width="30"></ColumnDefinition>
+                        <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="30"></ColumnDefinition>
                         <ColumnDefinition Width="30"></ColumnDefinition>
                         <ColumnDefinition Width="30"></ColumnDefinition>
@@ -62,10 +64,12 @@
                     </Grid.ColumnDefinitions>
                     <Button Grid.Row="1" Grid.Column="1" Click="gameButton_Click" x:Name="gameButton" Style="{StaticResource mouseClickDesign}" Template="{StaticResource mouseClickTemplate}" Height="30" Width="auto" RenderTransformOrigin="1.011,0.541" Margin="0.6,0,29.8,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                 </Grid>
+
                 <Button  x:Name="gameStateControl" Content="Start" Click="gameStateControl_Click" Style="{StaticResource stateButtonDesign}" Canvas.Left="225" Canvas.Top="148" Width="80" RenderTransformOrigin="0.255,0.407"/>
 
             </Canvas>
             <StackPanel Grid.Row="3">
+              
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Uid="PreviousButton" MouseLeftButtonDown="PreviousPageHandler"  Style="{StaticResource previousButtonDesign}" Text="Previous"></TextBlock>
                     <TextBlock Uid="NextButton" MouseLeftButtonDown="NextPageHandler"  Style="{StaticResource nextButtonDesign}" Text="Next" ></TextBlock>

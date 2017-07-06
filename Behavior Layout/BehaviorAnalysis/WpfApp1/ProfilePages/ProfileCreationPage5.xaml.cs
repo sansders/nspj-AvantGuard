@@ -25,12 +25,19 @@ namespace WpfApp1.ProfilePages
     {
         Boolean running = false;
         Boolean isClicked = false;
-        int currentIndex = 1; 
+        int currentIndex = 1;
+        List<Double> xAxisList = new List<Double>();
+        List<Double> yAxisList = new List<Double>();
+        List<List<Double>> fullXList = new List<List<Double>>();
+        List<List<Double>> fullYList = new List<List<Double>>();
+        List<Double> xNumber = new List<Double>();
+        List<Double> yNumber = new List<Double>();
+        private List<double> xList;
+
         public ProfileCreationPage5()
         {
             InitializeComponent();
             gameButton.Visibility = Visibility.Hidden;
-            
             //Save current instance of the page
             CurrentPageModel.fifthPage = this;
             //Save current instance of the user control
@@ -116,14 +123,12 @@ namespace WpfApp1.ProfilePages
             gameStateControl.Content = "Restart";
             gameStateControl.Click -= new RoutedEventHandler(gameStateControl_Click);
             gameStateControl.Click += new RoutedEventHandler(restartGame);
-            
             gameButton.MouseEnter += onMouseEnter;
             gameButton.MouseLeave += onMouseExit;
-            
-            
             Console.WriteLine("Game has started");
 
         }
+
 
         private ArrayList generateRow()
         {
@@ -178,11 +183,73 @@ namespace WpfApp1.ProfilePages
                 { 
                 gameButton.SetValue(Grid.RowProperty, rows[currentIndex]);
                 gameButton.SetValue(Grid.ColumnProperty, col[currentIndex]);
+                if(currentIndex == 1)
+                    {
+                        GameField.MouseMove += new MouseEventHandler(moveActivated);
+                    }
+                else
+                    {
+                        GameField.MouseMove -= new MouseEventHandler(moveActivated);
+                        GameField.MouseMove += new MouseEventHandler(moveActivated);
+                        SaveCurrentCoordinate();
+                        RunNextCoordinate();
+                    }
                 isClicked = false;
                 }
                 else
                 {
                     MessageBox.Show("Click next to proceed to the next page");
+                    Console.WriteLine("Current X Size is " + fullXList.Count());
+                    Console.WriteLine("Current Y Size is " + fullYList.Count());
+                   
+                    //List<Double> firstX = fullXList[0];
+                    //Console.WriteLine(firstX[0]);
+                    //List<Double> secondX = fullXList[1];
+                    //Console.WriteLine(secondX[1]);
+
+
+
+
+                    //Console.WriteLine(firstX.Count);
+                    //Console.WriteLine(secondX.Count);
+
+                    //Console.WriteLine("cdescads");
+                    //foreach (List<Double> element in fullXList)
+                    //{
+                    //    Console.WriteLine(element.Count);
+                    //}
+                    //foreach (double element in firstX)
+                    //{
+                    //    Console.WriteLine(element);
+                    //}
+
+                    List<Double> xFirstList = fullXList[1];
+                    List<Double> yFirstList = fullYList[1];
+                    List<Double> xSecondList = fullXList[2];
+                    List<Double> ySecondList = fullYList[2];
+                    //line = drawLine(line, xFirstList[0] , yFirstList[0], xSecondList[0], ySecondList[0]);
+                    var windows = new Window();
+                    windows.Width = 300;
+                    windows.Height = 300;
+                    Canvas newCanvas = new Canvas();
+                    newCanvas.Width = 300;
+                    newCanvas.Height = 300;
+                    newCanvas.Background = new SolidColorBrush(Colors.Green);
+                    TextBlock popUpText = new TextBlock();
+                    popUpText.Text = "Current X Size is " + fullXList.Count() + "\n"
+                       + "Current Y Size is " + fullYList.Count();
+
+                    Line line = new Line();
+                    line = drawLine(line, xFirstList[0], yFirstList[0], xSecondList[0], ySecondList[0]);
+
+                    Console.WriteLine(xFirstList[0]);
+                    Console.WriteLine(xSecondList[0]);
+
+                    windows.Content = newCanvas;
+                    newCanvas.Children.Add(popUpText);
+                    newCanvas.Children.Add(line);
+                    windows.ShowDialog();
+
                     CurrentPageModel.fifthhValidation = true;
                     currentIndex = 0;
                     gameButton.Visibility = Visibility.Hidden;
@@ -194,6 +261,68 @@ namespace WpfApp1.ProfilePages
           
         }
 
+
+        private void moveActivated(object sender, MouseEventArgs e)
+        {
+            Point pointToScreen = Mouse.GetPosition(GameField);
+            xAxisList.Add(pointToScreen.X);
+            yAxisList.Add(pointToScreen.Y);
+            //var pointToScreen = PointToScreen(e.GetPosition(GameField));
+            Header.Text = "Move your mouse to the circle that pops up and click it" + "\n" + " X: " + pointToScreen.X + " Y: " + pointToScreen.Y;
+        }
+
+        private Line drawLine(Line line, double x1, double y1, double x2, double y2)
+        {
+
+            line.X1 = x1;
+            line.Y1 = y1;
+            line.X2 = x2;
+            line.Y2 = y2;
+            line.StrokeThickness = 5;
+            line.Stroke = new SolidColorBrush(Colors.Black);
+            return line;
+        }
+
+        private void RunNextCoordinate()
+        {
+            xAxisList.Clear();
+            yAxisList.Clear();
+           
+        }
+
+        private void SaveCurrentCoordinate()
+        {
+
+            Console.WriteLine("x and y at start axis list is now both have a value of " + xAxisList.Count + yAxisList.Count);
+
+            List<Double> newXList = new List<double>();
+            foreach (double element in xAxisList)
+            {
+                newXList.Add(element);
+            }
+
+            List<Double> newYList = new List<double>();
+            foreach (double element in yAxisList)
+            {
+                newYList.Add(element);
+            }
+
+
+            fullXList.Add(newXList);
+            fullYList.Add(newYList);
+            xNumber.Add(xAxisList.Count);
+            yNumber.Add(yAxisList.Count);
+
+           
+
+            //xAxisList.Clear();
+            //yAxisList.Clear();
+            List<Double> myList = fullXList[0];
+            Console.WriteLine("cjmdisuacnadswoincasoiucdns");
+            
+            Console.WriteLine("x and y axis list is now both have a value of " + xAxisList.Count + yAxisList.Count);
+            
+        }
 
         void restartGame(object sender, RoutedEventArgs e)
         {
