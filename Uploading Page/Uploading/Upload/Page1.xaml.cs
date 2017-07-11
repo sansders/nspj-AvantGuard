@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Drawing;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Layout.Upload
 {
@@ -36,13 +37,28 @@ namespace Layout.Upload
         private void uploadButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
-            dlg.ShowDialog();
-
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 string fileName;
+                string stringFormatOfFile;
                 fileName = dlg.FileName; //Will be useful in the future when selecting files
-                System.Windows.MessageBox.Show(fileName); //For debugging and presentation purposes, can delete when neccessary 
+                
+                using (StreamReader streamReader = new StreamReader(fileName, Encoding.UTF8))
+                {
+                    stringFormatOfFile = streamReader.ReadToEnd();
+                }
+
+                Controllers.KeyController kc = new Controllers.KeyController();
+                kc.encrypt(stringFormatOfFile);
+
+                // 11.7.2017 Update
+                // RSA has been used to encrypt files
+                //
+                // However, new problem has arose
+                // RSA can only encrypt tiny files
+                // Need to use symmetric algorithm to encrypt files instead
+                // RSA can be used to encrypt the symmetric keys instead, if that makes any sense
+                // - Sean
             }
         }
     }

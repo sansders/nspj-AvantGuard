@@ -214,19 +214,33 @@ namespace Layout.Upload
             con.Close();
         }
 
-        string enText;
+
+
+        string _enText;
 
         private void encryptBtn(object sender, RoutedEventArgs e)
         {
-           KeyController ks = new KeyController();
-           enText = ks.encrypt();
+            OpenFileDialog dlg = new OpenFileDialog();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                string fileName;
+                string stringFormatOfFile;
+                fileName = dlg.FileName; //Will be useful in the future when selecting files
 
+                using (StreamReader streamReader = new StreamReader(fileName, Encoding.UTF8))
+                {
+                    stringFormatOfFile = streamReader.ReadToEnd();
+                }
+
+                KeyController ks = new KeyController();
+                _enText = ks.encrypt(stringFormatOfFile);
+            }
         }
 
         private void decryptBtn(object sender, RoutedEventArgs e)
         {
             KeyController ks = new KeyController();
-            ks.decrypt(enText);
+            ks.decrypt(_enText);
             
         }
     }

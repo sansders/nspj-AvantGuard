@@ -64,7 +64,7 @@ namespace Layout.Controllers
 
 
 
-        public string encrypt()
+        public string encrypt(String plainTextData)
         {
             var csp = new RSACryptoServiceProvider();
 
@@ -85,7 +85,7 @@ namespace Layout.Controllers
 
 
             //HARDCODED, PLEASE CHANGE AT A LATER DATE -S
-            var plainTextData = "Bryan is Handsome af";
+            //plainTextData = "Bryan is Handsome af";
 
             //Translates plainText into Bytes
             var bytesPlainTextData = System.Text.Encoding.Unicode.GetBytes(plainTextData);
