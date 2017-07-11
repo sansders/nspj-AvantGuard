@@ -38,52 +38,11 @@ namespace Cloud.MyFoldersPage
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.NavigationService.Navigate(new Uri(@"..\..\SearchPage\SearchPage.xaml", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            this.NavigationService.Navigate(new Uri(@"..\..\RecentPage\RecentPage.xaml", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            this.NavigationService.Navigate(new Uri(@"..\..\SharedPage\SharedPage.xaml", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            this.NavigationService.Navigate(new Uri(@"..\..\FavoritesPage\FavoritesPage.xaml", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            this.NavigationService.Navigate(new Uri(@"..\..\BinPage\BinPage.xaml", UriKind.RelativeOrAbsolute));
-        }
-
-        private void Button_Click_5(object sender, RoutedEventArgs e)
-        {
-            if (this.NavigationService.CanGoBack)
-            {
-                this.NavigationService.GoBack();
-            }
-        }
-
-        private void Button_Click_6(object sender, RoutedEventArgs e)
-        {
-            if (this.NavigationService.CanGoForward)
-            {
-                this.NavigationService.GoForward();
-            }
-        }
-
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        { 
-            if (!string.IsNullOrWhiteSpace(searchBar.Text))
+        {
+            /*if (!string.IsNullOrWhiteSpace(searchBar.Text))
             {
-                searchBar.SetCurrentValue(ForegroundProperty, Brushes.Black);
+                
                 listView.Items.Clear();
 
                 for (int i = 0; i < newList.Count; i++)
@@ -96,6 +55,7 @@ namespace Cloud.MyFoldersPage
                 }
 
             }
+            
 
             else
             {
@@ -106,7 +66,7 @@ namespace Cloud.MyFoldersPage
                     var item = newList[i];
                     listView.Items.Add(item);
                 }
-            }
+            }*/
         }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -115,5 +75,6 @@ namespace Cloud.MyFoldersPage
             tb.Text = string.Empty;
             tb.GotFocus -= TextBox_GotFocus;
         }
+
     }
 }

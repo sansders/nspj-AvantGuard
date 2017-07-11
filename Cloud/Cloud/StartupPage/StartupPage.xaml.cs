@@ -20,55 +20,82 @@ namespace Cloud.StartupPage
     /// </summary>
     public partial class StartupPage : Page
     {
+        private List<MyItem> newList = new List<MyItem>();
+
         public StartupPage()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.NavigationService.Navigate(new Uri(@"..\..\SearchPage\SearchPage.xaml", UriKind.RelativeOrAbsolute));
-        }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri(@"..\..\MyFoldersPage\MyFoldersPage.xaml", UriKind.RelativeOrAbsolute));
+            mainFrame.NavigationService.Navigate(new Uri(@"..\..\MyFoldersPage\MyFoldersPage.xaml", UriKind.RelativeOrAbsolute));
+            MyFoldersButton.Background = (Brush)(new BrushConverter().ConvertFrom("#23aeff"));
+            RecentButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            SharedButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            FavoritesButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            BinButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri(@"..\..\RecentPage\RecentPage.xaml", UriKind.RelativeOrAbsolute));
+            mainFrame.NavigationService.Navigate(new Uri(@"..\..\RecentPage\RecentPage.xaml", UriKind.RelativeOrAbsolute));
+            MyFoldersButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            RecentButton.Background = (Brush)(new BrushConverter().ConvertFrom("#23aeff"));
+            SharedButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            FavoritesButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            BinButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri(@"..\..\SharedPage\SharedPage.xaml", UriKind.RelativeOrAbsolute));
+            mainFrame.NavigationService.Navigate(new Uri(@"..\..\SharedPage\SharedPage.xaml", UriKind.RelativeOrAbsolute));
+            MyFoldersButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            RecentButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            SharedButton.Background = (Brush)(new BrushConverter().ConvertFrom("#23aeff"));
+            FavoritesButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            BinButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri(@"..\..\FavoritesPage\FavoritesPage.xaml", UriKind.RelativeOrAbsolute));
+            mainFrame.NavigationService.Navigate(new Uri(@"..\..\FavoritesPage\FavoritesPage.xaml", UriKind.RelativeOrAbsolute));
+            MyFoldersButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            RecentButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            SharedButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            FavoritesButton.Background = (Brush)(new BrushConverter().ConvertFrom("#23aeff"));
+            BinButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri(@"..\..\BinPage\BinPage.xaml", UriKind.RelativeOrAbsolute));
+            mainFrame.NavigationService.Navigate(new Uri(@"..\..\BinPage\BinPage.xaml", UriKind.RelativeOrAbsolute));
+            MyFoldersButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            RecentButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            SharedButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            FavoritesButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+            BinButton.Background = (Brush)(new BrushConverter().ConvertFrom("#23aeff"));
         }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            if (this.NavigationService.CanGoBack)
+            if (mainFrame.NavigationService.CanGoBack)
             {
-                this.NavigationService.GoBack();
+                mainFrame.NavigationService.GoBack();
             }
         }
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
-            if (this.NavigationService.CanGoForward)
+            if (mainFrame.NavigationService.CanGoForward)
             {
-                this.NavigationService.GoForward(); 
+                mainFrame.NavigationService.GoForward(); 
             }
         }
+
+        
+        
+
     }
 }
