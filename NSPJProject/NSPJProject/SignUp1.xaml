@@ -1,0 +1,294 @@
+﻿<Page x:Class="NSPJProject.SignUp1"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:NSPJProject"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="500"
+      Title="SignUp 1/2">
+
+    <Border>
+        <Grid>
+            <!-- Enable scrolling if screen is too small-->
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto">
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            TextBlock.TextAlignment="Center">
+
+                    <!-- Back Button -->
+                    <Button Name="SignUp1BackButton" 
+                            Content="Back"
+                            Width="50"
+                            HorizontalAlignment="Left"
+                            FontFamily="Gulim"
+                            FontWeight="Bold"
+                            BorderThickness="0"
+                            Padding="10 10 10 10"
+                            Background="#23aeff"
+                            Foreground="#ffffff" 
+                            Click="SignUp1BackButton_Click"></Button>
+
+                    <!-- Border For Sign Up -->
+                    <Border Background="White"
+                            BorderBrush="Black"
+                            BorderThickness="3"
+                            CornerRadius="6"
+                            Height="500"
+                            Width="450"
+                            Padding="15 50 15 15"
+                            Margin="50 50 50 0">
+
+                        <StackPanel>
+                            <!-- Sign Up Header -->
+                            <TextBlock Text="Profile Creation"
+                                       FontSize="30"
+                                       FontFamily="Gulim"
+                                       Foreground="Black"
+                                       FontWeight="Bold"/>
+
+                            <!-- Border Line Below Sign Up Header -->
+                            <Border BorderBrush="#23aeff"
+                                    BorderThickness="0 0 0 1"
+                                    Width="225"
+                                    Margin="5"></Border>
+
+                            <!-- User ID -->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0 20 0 5"
+                                        HorizontalAlignment="Center">
+
+                                <Label Content="User ID:"
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Padding="5"
+                                       Margin="17 0 0 0"></Label>
+
+                                <TextBox Name="SignUpUserIDTextBox"
+                                         Background="White"
+                                         FontSize="15"
+                                         FontFamily="Gulim"
+                                         Margin="0 5 10 5"
+                                         Width="250"
+                                         BorderBrush="Black"
+                                         BorderThickness="0 0 0 1"
+                                         HorizontalAlignment="Center"></TextBox>
+
+                                <Image Source="Images/exclamation-mark.png"
+                                       Name="UserIDImage"
+                                       Width="20"
+                                       Visibility="Hidden"></Image>
+                            </StackPanel>
+
+                            <!-- Password -->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0 10 0 5"
+                                        HorizontalAlignment="Center">
+
+                                <Label Content="Password:"
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Padding="5"
+                                       Margin="-2 0 0 0"></Label>
+
+                                <PasswordBox Name="SignUpPasswordTextBox"
+                                             Background="White"
+                                             FontSize="15"
+                                             FontFamily="Gulim"
+                                             Padding="1"
+                                             Margin="0 5 10 5"
+                                             Width="250"
+                                             BorderBrush="Black"
+                                             BorderThickness="0 0 0 1"
+                                             HorizontalAlignment="Center"/>
+
+                                <Image Source="Images/exclamation-mark.png"
+                                       Name="PasswordImage"
+                                       Width="20"
+                                       Visibility="Hidden"></Image>
+                            </StackPanel>
+
+                            <!-- Name -->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0 10 0 5"
+                                        HorizontalAlignment="Center">
+
+                                <Label Content="Name:"
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Padding="5"
+                                       Margin="27 0 0 0"></Label>
+
+                                <TextBox Name="SignUpNameTextBox"
+                                         Background="White"
+                                         FontSize="15"
+                                         FontFamily="Gulim"
+                                         Padding="1"
+                                         Margin="0 5 10 5"
+                                         Width="250"
+                                         BorderBrush="Black"
+                                         BorderThickness="0 0 0 1"
+                                         HorizontalAlignment="Center"/>
+
+                                <Image Source="Images/exclamation-mark.png"
+                                       Name="NameImage"
+                                       Width="20"
+                                       Visibility="Hidden"></Image>
+                            </StackPanel>
+
+                            <!-- Email -->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0 10 0 5"
+                                        HorizontalAlignment="Center">
+
+                                <Label Content="Email:"
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Padding="5"
+                                       Margin="29 0 0 0"></Label>
+
+                                <TextBox Name="SignUpEmailTextBox"
+                                         Background="White"
+                                         FontSize="15"
+                                         FontFamily="Gulim"
+                                         Padding="1"
+                                         Margin="0 5 10 5"
+                                         Width="250"
+                                         BorderBrush="Black"
+                                         BorderThickness="0 0 0 1"
+                                         HorizontalAlignment="Center"/>
+
+                                <Image Source="Images/exclamation-mark.png"
+                                       Name="EmailImage"
+                                       Width="20"
+                                       Visibility="Hidden"></Image>
+                            </StackPanel>
+
+                            <!-- Contact Number -->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0 10 0 5"
+                                        HorizontalAlignment="Center">
+
+                                <Label Content="Contact No:"                                      
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Padding="5"
+                                       Margin="-15 0 0 0"></Label>
+
+                                <TextBox Name="SignUpContactTextBox"
+                                         Background="White"
+                                         PreviewTextInput="TextBox_PreviewTextInput"
+                                         FontSize="15"
+                                         FontFamily="Gulim"
+                                         Padding="1"
+                                         Margin="0 5 10 5"
+                                         Width="250"
+                                         BorderBrush="Black"
+                                         BorderThickness="0 0 0 1"
+                                         HorizontalAlignment="Center"/>
+
+                                <Image Source="Images/exclamation-mark.png"
+                                       Name="ContactImage"
+                                       Width="20"
+                                       Visibility="Hidden"></Image>
+                            </StackPanel>
+
+                            <!-- Date Of Birth -->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0 10 0 5"
+                                        HorizontalAlignment="Center">
+
+                                <Label Content="DOB:"
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Padding="5"
+                                       Margin="33 0 0 0"></Label>
+
+                                <DatePicker Name="SignUpDOBDatePicker"
+                                            FontSize="15"
+                                            FontFamily="Gulim"
+                                            Padding="1"
+                                            Margin="0 5 10 5"
+                                            Width="250"
+                                            BorderBrush="Black"
+                                            BorderThickness="0 0 0 1"
+                                            HorizontalAlignment="Center"></DatePicker>
+
+                                <Image Source="Images/exclamation-mark.png"
+                                       Name="DOBImage"
+                                       Width="20"
+                                       Visibility="Hidden"></Image>
+                            </StackPanel>
+
+                            <!-- Gender -->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0 10 0 5"
+                                        HorizontalAlignment="Center">
+
+                                <Label Content="Gender:"
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Padding="5"
+                                       Margin="-89 0 0 0"></Label>
+
+                                <RadioButton GroupName="Gender"
+                                             Name="SignUpMaleRadioButton"
+                                             Content="Male"
+                                             Background="White"
+                                             FontSize="15"
+                                             Padding="1"
+                                             Margin="0 5 10 5"
+                                             BorderBrush="Black"
+                                             HorizontalAlignment="Center"></RadioButton>
+
+                                <RadioButton GroupName="Gender"
+                                             Name="SignUpFemaleRadioButton"
+                                             Content="Female"
+                                             Background="White"
+                                             FontSize="15"
+                                             Padding="1"
+                                             Margin="0 5 10 5"
+                                             BorderBrush="Black"
+                                             HorizontalAlignment="Center"></RadioButton>
+
+                                <Image Source="Images/exclamation-mark.png"
+                                       Name="GenderImage"
+                                       Width="20"
+                                       Visibility="Collapsed"></Image>
+                            </StackPanel>
+
+                            <!-- Button To Go To Sign Up 2/2 -->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0 10 0 5"
+                                        HorizontalAlignment="Center">
+                                <Button Name="SignUp1NextButton"
+                                        Content="Next"
+                                        Foreground="#23aeff"
+                                        Background="Transparent"
+                                        BorderThickness="0 0 0 0"
+                                        FontSize="20"
+                                        FontFamily="Gulim"
+                                        Margin="300 0 0 0" 
+                                        Click="SignUp1NextButton_Click"></Button>
+                            </StackPanel>
+                        </StackPanel>
+
+
+
+                    </Border>
+
+                </StackPanel>
+
+            </ScrollViewer>
+        </Grid>
+
+    </Border>
+</Page>
