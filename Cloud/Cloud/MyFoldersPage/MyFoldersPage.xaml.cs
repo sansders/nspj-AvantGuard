@@ -43,7 +43,8 @@ namespace Cloud.MyFoldersPage
             /*if (!string.IsNullOrWhiteSpace(searchBar.Text))
             {
                 
-                listView.Items.Clear();
+                    listView.Items.Clear();
+                
 
                 for (int i = 0; i < newList.Count; i++)
                 {

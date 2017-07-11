@@ -94,8 +94,9 @@ namespace Cloud.StartupPage
             }
         }
 
-        
-        
-
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            mainFrame.NavigationService.Navigate(new Uri(@"..\..\TextEditor\Editor.xaml", UriKind.RelativeOrAbsolute));
+        }
     }
 }

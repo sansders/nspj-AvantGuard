@@ -10,6 +10,10 @@
       Title="MyFoldersPage">
     <Viewbox Stretch="UniformToFill">
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="52*"/>
+                <RowDefinition Height="229*"/>
+            </Grid.RowDefinitions>
             <TextBox x:Name="searchBar" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" TextWrapping="Wrap" Text="Search..." GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged" VerticalAlignment="Top" Width="199" Foreground="DarkGray">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
@@ -17,10 +21,15 @@
                     </Style>
                 </TextBox.Resources>
             </TextBox>
-            <ListView x:Name="listView" HorizontalAlignment="Left" Height="250" VerticalAlignment="Top" Width="470" Margin="0,31,0,-0.2">
+            <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="listView" HorizontalAlignment="Left" Height="250" VerticalAlignment="Top" Width="470" Margin="0,31,0,-0.2">
                 <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Name" Width="141" DisplayMemberBinding="{Binding Name}"/>
+                    <GridView ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <GridView.ColumnHeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </Style>
+                        </GridView.ColumnHeaderContainerStyle>
+                        <GridViewColumn Header="Name" Width="170" DisplayMemberBinding="{Binding Name}"/>
                         <GridViewColumn Header="Owner" Width="90" DisplayMemberBinding="{Binding Owner}"/>
                         <GridViewColumn Header="Last modified" Width="109" DisplayMemberBinding="{Binding LastModified}"/>
                         <GridViewColumn Header="File Size" Width="100" DisplayMemberBinding="{Binding FileSize}"/>
