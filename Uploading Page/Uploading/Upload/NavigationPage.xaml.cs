@@ -118,10 +118,14 @@ namespace Layout.Upload
                 con = new SqlConnection(connectionString);
 
                 byte[] images = null;
+                byte[] images1 = null;
+                byte[] images2 = null;
+                byte[] images3 = null;
 
                 FileStream Stream = new FileStream(imgLocation,FileMode.Open,FileAccess.Read);
                 BinaryReader brs = new BinaryReader(Stream);
                 images = brs.ReadBytes((int)Stream.Length);
+                
 
                 con.Open();
 
