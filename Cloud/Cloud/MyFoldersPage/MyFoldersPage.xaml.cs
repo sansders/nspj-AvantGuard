@@ -26,12 +26,12 @@ namespace Cloud.MyFoldersPage
         {
             InitializeComponent();
 
-            this.listView.Items.Add(new MyItem { Name = "Business Presentation", Owner = "WeiHan9898", LastModified = "27 May 2017", FileSize = "903MB" });
-            this.listView.Items.Add(new MyItem { Name = "My Story", Owner = "SohJT", LastModified = "23 May 2017", FileSize = "742MB" });
-            this.listView.Items.Add(new MyItem { Name = "MatthewHo.docx", Owner = "Grymb3l", LastModified = "9 May 2017", FileSize = "103MB" });
-            this.listView.Items.Add(new MyItem { Name = "Chengdu PPT", Owner = "ShonTei", LastModified = "19 April 2017", FileSize = "1.4GB" });
-            this.listView.Items.Add(new MyItem { Name = "My Presentation", Owner = "me", LastModified = "4 April 2017", FileSize = "78KB" });
-
+            listView.Items.Add(new MyItem { Name = "Business Presentation", Owner = "WeiHan9898", LastModified = "27 May 2017", FileSize = "903MB" });
+            listView.Items.Add(new MyItem { Name = "My Story", Owner = "SohJT", LastModified = "23 May 2017", FileSize = "742MB" });
+            listView.Items.Add(new MyItem { Name = "MatthewHo.docx", Owner = "Grymb3l", LastModified = "9 May 2017", FileSize = "103MB" });
+            listView.Items.Add(new MyItem { Name = "Chengdu PPT", Owner = "ShonTei", LastModified = "19 April 2017", FileSize = "1.4GB" });
+            listView.Items.Add(new MyItem { Name = "My Presentation", Owner = "me", LastModified = "4 April 2017", FileSize = "78KB" });
+            
             foreach (MyItem item in listView.Items)
             {
                 newList.Add(item);
@@ -40,11 +40,11 @@ namespace Cloud.MyFoldersPage
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            /*if (!string.IsNullOrWhiteSpace(searchBar.Text))
+                    
+            if (!string.IsNullOrWhiteSpace(searchBar.Text))
             {
                 
-                    listView.Items.Clear();
-                
+                listView.Items.Clear();
 
                 for (int i = 0; i < newList.Count; i++)
                 {
@@ -67,7 +67,7 @@ namespace Cloud.MyFoldersPage
                     var item = newList[i];
                     listView.Items.Add(item);
                 }
-            }*/
+            }
         }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)

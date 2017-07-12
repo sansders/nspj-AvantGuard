@@ -36,6 +36,7 @@ namespace Cloud.StartupPage
             SharedButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
             FavoritesButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
             BinButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
+        
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)

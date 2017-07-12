@@ -14,12 +14,34 @@
                 <RowDefinition Height="52*"/>
                 <RowDefinition Height="229*"/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="searchBar" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" TextWrapping="Wrap" Text="Search..." GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged" VerticalAlignment="Top" Width="199" Foreground="DarkGray">
+            <TextBox x:Name="searchBar" HorizontalAlignment="Left" Height="23" Margin="10,5,0,0" TextWrapping="Wrap" GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged" VerticalAlignment="Top" Width="199" Foreground="DarkGray">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="10"/>
                     </Style>
                 </TextBox.Resources>
+                <TextBox.Style>
+                    <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                        <Style.Resources>
+                            <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                <VisualBrush.Visual>
+                                    <Label Content="Search" Foreground="LightGray" />
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Style.Resources>
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Background" Value="White" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
             </TextBox>
             <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="listView" HorizontalAlignment="Left" Height="250" VerticalAlignment="Top" Width="470" Margin="0,31,0,-0.2">
                 <ListView.View>
