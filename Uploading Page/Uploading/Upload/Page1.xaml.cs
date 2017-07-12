@@ -49,7 +49,14 @@ namespace Layout.Upload
                 }
 
                 Controllers.KeyController kc = new Controllers.KeyController();
-                kc.encrypt(stringFormatOfFile);
+                //kc.encrypt(stringFormatOfTheFile);
+                
+
+                //For debugging purposes
+                fileName = fileName.Replace("C:\\Users\\SengokuMedaru\\Desktop\\", "");
+                String testOutput = kc.encrypt(stringFormatOfFile);
+                System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName, testOutput);
+                
 
                 // 11.7.2017 Update
                 // RSA has been used to encrypt files

@@ -98,6 +98,8 @@ namespace Layout.Controllers
 
             Console.WriteLine("Encrypted String : " + cipherText);
             return cipherText;
+
+
         }
 
 
