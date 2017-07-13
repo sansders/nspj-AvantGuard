@@ -60,11 +60,84 @@ namespace Layout.Controllers
 
 
 
+        public static void symmetricKeyCreation()
+        {
+            /*FAILED CODE  
+             *FAILED CODE  
+             *FAILED CODE  
+             *FAILED CODE  
+             *FAILED CODE  
+             * //Creates an instance of AES that will contain all the methods required for AES Symmetric Encryption
+                AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
+
+                //Generates symmetric key & initialization vector
+                aes.GenerateKey();
+                aes.GenerateIV();
+
+
+
+                /*string aesKeyString;
+                {
+                    var stringWriter = new System.IO.StringWriter();
+                    //Creates a serializer
+                    var xmlSerialize = new System.Xml.Serialization.XmlSerializer(typeof(AesCryptoServiceProvider));
+                    //Serializes the key into the stream
+                    xmlSerialize.Serialize(stringWriter, aes.GenerateKey());
+                    //Gets the string from the stream
+                    pubKeyString = stringWriter.ToString();
+                }
+            *FAILED CODE  
+            *FAILED CODE  
+            *FAILED CODE  
+            *FAILED CODE   
+            *PROBLEM: CREATED KEY CANNOT BE STORED. -Sean 13.7.2017
+            */
 
 
 
 
-        public string encrypt(String plainTextData)
+
+            //Creates an instance of Rijndael that will contain all the methods required for AES Symmetric Encryption
+            RijndaelManaged Crypto = new RijndaelManaged();
+            System.Text.UTF8Encoding UTF = new System.Text.UTF8Encoding();
+
+            //Assigns key to byte[] and string variables
+            byte[] byteSymmetricKey = Crypto.Key;
+            string stringSymmetricKey = UTF.GetString(byteSymmetricKey);
+            
+            //Saves string of symmetric key
+            //CHANGE PATH WHENEVER NECCESSARY
+            System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\symmetricKey.txt", stringSymmetricKey);
+
+        }
+
+        private static byte[] symmetricEncryption(string plainText, byte[] Key, byte[] IV)
+        {
+            System.Text.UTF8Encoding UTF = new System.Text.UTF8Encoding();
+
+            //Just get bytes from plain text
+            byte[] plainBytes = UTF.GetBytes(plainText);
+
+            RijndaelManaged Crypto = new RijndaelManaged();
+            Crypto.Key = Key;
+            Crypto.IV = IV;
+
+            MemoryStream MemStream = new MemoryStream();
+
+            //Creates the method to Encrypt, inputs are the Symmetric Key & IV
+            ICryptoTransform Encryptor = Crypto.CreateEncryptor(Crypto.Key, Crypto.IV);
+
+            //Writes the data to memory to perform the transformation
+            CryptoStream Crypto_Stream = new CryptoStream(MemStream, Encryptor, CryptoStreamMode.Write);
+
+            //Takes in string to be encrypted, offset value, & length of string to be encrypted
+            Crypto_Stream.Write(plainBytes, 0, plainBytes.Length);
+
+            //Returns the memory byte array
+            return MemStream.ToArray();
+        }
+
+        public string asymmetricEncryption(String plainTextData)
         {
             var csp = new RSACryptoServiceProvider();
 
@@ -122,7 +195,7 @@ namespace Layout.Controllers
 
 
 
-        public void decrypt(String cipherText)
+        public void asymmetricDecryption(String cipherText)
         {
 
             //Converts cipherText from Base64 back to byte[]
@@ -163,7 +236,28 @@ namespace Layout.Controllers
         }
 
 
+        public string symmetricDecryption(byte[] cipherText, byte[] Key, byte[] IV)
+        {
+            RijndaelManaged Crypto = new RijndaelManaged();
+            Crypto.Key = Key;
+            Crypto.IV = IV;
 
+            //Get stream of cipherText
+            MemoryStream MemStream = new MemoryStream(cipherText);
+            
+            //Symmetric key & IV used here
+            ICryptoTransform Decryptor = Crypto.CreateDecryptor(Crypto.Key, Crypto.IV);
+
+            //For decryption, CryptoStreamMode.Read is used instead of .Write
+            CryptoStream Crypto_Stream = new CryptoStream(MemStream, Decryptor, CryptoStreamMode.Read);
+
+            //Reads CryptoStream
+            StreamReader Stream_Read = new StreamReader(Crypto_Stream);
+            //.ReadToEnd returns plain text
+            string plainText = Stream_Read.ReadToEnd();
+
+            return plainText;
+        }
 
 
 
@@ -187,6 +281,21 @@ namespace Layout.Controllers
         //PROBLEM 2: NEW KEYS WILL BE GENERATED EACH TIME IT IS RUN, NEED TO CREATE A METHOD TO CHECK IF KEY-PAIR ALREADY EXISTS <SOLVED>
 
 
+        // 11.7.2017 Update
+        // RSA has been used to encrypt files
+        //
+        // However, new problem has arose
+        // RSA can only encrypt tiny files
+        // Need to use symmetric algorithm to encrypt files instead
+        // RSA can be used to encrypt the symmetric keys instead, if that makes any sense
+        // - Sean
+
+
+        // 13.7.2017 Update
+        // Methods for symmetric key generation, symmetric encryption algorithm, & symmetric decryption algorithm have been completed
+        // Next will be to alter asymmetric encryption & decryption methods so that they encrypt/decrypt the symmetric key instead of the files
+        // After which, event handler for Upload button have to be changed to use the symmetric encryption first
+        // - Sean
 
 
     }

@@ -348,14 +348,14 @@ namespace Layout.Upload
                 }
 
                 KeyController ks = new KeyController();
-                _enText = ks.encrypt(stringFormatOfFile);
+                _enText = ks.asymmetricEncryption(stringFormatOfFile);
             }
         }
 
         private void decryptBtn(object sender, RoutedEventArgs e)
         {
             KeyController ks = new KeyController();
-            ks.decrypt(_enText);
+            ks.asymmetricDecryption(_enText);
             
         }
     }

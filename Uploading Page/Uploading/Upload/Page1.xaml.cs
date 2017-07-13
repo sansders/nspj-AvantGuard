@@ -54,18 +54,9 @@ namespace Layout.Upload
 
                 //For debugging purposes
                 fileName = fileName.Replace("C:\\Users\\SengokuMedaru\\Desktop\\", "");
-                String testOutput = kc.encrypt(stringFormatOfFile);
+                String testOutput = kc.asymmetricEncryption(stringFormatOfFile);
                 System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName, testOutput);
                 
-
-                // 11.7.2017 Update
-                // RSA has been used to encrypt files
-                //
-                // However, new problem has arose
-                // RSA can only encrypt tiny files
-                // Need to use symmetric algorithm to encrypt files instead
-                // RSA can be used to encrypt the symmetric keys instead, if that makes any sense
-                // - Sean
             }
         }
     }
