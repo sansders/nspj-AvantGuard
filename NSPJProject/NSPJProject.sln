@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSPJProject", "NSPJProject\NSPJProject.csproj", "{F9C06AE5-11D4-4DFC-8829-BF22EADEDE78}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profile Creation Page 1", "..\Behavior Layout\BehaviorAnalysis\WpfApp1\Profile Creation Page 1.csproj", "{4AF7A18C-F284-464D-8902-A5930C390AC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F9C06AE5-11D4-4DFC-8829-BF22EADEDE78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9C06AE5-11D4-4DFC-8829-BF22EADEDE78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9C06AE5-11D4-4DFC-8829-BF22EADEDE78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AF7A18C-F284-464D-8902-A5930C390AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AF7A18C-F284-464D-8902-A5930C390AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AF7A18C-F284-464D-8902-A5930C390AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AF7A18C-F284-464D-8902-A5930C390AC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

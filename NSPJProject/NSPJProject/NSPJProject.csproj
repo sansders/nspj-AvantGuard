@@ -63,6 +63,7 @@
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model1\UserModel.cs" />
     <Compile Include="SignUp1.xaml.cs">
       <DependentUpon>SignUp1.xaml</DependentUpon>
     </Compile>
@@ -130,6 +131,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\exclamation-mark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Behavior Layout\BehaviorAnalysis\WpfApp1\Profile Creation Page 1.csproj">
+      <Project>{4af7a18c-f284-464d-8902-a5930c390ac0}</Project>
+      <Name>Profile Creation Page 1</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
