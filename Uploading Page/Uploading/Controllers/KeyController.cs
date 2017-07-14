@@ -15,7 +15,20 @@ namespace Layout.Controllers
         {
             checkForKeys();
         }
-        public static void keyCreation()
+        public static void checkForKeys()
+        {
+            Console.WriteLine("Checking for keys");
+
+            //CHANGE PATH WHEREVER NECESSARY 
+            string path = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt";
+            if (!File.Exists(path))
+            {
+                ivCreation();
+                asymmetricKeyCreation();
+                asymmetricEncryption(symmetricKeyCreation());
+            }
+        }
+        public static void asymmetricKeyCreation()
         {
             //Creates a new CSP with 4096 bit RSA key pair
             var csp = new RSACryptoServiceProvider(4096);
@@ -54,13 +67,10 @@ namespace Layout.Controllers
             //CHANGE PATH WHEREVER NECESSARY 
             System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt", pubKeyString);
             System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt", privKeyString);
-
-
+            
+           
         }
-
-
-
-        public static void symmetricKeyCreation()
+        public static byte[] symmetricKeyCreation()
         {
             /*FAILED CODE  
              *FAILED CODE  
@@ -104,14 +114,33 @@ namespace Layout.Controllers
             //Assigns key to byte[] and string variables
             byte[] byteSymmetricKey = Crypto.Key;
             string stringSymmetricKey = UTF.GetString(byteSymmetricKey);
-            
-            //Saves string of symmetric key
+
+
+            string stingSymmetricKey = UTF.GetString(byteSymmetricKey);
+
+            //Saves string of IV
             //CHANGE PATH WHENEVER NECCESSARY
             System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\symmetricKey.txt", stringSymmetricKey);
 
+
+            return byteSymmetricKey;
+        }
+        public static void ivCreation()
+        {
+            RijndaelManaged Crypto = new RijndaelManaged();
+            System.Text.UTF8Encoding UTF = new System.Text.UTF8Encoding();
+
+            byte[] IV = Crypto.IV;
+            string stringIV = UTF.GetString(IV);
+
+            //Saves string of IV
+            //CHANGE PATH WHENEVER NECCESSARY
+            System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt", stringIV);
         }
 
-        private static byte[] symmetricEncryption(string plainText, byte[] Key, byte[] IV)
+
+
+        public byte[] symmetricEncryption(string plainText, byte[] Key, byte[] IV)
         {
             System.Text.UTF8Encoding UTF = new System.Text.UTF8Encoding();
 
@@ -137,8 +166,11 @@ namespace Layout.Controllers
             return MemStream.ToArray();
         }
 
-        public string asymmetricEncryption(String plainTextData)
+        public static void asymmetricEncryption(byte[] symmetricKey)
         {
+            //OBSELETE CODE
+            //OBSELETE CODE
+            /*
             var csp = new RSACryptoServiceProvider();
 
 
@@ -161,7 +193,7 @@ namespace Layout.Controllers
             //plainTextData = "Bryan is Handsome af";
 
             //Translates plainText into Bytes
-            var bytesPlainTextData = System.Text.Encoding.Unicode.GetBytes(plainTextData);
+            var bytesPlainTextData = System.Text.Encoding.Unicode.GetBytes(symmetricKey);
 
             //This is where the magic happens
             var bytesCipherText = csp.Encrypt(bytesPlainTextData, false);
@@ -171,8 +203,34 @@ namespace Layout.Controllers
 
             Console.WriteLine("Encrypted String : " + cipherText);
             return cipherText;
+            */
+            //OBSELETE CODE
+            //OBSELETE CODE
 
 
+
+            var csp = new RSACryptoServiceProvider();
+
+            //Converts Public key back from String object to var(?)
+            //Gets a stream from the publicKey string
+            //CHANGE PATH WHEREVER NECESSARY 
+            string pubKeyReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt");
+            var stringReader1 = new System.IO.StringReader(pubKeyReader);
+            //Use a serializer
+            var xmlSeralize1 = new System.Xml.Serialization.XmlSerializer(typeof(RSAParameters));
+            //Gets the object back from the stream
+            var pubKey = (RSAParameters)xmlSeralize1.Deserialize(stringReader1);
+
+            //Loads the Public Key
+            csp.ImportParameters(pubKey);
+
+            //Encrypts symmetric key with 
+            byte[] encryptedSymmetricKeyBytes = csp.Encrypt(symmetricKey, false);
+
+            //Changes byte[] of encryptedSymmetricKey into a string and saves it into a file
+            System.Text.UTF8Encoding UTF = new System.Text.UTF8Encoding();
+            string encryptedSymmetricKeyString = UTF.GetString(encryptedSymmetricKeyBytes);
+            System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt", encryptedSymmetricKeyString);
         }
 
 
@@ -195,11 +253,41 @@ namespace Layout.Controllers
 
 
 
-        public void asymmetricDecryption(String cipherText)
+        public byte[] asymmetricDecryption(byte[] encryptedSymmetricKeyBytes)
         {
-
+            //OBSELETE CODE
+            //OBSELETE CODE
+            /*
             //Converts cipherText from Base64 back to byte[]
             var bytesCipherText = Convert.FromBase64String(cipherText);
+
+            //Makes another csp thing with privateKey as input parameter
+            var csp = new RSACryptoServiceProvider();
+
+            //Converts Private key back from String object to var(?)           
+            //Gets a stream from the privateKey string
+            //CHANGE PATH WHEREVER NECESSARY 
+            string privKeyReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt");
+            var stringReader2 = new System.IO.StringReader(privKeyReader);
+            //Use a serializer
+            var xmlSeralize2 = new System.Xml.Serialization.XmlSerializer(typeof(RSAParameters));
+            //Gets the object back from the stream
+            var privKey = (RSAParameters)xmlSeralize2.Deserialize(stringReader2);
+
+            //Loads the Private Key
+            csp.ImportParameters(privKey);
+
+
+            //Where the magic happens
+            var bytesPlainTextData = csp.Decrypt(bytesCipherText, false);
+
+            //Gets plainText back in Unicode
+            var plainTextData = System.Text.Encoding.Unicode.GetString(bytesPlainTextData);
+
+            Console.WriteLine("Decryption Text : " + plainTextData);
+            */
+            //OBSELETE CODE
+            //OBSELETE CODE
 
 
 
@@ -221,22 +309,13 @@ namespace Layout.Controllers
             //Loads the Private Key
             csp.ImportParameters(privKey);
 
+            byte[] decryptedSymmetricKey = csp.Decrypt(encryptedSymmetricKeyBytes, false);
 
-
-
-
-            //Where the magic happens
-            var bytesPlainTextData = csp.Decrypt(bytesCipherText, false);
-
-            //Gets plainText back in Unicode
-            var plainTextData = System.Text.Encoding.Unicode.GetString(bytesPlainTextData);
-
-            Console.WriteLine("Decryption Text : " + plainTextData);
-
+            return decryptedSymmetricKey;
         }
 
 
-        public string symmetricDecryption(byte[] cipherText, byte[] Key, byte[] IV)
+        public static string symmetricDecryption(byte[] cipherText, byte[] Key, byte[] IV)
         {
             RijndaelManaged Crypto = new RijndaelManaged();
             Crypto.Key = Key;
@@ -262,18 +341,7 @@ namespace Layout.Controllers
 
 
 
-        //Method used to check if usable key pair exists
-        public static void checkForKeys()
-        {
-            Console.WriteLine("Checking for keys");
 
-            //CHANGE PATH WHEREVER NECESSARY 
-            string path = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt";
-            if (!File.Exists(path))
-            {
-                keyCreation();
-            }
-        }
 
 
 

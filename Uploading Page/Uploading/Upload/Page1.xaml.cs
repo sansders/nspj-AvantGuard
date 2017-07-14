@@ -39,6 +39,12 @@ namespace Layout.Upload
             OpenFileDialog dlg = new OpenFileDialog();
             if (dlg.ShowDialog() == DialogResult.OK)
             {
+                Controllers.KeyController kc = new Controllers.KeyController();
+
+
+                System.Text.UTF8Encoding UTF = new System.Text.UTF8Encoding();
+                string ivReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
+                string encryptedSymmetricKeyReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
                 string fileName;
                 string stringFormatOfFile;
                 fileName = dlg.FileName; //Will be useful in the future when selecting files
@@ -48,13 +54,18 @@ namespace Layout.Upload
                     stringFormatOfFile = streamReader.ReadToEnd();
                 }
 
-                Controllers.KeyController kc = new Controllers.KeyController();
-                //kc.encrypt(stringFormatOfTheFile);
                 
-
+                
+                byte[] byteFormatOfFile = UTF.GetBytes(stringFormatOfFile);
+                byte[] byteFormatOfIV = UTF.GetBytes(ivReader);
+                byte[] encryptedSymmetricKey = UTF.GetBytes(encryptedSymmetricKeyReader);
+                byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                byte[] cipherText = kc.symmetricEncryption(stringFormatOfFile, decryptedSymmetricKey, byteFormatOfIV);
+                
+                
                 //For debugging purposes
                 fileName = fileName.Replace("C:\\Users\\SengokuMedaru\\Desktop\\", "");
-                String testOutput = kc.asymmetricEncryption(stringFormatOfFile);
+                String testOutput = UTF.GetString(cipherText);
                 System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName, testOutput);
                 
             }

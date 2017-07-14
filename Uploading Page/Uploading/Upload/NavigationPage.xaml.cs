@@ -335,6 +335,7 @@ namespace Layout.Upload
 
         private void encryptBtn(object sender, RoutedEventArgs e)
         {
+            /*
             OpenFileDialog dlg = new OpenFileDialog();
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -349,13 +350,13 @@ namespace Layout.Upload
 
                 KeyController ks = new KeyController();
                 _enText = ks.asymmetricEncryption(stringFormatOfFile);
-            }
+            }*/
         }
 
         private void decryptBtn(object sender, RoutedEventArgs e)
         {
-            KeyController ks = new KeyController();
-            ks.asymmetricDecryption(_enText);
+            /*KeyController ks = new KeyController();
+            ks.asymmetricDecryption(_enText);*/
             
         }
     }
