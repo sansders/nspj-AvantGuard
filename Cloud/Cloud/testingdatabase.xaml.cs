@@ -27,19 +27,38 @@ namespace Cloud
         public testingdatabase()
         {
             InitializeComponent();
-
-            
+            InputBox.Visibility = System.Windows.Visibility.Visible;      
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void OkButton_Click(object sender, RoutedEventArgs e)
+        {
+            InputBox.Visibility = System.Windows.Visibility.Collapsed;
+
+            String input = textbox1.Text;
+            fileName.Content = input;
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "insert into [table] values('" + textbox1.Text + "', 'hi')";
+            cmd.ExecuteNonQuery();
+            con.Close();
+            textbox1.Text = String.Empty;
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            InputBox.Visibility = System.Windows.Visibility.Collapsed;
+            textbox1.Text = String.Empty;
+        }
+
+        private void textbox2_TextChanged(object sender, TextChangedEventArgs e)
         {
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "insert into [table] values('" + textbox1.Text + "', '" + textbox2.Text + "')";
+            cmd.CommandText = "update [table] set text = '" + textbox2.Text + "' where docName = '" + fileName.Content + "'";
             cmd.ExecuteNonQuery();
             con.Close();
-            MessageBox.Show("text updated");
         }
     }
 }
