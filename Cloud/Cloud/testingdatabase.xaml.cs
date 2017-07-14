@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace Cloud
 {
@@ -20,18 +22,24 @@ namespace Cloud
     /// </summary>
     public partial class testingdatabase : Page
     {
-        DataClasses1DataContext dc = new DataClasses1DataContext(Properties.Settings.Default.test_dbConnectionString);
+        SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Chester\Documents\test_db.mdf;Integrated Security=True;Connect Timeout=30");
 
         public testingdatabase()
         {
             InitializeComponent();
 
-            if (dc.DatabaseExists()) exDataGrid.ItemsSource = dc.Table_1s;
+            
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            dc.SubmitChanges();
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "insert into [table] values('" + textbox1.Text + "', '" + textbox2.Text + "')";
+            cmd.ExecuteNonQuery();
+            con.Close();
+            MessageBox.Show("text updated");
         }
     }
 }

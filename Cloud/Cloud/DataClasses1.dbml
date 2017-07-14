@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="test_db" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=test_db;Integrated Security=True" SettingsObjectName="Cloud.Properties.Settings" SettingsPropertyName="test_dbConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Table_1" Member="Table_1s">
-    <Type Name="Table_1">
-      <Column Name="document" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
-      <Column Name="text" Type="System.String" DbType="NChar(1000)" CanBeNull="true" />
-    </Type>
-  </Table>
-</Database>

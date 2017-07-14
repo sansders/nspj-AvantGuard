@@ -9,7 +9,8 @@
       Title="testingdatabase">
 
     <Grid>
-        <DataGrid Name="exDataGrid"></DataGrid>
-        <Button Content="Save" Name="SaveButton" Margin="117,223,112,29" Click="SaveButton_Click"    ></Button>
+        <Button Content="Save" x:Name="SaveButton" Margin="117,223,112,29" Click="SaveButton_Click"    ></Button>
+        <TextBox x:Name="textbox1" HorizontalAlignment="Left" Height="23" Margin="147,104,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="textbox2" HorizontalAlignment="Left" Height="23" Margin="117,173,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Page>
