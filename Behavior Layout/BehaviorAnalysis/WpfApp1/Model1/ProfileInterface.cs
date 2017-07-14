@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WpfApp1.Model1
 {
-    class ProfileInterface
+    public class ProfileInterface
     {
         public interface ProfileCreation 
         {
