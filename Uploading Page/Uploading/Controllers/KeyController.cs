@@ -105,15 +105,14 @@ namespace Layout.Controllers
 
         public byte[] symmetricEncryption(string plainText, byte[] Key, byte[] IV)
         {
-            System.Text.UTF8Encoding UTF = new System.Text.UTF8Encoding();
-
-
             //Just get bytes from plain text
             byte[] plainBytes = Encoding.Unicode.GetBytes(plainText);
 
             RijndaelManaged Crypto = new RijndaelManaged();
             Crypto.Key = Key;
             Crypto.IV = IV;
+            Crypto.Padding = PaddingMode.Zeros;
+
 
             MemoryStream MemStream = new MemoryStream();
 
@@ -202,11 +201,12 @@ namespace Layout.Controllers
         }
 
 
-        public static string symmetricDecryption(byte[] cipherText, byte[] Key, byte[] IV)
+        public byte[] symmetricDecryption(byte[] cipherText, byte[] Key, byte[] IV)
         {
             RijndaelManaged Crypto = new RijndaelManaged();
             Crypto.Key = Key;
             Crypto.IV = IV;
+            Crypto.Padding = PaddingMode.Zeros;
 
             //Get stream of cipherText
             MemoryStream MemStream = new MemoryStream(cipherText);
@@ -220,9 +220,11 @@ namespace Layout.Controllers
             //Reads CryptoStream
             StreamReader Stream_Read = new StreamReader(Crypto_Stream);
             //.ReadToEnd returns plain text
-            string plainText = Stream_Read.ReadToEnd();
 
-            return plainText;
+            string plainText = Stream_Read.ReadToEnd();
+            byte[] bytePlainText = Encoding.Unicode.GetBytes(plainText);
+
+            return bytePlainText;
         }
 
 

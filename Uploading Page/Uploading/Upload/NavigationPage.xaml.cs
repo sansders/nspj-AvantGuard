@@ -331,7 +331,7 @@ namespace Layout.Upload
 
 
 
-        string _enText;
+        byte[] _enText;
 
         private void encryptBtn(object sender, RoutedEventArgs e)
         {
@@ -351,13 +351,65 @@ namespace Layout.Upload
                 KeyController ks = new KeyController();
                 _enText = ks.asymmetricEncryption(stringFormatOfFile);
             }*/
-        }
 
-        private void decryptBtn(object sender, RoutedEventArgs e)
+            OpenFileDialog dlg = new OpenFileDialog();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                Controllers.KeyController kc = new Controllers.KeyController();
+
+                string fileName;
+                string stringFormatOfFile;
+                fileName = dlg.FileName; //Will be useful in the future when selecting files
+
+                using (StreamReader streamReader = new StreamReader(fileName, Encoding.Unicode))
+                {
+                    stringFormatOfFile = streamReader.ReadToEnd();
+                }
+
+
+                byte[] byteFormatOfFile = Encoding.Unicode.GetBytes(stringFormatOfFile);
+                Console.WriteLine("Gets bytes of file");
+                byte[] IV = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
+                Console.WriteLine("Gets bytes of IV");
+                byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
+
+                //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
+                byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                //Encrypts plaintext with symmetric key
+                byte[] cipherText = kc.symmetricEncryption(stringFormatOfFile, decryptedSymmetricKey, IV);
+
+                //For debugging purposes
+                fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
+                byte[] testOutput = cipherText;
+                _enText = cipherText;
+                System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName, testOutput);
+                Console.WriteLine(fileName + " has successfully been encrypted!");
+                Console.WriteLine("");
+
+            }
+        }
+            private void decryptBtn(object sender, RoutedEventArgs e)
         {
-            /*KeyController ks = new KeyController();
-            ks.asymmetricDecryption(_enText);*/
+            //Creates an instance of the KeyController Object
+            KeyController kc = new KeyController();
+
+            //Gets IV & Encrypted Symmetric Key
+            byte[] IV = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
+            byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
+
+            //Decrypts Encrypted Symmetric Key
+            kc.asymmetricDecryption(encryptedSymmetricKey);
             
+            //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
+            byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+
+            byte[] plainText = kc.symmetricDecryption(_enText, decryptedSymmetricKey, IV);
+
+            Console.WriteLine("Successfully Decrypted!");
+            System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\DecryptedText\\decrypted_file", plainText);
+            Console.WriteLine("");
+
+
         }
     }
 }
