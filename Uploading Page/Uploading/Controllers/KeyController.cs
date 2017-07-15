@@ -105,28 +105,49 @@ namespace Layout.Controllers
 
         public byte[] symmetricEncryption(string plainText, byte[] Key, byte[] IV)
         {
-            //Just get bytes from plain text
-            byte[] plainBytes = Encoding.Unicode.GetBytes(plainText);
 
-            RijndaelManaged Crypto = new RijndaelManaged();
+            /*RijndaelManaged Crypto = new RijndaelManaged();
             Crypto.Key = Key;
             Crypto.IV = IV;
             Crypto.Padding = PaddingMode.Zeros;
+            */
+
+            RijndaelManaged rm = null;
+            MemoryStream ms = null;
+            ICryptoTransform Encryptor = null;
+            //Crypto streams allow encryption in memory
+            CryptoStream cs = null;
+            //Just get bytes from plain text
+            byte[] plainBytes = Encoding.Unicode.GetBytes(plainText);
+
+            try
+            {
+                rm = new RijndaelManaged();
+                rm.Key = Key;
+                rm.IV = IV;
+                rm.Padding = PaddingMode.Zeros;
 
 
-            MemoryStream MemStream = new MemoryStream();
+                ms = new MemoryStream();
 
-            //Creates the method to Encrypt, inputs are the Symmetric Key & IV
-            ICryptoTransform Encryptor = Crypto.CreateEncryptor(Crypto.Key, Crypto.IV);
+                //Creates the method to Encrypt, inputs are the Symmetric Key & IV
+                Encryptor = rm.CreateEncryptor(rm.Key, rm.IV);
 
-            //Writes the data to memory to perform the transformation
-            CryptoStream Crypto_Stream = new CryptoStream(MemStream, Encryptor, CryptoStreamMode.Write);
+                //Writes the data to memory to perform the transformation
+                cs = new CryptoStream(ms, Encryptor, CryptoStreamMode.Write);
 
-            //Takes in string to be encrypted, offset value, & length of string to be encrypted
-            Crypto_Stream.Write(plainBytes, 0, plainBytes.Length);
-
+                //Takes in string to be encrypted, offset value, & length of string to be encrypted
+                cs.Write(plainBytes, 0, plainBytes.Length);
+            }
+            finally
+            {
+                if (rm != null)
+                {
+                    rm.Clear();
+                }
+            }
             //Returns the memory byte array
-            return MemStream.ToArray();
+            return ms.ToArray();
         }
 
         public static void asymmetricEncryption(byte[] symmetricKey)
@@ -203,27 +224,53 @@ namespace Layout.Controllers
 
         public byte[] symmetricDecryption(byte[] cipherText, byte[] Key, byte[] IV)
         {
-            RijndaelManaged Crypto = new RijndaelManaged();
+            /*RijndaelManaged Crypto = new RijndaelManaged();
             Crypto.Key = Key;
             Crypto.IV = IV;
-            Crypto.Padding = PaddingMode.Zeros;
+            Crypto.Padding = PaddingMode.Zeros
+            */
 
-            //Get stream of cipherText
-            MemoryStream MemStream = new MemoryStream(cipherText);
-            
-            //Symmetric key & IV used here
-            ICryptoTransform Decryptor = Crypto.CreateDecryptor(Crypto.Key, Crypto.IV);
+            RijndaelManaged rm = null;
+            MemoryStream ms = null;
+            ICryptoTransform Decryptor = null;
+            //Crypto streams allow encryption in memory
+            CryptoStream cs = null;
+            StreamReader sr = null;
+            string plainText;
 
-            //For decryption, CryptoStreamMode.Read is used instead of .Write
-            CryptoStream Crypto_Stream = new CryptoStream(MemStream, Decryptor, CryptoStreamMode.Read);
+            try
+            {
+                rm = new RijndaelManaged();
+                rm.Key = Key;
+                rm.IV = IV;
+                rm.Padding = PaddingMode.Zeros;
 
-            //Reads CryptoStream
-            StreamReader Stream_Read = new StreamReader(Crypto_Stream);
-            //.ReadToEnd returns plain text
 
-            string plainText = Stream_Read.ReadToEnd();
+                //Get stream of cipherText
+                ms = new MemoryStream(cipherText);
+
+                //Symmetric key & IV used here
+                Decryptor = rm.CreateDecryptor(rm.Key, rm.IV);
+
+                //For decryption, CryptoStreamMode.Read is used instead of .Write
+                cs = new CryptoStream(ms, Decryptor, CryptoStreamMode.Read);
+
+                //Reads CryptoStream
+                sr = new StreamReader(cs);
+                //.ReadToEnd returns plain text
+                plainText = sr.ReadToEnd();
+            }
+            finally
+            {
+                if(rm != null)
+                {
+                    rm.Clear();
+                }
+
+                ms.Flush();
+                ms.Close();
+            }
             byte[] bytePlainText = Encoding.Unicode.GetBytes(plainText);
-
             return bytePlainText;
         }
 

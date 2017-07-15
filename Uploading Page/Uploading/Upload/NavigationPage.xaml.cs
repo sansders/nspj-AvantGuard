@@ -406,7 +406,9 @@ namespace Layout.Upload
             byte[] plainText = kc.symmetricDecryption(_enText, decryptedSymmetricKey, IV);
 
             Console.WriteLine("Successfully Decrypted!");
-            System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\DecryptedText\\decrypted_file", plainText);
+            //Bryan, I'll need you for this
+            //I'll have to add the file's name (which will be stored in your database I assume) at the last part of the string below
+            System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\DecryptedText\\decrypted_file.txt", plainText);
             Console.WriteLine("");
 
 

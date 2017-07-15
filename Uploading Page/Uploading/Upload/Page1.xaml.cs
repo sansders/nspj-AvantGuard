@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace Layout.Upload
 {
@@ -29,22 +30,18 @@ namespace Layout.Upload
             InitializeComponent();
         }
 
-        private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        public string hash;
+        public string stringComputedHash;
+
+        private void userHashInput_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            //Obtains hash value from the text box
+            string hash = new TextRange(userHashInput.Document.ContentStart, userHashInput.Document.ContentEnd).Text;
         }
-
-        public static byte[] Combine(byte[] first, byte[] second)
-        {
-            byte[] ret = new byte[first.Length + second.Length];
-            Buffer.BlockCopy(first, 0, ret, 0, first.Length);
-            Buffer.BlockCopy(second, 0, ret, first.Length, second.Length);
-            return ret;
-        }
-
 
         private void uploadButton_Click(object sender, RoutedEventArgs e)
         {
+        
             OpenFileDialog dlg = new OpenFileDialog();
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -58,10 +55,25 @@ namespace Layout.Upload
                 {
                     stringFormatOfFile = streamReader.ReadToEnd();
                 }
-
            
                 byte[] byteFormatOfFile = Encoding.Unicode.GetBytes(stringFormatOfFile);
                 Console.WriteLine("Gets bytes of file");
+
+                //Hash Computation
+                SHA1Managed sha1 = new SHA1Managed();
+                byte[] byteComputedHash = sha1.ComputeHash(byteFormatOfFile);
+                Controllers.HashController hashController = new Controllers.HashController();
+                stringComputedHash = hashController.HexStringFromBytes(byteComputedHash).ToUpper();
+
+                if (hash.Equals(stringComputedHash))
+                {
+                    //Do stuff:
+                    //Stuff like an error message box pop up
+                    //Clear the userInputHash box
+                    //Break from the current method
+                }
+
+
                 byte[] IV = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
                 Console.WriteLine("Gets bytes of IV");
                 byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
@@ -78,7 +90,6 @@ namespace Layout.Upload
                 Console.WriteLine(fileName + " has successfully been encrypted!");
                 Console.WriteLine("");
 
-                
             }
         }
     }

@@ -12,18 +12,11 @@
 
         <Viewbox Margin="97,0,3.333,0">
             <Grid Margin="60,30,-0.333,0" Height="274" Width="362" RenderTransformOrigin="0.592,0.546">
-
-                <TextBox HorizontalAlignment="Left" Height="30" Margin="70,70,0,0" TextWrapping="Wrap" Text="Path: " VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.494,2.551" TextDecorations="none" FontSize="15"/>
-                <TextBox HorizontalAlignment="Left" Height="30" Margin="105,70,0,0" TextWrapping="Wrap" Text="Storage:\" VerticalAlignment="Top" Width="120" FontSize="15"/>
-                <TextBox HorizontalAlignment="Left" Height="30" Margin="30,110,0,0" TextWrapping="Wrap" Text="MD5 Hash: " VerticalAlignment="Top" Width="94" RenderTransformOrigin="0.494,2.551" TextDecorations="none" FontSize="15"/>
-                <RichTextBox x:Name="userHashInput" HorizontalAlignment="Left" Height="23" Margin="105,117,0,0" VerticalAlignment="Top" Width="200" TextChanged="RichTextBox_TextChanged">
-                    <FlowDocument>
-                        <Paragraph>
-                            <Run Text="RichTextBox"/>
-                        </Paragraph>
-                    </FlowDocument>
+                <RichTextBox x:Name="userHashInput" HorizontalAlignment="Left" Height="23" Margin="105,107,0,0" VerticalAlignment="Top" Width="200" TextChanged="userHashInput_TextChanged">
+                    <FlowDocument/>
                 </RichTextBox>
-                <Button x:Name="uploadButton" Content="Upload" HorizontalAlignment="Left" Margin="118,163,0,0" VerticalAlignment="Top" Width="65" Height="22" Click="uploadButton_Click" Background="#FF26ADF9" Opacity="0.995" FontSize="10" FontWeight="Normal" Foreground="White" BorderBrush="#FF0079C0" />
+                <Button x:Name="uploadButton" Content="Upload" HorizontalAlignment="Left" Margin="118,140,0,0" VerticalAlignment="Top" Width="65" Height="22" Click="uploadButton_Click" Background="#FF26ADF9" Opacity="0.995" FontSize="10" FontWeight="Normal" Foreground="White" BorderBrush="#FF0079C0" />
+                <Label Content="MD5 Hash" HorizontalAlignment="Left" Margin="20,102,0,0" VerticalAlignment="Top" Height="34" Width="80" FontSize="14" FontWeight="Bold"/>
 
 
             </Grid>
