@@ -77,7 +77,7 @@ namespace NSPJProject
             else
             {
                 MessageBox.Show("You're almost done. An email has been sent to your email address. Please verify your email address, thank you!");
-                this.NavigationService.Navigate(new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute));
+                this.NavigationService.Navigate(new Uri(@"SignUp3.xaml", UriKind.RelativeOrAbsolute));
             }
 
         }
