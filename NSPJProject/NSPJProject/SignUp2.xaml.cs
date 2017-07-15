@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -78,6 +79,7 @@ namespace NSPJProject
                 MessageBox.Show("You're almost done. An email has been sent to your email address. Please verify your email address, thank you!");
                 this.NavigationService.Navigate(new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute));
             }
+
         }
 
         private void SignUp2BackButton_Click(object sender, RoutedEventArgs e)
