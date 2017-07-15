@@ -63,11 +63,11 @@ namespace Layout.Upload
             {
                 con = new SqlConnection(connectionString);
                 con.Open();
-                cmd = new SqlCommand("SELECT Username , Name , ContactNo FROM [dbo].[UserAcc]", con);
+                cmd = new SqlCommand("SELECT Username , Name , ContactNo , Password FROM [dbo].[UserAcc]", con);
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    Console.WriteLine(" | Username : " + reader.GetString(0) + " | Name : " + reader.GetString(1) + " | Contact No : " + reader.GetString(2));
+                    Console.WriteLine(" | Username : " + reader.GetString(0) + " | Name : " + reader.GetString(1) + " | Contact No : " + reader.GetString(2) + " | Password : " + reader.GetString(3)) ;
                 }
             } catch(Exception ex)
             {
