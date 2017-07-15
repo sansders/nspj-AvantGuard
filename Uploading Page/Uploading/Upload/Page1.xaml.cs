@@ -34,39 +34,50 @@ namespace Layout.Upload
 
         }
 
+        public static byte[] Combine(byte[] first, byte[] second)
+        {
+            byte[] ret = new byte[first.Length + second.Length];
+            Buffer.BlockCopy(first, 0, ret, 0, first.Length);
+            Buffer.BlockCopy(second, 0, ret, first.Length, second.Length);
+            return ret;
+        }
+
+
         private void uploadButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 Controllers.KeyController kc = new Controllers.KeyController();
-
-
-                System.Text.UTF8Encoding UTF = new System.Text.UTF8Encoding();
-                string ivReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
-                string encryptedSymmetricKeyReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
+                             
                 string fileName;
                 string stringFormatOfFile;
                 fileName = dlg.FileName; //Will be useful in the future when selecting files
                 
-                using (StreamReader streamReader = new StreamReader(fileName, Encoding.UTF8))
+                using (StreamReader streamReader = new StreamReader(fileName, Encoding.Unicode))
                 {
                     stringFormatOfFile = streamReader.ReadToEnd();
                 }
 
-                
-                
-                byte[] byteFormatOfFile = UTF.GetBytes(stringFormatOfFile);
-                byte[] byteFormatOfIV = UTF.GetBytes(ivReader);
-                byte[] encryptedSymmetricKey = UTF.GetBytes(encryptedSymmetricKeyReader);
+           
+                byte[] byteFormatOfFile = Encoding.Unicode.GetBytes(stringFormatOfFile);
+                Console.WriteLine("Gets bytes of file");
+                byte[] IV = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
+                Console.WriteLine("Gets bytes of IV");
+                byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
+
+                //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
                 byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
-                byte[] cipherText = kc.symmetricEncryption(stringFormatOfFile, decryptedSymmetricKey, byteFormatOfIV);
-                
+                //Encrypts plaintext with symmetric key
+                byte[] cipherText = kc.symmetricEncryption(stringFormatOfFile, decryptedSymmetricKey, IV);
                 
                 //For debugging purposes
-                fileName = fileName.Replace("C:\\Users\\SengokuMedaru\\Desktop\\", "");
-                String testOutput = UTF.GetString(cipherText);
-                System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName, testOutput);
+                fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
+                byte[] testOutput = cipherText;
+                System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName, testOutput);
+                Console.WriteLine(fileName + " has successfully been encrypted!");
+                Console.WriteLine("");
+
                 
             }
         }
