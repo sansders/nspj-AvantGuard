@@ -23,6 +23,8 @@ namespace Layout.Controllers
             string path = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt";
             if (!File.Exists(path))
             {
+                Console.WriteLine("Keys not found!");
+                Console.WriteLine("Proceeding with Key generation, please wait...");
                 ivCreation();
                 asymmetricKeyCreation();
                 asymmetricEncryption(symmetricKeyCreation());
@@ -77,9 +79,12 @@ namespace Layout.Controllers
 
             //Assigns key to byte[] and string variables
             byte[] byteSymmetricKey = Crypto.Key;
+            string stringSymmetricKey = Convert.ToBase64String(byteSymmetricKey);
 
             //Saves string of IV
             //CHANGE PATH WHENEVER NECCESSARY
+            //System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\symmetricKey.txt", stringSymmetricKey);
+            File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt", byteSymmetricKey);
 
 
             return byteSymmetricKey;
@@ -88,9 +93,12 @@ namespace Layout.Controllers
         {
             RijndaelManaged Crypto = new RijndaelManaged();
             byte[] IV = Crypto.IV;
+            string stringIV = Convert.ToBase64String(IV);
 
             //Saves string of IV
             //CHANGE PATH WHENEVER NECCESSARY
+            //System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt", stringIV);
+            File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt", IV);
         }
 
 
@@ -99,7 +107,9 @@ namespace Layout.Controllers
         {
             System.Text.UTF8Encoding UTF = new System.Text.UTF8Encoding();
 
+
             //Just get bytes from plain text
+            byte[] plainBytes = Encoding.Unicode.GetBytes(plainText);
 
             RijndaelManaged Crypto = new RijndaelManaged();
             Crypto.Key = Key;
@@ -141,6 +151,11 @@ namespace Layout.Controllers
             byte[] encryptedSymmetricKeyBytes = csp.Encrypt(symmetricKey, false);
 
             //Changes byte[] of encryptedSymmetricKey into a string and saves it into a file
+            //string encryptedSymmetricKeyString = Convert.ToBase64String(encryptedSymmetricKeyBytes);
+            //System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt", encryptedSymmetricKeyString);
+
+            //Saves byte[] of encryptedSymmetricKey into a file
+            File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt", encryptedSymmetricKeyBytes);
         }
 
 
@@ -237,5 +252,9 @@ namespace Layout.Controllers
         // After which, event handler for Upload button have to be changed to use the symmetric encryption first
         // - Sean
 
+        // 15.7.2017 Update
+        // Encryption successfully completed!
+        // Will have to test decryption next
+        // - Sean
     }
 }
