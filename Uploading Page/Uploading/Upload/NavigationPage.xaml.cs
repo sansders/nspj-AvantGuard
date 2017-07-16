@@ -19,6 +19,9 @@ using System.Windows.Forms;
 using System.IO;
 using Layout.Controllers;
 using Layout.Models;
+using static System.Environment;
+using System.Drawing;
+
 
 namespace Layout.Upload
 {
@@ -117,108 +120,144 @@ namespace Layout.Upload
             {
                 string fileName;
                 fileName = dlg.FileName; //Will be useful in the future when selecting files
-                ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
-                ConnectionStringSettings conSettings1 = ConfigurationManager.ConnectionStrings["connString1"];
-                ConnectionStringSettings conSettings2 = ConfigurationManager.ConnectionStrings["connString2"];
-                ConnectionStringSettings conSettings3 = ConfigurationManager.ConnectionStrings["connString3"];
-                string connectionString = conSettings.ConnectionString;
-                string connectionString1 = conSettings1.ConnectionString;
-                string connectionString2 = conSettings2.ConnectionString;
-                string connectionString3 = conSettings3.ConnectionString;
-                imgLocation = dlg.FileName.ToString();
-
-                con = new SqlConnection(connectionString);
-                con1 = new SqlConnection(connectionString1);
-                con2 = new SqlConnection(connectionString2);
-                con3 = new SqlConnection(connectionString3);
-                byte[] images = null;
-                byte[] images1 = null;
-                byte[] images2 = null;
-                byte[] images3 = null;
-
-                FileStream Stream = new FileStream(imgLocation,FileMode.Open,FileAccess.Read);
-                BinaryReader brs = new BinaryReader(Stream);
-                images = brs.ReadBytes((int)Stream.Length);
-                // Console.Write(images);
-                for(int i = 0; i < images.Length; i ++)
-  {
-                    Console.WriteLine(images[i]);
-                }
 
 
-                String strImage = System.Text.Encoding.UTF8.GetString(images);
-               // Console.Write(strImage);
-                int leng = images.Length / 3;
-                Console.Write("Length : "+ leng );
-                 images1 = images.Take(leng).ToArray() ;
-                // images1 = strImage.Substring(1,leng);
-                Console.WriteLine("1/3 image");
-                for (int i = 0; i < images1.Length; i++)
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                startInfo.FileName = "C:\\Program Files\\Windows Defender\\MpCmdRun.exe";
+                startInfo.Arguments = "-Scan -ScanType 3 -File " + fileName;
+                process.StartInfo = startInfo;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                var result = process.Start();
+                Console.WriteLine(fileName);
+                Console.WriteLine("Scanned with result: " + result.ToString());
+                Console.WriteLine("Scanning...");
+                string output = process.StandardOutput.ReadToEnd();
+                Console.WriteLine(output);
+
+                if (output.ToLowerInvariant().Contains(("cleaning")))
                 {
-                    Console.Write("1/3 image");
-                    Console.Write(images1[i]);
-                }
-                images2 = images.Skip(leng).Take(leng).ToArray();
-                int leng2 = leng + leng;
-                images3 = images.Skip(leng2).Take(leng).ToArray();
-                con.Open();
-                con1.Open();
-                con2.Open();
-                con3.Open();
-
-                string sqlQuery = "Insert into dbo.UserFiles(Username,Name,Image)Values( 'Random123' , 'man' , @images )";
-                cmd = new SqlCommand(sqlQuery, con);
-                cmd.Parameters.Add(new SqlParameter("@images", images));
-                cmd.ExecuteNonQuery();
-
-                string sqlQuery1 = "Insert into dbo.UserFiles1(Username,Name,Image)Values( 'Random123' , 'man' , @images1 )";
-                cmd = new SqlCommand(sqlQuery1, con1);
-                cmd.Parameters.Add(new SqlParameter("@images1", images1));
-                cmd.ExecuteNonQuery();
-
-                string sqlQuery2 = "Insert into dbo.UserFiles3(Username,Name,Image)Values( 'Random123' , 'man' , @images2 )";
-                cmd = new SqlCommand(sqlQuery2, con2);
-                cmd.Parameters.Add(new SqlParameter("@images2", images3));
-                cmd.ExecuteNonQuery();
-
-                string sqlQuery3 = "Insert into dbo.UserFiles2(Username,Name,Image)Values( 'Random123' , 'man' , @images3 )";
-                cmd = new SqlCommand(sqlQuery3, con3);
-                cmd.Parameters.Add(new SqlParameter("@images3", images2));
-                cmd.ExecuteNonQuery();
-
-                // cmd.Parameters.Add(new SqlParameter("@images",images));
-
-                // int N = cmd.ExecuteNonQuery();
-                con.Close();
-                Console.Write("Data Has Been Uploaded");
-                System.Windows.MessageBox.Show( "Datas Saved Success");
-            
-
-              //  FileStream FS = new FileStream(fileName, FileMode.Open, FileAccess.Read); //create a file stream object associate to user selected file 
-            //    byte[] img = new byte[FS.Length]; //create a byte array with size of user select file stream length
-             //   FS.Read(img, 0, Convert.ToInt32(FS.Length));//read user selected file stream in to byte array
-
-
-     
-/*
-                try
+                    Console.Write("Got Virus SIA");
+                } else
                 {
+                    Console.Write("Okay no Virus , Very Safe ");
+
+                    Console.Write("File is not being uploaded");
+
+                    ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+                    ConnectionStringSettings conSettings1 = ConfigurationManager.ConnectionStrings["connString1"];
+                    ConnectionStringSettings conSettings2 = ConfigurationManager.ConnectionStrings["connString2"];
+                    ConnectionStringSettings conSettings3 = ConfigurationManager.ConnectionStrings["connString3"];
+                    string connectionString = conSettings.ConnectionString;
+                    string connectionString1 = conSettings1.ConnectionString;
+                    string connectionString2 = conSettings2.ConnectionString;
+                    string connectionString3 = conSettings3.ConnectionString;
+                    imgLocation = dlg.FileName.ToString();
+
                     con = new SqlConnection(connectionString);
+                    con1 = new SqlConnection(connectionString1);
+                    con2 = new SqlConnection(connectionString2);
+                    con3 = new SqlConnection(connectionString3);
+                    byte[] images = null;
+                    byte[] images1 = null;
+                    byte[] images2 = null;
+                    byte[] images3 = null;
+
+                    FileStream Stream = new FileStream(imgLocation, FileMode.Open, FileAccess.Read);
+                    BinaryReader brs = new BinaryReader(Stream);
+                    images = brs.ReadBytes((int)Stream.Length);
+                    // Console.Write(images);
+                    for (int i = 0; i < images.Length; i++)
+                    {
+                        Console.WriteLine(images[i]);
+                    }
+
+
+                    String strImage = System.Text.Encoding.UTF8.GetString(images);
+                    // Console.Write(strImage);
+                    int leng = images.Length / 3;
+                    Console.Write("Length : " + leng);
+                    images1 = images.Take(leng).ToArray();
+                    // images1 = strImage.Substring(1,leng);
+                    Console.WriteLine("1/3 image");
+                    for (int i = 0; i < images1.Length; i++)
+                    {
+                        Console.Write("1/3 image");
+                        Console.Write(images1[i]);
+                    }
+                    images2 = images.Skip(leng).Take(leng).ToArray();
+                    int leng2 = leng + leng;
+                    images3 = images.Skip(leng2).Take(leng).ToArray();
                     con.Open();
-                    cmd = new SqlCommand("", con);
-                   
-                }
-                catch (Exception ex)
-                {
-                    System.Windows.MessageBox.Show(ex.Message);
-                }
-                finally
-                {
+                    con1.Open();
+                    con2.Open();
+                    con3.Open();
 
+                    string sqlQuery = "Insert into dbo.UserFiles(Username,Name,Image)Values( 'Random123' , 'man' , @images )";
+                    cmd = new SqlCommand(sqlQuery, con);
+                    cmd.Parameters.Add(new SqlParameter("@images", images));
+                    cmd.ExecuteNonQuery();
+
+                    string sqlQuery1 = "Insert into dbo.UserFiles1(Username,Name,Image)Values( 'Random123' , 'man' , @images1 )";
+                    cmd = new SqlCommand(sqlQuery1, con1);
+                    cmd.Parameters.Add(new SqlParameter("@images1", images1));
+                    cmd.ExecuteNonQuery();
+
+                    string sqlQuery2 = "Insert into dbo.UserFiles3(Username,Name,Image)Values( 'Random123' , 'man' , @images2 )";
+                    cmd = new SqlCommand(sqlQuery2, con2);
+                    cmd.Parameters.Add(new SqlParameter("@images2", images3));
+                    cmd.ExecuteNonQuery();
+
+                    string sqlQuery3 = "Insert into dbo.UserFiles2(Username,Name,Image)Values( 'Random123' , 'man' , @images3 )";
+                    cmd = new SqlCommand(sqlQuery3, con3);
+                    cmd.Parameters.Add(new SqlParameter("@images3", images2));
+                    cmd.ExecuteNonQuery();
+
+                    // cmd.Parameters.Add(new SqlParameter("@images",images));
+
+                    // int N = cmd.ExecuteNonQuery();
                     con.Close();
+                    Console.Write("Data Has Been Uploaded");
+                    System.Windows.MessageBox.Show("Datas Saved Success");
+
                 }
 
-                */
+                process.WaitForExit();
+                // while (!process.StandardOutput.EndOfStream)
+                // {
+              //  string line = process.StandardOutput.ReadLine();
+               //     Console.WriteLine(process.StandardOutput.ReadLine());
+              //  }
+
+                
+
+                              //  FileStream FS = new FileStream(fileName, FileMode.Open, FileAccess.Read); //create a file stream object associate to user selected file 
+                            //    byte[] img = new byte[FS.Length]; //create a byte array with size of user select file stream length
+                             //   FS.Read(img, 0, Convert.ToInt32(FS.Length));//read user selected file stream in to byte array
+                                                    
+
+
+                /*
+                                try
+                                {
+                                    con = new SqlConnection(connectionString);
+                                    con.Open();
+                                    cmd = new SqlCommand("", con);
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    System.Windows.MessageBox.Show(ex.Message);
+                                }
+                                finally
+                                {
+
+                                    con.Close();
+                                }
+
+                                */
             }
 
         }
@@ -301,8 +340,33 @@ namespace Layout.Upload
             }
             else
             {
+
+              //  SaveFileDialog saveFileDialog = new SaveFileDialog();
+
                 MemoryStream mstreem = new MemoryStream(images);
                 imageViewer.Source = BitmapFrame.Create(mstreem);
+                System.Drawing.Image img = System.Drawing.Image.FromStream(mstreem);
+
+               
+
+             //   byte[] iBytes = new byte[images.Length + 1];
+             //   String path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+             //   path = System.IO.Path.Combine(path, "Downloads");
+
+           //     img.Save( @path);
+
+          //      MemoryStream ms = new MemoryStream();
+               
+
+
+
+
+              //  using (FileStream file = new FileStream(@path, FileMode.Create))
+             //   {
+              //     file.Write(iBytes, 0, iBytes.Count());
+              //   }
+
+               
             }
 
             //SqlDataReader DataRead = cmd.ExecuteReader();
