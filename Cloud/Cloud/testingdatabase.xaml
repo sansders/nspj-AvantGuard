@@ -13,6 +13,8 @@
     <Grid>
         <DockPanel>
             <ToolBar DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="0,0,-0.2,0" Width="525">
+                <Label x:Name="fileName" HorizontalAlignment="Left" Margin="0,3,0,0" VerticalAlignment="Top" Width="80" Height="26" FontSize="12"/>
+                <Separator />
                 <ToggleButton fa:Awesome.Content="Bold" Command="EditingCommands.ToggleBold" Name="btnBold"></ToggleButton>
                 <ToggleButton fa:Awesome.Content="Italic" Command="EditingCommands.ToggleItalic" Name="btnItalic"></ToggleButton>
                 <ToggleButton fa:Awesome.Content="Underline" Command="EditingCommands.ToggleUnderline" Name="btnUnderline"></ToggleButton>
@@ -20,9 +22,11 @@
                 <ComboBox Name="cmbFontFamily" Width="150" SelectionChanged="cmbFontFamily_SelectionChanged" />
                 <ComboBox Name="cmbFontSize" Width="50" IsEditable="True" TextBoxBase.TextChanged="cmbFontSize_TextChanged" />
                 <Separator />
-                <xctk:ColorPicker Name="colorPicker" SelectedColorChanged="colorPicker_SelectedColorChanged"></xctk:ColorPicker>
+                <xctk:ColorPicker Name="colorPicker" SelectedColorChanged="colorPicker_SelectedColorChanged" BorderBrush="White" Height="22" Width="50"></xctk:ColorPicker>
+                <Separator />
+                <Button fa:Awesome.Content="Save" Name="btnSave" Click="btnSave_Click"></Button>
             </ToolBar>
-            <RichTextBox Name="rtbEditor" SelectionChanged="rtbEditor_SelectionChanged" TextChanged="rtbEditor_TextChanged"/>
+            <RichTextBox Name="rtbEditor" SelectionChanged="rtbEditor_SelectionChanged"/>
         </DockPanel>
         <Grid x:Name="OpenOrNew" Visibility="Collapsed">
             <Grid Background="Black" Opacity="0.5">
@@ -86,6 +90,5 @@
                 </StackPanel>
             </Border>
         </Grid>
-        <Label x:Name="fileName" HorizontalAlignment="Left" Margin="0,3,0,0" VerticalAlignment="Top" Width="124" Height="26"/>
     </Grid>
 </Page>

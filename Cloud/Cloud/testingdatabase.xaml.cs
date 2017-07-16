@@ -59,6 +59,7 @@ namespace Cloud
         {
             String theText = "";
             String selectedText = ((DataRowView)((ListView)sender).SelectedItem)["docName"].ToString();
+            fileName.Content = selectedText;
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
@@ -113,23 +114,6 @@ namespace Cloud
             rtbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, cmbFontSize.Text);
         }
 
-        private void rtbEditor_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            String rtfText;
-            TextRange tr = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            using (MemoryStream ms = new MemoryStream())
-            {
-                tr.Save(ms, DataFormats.Rtf);
-                rtfText = Encoding.ASCII.GetString(ms.ToArray());
-            }
-            con.Open();
-            SqlCommand cmd = con.CreateCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "update [table] set text = '" + rtfText + "' where docName = '" + fileName.Content + "'";
-            cmd.ExecuteNonQuery();
-            con.Close();
-        }
-
         private void rtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
         {
             object temp = rtbEditor.Selection.GetPropertyValue(Inline.FontWeightProperty);
@@ -149,6 +133,23 @@ namespace Cloud
         {
             rtbEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, (SolidColorBrush)(new BrushConverter().ConvertFrom(colorPicker.SelectedColor.ToString())));
         }
-        
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            String rtfText;
+            TextRange tr = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+            using (MemoryStream ms = new MemoryStream())
+            {
+                tr.Save(ms, DataFormats.Rtf);
+                rtfText = Encoding.ASCII.GetString(ms.ToArray());
+            }
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "update [table] set text = '" + rtfText + "' where docName = '" + fileName.Content + "'";
+            cmd.ExecuteNonQuery();
+            con.Close();
+            MessageBox.Show("Save was done.");
+        }
     }
 }
