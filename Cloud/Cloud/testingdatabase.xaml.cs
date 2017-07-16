@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 
 namespace Cloud
 {
@@ -27,6 +28,8 @@ namespace Cloud
         public testingdatabase()
         {
             InitializeComponent();
+            cmbFontFamily.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
+            cmbFontSize.ItemsSource = new List<double>() { 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72 };
             OpenOrNew.Visibility = System.Windows.Visibility.Visible;      
         }
 
@@ -69,7 +72,12 @@ namespace Cloud
             }
             con.Close();
 
-            rtbEditor.AppendText(theText);
+            byte[] byteArray = Encoding.ASCII.GetBytes(theText);
+            using(MemoryStream ms = new MemoryStream(byteArray))
+            {
+                TextRange tr = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+                tr.Load(ms, DataFormats.Rtf);
+            }
             OpenExisting.Visibility = System.Windows.Visibility.Collapsed;
         }
 
@@ -107,14 +115,17 @@ namespace Cloud
 
         private void rtbEditor_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+            String rtfText;
+            TextRange tr = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+            using (MemoryStream ms = new MemoryStream())
+            {
+                tr.Save(ms, DataFormats.Rtf);
+                rtfText = Encoding.ASCII.GetString(ms.ToArray());
+            }
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            FlowDocument flowDoc = new FlowDocument();
-            flowDoc = rtbEditor.Document;
-            TextRange textRange = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            cmd.CommandText = "update [table] set text = '" + textRange.Text + "' where docName = '" + fileName.Content + "'";
+            cmd.CommandText = "update [table] set text = '" + rtfText + "' where docName = '" + fileName.Content + "'";
             cmd.ExecuteNonQuery();
             con.Close();
         }
