@@ -4,21 +4,81 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Cloud"
+      xmlns:fa="http://schemas.fontawesome.io/icons/"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="525"
       Title="testingdatabase">
 
     <Grid>
-        <TextBox x:Name="textbox2" HorizontalAlignment="Left" Height="223" TextWrapping="Wrap" VerticalAlignment="Top" Width="525" TextChanged="textbox2_TextChanged" Margin="0,29,-0.2,0"/>
-        <Grid x:Name="InputBox" Visibility="Collapsed">
+        <DockPanel>
+            <ToolBar DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="0,0,-0.2,0" Width="525">
+                <ToggleButton fa:Awesome.Content="Bold" Command="EditingCommands.ToggleBold" Name="btnBold"></ToggleButton>
+                <ToggleButton fa:Awesome.Content="Italic" Command="EditingCommands.ToggleItalic" Name="btnItalic"></ToggleButton>
+                <ToggleButton fa:Awesome.Content="Underline" Command="EditingCommands.ToggleUnderline" Name="btnUnderline"></ToggleButton>
+                <Separator />
+                <ComboBox Name="cmbFontFamily" Width="150" SelectionChanged="cmbFontFamily_SelectionChanged" />
+                <ComboBox Name="cmbFontSize" Width="50" IsEditable="True" TextBoxBase.TextChanged="cmbFontSize_TextChanged" />
+            </ToolBar>
+            <RichTextBox Name="rtbEditor" SelectionChanged="rtbEditor_SelectionChanged" TextChanged="rtbEditor_TextChanged"/>
+        </DockPanel>
+        <Grid x:Name="OpenOrNew" Visibility="Collapsed">
+            <Grid Background="Black" Opacity="0.5">
+                <Border MinWidth="250" Background="LightBlue" BorderBrush="White" BorderThickness="1" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Width="60" x:Name="NewFileBtn" Margin="5" Content="New File" Background="White" Click="NewFileBtn_Click">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="3"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button Width="80" x:Name="OpenExistingBtn" Margin="5" Content="Open Existing" Background="White" Click="OpenExistingBtn_Click">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="3"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+        <Grid x:Name="OpenExisting" Visibility="Collapsed">
+            <Grid Background="Black" Opacity="0.5">
+                <Border MinWidth="250" Background="{x:Null}" BorderThickness="0" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel>
+                        <ListView x:Name="dataTable" MouseDoubleClick="dataTable_MouseDoubleClick">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Select a file" DisplayMemberBinding="{Binding docName}"></GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+        <Grid x:Name="NewFile" Visibility="Collapsed">
             <Grid Background="Black" Opacity="0.5"/>
             <Border MinWidth="250" Background="LightBlue" BorderBrush="White" BorderThickness="1" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel>
                     <TextBlock Margin="5" Text="New File Name:"/>
                     <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="textbox1"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button x:Name="OkButton" Margin="5" Content="Ok" Background="{x:Null}" Click="OkButton_Click"/>
-                        <Button x:Name="CancelButton" Margin="5" Content="Cancel" Background="{x:Null}" Click="CancelButton_Click"/>
+                        <Button Width="30" x:Name="OkButton" Margin="5" Content="Ok" Background="White" Click="OkButton_Click">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="3"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button Width="50" x:Name="CancelButton" Margin="5" Content="Cancel" Background="White" Click="CancelButton_Click">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="3"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
                     </StackPanel>
                 </StackPanel>
             </Border>

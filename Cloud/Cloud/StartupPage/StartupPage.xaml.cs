@@ -95,11 +95,6 @@ namespace Cloud.StartupPage
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            mainFrame.NavigationService.Navigate(new Uri(@"..\..\TextEditor\Editor.xaml", UriKind.RelativeOrAbsolute));
-        }
-
         private void Button_Click_8(object sender, RoutedEventArgs e)
         {
             mainFrame.NavigationService.Navigate(new Uri(@"..\..\testingdatabase.xaml", UriKind.RelativeOrAbsolute));

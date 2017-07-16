@@ -27,19 +27,62 @@ namespace Cloud
         public testingdatabase()
         {
             InitializeComponent();
-            InputBox.Visibility = System.Windows.Visibility.Visible;      
+            OpenOrNew.Visibility = System.Windows.Visibility.Visible;      
+        }
+
+        private void NewFileBtn_Click(object sender, RoutedEventArgs e)
+        {
+            OpenOrNew.Visibility = System.Windows.Visibility.Collapsed;
+            NewFile.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        private void OpenExistingBtn_Click(object sender, RoutedEventArgs e)
+        {
+            OpenOrNew.Visibility = System.Windows.Visibility.Collapsed;
+            OpenExisting.Visibility = System.Windows.Visibility.Visible;
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "select docName from [table]";
+            cmd.ExecuteNonQuery();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            dataTable.ItemsSource = dt.DefaultView;
+            con.Close();
+        }
+
+        private void dataTable_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            String theText = "";
+            String selectedText = ((DataRowView)((ListView)sender).SelectedItem)["docName"].ToString();
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "select text from [table] where docName = '" + selectedText + "'";
+            using (SqlDataReader read = cmd.ExecuteReader())
+            {
+                while(read.Read())
+                {
+                    theText = (read["text"].ToString());
+                }
+            }
+            con.Close();
+
+            rtbEditor.AppendText(theText);
+            OpenExisting.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            InputBox.Visibility = System.Windows.Visibility.Collapsed;
+            NewFile.Visibility = System.Windows.Visibility.Collapsed;
 
             String input = textbox1.Text;
             fileName.Content = input;
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "insert into [table] values('" + textbox1.Text + "', 'hi')";
+            cmd.CommandText = "insert into [table] values('" + textbox1.Text + "', '')";
             cmd.ExecuteNonQuery();
             con.Close();
             textbox1.Text = String.Empty;
@@ -47,18 +90,48 @@ namespace Cloud
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            InputBox.Visibility = System.Windows.Visibility.Collapsed;
+            NewFile.Visibility = System.Windows.Visibility.Collapsed;
             textbox1.Text = String.Empty;
         }
 
-        private void textbox2_TextChanged(object sender, TextChangedEventArgs e)
+        private void cmbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (cmbFontFamily.SelectedItem != null)
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, cmbFontFamily.SelectedItem);
+        }
+
+        private void cmbFontSize_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            rtbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, cmbFontSize.Text);
+        }
+
+        private void rtbEditor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "update [table] set text = '" + textbox2.Text + "' where docName = '" + fileName.Content + "'";
+            FlowDocument flowDoc = new FlowDocument();
+            flowDoc = rtbEditor.Document;
+            TextRange textRange = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+            cmd.CommandText = "update [table] set text = '" + textRange.Text + "' where docName = '" + fileName.Content + "'";
             cmd.ExecuteNonQuery();
             con.Close();
+        }
+
+        private void rtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            object temp = rtbEditor.Selection.GetPropertyValue(Inline.FontWeightProperty);
+            btnBold.IsChecked = (temp != DependencyProperty.UnsetValue) && (temp.Equals(FontWeights.Bold));
+            temp = rtbEditor.Selection.GetPropertyValue(Inline.FontStyleProperty);
+            btnItalic.IsChecked = (temp != DependencyProperty.UnsetValue) && (temp.Equals(FontStyles.Italic));
+            temp = rtbEditor.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
+            btnUnderline.IsChecked = (temp != DependencyProperty.UnsetValue) && (temp.Equals(TextDecorations.Underline));
+
+            temp = rtbEditor.Selection.GetPropertyValue(Inline.FontFamilyProperty);
+            cmbFontFamily.SelectedItem = temp;
+            temp = rtbEditor.Selection.GetPropertyValue(Inline.FontSizeProperty);
+            cmbFontSize.Text = temp.ToString();
         }
     }
 }
