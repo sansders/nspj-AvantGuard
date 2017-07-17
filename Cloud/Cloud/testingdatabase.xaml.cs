@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using Microsoft.Win32;
 
 namespace Cloud
 {
@@ -150,6 +151,54 @@ namespace Cloud
             cmd.ExecuteNonQuery();
             con.Close();
             MessageBox.Show("Save was done.");
+        }
+
+        public void openMSBtn_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            openFileDialog.RestoreDirectory = true;
+            openFileDialog.DefaultExt = ".doc";
+            openFileDialog.Filter = "Word Documents(*.doc;*.docx)|*.doc;*.docx";
+
+            Nullable<bool> result = openFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                String filename = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+                String fullfilename = System.IO.Path.GetFullPath(openFileDialog.FileName);
+                Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
+
+                object File = fullfilename;
+                object nullobject = System.Reflection.Missing.Value;
+
+                Microsoft.Office.Interop.Word.Application wordApp2 = new Microsoft.Office.Interop.Word.Application();
+                wordApp2.DisplayAlerts = Microsoft.Office.Interop.Word.WdAlertLevel.wdAlertsNone;
+                Microsoft.Office.Interop.Word.Document docs = wordApp.Documents.Open(ref File, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject);
+                docs.ActiveWindow.Selection.WholeStory();
+                docs.ActiveWindow.Selection.Copy();
+                docs.Close();
+                wordApp.Quit();
+
+                fileName.Content = filename;
+                rtbEditor.Document.Blocks.Clear();
+                rtbEditor.Paste();
+
+                String rtfText;
+                TextRange tr = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    tr.Save(ms, DataFormats.Rtf);
+                    rtfText = Encoding.ASCII.GetString(ms.ToArray());
+                }
+
+                con.Open();
+                SqlCommand cmd = con.CreateCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "insert into [table] values('" + fileName.Content + "', '" + rtfText + "')";
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
         }
     }
 }

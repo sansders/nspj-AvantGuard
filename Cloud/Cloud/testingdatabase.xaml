@@ -25,6 +25,7 @@
                 <xctk:ColorPicker Name="colorPicker" SelectedColorChanged="colorPicker_SelectedColorChanged" BorderBrush="White" Height="22" Width="50"></xctk:ColorPicker>
                 <Separator />
                 <Button fa:Awesome.Content="Save" Name="btnSave" Click="btnSave_Click"></Button>
+                <Button fa:Awesome.Content="FileWordOutline" Name="openMSBtn" Click="openMSBtn_Click"></Button>
             </ToolBar>
             <RichTextBox Name="rtbEditor" SelectionChanged="rtbEditor_SelectionChanged"/>
         </DockPanel>
