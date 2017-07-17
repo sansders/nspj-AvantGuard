@@ -39,6 +39,21 @@ namespace Layout.Upload
             hash = new TextRange(userHashInput.Document.ContentStart, userHashInput.Document.ContentEnd).Text.ToUpper();
         }
 
+        private string stringUserHashInput(System.Windows.Controls.RichTextBox rtb)
+        {
+            TextRange textRange = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
+            string thisHash = textRange.Text.ToUpper();
+            try
+            {
+                thisHash = thisHash.Substring(0, 40);
+            }
+            catch (Exception e)
+            {
+                
+            }
+            return thisHash;
+        }
+
         private void uploadButton_Click(object sender, RoutedEventArgs e)
         {
         
@@ -64,25 +79,19 @@ namespace Layout.Upload
                 byte[] byteComputedHash = sha1.ComputeHash(byteFormatOfFile);
                 Controllers.HashController hashController = new Controllers.HashController();
                 stringComputedHash = hashController.HexStringFromBytes(byteComputedHash).ToUpper();
-                Console.WriteLine(stringComputedHash);
-                Console.WriteLine(hash);
+
+                //Important line to ensure user inputted hash stays at no more than 40 chars
+                hash = stringUserHashInput(userHashInput);
 
                 //Actions to take if hash not equals to computed hash
-                if (!hash.Equals(stringComputedHash))
+                if (!(hash.Equals(stringComputedHash)))
                 {
-                    Console.WriteLine(stringComputedHash);
-                    Console.WriteLine(hash);
                     //Do stuff:
-                    //Stuff like an error message box pop up
-                    //Clear the userInputHash box
-                    //Break from the current method
-
-                    string promptValue = Controllers.Prompt.ShowDialog("Hash does not match!", "Error");
-
-                    // Update 17.7.17
-                    // A very weird error is occuring
-                    // !hash.Equals(stringComputedHash) keeps returning false when the condition is supposed to return true
-                    // Therefore the 'else' statement keeps running even when the two hashes do not match
+                    //Stuff like an error message box pop up (done)
+                    //Clear the userInputHash box 
+                    //Break from the current method (done)
+                    Controllers.Prompt.ShowDialog("Hash does not match!", "Error");
+                    userHashInput.Document.Blocks.Clear();
                 }
 
                 else

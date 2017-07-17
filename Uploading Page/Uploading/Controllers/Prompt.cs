@@ -30,17 +30,5 @@ namespace Layout.Controllers
             return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
         }
 
-        public static bool hashComparison(string hash1, string hash2)
-        {
-            if (hash1.Equals(hash2))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-        }
     }
 }
