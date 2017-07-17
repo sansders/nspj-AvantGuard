@@ -36,7 +36,7 @@ namespace Layout.Upload
         private void userHashInput_TextChanged(object sender, TextChangedEventArgs e)
         {
             //Obtains hash value from the text box
-            string hash = new TextRange(userHashInput.Document.ContentStart, userHashInput.Document.ContentEnd).Text;
+            hash = new TextRange(userHashInput.Document.ContentStart, userHashInput.Document.ContentEnd).Text.ToUpper();
         }
 
         private void uploadButton_Click(object sender, RoutedEventArgs e)
@@ -64,32 +64,45 @@ namespace Layout.Upload
                 byte[] byteComputedHash = sha1.ComputeHash(byteFormatOfFile);
                 Controllers.HashController hashController = new Controllers.HashController();
                 stringComputedHash = hashController.HexStringFromBytes(byteComputedHash).ToUpper();
+                Console.WriteLine(stringComputedHash);
+                Console.WriteLine(hash);
 
-                if (hash.Equals(stringComputedHash))
+                //Actions to take if hash not equals to computed hash
+                if (!hash.Equals(stringComputedHash))
                 {
+                    Console.WriteLine(stringComputedHash);
+                    Console.WriteLine(hash);
                     //Do stuff:
                     //Stuff like an error message box pop up
                     //Clear the userInputHash box
                     //Break from the current method
+
+                    string promptValue = Controllers.Prompt.ShowDialog("Hash does not match!", "Error");
+
+                    // Update 17.7.17
+                    // A very weird error is occuring
+                    // !hash.Equals(stringComputedHash) keeps returning false when the condition is supposed to return true
+                    // Therefore the 'else' statement keeps running even when the two hashes do not match
                 }
 
+                else
+                {
+                    byte[] IV = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
+                    Console.WriteLine("Gets bytes of IV");
+                    byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
 
-                byte[] IV = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
-                Console.WriteLine("Gets bytes of IV");
-                byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
+                    //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
+                    byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    //Encrypts plaintext with symmetric key
+                    byte[] cipherText = kc.symmetricEncryption(stringFormatOfFile, decryptedSymmetricKey, IV);
 
-                //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
-                byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
-                //Encrypts plaintext with symmetric key
-                byte[] cipherText = kc.symmetricEncryption(stringFormatOfFile, decryptedSymmetricKey, IV);
-                
-                //For debugging purposes
-                fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
-                byte[] testOutput = cipherText;
-                System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName, testOutput);
-                Console.WriteLine(fileName + " has successfully been encrypted!");
-                Console.WriteLine("");
-
+                    //For debugging purposes
+                    fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
+                    byte[] testOutput = cipherText;
+                    System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName, testOutput);
+                    Console.WriteLine(fileName + " has successfully been encrypted!");
+                    Console.WriteLine("");
+                }
             }
         }
     }

@@ -98,6 +98,7 @@
     </ApplicationDefinition>
     <Compile Include="Controllers\HashController.cs" />
     <Compile Include="Controllers\KeyController.cs" />
+    <Compile Include="Controllers\Prompt.cs" />
     <Compile Include="Models\KeyModel.cs" />
     <Compile Include="Upload\NavigationPage.xaml.cs">
       <DependentUpon>NavigationPage.xaml</DependentUpon>

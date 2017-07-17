@@ -103,6 +103,8 @@ namespace Layout.Controllers
 
 
 
+
+
         public byte[] symmetricEncryption(string plainText, byte[] Key, byte[] IV)
         {
 
@@ -149,7 +151,6 @@ namespace Layout.Controllers
             //Returns the memory byte array
             return ms.ToArray();
         }
-
         public static void asymmetricEncryption(byte[] symmetricKey)
         {
             var csp = new RSACryptoServiceProvider();
@@ -177,27 +178,6 @@ namespace Layout.Controllers
             //Saves byte[] of encryptedSymmetricKey into a file
             File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt", encryptedSymmetricKeyBytes);
         }
-
-
-
-
-
-        /*
-         * Transfer cipherText into Database
-         * 
-         * 
-         */
-
-
-        /*
-         * 
-         * Retreive cipherText from Database
-         * 
-         */
-
-
-
-
         public byte[] asymmetricDecryption(byte[] encryptedSymmetricKeyBytes)
         {
             //Makes another csp thing with privateKey as input parameter
@@ -220,8 +200,6 @@ namespace Layout.Controllers
 
             return decryptedSymmetricKey;
         }
-
-
         public byte[] symmetricDecryption(byte[] cipherText, byte[] Key, byte[] IV)
         {
             /*RijndaelManaged Crypto = new RijndaelManaged();
