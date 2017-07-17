@@ -16,7 +16,7 @@
                     <FlowDocument/>
                 </RichTextBox>
                 <Button x:Name="uploadButton" Content="Upload" HorizontalAlignment="Left" Margin="118,140,0,0" VerticalAlignment="Top" Width="65" Height="22" Click="uploadButton_Click" Background="#FF26ADF9" Opacity="0.995" FontSize="10" FontWeight="Normal" Foreground="White" BorderBrush="#FF0079C0" />
-                <Label Content="MD5 Hash" HorizontalAlignment="Left" Margin="20,102,0,0" VerticalAlignment="Top" Height="34" Width="80" FontSize="14" FontWeight="Bold"/>
+                <Label Content="SHA-1 Hash:" HorizontalAlignment="Left" Margin="0,102,0,0" VerticalAlignment="Top" Height="34" Width="100" FontSize="14" FontWeight="Bold"/>
 
 
             </Grid>
