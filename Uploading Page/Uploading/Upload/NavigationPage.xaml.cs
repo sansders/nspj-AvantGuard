@@ -21,7 +21,7 @@ using Layout.Controllers;
 using Layout.Models;
 using static System.Environment;
 using System.Drawing;
-
+using System.Collections;
 
 namespace Layout.Upload
 {
@@ -146,6 +146,12 @@ namespace Layout.Upload
 
                     Console.Write("File is not being uploaded");
 
+
+                    
+
+
+
+
                     ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
                     ConnectionStringSettings conSettings1 = ConfigurationManager.ConnectionStrings["connString1"];
                     ConnectionStringSettings conSettings2 = ConfigurationManager.ConnectionStrings["connString2"];
@@ -165,16 +171,26 @@ namespace Layout.Upload
                     byte[] images2 = null;
                     byte[] images3 = null;
 
+                    BitArray b1;
+
                     FileStream Stream = new FileStream(imgLocation, FileMode.Open, FileAccess.Read);
                     BinaryReader brs = new BinaryReader(Stream);
                     images = brs.ReadBytes((int)Stream.Length);
                     // Console.Write(images);
-                    for (int i = 0; i < images.Length; i++)
+                    
+                   
+                  
+                    
+
+                    /*
+                    for (int counter = 0; counter < bits.Length; counter++)
                     {
-                        Console.WriteLine(images[i]);
+                        Console.Write(bits[counter] ? "1" : "0");
+                        if ((counter + 1) % 8 == 0)
+                            Console.WriteLine();
                     }
-
-
+                    */
+                    
                     String strImage = System.Text.Encoding.UTF8.GetString(images);
                     // Console.Write(strImage);
                     int leng = images.Length / 3;
@@ -187,6 +203,10 @@ namespace Layout.Upload
                         Console.Write("1/3 image");
                         Console.Write(images1[i]);
                     }
+
+                   
+
+
                     images2 = images.Skip(leng).Take(leng).ToArray();
                     int leng2 = leng + leng;
                     images3 = images.Skip(leng2).Take(leng).ToArray();
@@ -195,22 +215,26 @@ namespace Layout.Upload
                     con2.Open();
                     con3.Open();
 
-                    string sqlQuery = "Insert into dbo.UserFiles(Username,Name,Image)Values( 'Random123' , 'man' , @images )";
+                    //BitArray bits1 = new BitArray(images1);
+                  //  BitArray bits2 = new BitArray(images2);
+                   // BitArray bits3 = new BitArray(images3);
+
+                    string sqlQuery = "Insert into dbo.UserFiles(Username,Name,Image)Values( 'superman' , 'man' , @images )";
                     cmd = new SqlCommand(sqlQuery, con);
                     cmd.Parameters.Add(new SqlParameter("@images", images));
                     cmd.ExecuteNonQuery();
 
-                    string sqlQuery1 = "Insert into dbo.UserFiles1(Username,Name,Image)Values( 'Random123' , 'man' , @images1 )";
+                    string sqlQuery1 = "Insert into dbo.UserFiles1(Username,Name,Image)Values( '123' , 'man' , @images1 )";
                     cmd = new SqlCommand(sqlQuery1, con1);
                     cmd.Parameters.Add(new SqlParameter("@images1", images1));
                     cmd.ExecuteNonQuery();
 
-                    string sqlQuery2 = "Insert into dbo.UserFiles3(Username,Name,Image)Values( 'Random123' , 'man' , @images2 )";
+                    string sqlQuery2 = "Insert into dbo.UserFiles3(Username,Name,Image)Values( '123' , 'man' , @images2 )";
                     cmd = new SqlCommand(sqlQuery2, con2);
                     cmd.Parameters.Add(new SqlParameter("@images2", images3));
                     cmd.ExecuteNonQuery();
 
-                    string sqlQuery3 = "Insert into dbo.UserFiles2(Username,Name,Image)Values( 'Random123' , 'man' , @images3 )";
+                    string sqlQuery3 = "Insert into dbo.UserFiles2(Username,Name,Image)Values( '123' , 'man' , @images3 )";
                     cmd = new SqlCommand(sqlQuery3, con3);
                     cmd.Parameters.Add(new SqlParameter("@images3", images2));
                     cmd.ExecuteNonQuery();
@@ -221,9 +245,9 @@ namespace Layout.Upload
                     con.Close();
                     Console.Write("Data Has Been Uploaded");
                     System.Windows.MessageBox.Show("Datas Saved Success");
-
+                    
                 }
-
+                
                 process.WaitForExit();
                 // while (!process.StandardOutput.EndOfStream)
                 // {
@@ -311,21 +335,33 @@ namespace Layout.Upload
             //  string sqlQuery = "select Image FROM [dbo].[UserFiles] where Username='Random'";
             //  cmd = new SqlCommand(sqlQuery, con);
 
-            string sqlQuery1 = "select Image FROM [dbo].[UserFiles1] where Username='Random123'";
+            string sqlQuery1 = "select Image FROM [dbo].[UserFiles1] where Username='123'";
             cmd = new SqlCommand(sqlQuery1, con1);
             SqlDataReader DataRead1 = cmd.ExecuteReader();
 
-            string sqlQuery2 = "select Image FROM [dbo].[UserFiles3] where Username='Random123'";
+            string sqlQuery2 = "select Image FROM [dbo].[UserFiles3] where Username='123'";
             cmd = new SqlCommand(sqlQuery2, con2);
             SqlDataReader DataRead2 = cmd.ExecuteReader();
 
-            string sqlQuery3 = "select Image FROM [dbo].[UserFiles2] where Username='Random123'";
+            string sqlQuery3 = "select Image FROM [dbo].[UserFiles2] where Username='123'";
             cmd = new SqlCommand(sqlQuery3, con3);
             SqlDataReader DataRead3 = cmd.ExecuteReader();
 
             DataRead1.Read();
             DataRead2.Read();
             DataRead3.Read();
+
+
+         /*   BitArray fullBits;
+            BitArray bits1 = new BitArray((BitArray)DataRead1[0]);
+            BitArray bits2 = new BitArray((BitArray)DataRead2[0]);
+            BitArray bits3 = new BitArray((BitArray)DataRead3[0]);
+
+
+
+            fullBits = new BitArray(bits1.Count + bits2.Count + bits3.Count);
+
+            Console.Write(fullBits); */
 
             byte[] images;
             byte[] images1 = ((byte[])DataRead1[0]);

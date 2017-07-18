@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,7 @@ namespace Cloud.MyFoldersPage
     {
         private List<String> newList = new List<String>();
         SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Chester\Documents\test_db.mdf;Integrated Security=True;Connect Timeout=30");
+        
 
         public MyFoldersPage()
         {
@@ -37,7 +39,7 @@ namespace Cloud.MyFoldersPage
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "select docName from [table]";
+            cmd.CommandText = "select docName, fileSize from [table]";
             cmd.ExecuteNonQuery();
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -106,13 +108,16 @@ namespace Cloud.MyFoldersPage
                     theText = (read["text"].ToString());
                 }
             }
+            
             con.Close();
 
             byte[] byteArray = Encoding.ASCII.GetBytes(theText);
+            
             using (MemoryStream ms = new MemoryStream(byteArray))
             {
                 TextRange tr = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
                 tr.Load(ms, DataFormats.Rtf);
+                
             }
 
             listView.Visibility = System.Windows.Visibility.Hidden;
@@ -135,7 +140,7 @@ namespace Cloud.MyFoldersPage
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "insert into [table] values('" + textbox1.Text + "', '')";
+            cmd.CommandText = "insert into [table] values('" + textbox1.Text + "', '', '')";
             cmd.ExecuteNonQuery();
             con.Close();
             textbox1.Text = String.Empty;
@@ -192,10 +197,63 @@ namespace Cloud.MyFoldersPage
                 tr.Save(ms, DataFormats.Rtf);
                 rtfText = Encoding.ASCII.GetString(ms.ToArray());
             }
+
+            byte[] byteArray = Encoding.ASCII.GetBytes(rtfText);
+            double fileSize = System.Text.ASCIIEncoding.ASCII.GetByteCount(rtfText);
+
+            var culture = CultureInfo.CurrentUICulture;
+            const String format = "#,0.0";
+            String fileSizeDisplayed = "";
+
+            if (fileSize < 1024)
+            {
+                fileSizeDisplayed = fileSize.ToString("#,0", culture);
+            }
+
+            else
+            {
+                fileSize /= 1024;
+
+                if (fileSize < 1024)
+                {
+                    fileSizeDisplayed = fileSize.ToString(format, culture) + " KB";
+                }
+
+                else
+                {
+                    fileSize /= 1024;
+
+                    if (fileSize < 1024)
+                    {
+                        fileSizeDisplayed = fileSize.ToString(format, culture) + " MB";
+                    }
+
+                    else
+                    {
+                        fileSize /= 1024;
+
+                        if (fileSize < 1024)
+                        {
+                            fileSizeDisplayed = fileSize.ToString(format, culture) + " GB";
+                        }
+
+                        else
+                        {
+                            fileSize /= 1024;
+
+                            if (fileSize < 1024)
+                            {
+                                fileSizeDisplayed = fileSize.ToString(format, culture) + " TB";
+                            }
+                        }
+                    }
+                }
+            }
+
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "update [table] set text = '" + rtfText + "' where docName = '" + fileName.Content + "'";
+            cmd.CommandText = "update [table] set text = '" + rtfText + "', fileSize = '" + fileSizeDisplayed + "' where docName = '" + fileName.Content + "'";
             cmd.ExecuteNonQuery();
             con.Close();
             MessageBox.Show("Save was done.");
@@ -240,12 +298,68 @@ namespace Cloud.MyFoldersPage
                     rtfText = Encoding.ASCII.GetString(ms.ToArray());
                 }
 
+                byte[] byteArray = Encoding.ASCII.GetBytes(rtfText);
+                double fileSize = System.Text.ASCIIEncoding.ASCII.GetByteCount(rtfText);
+
+                var culture = CultureInfo.CurrentUICulture;
+                const String format = "#,0.0";
+                String fileSizeDisplayed = "";
+
+                if (fileSize < 1024)
+                {
+                    fileSizeDisplayed = fileSize.ToString("#,0", culture);
+                }
+
+                else
+                {
+                    fileSize /= 1024;
+
+                    if (fileSize < 1024)
+                    {
+                        fileSizeDisplayed = fileSize.ToString(format, culture) + " KB";
+                    }
+
+                    else
+                    {
+                        fileSize /= 1024;
+
+                        if (fileSize < 1024)
+                        {
+                            fileSizeDisplayed = fileSize.ToString(format, culture) + " MB";
+                        }
+
+                        else
+                        {
+                            fileSize /= 1024;
+
+                            if (fileSize < 1024)
+                            {
+                                fileSizeDisplayed = fileSize.ToString(format, culture) + " GB";
+                            }
+
+                            else
+                            {
+                                fileSize /= 1024;
+
+                                if (fileSize < 1024)
+                                {
+                                    fileSizeDisplayed = fileSize.ToString(format, culture) + " TB";
+                                }
+                            }
+                        }
+                    }
+                }
                 con.Open();
                 SqlCommand cmd = con.CreateCommand();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "insert into [table] values('" + fileName.Content + "', '" + rtfText + "')";
+                cmd.CommandText = "insert into [table] values('" + fileName.Content + "', '" + rtfText + "', '" + fileSizeDisplayed + "')";
                 cmd.ExecuteNonQuery();
                 con.Close();
+
+                listView.Visibility = System.Windows.Visibility.Collapsed;
+                mainToolBar.Visibility = System.Windows.Visibility.Collapsed;
+                rtbEditor.Visibility = System.Windows.Visibility.Visible;
+                secondToolBar.Visibility = System.Windows.Visibility.Visible;
             }
         }
     }

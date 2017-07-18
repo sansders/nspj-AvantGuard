@@ -118,9 +118,6 @@
     <Compile Include="StartupPage\StartupPage.xaml.cs">
       <DependentUpon>StartupPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="testingdatabase.xaml.cs">
-      <DependentUpon>testingdatabase.xaml</DependentUpon>
-    </Compile>
     <Page Include="BinPage\BinPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -158,10 +155,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StartupPage\StartupPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="testingdatabase.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
