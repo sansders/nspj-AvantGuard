@@ -26,7 +26,7 @@ namespace Cloud.MyFoldersPage
     {
         private List<String> newList = new List<String>();
         SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Chester\Documents\test_db.mdf;Integrated Security=True;Connect Timeout=30");
-
+        
         public MyFoldersPage()
         {
             InitializeComponent();
@@ -106,6 +106,7 @@ namespace Cloud.MyFoldersPage
                     theText = (read["text"].ToString());
                 }
             }
+            
             con.Close();
 
             byte[] byteArray = Encoding.ASCII.GetBytes(theText);
@@ -113,6 +114,7 @@ namespace Cloud.MyFoldersPage
             {
                 TextRange tr = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
                 tr.Load(ms, DataFormats.Rtf);
+                
             }
 
             listView.Visibility = System.Windows.Visibility.Hidden;
