@@ -68,7 +68,7 @@
                     <GridViewColumn Header="Name" Width="170" DisplayMemberBinding="{Binding docName}"/>
                     <GridViewColumn Header="Owner" Width="90" DisplayMemberBinding="{Binding Owner}"/>
                     <GridViewColumn Header="Last modified" Width="109" DisplayMemberBinding="{Binding LastModified}"/>
-                    <GridViewColumn Header="File Size" Width="100" DisplayMemberBinding="{Binding FileSize}"/>
+                    <GridViewColumn Header="File Size" Width="100" DisplayMemberBinding="{Binding fileSize}"/>
                 </GridView>
             </ListView.View>
             <ListView.ContextMenu>
