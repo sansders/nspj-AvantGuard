@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NSPJProject.Model1;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
@@ -28,9 +29,13 @@ namespace NSPJProject
 
         private void SignUp2NextButton_Click(object sender, RoutedEventArgs e)
         {
+
+
+
             if (String.IsNullOrEmpty(SecurityQuestion1TextBox.Text) || String.IsNullOrEmpty(SecurityQuestion2TextBox.Text)
                 || String.IsNullOrEmpty(Answer1TextBox.Text) || String.IsNullOrEmpty(Answer2TextBox.Text))
             {
+
                 MessageBox.Show("Please fill in all blanks!");
 
                 if (String.IsNullOrEmpty(SecurityQuestion1TextBox.Text))

@@ -13,7 +13,7 @@ namespace NSPJProject.Model1
         public String _userPassword;
         public String _userName;
         public String _userEmail;
-        public int _userContact;
+        public String _userContact;
         public String _userDOB;
         public String _userGender;
         public String _securityQ1;
@@ -35,6 +35,7 @@ namespace NSPJProject.Model1
             set { _userPassword = value; }
         }
 
+
         public string userName
         {
             get { return _userName; }
@@ -47,7 +48,7 @@ namespace NSPJProject.Model1
             set { _userEmail = value; }
         }
 
-        public int userContact
+        public string userContact
         {
             get { return _userContact; }
             set { _userContact = value; }

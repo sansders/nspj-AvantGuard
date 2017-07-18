@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -25,6 +27,10 @@ namespace NSPJProject
         {
             InitializeComponent();
         }
+
+        SqlConnection con;
+        SqlCommand cmd;
+        SqlDataReader reader;
 
         public static string GetSha512FromString(string strData)
         {
@@ -61,6 +67,30 @@ namespace NSPJProject
         {
             PasswordTextBox.Password = GetSha512FromString(PasswordTextBox.Password);
             MessageBox.Show(GetSha512FromString(PasswordTextBox.Password));
+
+            ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+            string connectionString = conSettings.ConnectionString;
+
+            try
+            {
+                con = new SqlConnection(connectionString);
+                con.Open();
+                cmd = new SqlCommand("SELECT Username , Name , ContactNo , Password FROM [dbo].[UserAcc]", con);
+                reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Console.WriteLine(" | Username : " + reader.GetString(0) + " | Name : " + reader.GetString(1) + " | Contact No : " + reader.GetString(2) + " | Password : " + reader.GetString(3));
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+
+                con.Close();
+            }
         }
 
         private void ButtonSignUp_Click(object sender, RoutedEventArgs e)

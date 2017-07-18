@@ -1,5 +1,8 @@
-﻿using System;
+﻿using NSPJProject.Model1;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,6 +17,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
+
 namespace NSPJProject
 {
     /// <summary>
@@ -25,6 +30,11 @@ namespace NSPJProject
         {
             InitializeComponent();
         }
+
+        SqlConnection con;
+        SqlCommand cmd;
+        SqlDataReader reader;
+        
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -42,8 +52,7 @@ namespace NSPJProject
             if (String.IsNullOrEmpty(SignUpUserIDTextBox.Text) || SignUpPasswordTextBox.SecurePassword.Length == 0 || SignUpPasswordTextBox.SecurePassword.Length < 8
                 || String.IsNullOrEmpty(SignUpNameTextBox.Text) || String.IsNullOrEmpty(SignUpEmailTextBox.Text) ||
                 !Regex.IsMatch(SignUpEmailTextBox.Text, @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$") ||
-                String.IsNullOrEmpty(SignUpContactTextBox.Text) || SignUpDOBDatePicker.SelectedDate == null ||
-                SignUpMaleRadioButton.IsChecked == false && SignUpFemaleRadioButton.IsChecked == false)
+                String.IsNullOrEmpty(SignUpContactTextBox.Text) || SignUpDOBDatePicker.SelectedDate == null)
             {
                 MessageBox.Show("Please make sure that all blanks are filled.");
 
@@ -107,16 +116,6 @@ namespace NSPJProject
                     DOBImage.Visibility = Visibility.Hidden;
                 }
 
-                if (SignUpMaleRadioButton.IsChecked == false && SignUpFemaleRadioButton.IsChecked == false)
-                {
-                    GenderImage.Visibility = Visibility.Visible;
-                }
-
-                else
-                {
-                    GenderImage.Visibility = Visibility.Hidden;
-                }
-
                 if (SignUpPasswordTextBox.SecurePassword.Length < 8)
                 {
                     PasswordImage.Visibility = Visibility.Visible;
@@ -142,10 +141,38 @@ namespace NSPJProject
 
             else
             {
+                ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+                string connectionString = conSettings.ConnectionString;
+
+                UserModel user = new UserModel();
+                user.userID = SignUpUserIDTextBox.Text;
+                user.userPassword = SignUpPasswordTextBox.Password;
+                user.userName = SignUpNameTextBox.Text;
+                user.userEmail = SignUpEmailTextBox.Text;
+                user.userContact = SignUpContactTextBox.Text;
+                user.userDOB = SignUpDOBDatePicker.Text;
+
+                try
+                {
+                    con = new SqlConnection(connectionString);
+                    con.Open();
+                    cmd = new SqlCommand("INSERT INTO [dbo].[UserAcc] VALUES (user.userID, user.userPassword, user.userName, user.userEmail, user.userContact, user.userDOB); ", con);
+                    cmd.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+
+                    con.Close();
+                }
+
+
                 this.NavigationService.Navigate(new Uri(@"SignUp2.xaml", UriKind.RelativeOrAbsolute));
             }
-
-
         }
 
         private void SignUp1BackButton_Click(object sender, RoutedEventArgs e)

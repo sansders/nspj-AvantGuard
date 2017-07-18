@@ -227,8 +227,8 @@
                                        Visibility="Hidden"></Image>
                             </StackPanel>
 
-                            <!-- Gender -->
-                            <StackPanel Orientation="Horizontal"
+                             <!--Gender--> 
+                            <!--<StackPanel Orientation="Horizontal"
                                         Margin="0 10 0 5"
                                         HorizontalAlignment="Center">
 
@@ -237,7 +237,14 @@
                                        FontWeight="Bold"
                                        FontSize="15"
                                        Padding="5"
-                                       Margin="-89 0 0 0"></Label>
+                                       Margin="-75 0 0 0"></Label>
+
+                                <ComboBox Name="genderComboBox"
+                                          Background="#23aeff"
+                                          Width="50">
+                                    <ComboBoxItem>M</ComboBoxItem>
+                                    <ComboBoxItem>F</ComboBoxItem>
+                                </ComboBox>
 
                                 <RadioButton GroupName="Gender"
                                              Name="SignUpMaleRadioButton"
@@ -263,11 +270,11 @@
                                        Name="GenderImage"
                                        Width="20"
                                        Visibility="Collapsed"></Image>
-                            </StackPanel>
+                            </StackPanel>-->
 
                             <!-- Button To Go To Sign Up 2/2 -->
                             <StackPanel Orientation="Horizontal"
-                                        Margin="0 10 0 5"
+                                        Margin="0 58 0 5"
                                         HorizontalAlignment="Center">
                                 <Button Name="SignUp1NextButton"
                                         Content="Next"
