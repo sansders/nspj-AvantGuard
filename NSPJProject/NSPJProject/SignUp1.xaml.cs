@@ -141,6 +141,9 @@ namespace NSPJProject
 
             else
             {
+                LoginPage LP = new LoginPage();
+                SignUpPasswordTextBox.Password = LP.GetSha512FromString(SignUpPasswordTextBox.Password);
+
                 ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
                 string connectionString = conSettings.ConnectionString;
 

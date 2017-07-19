@@ -32,7 +32,7 @@ namespace NSPJProject
         SqlCommand cmd;
         SqlDataReader reader;
 
-        public static string GetSha512FromString(string strData)
+        public string GetSha512FromString(string strData)
         {
             //strData.Insert(0, "XYZ");
             var message = Encoding.ASCII.GetBytes(strData.Insert(2, "026620758babadb008ee7b98e1bb07351f08d49228c15f6f31c4ee75cb9a26f5079b81c01f14f78cf5f9639e49d7319ee3c3fcc1f94e686b8d605c93f2ab9fb4"));
@@ -76,7 +76,7 @@ namespace NSPJProject
                 con = new SqlConnection(connectionString);
                 con.Open();
                 //cmd = new SqlCommand("SELECT Username , Name , ContactNo , Password FROM [dbo].[UserAcc]", con);
-                cmd = new SqlCommand("select * from [dbo].[test] where userID = '" + UserIDTextBox.Text + "' and password = '" + PasswordTextBox.Password + "'", con);
+                cmd = new SqlCommand("select * from dbo.test where UserID = '" + UserIDTextBox.Text + "' and Password = '" + PasswordTextBox.Password + "'", con);
                 reader = cmd.ExecuteReader();
 
 
