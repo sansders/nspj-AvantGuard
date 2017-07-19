@@ -207,7 +207,7 @@ namespace Cloud.MyFoldersPage
 
             if (fileSize < 1024)
             {
-                fileSizeDisplayed = fileSize.ToString("#,0", culture);
+                fileSizeDisplayed = fileSize.ToString("#,0", culture) + " bytes";
             }
 
             else
@@ -307,7 +307,7 @@ namespace Cloud.MyFoldersPage
 
                 if (fileSize < 1024)
                 {
-                    fileSizeDisplayed = fileSize.ToString("#,0", culture);
+                    fileSizeDisplayed = fileSize.ToString("#,0", culture) + "bytes";
                 }
 
                 else
