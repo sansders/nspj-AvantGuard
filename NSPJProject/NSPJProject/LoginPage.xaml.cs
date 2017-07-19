@@ -75,12 +75,39 @@ namespace NSPJProject
             {
                 con = new SqlConnection(connectionString);
                 con.Open();
-                cmd = new SqlCommand("SELECT Username , Name , ContactNo , Password FROM [dbo].[UserAcc]", con);
+                //cmd = new SqlCommand("SELECT Username , Name , ContactNo , Password FROM [dbo].[UserAcc]", con);
+                cmd = new SqlCommand("select * from [dbo].[test] where userID = '" + UserIDTextBox.Text + "' and password = '" + PasswordTextBox.Password + "'", con);
                 reader = cmd.ExecuteReader();
+
+
+                int count = 0;
                 while (reader.Read())
                 {
+                    count += 1;
                     Console.WriteLine(" | Username : " + reader.GetString(0) + " | Name : " + reader.GetString(1) + " | Contact No : " + reader.GetString(2) + " | Password : " + reader.GetString(3));
                 }
+
+                if (count == 1)
+                {
+                    MessageBox.Show("Successful Login.");
+
+                }
+
+                else if (count > 0)
+                {
+                    MessageBox.Show("Duplicate userid and password.");
+                }
+
+                else
+                {
+                    MessageBox.Show("Invalid userid or password");
+                }
+
+                UserIDTextBox.Clear();
+                PasswordTextBox.Clear();
+
+                    
+                
             }
             catch (Exception ex)
             {

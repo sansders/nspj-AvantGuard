@@ -144,19 +144,29 @@ namespace NSPJProject
                 ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
                 string connectionString = conSettings.ConnectionString;
 
-                UserModel user = new UserModel();
-                user.userID = SignUpUserIDTextBox.Text;
-                user.userPassword = SignUpPasswordTextBox.Password;
-                user.userName = SignUpNameTextBox.Text;
-                user.userEmail = SignUpEmailTextBox.Text;
-                user.userContact = SignUpContactTextBox.Text;
-                user.userDOB = SignUpDOBDatePicker.Text;
+
+                
+                //UserModel user = new UserModel();
+                //user.userID = SignUpUserIDTextBox.Text;
+                //user.userPassword = SignUpPasswordTextBox.Password;
+                //user.userName = SignUpNameTextBox.Text;
+                //user.userEmail = SignUpEmailTextBox.Text;
+                //user.userContact = SignUpContactTextBox.Text;
+                //user.userDOB = SignUpDOBDatePicker.Text;
 
                 try
                 {
                     con = new SqlConnection(connectionString);
                     con.Open();
-                    cmd = new SqlCommand("INSERT INTO [dbo].[UserAcc] VALUES (user.userID, user.userPassword, user.userName, user.userEmail, user.userContact, user.userDOB); ", con);
+                    cmd = new SqlCommand("INSERT INTO dbo.test (UserID, Password, Name, Email, ContactNo, DOB) VALUES (@UserID, @Password, @Name, @Email, @ContactNo, @DOB)", con);
+                    cmd.Parameters.AddWithValue("@UserID", SignUpUserIDTextBox.Text);
+                    cmd.Parameters.AddWithValue("@Password", SignUpPasswordTextBox.Password);
+                    cmd.Parameters.AddWithValue("@Name", SignUpNameTextBox.Text);
+                    cmd.Parameters.AddWithValue("@Email", SignUpEmailTextBox.Text);
+                    cmd.Parameters.AddWithValue("@ContactNo", SignUpContactTextBox.Text);
+                    cmd.Parameters.AddWithValue("@DOB", SignUpDOBDatePicker.Text);
+
+                    //cmd = new SqlCommand("INSERT INTO [dbo].[UserAcc] VALUES (user.userID, user.userPassword, user.userName, user.userEmail, user.userContact, user.userDOB); ", con);
                     cmd.ExecuteNonQuery();
 
                 }
