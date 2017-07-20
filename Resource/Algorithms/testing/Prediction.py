@@ -36,6 +36,8 @@ def calculateKneigh(xValue, yValue, trainingData):
     test1 = test.reshape(1,-1)
     value = nearest.kneighbors(test1,5)
     return value[1][0]
+
+
 xTest = 16
 yTest = 7
 print("Generating data set")
