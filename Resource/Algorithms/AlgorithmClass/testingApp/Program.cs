@@ -29,22 +29,27 @@ namespace testingApp
             //string fileName = @"../../../../testing/Prediction.py";
 
             //Process p = new Process();
-            //p.StartInfo = new ProcessStartInfo(@"../../../../Anaconda/python.exe", fileName)
+            //string[] words = { fileName, "hello" };
+            //p.StartInfo = new ProcessStartInfo(@"../../../../../../../../Anaconda/python.exe", fileName)
             //{
             //    RedirectStandardOutput = true,
+            //    RedirectStandardError = true,
             //    UseShellExecute = false,
-            //    CreateNoWindow = true
+            //    CreateNoWindow = true,
+            //    Arguments = String.Join(" " , words)
             //};
             //p.Start();
 
             //string output = p.StandardOutput.ReadToEnd();
+            //string error = p.StandardError.ReadToEnd();
             //p.WaitForExit();
 
-
-            string output = PredictionModel.startLogInPrediction();
+            //Console.WriteLine(error);
+            //Console.WriteLine(output);
+            string output = PredictionModel.startLogInPrediction(20.30, 3);
             Console.WriteLine(output);
 
-            
+
         }
     }
     

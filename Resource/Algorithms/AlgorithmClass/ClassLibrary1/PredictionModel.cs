@@ -9,31 +9,37 @@ namespace AlgorithmLibary
 {
     public class PredictionModel
     {
-        public static string startLogInPrediction()
+        public static string startLogInPrediction(double logInTime, double logInDay)
         {
             string fileURL = "../../../../testing/Prediction.py";
             string python = "../../../../../../../../Anaconda/python.exe";
-            string output = startPythonProgramm(fileURL , python);
+            string logInTimeConverted = Convert.ToString(logInTime);
+            string logInDayConverted = Convert.ToString(logInDay);
+            string[] argsSet = { fileURL, logInTimeConverted, logInDayConverted };
+            string output = startPythonProgramm(python, argsSet);
             return output;
         }
 
-        private static string startPythonProgramm(string fileURL , string python)
+        private static string startPythonProgramm(string python , string [] argsSet)
         {
             //string fileName = @"../../../../testing/Prediction.py";
-            string fileName = @fileURL;
+            string fileName = @argsSet[0];
             string pythonValue = @python;
 
             Process p = new Process();
-            p.StartInfo = new ProcessStartInfo(@python, fileName)
+            p.StartInfo = new ProcessStartInfo(@python)
             {
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                Arguments = String.Join(" ", argsSet)
             };
             p.Start();
 
             string output = p.StandardOutput.ReadToEnd();
             return output;
+
+
         }
     }
 }

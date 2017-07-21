@@ -3,6 +3,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
 
 def calNeigh(value,df,num_rows):
     numset = []
@@ -37,9 +38,16 @@ def calculateKneigh(xValue, yValue, trainingData):
     value = nearest.kneighbors(test1,5)
     return value[1][0]
 
+arg1 = sys.argv[1]
+arg2 = sys.argv[2]
 
-xTest = 16
-yTest = 7
+xTest = float(arg1)
+yTest = float(arg2)
+
+plt.xlim([0,24])
+plt.xlabel('Hour user logs in')
+plt.ylabel('Day of the week user logs in')
+
 print("Generating data set")
 data = np.array([
     [13.3, 3,'0'],
