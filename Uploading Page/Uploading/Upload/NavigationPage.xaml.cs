@@ -23,6 +23,7 @@ using static System.Environment;
 using System.Drawing;
 using System.Collections;
 using System.Security.Cryptography;
+using System.Drawing.Imaging;
 
 namespace Layout.Upload
 {
@@ -674,7 +675,7 @@ namespace Layout.Upload
 
             }
         }
-            private void decryptBtn(object sender, RoutedEventArgs e)
+        private void decryptBtn(object sender, RoutedEventArgs e)
         {
             //Creates an instance of the KeyController Object
             KeyController kc = new KeyController();
@@ -698,6 +699,51 @@ namespace Layout.Upload
             Console.WriteLine("");
 
 
+        }
+
+        Bitmap _bmp;
+
+        private void stegEncrypt(object sender, RoutedEventArgs e)
+        {
+            string fileName;
+            string hideThis;
+            Bitmap bmp;
+
+            OpenFileDialog dlg = new OpenFileDialog();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                fileName = dlg.FileName;
+                byte[] imageData = System.IO.File.ReadAllBytes(@fileName);
+                using (var ms = new MemoryStream(imageData))
+                {
+                    bmp = new Bitmap(ms);
+                }
+
+                /*OpenFileDialog dlg1 = new OpenFileDialog();
+                if (dlg1.ShowDialog() == DialogResult.OK)
+                {
+                    using (StreamReader streamReader = new StreamReader(fileName, Encoding.Unicode))
+                    {
+                        hideThis = streamReader.ReadToEnd();
+                    }*/
+
+                    bmp = Steganography.embedText("Hello world", bmp);
+                    fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
+
+                    bmp.Save(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName+".bmp");
+
+                    Console.WriteLine(fileName + " has successfully been hidden!");
+                    Console.WriteLine("");
+                    _bmp = bmp;
+                
+            }
+
+            
+        }
+
+        private void stegDecrypt(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(Steganography.extractText(_bmp));
         }
     }
 }

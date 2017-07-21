@@ -153,6 +153,8 @@
         <Image Name="imageViewer" HorizontalAlignment="Left" Height="100" Margin="136,200,0,0" VerticalAlignment="Top" Width="215"/>
         <Button Content="Encrypt" Background="LightCyan" HorizontalAlignment="Left" Margin="365,179,0,0" VerticalAlignment="Top" Width="144" Click="encryptBtn" RenderTransformOrigin="0.507,0.219"/>
         <Button Content="Decrypt" Background="LightCyan" HorizontalAlignment="Left" Margin="365,216,0,0" VerticalAlignment="Top" Width="144" Click="decryptBtn" RenderTransformOrigin="0.507,0.219"/>
+        <Button Content="StegEncrypt" Background="LightCyan" HorizontalAlignment="Left" Margin="161,190,0,0" VerticalAlignment="Top" Width="144" Click="stegEncrypt" RenderTransformOrigin="0.507,0.219"/>
+        <Button Content="StegDecrypt" Background="LightCyan" HorizontalAlignment="Left" Margin="161,227,0,0" VerticalAlignment="Top" Width="144" Click="stegDecrypt" RenderTransformOrigin="0.507,0.219"/>
 
 
 
