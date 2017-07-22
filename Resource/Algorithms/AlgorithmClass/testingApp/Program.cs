@@ -18,39 +18,22 @@ namespace testingApp
 
         static void Main(string[] args)
         {
-            //ScriptEngine engine = Python.CreateEngine();
-            //var paths = engine.GetSearchPaths();
-            //paths.Add(@"../../../../Anaconda/Lib/site-packages/pandas");
-            //engine.SetSearchPaths(paths);
-            //engine.ExecuteFile(@"../../../../testing/Prediction.py");
-
-
-
-            //string fileName = @"../../../../testing/Prediction.py";
-
-            //Process p = new Process();
-            //string[] words = { fileName, "hello" };
-            //p.StartInfo = new ProcessStartInfo(@"../../../../../../../../Anaconda/python.exe", fileName)
-            //{
-            //    RedirectStandardOutput = true,
-            //    RedirectStandardError = true,
-            //    UseShellExecute = false,
-            //    CreateNoWindow = true,
-            //    Arguments = String.Join(" " , words)
-            //};
-            //p.Start();
-
-            //string output = p.StandardOutput.ReadToEnd();
-            //string error = p.StandardError.ReadToEnd();
-            //p.WaitForExit();
-
-            //Console.WriteLine(error);
-            //Console.WriteLine(output);
-            string output = PredictionModel.startLogInPrediction(20.30, 3);
+            String allText = System.IO.File.ReadAllText(@"../../TextFile1.txt");
+            string[][] logInCollection = PredictionModel.readFromFile(allText);
+            double testTime = 15;
+            double testDay = 3;
+            PredictionModel predictModel = new PredictionModel(testTime, testDay, logInCollection);
+            string riskLevel = predictModel.logInRisk;
+            string output = predictModel.logInOutput;
             Console.WriteLine(output);
+            Console.WriteLine("The risk level is " + riskLevel);
 
+           
+            
 
         }
+
+        
     }
     
 }
