@@ -719,23 +719,18 @@ namespace Layout.Upload
                     bmp = new Bitmap(ms);
                 }
 
-                /*OpenFileDialog dlg1 = new OpenFileDialog();
+                OpenFileDialog dlg1 = new OpenFileDialog();
                 if (dlg1.ShowDialog() == DialogResult.OK)
                 {
-                    using (StreamReader streamReader = new StreamReader(fileName, Encoding.Unicode))
-                    {
-                        hideThis = streamReader.ReadToEnd();
-                    }*/
-
-                    bmp = Steganography.embedText("Hello world", bmp);
+                    hideThis = File.ReadAllText(dlg1.FileName);
+                    Console.WriteLine(hideThis);
+                    bmp = Steganography.embedText(hideThis, bmp);
                     fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
-
-                    bmp.Save(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName+".bmp");
-
+                    bmp.Save(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName + ".bmp");
                     Console.WriteLine(fileName + " has successfully been hidden!");
                     Console.WriteLine("");
                     _bmp = bmp;
-                
+                }
             }
 
             
