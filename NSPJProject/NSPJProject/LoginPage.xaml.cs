@@ -66,7 +66,7 @@ namespace NSPJProject
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
             PasswordTextBox.Password = GetSha512FromString(PasswordTextBox.Password);
-            MessageBox.Show(GetSha512FromString(PasswordTextBox.Password));
+            MessageBox.Show(PasswordTextBox.Password);
 
             ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
             string connectionString = conSettings.ConnectionString;

@@ -13,5 +13,11 @@ namespace NSPJProject
     /// </summary>
     public partial class App : Application
     {
+        public string UserID { get; internal set; }
+        public string UserPassword { get; internal set; }
+        public string UserName { get; internal set; }
+        public string UserEmail { get; internal set; }
+        public string UserContact { get; internal set; }
+        public string UserDOB { get; internal set; }
     }
 }

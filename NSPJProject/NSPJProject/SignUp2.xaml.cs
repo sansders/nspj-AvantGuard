@@ -1,6 +1,8 @@
 ﻿using NSPJProject.Model1;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -26,6 +28,10 @@ namespace NSPJProject
         {
             InitializeComponent();
         }
+
+        SqlConnection con;
+        SqlCommand cmd;
+        SqlDataReader reader;
 
         private void SignUp2NextButton_Click(object sender, RoutedEventArgs e)
         {
@@ -80,7 +86,52 @@ namespace NSPJProject
 
             else
             {
-                MessageBox.Show("You're almost done. An email has been sent to your email address. Please verify your email address, thank you!");
+                string selected_userID = (App.Current as App).UserID;
+
+                string selected_userPassword = (App.Current as App).UserPassword;
+
+                string selected_userName = (App.Current as App).UserName;
+
+                string selected_userEmail = (App.Current as App).UserEmail;
+
+                string selected_userContact = (App.Current as App).UserContact;
+
+                string selected_userDOB = (App.Current as App).UserDOB;
+
+                ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+                string connectionString = conSettings.ConnectionString;
+
+                try
+                {
+                    con = new SqlConnection(connectionString);
+                    con.Open();
+                    cmd = new SqlCommand("INSERT INTO dbo.test (UserID, Password, Name, Email, ContactNo, DOB, SecurityQ1, SecurityQ1Ans, SecurityQ2, SecurityQ2Ans) VALUES (@UserID, @Password, @Name, @Email, @ContactNo, @DOB, @SecurityQ1, @SecurityQ1Ans, @SecurityQ2, @SecurityQ2Ans)", con);
+                    cmd.Parameters.AddWithValue("@UserID", selected_userID);
+                    cmd.Parameters.AddWithValue("@Password", selected_userPassword);
+                    cmd.Parameters.AddWithValue("@Name", selected_userName);
+                    cmd.Parameters.AddWithValue("@Email", selected_userEmail);
+                    cmd.Parameters.AddWithValue("@ContactNo", selected_userContact);
+                    cmd.Parameters.AddWithValue("@DOB", selected_userDOB);
+                    cmd.Parameters.AddWithValue("@SecurityQ1", SecurityQuestion1TextBox.Text);
+                    cmd.Parameters.AddWithValue("@SecurityQ1Ans", Answer1TextBox.Text);
+                    cmd.Parameters.AddWithValue("@SecurityQ2", SecurityQuestion2TextBox.Text);
+                    cmd.Parameters.AddWithValue("@SecurityQ2Ans", Answer2TextBox.Text);
+
+                    //cmd = new SqlCommand("INSERT INTO [dbo].[UserAcc] VALUES (user.userID, user.userPassword, user.userName, user.userEmail, user.userContact, user.userDOB); ", con);
+                    cmd.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+
+                    con.Close();
+                }
+
+                //MessageBox.Show("You're almost done. An email has been sent to your email address. Please verify your email address, thank you!");
                 this.NavigationService.Navigate(new Uri(@"SignUp3.xaml", UriKind.RelativeOrAbsolute));
             }
 
