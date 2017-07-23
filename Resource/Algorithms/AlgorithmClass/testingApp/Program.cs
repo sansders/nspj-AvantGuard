@@ -38,12 +38,33 @@ namespace testingApp
             {
                 "131.23.244.105" ,
                 "131.23.244.105" ,
+                "147.120.34.99",
                 "131.23.244.105" ,
                 "131.23.244.105" ,
+                "147.120.34.99",
                 "131.23.244.105" ,
                 "116.86.120.223"
             };
             
+
+            Dictionary<string, int> count = new Dictionary<string, int>();
+
+            foreach(string element in ipAddressCollection)
+            {
+                if(count.ContainsKey(element))
+                {
+                    count[element]++;
+                }
+                else
+                {
+                    count[element] = 1;
+                }
+            }
+
+            foreach (var pair in count)
+                Console.WriteLine("Value {0} occurred {1} times.", pair.Key, pair.Value);
+            
+
             //Removes any duplicate IP addresses to get the Unique IP addresses//
             var noDupsList = new HashSet<string>(ipAddressCollection).ToList();
             Dictionary<int, string> myDictionary = new Dictionary<int, string>();
@@ -51,19 +72,34 @@ namespace testingApp
             for (int i = 0; i < noDupsList.Count(); i++)
             {
                 myDictionary.Add(i, noDupsList[i]);
+
             }
 
-
-            //string output = "lala";
-            //myDictionary.TryGetValue(1, out output);
-
+            string [][] passingList = new string[myDictionary.Count][];
+            int counter = 0;
             foreach (KeyValuePair<int, string> entry in myDictionary)
             {
-                Console.WriteLine(entry.Value);
+                
+                foreach(KeyValuePair<string, int> totCount in count)
+                {
+                    if(entry.Value == totCount.Key)
+                    {
+                        Console.WriteLine("The IP address " + entry.Value + " has appeared " + totCount.Value + " times and has a index of " + entry.Key);
+                        string[] newArray = new string [] { Convert.ToString(entry.Key), Convert.ToString(totCount.Value) };
+                        passingList[counter] = newArray;
+                        
+                    }
+                }
+                counter++;
+            }
+
+            for(int i = 0; i < passingList.Length; i++)
+            {
+                Console.WriteLine(passingList[i][0] + " " + passingList[i][1]);
             }
         }
 
-        
+
     }
     
 }
