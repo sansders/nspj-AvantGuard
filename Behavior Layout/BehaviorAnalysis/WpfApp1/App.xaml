@@ -54,7 +54,13 @@
                 <Setter Property="FontFamily" Value="Arial"></Setter>
             </Style>
             
-            
+            <!--Style for the check boxes as well as the choices-->
+            <Style TargetType="{x:Type CheckBox}" x:Key="checkButtonDesign" BasedOn="{StaticResource MaterialDesignCheckBox}">
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                <Setter Property="Margin" Value="40,0,0,0"></Setter>
+                <Setter Property="FontFamily" Value="Arial"></Setter>
+            </Style>
             
             <!-- Style for the Mouse Clicking Buttons -->
             <Style TargetType="{x:Type Button}" x:Key="mouseClickDesign" BasedOn="{StaticResource MaterialDesignRaisedButton}">

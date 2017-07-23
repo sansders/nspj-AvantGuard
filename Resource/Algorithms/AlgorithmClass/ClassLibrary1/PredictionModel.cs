@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,8 +35,13 @@ namespace AlgorithmLibary
             string python = "../../../../../../../../Anaconda/python.exe";
             string logInTimeConverted = Convert.ToString(logInTime);
             string logInDayConverted = Convert.ToString(logInDay);
-            string dataList = null; 
-            for(int i = 0; i < logInCollection.Length; i++)
+            string dataList = null;
+            int start = 0; 
+            if (logInCollection.Length > 100)
+            {
+                start = logInCollection.Length - 100; 
+            }
+            for(int i = start; i < logInCollection.Length; i++)
             {
                 dataList = dataList + " " + String.Join(" ", logInCollection[i][0], logInCollection[i][1]);
             }
@@ -136,5 +143,46 @@ namespace AlgorithmLibary
             }
             return finalList;
         }
+
+        public static string getCurrentPublicIP()
+        { 
+            string url = "http://checkip.dyndns.org";
+            WebRequest req = WebRequest.Create(url);
+            WebResponse resp = req.GetResponse();
+            StreamReader sr = new StreamReader(resp.GetResponseStream());
+            string response = sr.ReadToEnd().Trim();
+            string[] a = response.Split(':');
+            string a2 = a[1].Substring(1);
+            string[] a3 = a2.Split('<');
+            string a4 = a3[0];
+            return a4;
+           
+        }
+
+        public static string getCurrentPublicIPLocation(string a4)
+        {
+            var strFile = "hello";
+            using (var objClient = new System.Net.WebClient())
+            {
+                strFile = objClient.DownloadString("http://freegeoip.net/xml/" + a4);
+            }
+
+            StringReader strReader = new StringReader(strFile);
+            string response = strReader.ReadToEnd().Trim();
+            string[] a = response.Split('<');
+            string countryNoFilter = " ";
+            for(int i = 0; i < a.Length; i++)
+            {
+                
+                if (a[i].Contains("CountryName>"))
+                {
+                    countryNoFilter = a[i];
+                    break;
+                }
+            }
+            string country = countryNoFilter.Remove(0, 12);
+            return country;
+        }
+
     }
 }

@@ -22,6 +22,8 @@ namespace WpfApp1.ProfilePages
     /// </summary>
     public partial class ProfileCreationPage4 : Page
     {
+        private List<string> _checkBoxValue = new List<string>(); 
+
         public ProfileCreationPage4()
         {
             InitializeComponent();
@@ -32,13 +34,14 @@ namespace WpfApp1.ProfilePages
 
         private void ToggleCheckOption(object sender, RoutedEventArgs e)
         {
-            RadioButton button = sender as RadioButton;
+            CheckBox button = sender as CheckBox;
             if (button.IsChecked == null)
             {
                 Console.WriteLine("No option is checked");
             }
             else
             {
+                _checkBoxValue.Add(Convert.ToString(button.Content));
                 CurrentPageModel.fourthValidation = true;
                 Console.WriteLine(button.Content);
             }
@@ -52,6 +55,10 @@ namespace WpfApp1.ProfilePages
                 //Get the current instance of the navigation class
                 CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
                 currentClass.currentpage = "4";
+                for(int i = 0; i < _checkBoxValue.Count(); i++)
+                {
+                    Console.WriteLine(_checkBoxValue[i]);
+                }
                 Page page5 = CurrentPageModel.fifthPage;
                 if (page5 == null)
                 {
