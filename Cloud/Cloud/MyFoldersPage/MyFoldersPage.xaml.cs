@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -27,7 +28,7 @@ namespace Cloud.MyFoldersPage
     {
         private List<String> newList = new List<String>();
         SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Chester\Documents\test_db.mdf;Integrated Security=True;Connect Timeout=30");
-        
+        string dtformat = "yyyy-MM-dd HH:mm:ss";
 
         public MyFoldersPage()
         {
@@ -39,7 +40,7 @@ namespace Cloud.MyFoldersPage
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "select docName, fileSize from [table]";
+            cmd.CommandText = "select docName, fileSize, lastModified from [table]";
             cmd.ExecuteNonQuery();
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -135,12 +136,15 @@ namespace Cloud.MyFoldersPage
         {
             NewFile.Visibility = System.Windows.Visibility.Collapsed;
 
+            DateTime current = new DateTime();
+            current = DateTime.Now;
+
             String input = textbox1.Text;
             fileName.Content = input;
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "insert into [table] values('" + textbox1.Text + "', '', '')";
+            cmd.CommandText = "insert into [table] values('" + textbox1.Text + "', '', '', '" + current.ToString(dtformat) + "')";
             cmd.ExecuteNonQuery();
             con.Close();
             textbox1.Text = String.Empty;
@@ -250,10 +254,14 @@ namespace Cloud.MyFoldersPage
                 }
             }
 
+            DateTime current = new DateTime();
+            current = DateTime.Now;
+            
+
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "update [table] set text = '" + rtfText + "', fileSize = '" + fileSizeDisplayed + "' where docName = '" + fileName.Content + "'";
+            cmd.CommandText = "update [table] set text = '" + rtfText + "', fileSize = '" + fileSizeDisplayed + "', lastModified = '" + current.ToString(dtformat) + "' where docName = '" + fileName.Content + "'";
             cmd.ExecuteNonQuery();
             con.Close();
             MessageBox.Show("Save was done.");
@@ -349,10 +357,14 @@ namespace Cloud.MyFoldersPage
                         }
                     }
                 }
+
+                DateTime current = new DateTime();
+                current = DateTime.Now;
+
                 con.Open();
                 SqlCommand cmd = con.CreateCommand();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "insert into [table] values('" + fileName.Content + "', '" + rtfText + "', '" + fileSizeDisplayed + "')";
+                cmd.CommandText = "insert into [table] values('" + fileName.Content + "', '" + rtfText + "', '" + fileSizeDisplayed + "', '" + current.ToString(dtformat) + "')";
                 cmd.ExecuteNonQuery();
                 con.Close();
 
