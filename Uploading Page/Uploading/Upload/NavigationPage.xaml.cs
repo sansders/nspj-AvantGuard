@@ -727,26 +727,8 @@ namespace Layout.Upload
 
 
 
-        byte[] _enText;
-
         private void encryptBtn(object sender, RoutedEventArgs e)
         {
-            /*
-            OpenFileDialog dlg = new OpenFileDialog();
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
-                string fileName;
-                string stringFormatOfFile;
-                fileName = dlg.FileName; //Will be useful in the future when selecting files
-
-                using (StreamReader streamReader = new StreamReader(fileName, Encoding.UTF8))
-                {
-                    stringFormatOfFile = streamReader.ReadToEnd();
-                }
-
-                KeyController ks = new KeyController();
-                _enText = ks.asymmetricEncryption(stringFormatOfFile);
-            }*/
 
             OpenFileDialog dlg = new OpenFileDialog();
             if (dlg.ShowDialog() == DialogResult.OK)
@@ -777,7 +759,6 @@ namespace Layout.Upload
                 //For debugging purposes
                 fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
                 byte[] testOutput = cipherText;
-                _enText = cipherText;
                 System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName, testOutput);
                 Console.WriteLine(fileName + " has successfully been encrypted!");
                 Console.WriteLine("");
@@ -799,18 +780,28 @@ namespace Layout.Upload
             //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
             byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
 
-            byte[] plainText = kc.symmetricDecryption(_enText, decryptedSymmetricKey, IV);
+            string fileName;
 
-            Console.WriteLine("Successfully Decrypted!");
-            //Bryan, I'll need you for this
-            //I'll have to add the file's name (which will be stored in your database I assume) at the last part of the string below
-            System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\DecryptedText\\decrypted_file.txt", plainText);
-            Console.WriteLine("");
-
+            OpenFileDialog dlg = new OpenFileDialog();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                fileName = dlg.FileName;
+                byte[] fileData = System.IO.File.ReadAllBytes(@fileName);
+                byte[] plainText = kc.symmetricDecryption(fileData, decryptedSymmetricKey, IV);
+                Console.WriteLine("Selected file is successfully decrypted!");
+                
+                //Bryan, I'll need you for this
+                //I'll have to add the file's name (which will be stored in your database I assume) at the last part of the string below
+                System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\DecryptedText\\decrypted_file.txt", plainText);
+                Console.WriteLine("");
+            }
+            else
+            {
+                Console.WriteLine("No file selected :(");
+                Console.WriteLine("");
+            }
 
         }
-
-        Bitmap _bmp;
 
         private void stegEncrypt(object sender, RoutedEventArgs e)
         {
@@ -828,36 +819,16 @@ namespace Layout.Upload
                     bmp = new Bitmap(ms);
                 }
 
-                /*OpenFileDialog dlg1 = new OpenFileDialog();
-                if (dlg1.ShowDialog() == DialogResult.OK)
-                {
-                    using (StreamReader streamReader = new StreamReader(fileName, Encoding.Unicode))
-                    {
-                        hideThis = streamReader.ReadToEnd();
-                    }*/
-
-                /*  bmp = Steganography.embedText("Hello world", bmp);
-                  fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
-
-                  bmp.Save(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName+".bmp");
-
-                  Console.WriteLine(fileName + " has successfully been hidden!");
-                  Console.WriteLine("");
-                  _bmp = bmp; */
-
-
                 OpenFileDialog dlg1 = new OpenFileDialog();
                 if (dlg1.ShowDialog() == DialogResult.OK)
                 {
                     hideThis = File.ReadAllText(dlg1.FileName);
-                    Console.WriteLine(hideThis);
                     bmp = Steganography.embedText(hideThis, bmp);
                     fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
 
-                    bmp.Save(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName + ".bmp");
-                    Console.WriteLine(fileName + " has successfully been hidden!");
+                    bmp.Save(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\Harmless " + fileName + ".bmp");
+                    Console.WriteLine("A txt file has successfully been hidden in " +fileName+"!");
                     Console.WriteLine("");
-                    _bmp = bmp;
 
                 }
             }
@@ -866,7 +837,31 @@ namespace Layout.Upload
 
         private void stegDecrypt(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine(Steganography.extractText(_bmp));
+            string extractThis;
+            string fileName;
+            Bitmap bmp;
+
+            OpenFileDialog dlg = new OpenFileDialog();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                fileName = dlg.FileName;
+                byte[] imageData = System.IO.File.ReadAllBytes(@fileName);
+                using (var ms = new MemoryStream(imageData))
+                {
+                    bmp = new Bitmap(ms);
+                }
+                fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
+                extractThis = Steganography.extractText(bmp);
+                System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\DecryptedText\\SECRET MESSAGE.txt", extractThis);
+                Console.WriteLine("!!! A SECRET MESSAGE HAS BEEN REVEALED FROM " + fileName+" !!!");
+                Console.WriteLine("");
+            }
+            else
+            {
+                Console.WriteLine("Error: File not specified :(");
+                Console.WriteLine("");
+            }
+            
         }
     }
 }

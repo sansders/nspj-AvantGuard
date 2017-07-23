@@ -17,17 +17,23 @@ namespace Layout.Controllers
         }
         public static void checkForKeys()
         {
-            Console.WriteLine("Checking for keys");
+            Console.WriteLine("Checking for keys...");
 
             //CHANGE PATH WHEREVER NECESSARY 
-            string path = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt";
-            if (!File.Exists(path))
+            string path1 = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt";
+            string path2 = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt";
+            string path3 = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt";
+            string path4 = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt";
+            if (!File.Exists(path1) || !File.Exists(path2) || !File.Exists(path3) || !File.Exists(path4))
             {
                 Console.WriteLine("Keys not found!");
                 Console.WriteLine("Proceeding with Key generation, please wait...");
                 ivCreation();
                 asymmetricKeyCreation();
                 asymmetricEncryption(symmetricKeyCreation());
+                Console.WriteLine("New keys successfully generated!");
+                Console.WriteLine("Commencing encryption...");
+                Console.WriteLine("");
             }
         }
         public static void asymmetricKeyCreation()
@@ -107,13 +113,6 @@ namespace Layout.Controllers
 
         public byte[] symmetricEncryption(string plainText, byte[] Key, byte[] IV)
         {
-
-            /*RijndaelManaged Crypto = new RijndaelManaged();
-            Crypto.Key = Key;
-            Crypto.IV = IV;
-            Crypto.Padding = PaddingMode.Zeros;
-            */
-
             RijndaelManaged rm = null;
             MemoryStream ms = null;
             ICryptoTransform Encryptor = null;
@@ -171,10 +170,6 @@ namespace Layout.Controllers
             //Encrypts symmetric key with 
             byte[] encryptedSymmetricKeyBytes = csp.Encrypt(symmetricKey, false);
 
-            //Changes byte[] of encryptedSymmetricKey into a string and saves it into a file
-            //string encryptedSymmetricKeyString = Convert.ToBase64String(encryptedSymmetricKeyBytes);
-            //System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt", encryptedSymmetricKeyString);
-
             //Saves byte[] of encryptedSymmetricKey into a file
             File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt", encryptedSymmetricKeyBytes);
         }
@@ -202,12 +197,6 @@ namespace Layout.Controllers
         }
         public byte[] symmetricDecryption(byte[] cipherText, byte[] Key, byte[] IV)
         {
-            /*RijndaelManaged Crypto = new RijndaelManaged();
-            Crypto.Key = Key;
-            Crypto.IV = IV;
-            Crypto.Padding = PaddingMode.Zeros
-            */
-
             RijndaelManaged rm = null;
             MemoryStream ms = null;
             ICryptoTransform Decryptor = null;
