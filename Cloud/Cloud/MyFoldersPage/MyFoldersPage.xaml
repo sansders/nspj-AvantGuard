@@ -56,6 +56,7 @@
             </TextBox>
             <Button fa:Awesome.Content="FileWordOutline" Name="openMSBtn" Click="openMSBtn_Click" Margin="60,0,0,0"></Button>
             <Button fa:Awesome.Content="FileText" Name="newTextBtn" Click="newTextBtn_Click"></Button>
+            <Button fa:Awesome.Content="Download" Name="downloadBtn" Click="TestDownload"></Button>
         </ToolBar>
         <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="listView" HorizontalAlignment="Left" Height="250" VerticalAlignment="Bottom" Width="525" Margin="0,-1,0,-0.2" MouseDoubleClick="listView_MouseDoubleClick">
             <ListView.View>
@@ -82,6 +83,15 @@
             </ListView.ContextMenu>
         </ListView>
         <RichTextBox Visibility="Hidden" Name="rtbEditor" HorizontalAlignment="Left" Height="250" VerticalAlignment="Bottom" Width="525" SelectionChanged="rtbEditor_SelectionChanged"/>
+        <Grid x:Name="DownloadingWindow" Visibility="Collapsed">
+            <Grid Background="Black" Opacity="0.5" />
+            <Border MinWidth="250" Background="LightBlue" BorderBrush="White" BorderThickness="1" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Margin="5" Text="Loading..."/>
+                    <Button fa:Awesome.Content="Spinner"/>
+                </StackPanel>
+            </Border>
+        </Grid>
         <Grid x:Name="NewFile" Visibility="Collapsed">
             <Grid Background="Black" Opacity="0.5"/>
             <Border MinWidth="250" Background="LightBlue" BorderBrush="White" BorderThickness="1" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">

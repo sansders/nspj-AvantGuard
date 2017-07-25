@@ -267,6 +267,44 @@ namespace Cloud.MyFoldersPage
             MessageBox.Show("Save was done.");
         }
 
+        public void TestDownload(object sender, RoutedEventArgs e)
+        {
+            
+            String theText = "";
+            String selectedText = ((DataRowView)listView.SelectedItem)["docName"].ToString();
+            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
+            object nullobject = System.Reflection.Missing.Value;
+            object start = 0;
+            Microsoft.Office.Interop.Word.Document doc = wordApp.Documents.Add(ref nullobject, ref nullobject, ref nullobject, ref nullobject);
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "select text from [table] where docName = '" + selectedText + "'";
+            using (SqlDataReader read = cmd.ExecuteReader())
+            {
+                while (read.Read())
+                {
+                    theText = (read["text"].ToString());
+                }
+            }
+            con.Close();
+            Clipboard.SetText(theText, TextDataFormat.Rtf);
+            Microsoft.Office.Interop.Word.Range rng = doc.Range(ref start, ref nullobject);
+
+            try
+            {
+                wordApp.Selection.Paste();
+                String path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                object filename = path + @"\" + selectedText + ".doc";
+                doc.SaveAs2(filename);
+
+            }catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
         public void openMSBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
