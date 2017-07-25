@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,6 +50,7 @@ namespace AlgorithmLibary
             string output = startPythonProgramm(python, argsSet);
             _logInRisk = PredictionModel.getRiskLevel(output);
             _logInOutput = PredictionModel.getOutput(output);
+
            
         }
 
@@ -81,6 +83,7 @@ namespace AlgorithmLibary
             string[] outputData = input.Split('/');
             string riskLevel = outputData[0];
             return riskLevel;
+            //return input;
         }
 
         private static string getOutput(string input)
@@ -88,6 +91,7 @@ namespace AlgorithmLibary
             string[] outputData = input.Split('/');
             string output = outputData[1];
             return output;
+            //return input;
         }
 
         public static string[][] readFromFile(String allText)
@@ -171,9 +175,10 @@ namespace AlgorithmLibary
             string response = strReader.ReadToEnd().Trim();
             string[] a = response.Split('<');
             string countryNoFilter = " ";
+           
             for(int i = 0; i < a.Length; i++)
             {
-                
+                Console.WriteLine(a[i]);  
                 if (a[i].Contains("CountryName>"))
                 {
                     countryNoFilter = a[i];
@@ -182,6 +187,9 @@ namespace AlgorithmLibary
             }
             string country = countryNoFilter.Remove(0, 12);
             return country;
+
+            
+
         }
 
     }
