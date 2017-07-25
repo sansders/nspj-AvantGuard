@@ -5,12 +5,108 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Cloud.FavoritesPage"
       xmlns:fa="http://schemas.fontawesome.io/icons/"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="525"
       Title="FavoritesPage">
-    <Viewbox Stretch="UniformToFill">
-        <Grid>
-            
+    <Grid>
+        <ToolBar Name="secondToolBar" Visibility="Collapsed" VerticalAlignment="Top" HorizontalAlignment="Left" Height="35" Width="525">
+            <Label x:Name="fileName" Width="120" FontSize="12"/>
+            <Separator />
+            <ToggleButton fa:Awesome.Content="Bold" Command="EditingCommands.ToggleBold" Name="btnBold"></ToggleButton>
+            <ToggleButton fa:Awesome.Content="Italic" Command="EditingCommands.ToggleItalic" Name="btnItalic"></ToggleButton>
+            <ToggleButton fa:Awesome.Content="Underline" Command="EditingCommands.ToggleUnderline" Name="btnUnderline"></ToggleButton>
+            <Separator />
+            <ComboBox Name="cmbFontFamily" Width="150" SelectionChanged="cmbFontFamily_SelectionChanged" />
+            <ComboBox Name="cmbFontSize" Width="50" IsEditable="True" TextBoxBase.TextChanged="cmbFontSize_TextChanged" />
+            <Separator />
+            <xctk:ColorPicker Name="colorPicker" SelectedColorChanged="colorPicker_SelectedColorChanged" BorderBrush="White" Height="22" Width="50"></xctk:ColorPicker>
+            <Separator />
+            <Button fa:Awesome.Content="Save" Name="btnSave" Click="btnSave_Click"></Button>
+        </ToolBar>
+        <ToolBar Name="mainToolBar" HorizontalAlignment="Left" VerticalAlignment="Top" Height="35" Width="525">
+            <TextBox x:Name="searchBar" HorizontalAlignment="Left" Height="23" Margin="0,3,0,0" TextWrapping="Wrap" GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged" VerticalAlignment="Top" Width="199" Foreground="DarkGray">
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </TextBox.Resources>
+                <TextBox.Style>
+                    <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                        <Style.Resources>
+                            <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                <VisualBrush.Visual>
+                                    <Label Content="Search" Foreground="LightGray" />
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Style.Resources>
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Background" Value="White" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+            <Button fa:Awesome.Content="FileWordOutline" Name="openMSBtn" Click="openMSBtn_Click" Margin="60,0,0,0"></Button>
+            <Button fa:Awesome.Content="FileText" Name="newTextBtn" Click="newTextBtn_Click"></Button>
+            <Button fa:Awesome.Content="Download" Name="downloadBtn" Click="TestDownload"></Button>
+        </ToolBar>
+        <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="listView" HorizontalAlignment="Left" Height="250" VerticalAlignment="Bottom" Width="525" Margin="0,-1,0,-0.2" MouseDoubleClick="listView_MouseDoubleClick">
+            <ListView.View>
+                <GridView ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <GridView.ColumnHeaderContainerStyle>
+                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </Style>
+                    </GridView.ColumnHeaderContainerStyle>
+                    <GridViewColumn Header="Name" Width="170" DisplayMemberBinding="{Binding docName}"/>
+                    <GridViewColumn Header="Owner" Width="90" DisplayMemberBinding="{Binding Owner}"/>
+                    <GridViewColumn Header="Last Modified" Width="109" DisplayMemberBinding="{Binding lastModified}"/>
+                    <GridViewColumn Header="File Size" Width="100" DisplayMemberBinding="{Binding fileSize}"/>
+                </GridView>
+            </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open" Click="openClick"></MenuItem>
+                    <MenuItem Header="Favorite" Click="favoriteClick"></MenuItem>
+                    <MenuItem Header="Share"></MenuItem>
+                    <MenuItem Header="Download" Click="TestDownload"></MenuItem>
+                    <MenuItem Header="Delete" Click="deleteClick"></MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
+        </ListView>
+        <RichTextBox Visibility="Hidden" Name="rtbEditor" HorizontalAlignment="Left" Height="250" VerticalAlignment="Bottom" Width="525" SelectionChanged="rtbEditor_SelectionChanged"/>
+        <Grid x:Name="NewFile" Visibility="Collapsed">
+            <Grid Background="Black" Opacity="0.5"/>
+            <Border MinWidth="250" Background="LightBlue" BorderBrush="White" BorderThickness="1" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Margin="5" Text="New File Name:"/>
+                    <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="textbox1"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Width="30" x:Name="OkButton" Margin="5" Content="Ok" Background="White" Click="OkButton_Click">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="3"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button Width="50" x:Name="CancelButton" Margin="5" Content="Cancel" Background="White" Click="CancelButton_Click">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="3"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
         </Grid>
-    </Viewbox>
+    </Grid>
 </Page>

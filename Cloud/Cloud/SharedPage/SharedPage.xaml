@@ -10,7 +10,7 @@
       Title="SharedPage">
     <Viewbox Stretch="UniformToFill">
         <Grid>
-            <TextBlock>HIHIHIHIHI</TextBlock>
+            
         </Grid>
     </Viewbox>
 </Page>

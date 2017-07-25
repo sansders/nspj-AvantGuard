@@ -56,6 +56,7 @@
             </TextBox>
             <Button fa:Awesome.Content="FileWordOutline" Name="openMSBtn" Click="openMSBtn_Click" Margin="60,0,0,0"></Button>
             <Button fa:Awesome.Content="FileText" Name="newTextBtn" Click="newTextBtn_Click"></Button>
+            <Button fa:Awesome.Content="Download" Name="downloadBtn" Click="TestDownload"></Button>
         </ToolBar>
         <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="listView" HorizontalAlignment="Left" Height="250" VerticalAlignment="Bottom" Width="525" Margin="0,-1,0,-0.2" MouseDoubleClick="listView_MouseDoubleClick">
             <ListView.View>
@@ -73,11 +74,11 @@
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Open"></MenuItem>
-                    <MenuItem Header="Favorite"></MenuItem>
+                    <MenuItem Header="Open" Click="openClick"></MenuItem>
+                    <MenuItem Header="Favorite" Click="favoriteClick"></MenuItem>
                     <MenuItem Header="Share"></MenuItem>
-                    <MenuItem Header="Delete"></MenuItem>
-                    <MenuItem Header="Move To"></MenuItem>
+                    <MenuItem Header="Download" Click="TestDownload"></MenuItem>
+                    <MenuItem Header="Delete" Click="deleteClick"></MenuItem>
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>

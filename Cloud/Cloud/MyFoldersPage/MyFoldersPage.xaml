@@ -74,11 +74,11 @@
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Open"></MenuItem>
-                    <MenuItem Header="Favorite"></MenuItem>
+                    <MenuItem Header="Open" Click="openClick"></MenuItem>
+                    <MenuItem Header="Favorite" Click="favoriteClick"></MenuItem>
                     <MenuItem Header="Share"></MenuItem>
-                    <MenuItem Header="Delete"></MenuItem>
-                    <MenuItem Header="Move To"></MenuItem>
+                    <MenuItem Header="Download" Click="TestDownload"></MenuItem>
+                    <MenuItem Header="Delete" Click="deleteClick"></MenuItem>
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>

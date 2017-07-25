@@ -29,7 +29,9 @@ namespace Cloud.MyFoldersPage
         private List<String> newList = new List<String>();
         SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Chester\Documents\test_db.mdf;Integrated Security=True;Connect Timeout=30");
         string dtformat = "yyyy-MM-dd HH:mm:ss";
+        DataTable dt = new DataTable();
 
+        //DEFAULT CONSTRUCTOR
         public MyFoldersPage()
         {
             InitializeComponent();
@@ -40,10 +42,9 @@ namespace Cloud.MyFoldersPage
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "select docName, fileSize, lastModified from [table]";
+            cmd.CommandText = "select docName, fileSize, lastModified from [table] where isDeleted = 'no'";
             cmd.ExecuteNonQuery();
             SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
             da.Fill(dt);
             listView.ItemsSource = dt.DefaultView;
             con.Close();
@@ -54,6 +55,8 @@ namespace Cloud.MyFoldersPage
             }
         }
 
+
+        //SEARCH FUNCTION
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
@@ -86,6 +89,8 @@ namespace Cloud.MyFoldersPage
             }
         }
 
+
+        //AESTHETICS FOR SEARCH BOX
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = (TextBox)sender;
@@ -93,6 +98,77 @@ namespace Cloud.MyFoldersPage
             tb.GotFocus -= TextBox_GotFocus;
         }
 
+
+        //RIGHTCLICK -> OPEN
+        private void openClick(object sender, RoutedEventArgs e)
+        {
+            String theText = "";
+            String selectedText = ((DataRowView)listView.SelectedItem)["docName"].ToString();
+            fileName.Content = selectedText;
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "select text from [table] where docName = '" + selectedText + "'";
+            using (SqlDataReader read = cmd.ExecuteReader())
+            {
+                while (read.Read())
+                {
+                    theText = (read["text"].ToString());
+                }
+            }
+
+            con.Close();
+
+            byte[] byteArray = Encoding.ASCII.GetBytes(theText);
+
+            using (MemoryStream ms = new MemoryStream(byteArray))
+            {
+                TextRange tr = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+                tr.Load(ms, DataFormats.Rtf);
+
+            }
+
+            listView.Visibility = System.Windows.Visibility.Hidden;
+            mainToolBar.Visibility = System.Windows.Visibility.Hidden;
+            rtbEditor.Visibility = System.Windows.Visibility.Visible;
+            secondToolBar.Visibility = System.Windows.Visibility.Visible;
+        }
+
+
+        //RIGHTCLICK -> FAVORITE
+        private void favoriteClick(object sender, RoutedEventArgs e)
+        {
+            String selectedText = ((DataRowView)listView.SelectedItem)["docName"].ToString();
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "update [table] set isFavorite = 'yes' where docName = '" + selectedText + "'";
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
+
+        //RIGHTCLICK -> DELETE
+        private void deleteClick(object sender, RoutedEventArgs e)
+        {
+            String selectedText = ((DataRowView)listView.SelectedItem)["docName"].ToString();
+            con.Open();
+            SqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = "update [table] set isDeleted = 'yes' where docName = '" + selectedText + "'";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "select docName, fileSize, lastModified from [table] where isDeleted = 'no'";
+            cmd.ExecuteNonQuery();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            dt.Clear();
+            listView.ItemsSource = dt.DefaultView;
+            da.Fill(dt);
+            listView.ItemsSource = dt.DefaultView;
+            con.Close();
+        }
+
+
+        //CLICK ON LIST VIEW ITEM TO OPEN
         private void listView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             String theText = "";
@@ -127,6 +203,8 @@ namespace Cloud.MyFoldersPage
             secondToolBar.Visibility = System.Windows.Visibility.Visible;
         }
 
+        
+        //CREATE NEW FILE
         private void newTextBtn_Click(object sender, RoutedEventArgs e)
         {
             NewFile.Visibility = System.Windows.Visibility.Visible;
@@ -155,23 +233,31 @@ namespace Cloud.MyFoldersPage
             secondToolBar.Visibility = System.Windows.Visibility.Visible;
         }
 
+
+        //CANCEL 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             NewFile.Visibility = System.Windows.Visibility.Collapsed;
             textbox1.Text = String.Empty;
         }
 
+
+        //SET FONT FAMILY THINGS
         private void cmbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cmbFontFamily.SelectedItem != null)
                 rtbEditor.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, cmbFontFamily.SelectedItem);
         }
 
+        
+        //SET FONT SIZE THINGS
         private void cmbFontSize_TextChanged(object sender, TextChangedEventArgs e)
         {
             rtbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, cmbFontSize.Text);
         }
 
+
+        //TEXT EDITOR FUNCTIONS
         private void rtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
         {
             object temp = rtbEditor.Selection.GetPropertyValue(Inline.FontWeightProperty);
@@ -187,11 +273,15 @@ namespace Cloud.MyFoldersPage
             cmbFontSize.Text = temp.ToString();
         }
 
+
+        //COLORPICKER
         private void colorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             rtbEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, (SolidColorBrush)(new BrushConverter().ConvertFrom(colorPicker.SelectedColor.ToString())));
         }
 
+
+        //SAVE ANY CHANGES MADE TO DOCUMENT
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             String rtfText;
@@ -267,6 +357,8 @@ namespace Cloud.MyFoldersPage
             MessageBox.Show("Save was done.");
         }
 
+
+        //DOWNLOAD FILE AS MS WORD DOC
         public void TestDownload(object sender, RoutedEventArgs e)
         {
             
@@ -303,8 +395,12 @@ namespace Cloud.MyFoldersPage
                 MessageBox.Show(ex.Message);
             }
 
+            MessageBox.Show("Downloaded.");
+
         }
 
+
+        //UPLOAD AND OPEN MS WORD DOC FROM FILE EXPLORER
         public void openMSBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -402,7 +498,7 @@ namespace Cloud.MyFoldersPage
                 con.Open();
                 SqlCommand cmd = con.CreateCommand();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "insert into [table] values('" + fileName.Content + "', '" + rtfText + "', '" + fileSizeDisplayed + "', '" + current.ToString(dtformat) + "')";
+                cmd.CommandText = "insert into [table] values('" + fileName.Content + "', '" + rtfText + "', '" + fileSizeDisplayed + "', '" + current.ToString(dtformat) + "', 'no', 'no')";
                 cmd.ExecuteNonQuery();
                 con.Close();
 
