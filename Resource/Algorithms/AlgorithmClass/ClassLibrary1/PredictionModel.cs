@@ -149,7 +149,8 @@ namespace AlgorithmLibary
         }
 
         public static string getCurrentPublicIP()
-        { 
+        {
+            Console.WriteLine("Getting Public IP Now...");
             string url = "http://checkip.dyndns.org";
             WebRequest req = WebRequest.Create(url);
             WebResponse resp = req.GetResponse();
@@ -165,6 +166,7 @@ namespace AlgorithmLibary
 
         public static string getCurrentPublicIPLocation(string a4)
         {
+            Console.WriteLine("Getting Public IP Location Now...");
             var strFile = "hello";
             using (var objClient = new System.Net.WebClient())
             {
@@ -178,7 +180,6 @@ namespace AlgorithmLibary
            
             for(int i = 0; i < a.Length; i++)
             {
-                Console.WriteLine(a[i]);  
                 if (a[i].Contains("CountryName>"))
                 {
                     countryNoFilter = a[i];
