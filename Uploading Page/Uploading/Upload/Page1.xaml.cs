@@ -65,7 +65,7 @@ namespace Layout.Upload
                 string fileName;
                 string stringFormatOfFile;
                 fileName = dlg.FileName; //Will be useful in the future when selecting files
-                
+
                 using (StreamReader streamReader = new StreamReader(fileName, Encoding.Unicode))
                 {
                     stringFormatOfFile = streamReader.ReadToEnd();
@@ -74,21 +74,32 @@ namespace Layout.Upload
                 byte[] byteFormatOfFile = Encoding.Unicode.GetBytes(stringFormatOfFile);
                 Console.WriteLine("Gets bytes of file");
 
+         
+
                 //Hash Computation
-                SHA1Managed sha1 = new SHA1Managed();
-                byte[] byteComputedHash = sha1.ComputeHash(byteFormatOfFile);
+                SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
+                byte[] byteComputedHash;
+
+                using (FileStream stream = File.OpenRead(fileName))
+                {
+                    SHA1Managed sha = new SHA1Managed();
+                    byteComputedHash = sha.ComputeHash(stream);
+                }
                 Controllers.HashController hashController = new Controllers.HashController();
                 stringComputedHash = hashController.HexStringFromBytes(byteComputedHash).ToUpper();
 
                 //Important line to ensure user inputted hash stays at no more than 40 chars
                 hash = stringUserHashInput(userHashInput);
+                Console.WriteLine(hash);
+
+
 
                 //Actions to take if hash not equals to computed hash
                 if (!(hash.Equals(stringComputedHash)))
                 {
                     //Do stuff:
                     //Stuff like an error message box pop up (done)
-                    //Clear the userInputHash box 
+                    //Clear the userInputHash box (done)
                     //Break from the current method (done)
                     Controllers.Prompt.ShowDialog("Hash does not match!", "Error");
                     userHashInput.Document.Blocks.Clear();
@@ -112,6 +123,17 @@ namespace Layout.Upload
                     Console.WriteLine(fileName + " has successfully been encrypted!");
                     Console.WriteLine("");
                 }
+
+                // 25.7.17 UPDATE
+                //
+                // 1) Hash is not consistent. It is correct for some files,  but wrong for some other files. (SOLVED)
+                //
+                // 2) Implement password in stego function. This password will be the input to generate a symmetric key to decrypt a file inside the carrier.
+                //    File will be encrypted with this password(key), then stego-ed into the carrier.
+                //    If key entered is correct, then the correct file will be extracted.
+                //    If key entered is incorrect, a corrupted file will be extracted.
+                //
+                // 3) File decryption not complete
             }
         }
     }
