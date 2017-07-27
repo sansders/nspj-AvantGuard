@@ -111,7 +111,7 @@ namespace Layout.Controllers
 
 
 
-        public byte[] symmetricEncryption(string plainText, byte[] Key, byte[] IV)
+        public byte[] symmetricEncryption(byte[] plainText, byte[] Key, byte[] IV)
         {
             RijndaelManaged rm = null;
             MemoryStream ms = null;
@@ -119,7 +119,7 @@ namespace Layout.Controllers
             //Crypto streams allow encryption in memory
             CryptoStream cs = null;
             //Just get bytes from plain text
-            byte[] plainBytes = Encoding.Unicode.GetBytes(plainText);
+            byte[] plainBytes = plainText;
 
             try
             {
@@ -233,7 +233,6 @@ namespace Layout.Controllers
                 {
                     rm.Clear();
                 }
-
                 ms.Flush();
                 ms.Close();
             }
@@ -272,5 +271,11 @@ namespace Layout.Controllers
         // Encryption successfully completed!
         // Will have to test decryption next
         // - Sean
+
+        // 27.7.2017 Update
+        // Decryption decrypts, but gives incomplete output.
+        // Vanilla does not match, chocolate matches.
+        // Also, I've temporarily disabled encryption in Page1.xaml
+        // -Sean
     }
 }

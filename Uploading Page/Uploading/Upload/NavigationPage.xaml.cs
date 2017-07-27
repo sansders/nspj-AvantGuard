@@ -736,25 +736,23 @@ namespace Layout.Upload
                 Controllers.KeyController kc = new Controllers.KeyController();
 
                 string fileName;
-                string stringFormatOfFile;
+                //string stringFormatOfFile;
+                byte[] plainBytes;
                 fileName = dlg.FileName; //Will be useful in the future when selecting files
 
-                using (StreamReader streamReader = new StreamReader(fileName, Encoding.Unicode))
-                {
-                    stringFormatOfFile = streamReader.ReadToEnd();
-                }
-
-
-                byte[] byteFormatOfFile = Encoding.Unicode.GetBytes(stringFormatOfFile);
-                Console.WriteLine("Gets bytes of file");
-                byte[] IV = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
-                Console.WriteLine("Gets bytes of IV");
-                byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
+                plainBytes = File.ReadAllBytes(@fileName);
+                Console.WriteLine("Vanilla: " + Convert.ToBase64String(plainBytes));
+                Console.WriteLine("Getting bytes of file");
+                byte[] IV = File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
+                Console.WriteLine("Getting bytes of IV");
+                byte[] encryptedSymmetricKey = File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
+                Console.WriteLine("Getting bytes of encrypted symmetric key");
 
                 //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
                 byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
                 //Encrypts plaintext with symmetric key
-                byte[] cipherText = kc.symmetricEncryption(stringFormatOfFile, decryptedSymmetricKey, IV);
+                byte[] cipherText = kc.symmetricEncryption(plainBytes, decryptedSymmetricKey, IV);
+                Console.WriteLine("Chocolate: " + Convert.ToBase64String(cipherText));
 
                 //For debugging purposes
                 fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
@@ -772,7 +770,7 @@ namespace Layout.Upload
 
             //Gets IV & Encrypted Symmetric Key
             byte[] IV = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
-            byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
+            byte[] encryptedSymmetricKey = File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
 
             //Decrypts Encrypted Symmetric Key
             kc.asymmetricDecryption(encryptedSymmetricKey);
@@ -787,9 +785,12 @@ namespace Layout.Upload
             {
                 fileName = dlg.FileName;
                 byte[] fileData = System.IO.File.ReadAllBytes(@fileName);
+                Console.WriteLine("Chocolate: " + Convert.ToBase64String(fileData));
                 byte[] plainText = kc.symmetricDecryption(fileData, decryptedSymmetricKey, IV);
                 Console.WriteLine("Selected file is successfully decrypted!");
-                
+                Console.WriteLine("Vanilla: " + Convert.ToBase64String(plainText));
+
+
                 //Bryan, I'll need you for this
                 //I'll have to add the file's name (which will be stored in your database I assume) at the last part of the string below
                 System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\DecryptedText\\decrypted_file.txt", plainText);

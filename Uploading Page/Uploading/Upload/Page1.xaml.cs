@@ -104,7 +104,7 @@ namespace Layout.Upload
                     Controllers.Prompt.ShowDialog("Hash does not match!", "Error");
                     userHashInput.Document.Blocks.Clear();
                 }
-
+                /*
                 else
                 {
                     byte[] IV = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
@@ -122,7 +122,7 @@ namespace Layout.Upload
                     System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName, testOutput);
                     Console.WriteLine(fileName + " has successfully been encrypted!");
                     Console.WriteLine("");
-                }
+                }*/
 
                 // 25.7.17 UPDATE
                 //
