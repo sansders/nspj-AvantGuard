@@ -37,21 +37,21 @@ from sklearn.datasets.samples_generator import make_blobs
 #
 # print(plt.show())
 data = np.array([
-    # [0,0,6],
-    # [1,1,6],
-    # [2,2,7],
-    # [3,3,5],
-    # [4,4,6],
-    # [5,5,5]
-
-    [0,0,11],
-    [1,1,12],
+    [0,0,6],
+    [1,1,6],
     [2,2,7],
     [3,3,5],
     [4,4,6],
-    [5,5,6],
-    [6,6,3],
-    [7,7,3]
+    [5,5,5]
+
+    # [0,0,11],
+    # [1,1,12],
+    # [2,2,7],
+    # [3,3,5],
+    # [4,4,6],
+    # [5,5,6],
+    # [6,6,3],
+    # [7,7,3]
 ])
 
 data1 = np.array([
@@ -63,7 +63,7 @@ data1 = np.array([
 ])
 
 
-queryKey = [7,3, 1]
+queryKey = [1,1, 1]
 df = pd.DataFrame(data)
 df.column = ['x','y' , 'z']
 
@@ -74,10 +74,12 @@ for i in range (len(data)):
 chance = 1 / len(data)
 print(7/(11+ 12 + 7 + 5+ 6+ 5))
 setValue = []
+commonArray = []
 for i in range(len(data)):
     probability = df.ix[i][2] / total
     if(probability > chance-0.05):
         setValue.append([df.ix[i][0], df.ix[i][1]])
+        commonArray.append([df.ix[i][0] , df.ix[i][1] , df.ix[i][2]])
 print(setValue)
 print(df.skew())
 skewness = sk(data, axis=0 , bias=False )
@@ -98,17 +100,19 @@ for i in range (len(data)):
     yArray.append(df.ix[i][1])
     zArray.append(df.ix[i][2])
     exactArray.append([df.ix[i][0] , df.ix[i][1]])
+
 totalCount = 0
 
 xExact = []
 yExact = []
 
 
+
 for i in range ((len(setValue))):
     xExact.append(setValue[i][0])
     yExact.append(setValue[i][1])
 
-print(xExact)
+print(commonArray)
 
 if(skewed == True):
     print("Is skewed")
@@ -198,6 +202,18 @@ elif (skewed != True):
                 totalCount += 1.0
 
 
+riskLevel = 0
+if(totalCount <= 0.25):
+    print("Low risk as total count is " , totalCount)
+    riskLevel = 1
+elif(totalCount == 0.5):
+    print("Medium risk as total count is " , totalCount)
+    riskLevel = 2
+elif(totalCount == 1.0):
+    print("High risk as total count is " , totalCount)
+    riskLevel = 3
+
+print(riskLevel)
 
 # if(skewed == True):
 #         if(queryKey[0] in setValue[i][0]):
@@ -241,8 +257,10 @@ print(totalCount)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 for i in range (len(data)):
-    ax.scatter(df.ix[i][0], df.ix[i][1], df.ix[i][2] , c = 'g' , marker='o')
+    ax.scatter(df.ix[i][0], df.ix[i][1], df.ix[i][2] , c = 'b' , marker='o')
 ax.scatter(queryKey[0], queryKey[1], queryKey[2] , c = 'y', marker = 'o')
+for i in range(len(commonArray)):
+    ax.scatter(commonArray[i][0] , commonArray[i][1] , commonArray[i][2] , c = 'g' , marker='o')
 ax.set_xlabel("Unique IP ")
 ax.set_ylabel("Unique MAC")
 ax.set_zlabel("Count")
