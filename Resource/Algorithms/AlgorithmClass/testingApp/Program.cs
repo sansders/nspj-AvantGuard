@@ -45,10 +45,11 @@ namespace testingApp
             string[][] ipAddressCollection =
             {
                 new string [] {"131.23.244.105","C00008" , "4"} ,
-                new string [] {"131.23.244.105", "C00008" , "1"} ,
+                new string [] {"131.23.244.105", "C00008" , "4"} ,
                 new string [] { "147.120.34.99", "C00008" , "1"} ,
                 new string [] { "131.23.244.105", "D00008" , "3"},
                 new string [] { localIP , "D8000" , "4"},
+                new string [] { localIP , macAddress , date},
                 new string [] { localIP , macAddress , date}
             };
             string[] query = new string[] { localIP, macAddress , date};
@@ -56,11 +57,15 @@ namespace testingApp
             string[][] keyData = getValueArray(ipAddressCollection);
             string[] queryKey = checkQueryData(query, ipAddressCollection);
 
-            Console.WriteLine("Convert current IP and MAC to  " + queryKey[0] +  queryKey[1] + queryKey[2]);
-            string[] retrieveValue = new string[] { queryKey[0] , queryKey[1] , queryKey[2]};
-            string[] retrievedDataKey = getKeyInformation(queryKey, ipAddressCollection);
-            Console.WriteLine("Convert Key to Info " + retrievedDataKey[0] + " " + retrievedDataKey[1] + " " + retrievedDataKey[2]);
+            Console.WriteLine("Convert a certain IP and MAC and DAY to key form : " + queryKey[0] +  queryKey[1] + queryKey[2] + queryKey[3]);
+            string[] retrieveValue = new string[] { queryKey[0], queryKey[1], queryKey[2] };
+            string[] retrievedDataValue = getKeyInformation(queryKey, ipAddressCollection);
+            Console.WriteLine("Convert Key to Info " + retrievedDataValue[0] + " " + retrievedDataValue[1] + " " + retrievedDataValue[2] + " " + retrievedDataValue[3]);
 
+            foreach (var element in keyData)
+            {
+                Console.WriteLine(element[0] + element[1] + element[2] + element[3]);
+            }
 
 
             foreach (var element in count)
@@ -83,8 +88,8 @@ namespace testingApp
             Console.WriteLine("IP " + " MAC " + "       DAY " + "     COUNT ");
             foreach (var element in passList)
             {
-                 
-                Console.WriteLine(element[0] + "     " + element[1] + "        " +element[2] + "         " + element[3]);
+
+                Console.WriteLine(element[0] + "     " + element[1] + "        " + element[2] + "         " + element[3]);
             }
 
             Console.WriteLine("CHECKING THE LIST");
@@ -114,59 +119,105 @@ namespace testingApp
                     count[concat] = 1;
                 }
             }
+
+            List<String> IPlist = new List<string>();
+            List<String> MAClist = new List<string>();
+            List<String> DAYlist = new List<string>();
+            foreach (string element in count.Keys)
+            {
+                String[] myElement = element.Split('/');
+                IPlist.Add(myElement[0]);
+                MAClist.Add(myElement[1]);
+                DAYlist.Add(myElement[2]);
+            }
+
+            var noIPDupsList = removeDuplicate(IPlist);
+            var noMACDupsList = removeDuplicate(MAClist);
+
+            Dictionary<int, string> IP1Dictionary = linkData(noIPDupsList);
+            Dictionary<int, string> MAC2Dictionary = linkData(noMACDupsList);
+
+            int counter = 0;
+            int ipkey = Convert.ToInt32(retrieveKey[0]);
+            int mackey = Convert.ToInt32(retrieveKey[1]);
+            
+            string ipValue = IP1Dictionary.FirstOrDefault(x => x.Key == ipkey).Value;
+            string macValue = MAC2Dictionary.FirstOrDefault(x => x.Key == mackey).Value;
+            string day = retrieveKey[2];
+            string value = checkCountForValue(ipValue , macValue, day , count);
+          
+            string[] data = new string[] { ipValue, macValue, day, Convert.ToString(value)};
+            return data;
             //foreach (var pair in count)
             //    Console.WriteLine("Value {0} occurred {1} times.", pair.Key, pair.Value);
 
             //Removes any duplicate IP addresses/MAC address pair to get the Unique IP/ MAC address pair //
-            var noDupsList = new HashSet<string>(count.Keys).ToList();
 
-            String[] filteredIPList = new String[noDupsList.Count];
-            String[] filteredMACList = new String[noDupsList.Count];
-            String[] filteredDAYList = new String[noDupsList.Count];
-            int counter = 0;
-            foreach (string element in noDupsList)
-            {
-                String[] myElement = element.Split('/');
-                filteredIPList[counter] = myElement[0];
-                filteredMACList[counter] = myElement[1];
-                filteredDAYList[counter] = myElement[2];
-                counter++;
-            }
 
-            Dictionary<int, string> IPDictionary = new Dictionary<int, string>();
-            Dictionary<int, string> MACDictionary = new Dictionary<int, string>();
-            Dictionary<int, string> DAYDictionary = new Dictionary<int, string>();
-            for (int i = 0; i < filteredIPList.Count(); i++)
-            {
-                IPDictionary.Add(i, filteredIPList[i]);
-                MACDictionary.Add(i, filteredMACList[i]);
-                DAYDictionary.Add(i, filteredDAYList[i]);
-            }
-            string ipValue = "-1";
-            string macValue = "-1";
-            string dayValue = "-1";
-            for(int i = 0; i < IPDictionary.Count(); i++)
-            {
-                string IPKEY = IPDictionary.ElementAt(i).Key.ToString();
-                string MACKEY = MACDictionary.ElementAt(i).Key.ToString();
-              
-                if (retrieveKey[0] == IPKEY)
-                {
-                    ipValue = IPDictionary.ElementAt(i).Value;
-                }
-                if(retrieveKey[1] == MACKEY)
-                {
-                    macValue = MACDictionary.ElementAt(i).Value;
-                }
-               
-            }
+            //var noDupsList = new HashSet<string>(count.Keys).ToList();
 
-            
-            string[] keySet = new string[] { ipValue, macValue , retrieveKey[2]};
-            return keySet;
+            //String[] filteredIPList = new String[noDupsList.Count];
+            //String[] filteredMACList = new String[noDupsList.Count];
+            //String[] filteredDAYList = new String[noDupsList.Count];
+            //int counter = 0;
+            //foreach (string element in noDupsList)
+            //{
+            //    String[] myElement = element.Split('/');
+            //    filteredIPList[counter] = myElement[0];
+            //    filteredMACList[counter] = myElement[1];
+            //    filteredDAYList[counter] = myElement[2];
+            //    counter++;
+            //}
+
+            //Dictionary<int, string> IPDictionary = new Dictionary<int, string>();
+            //Dictionary<int, string> MACDictionary = new Dictionary<int, string>();
+            //Dictionary<int, string> DAYDictionary = new Dictionary<int, string>();
+            //for (int i = 0; i < filteredIPList.Count(); i++)
+            //{
+            //    IPDictionary.Add(i, filteredIPList[i]);
+            //    MACDictionary.Add(i, filteredMACList[i]);
+            //    DAYDictionary.Add(i, filteredDAYList[i]);
+            //}
+            //string ipValue = "-1";
+            //string macValue = "-1";
+            //string dayValue = "-1";
+            //for(int i = 0; i < IPDictionary.Count(); i++)
+            //{
+            //    string IPKEY = IPDictionary.ElementAt(i).Key.ToString();
+            //    string MACKEY = MACDictionary.ElementAt(i).Key.ToString();
+
+            //    if (retrieveKey[0] == IPKEY)
+            //    {
+            //        ipValue = IPDictionary.ElementAt(i).Value;
+            //    }
+            //    if(retrieveKey[1] == MACKEY)
+            //    {
+            //        macValue = MACDictionary.ElementAt(i).Value;
+            //    }
+
+            //}
+
+
+            //string[] keySet = new string[] { ipValue, macValue , retrieveKey[2]};
+            //return keySet;
         }
 
-       
+        private static string checkCountForValue(string ipValue, string macValue, string day, Dictionary<string, int> count)
+        {
+            string check = ipValue + "/" + macValue + "/" + day;
+            int value = 0;
+            Console.WriteLine(check);
+            if (count.ContainsKey(check))
+            {
+                value = count.FirstOrDefault(x => x.Key == check).Value;
+            }
+            else
+            {
+                value = 1;
+            }
+            return Convert.ToString(value);
+        }
+
         public static Dictionary<string, int> getCountNumber(string[][] ipAddressCollection)
         {
             Dictionary<string, int> count = new Dictionary<string, int>();
@@ -204,56 +255,118 @@ namespace testingApp
             //    Console.WriteLine("Value {0} occurred {1} times.", pair.Key, pair.Value);
 
             //Removes any duplicate IP addresses/MAC address pair to get the Unique IP/ MAC address pair //
-            var noDupsList = new HashSet<string>(count.Keys).ToList();
-
-            String[] filteredIPList = new String[noDupsList.Count];
-            String[] filteredMACList = new String[noDupsList.Count];
-            String[] filteredDAYList = new String[noDupsList.Count];
-            int counter = 0;
-            foreach (string element in noDupsList)
+            List<String> IPlist = new List<string>();
+            List<String> MAClist = new List<string>();
+            List<String> DAYlist = new List<string>();
+            foreach (string element in count.Keys)
             {
                 String[] myElement = element.Split('/');
-                filteredIPList[counter] = myElement[0];
-                filteredMACList[counter] = myElement[1];
-                filteredDAYList[counter] = myElement[2];
-                counter++;
+                IPlist.Add(myElement[0]);
+                MAClist.Add(myElement[1]);
+                DAYlist.Add(myElement[2]);
             }
 
-            Dictionary<int, string> IPDictionary = new Dictionary<int, string>();
-            Dictionary<int, string> MACDictionary = new Dictionary<int, string>();
-            Dictionary<int, string> DAYDictionary = new Dictionary<int, string>();
-            for (int i = 0; i < filteredIPList.Count(); i++)
+            var noIPDupsList = removeDuplicate(IPlist);
+            var noMACDupsList = removeDuplicate(MAClist);
+
+            Dictionary<int, string> IP1Dictionary = linkData(noIPDupsList);
+            Dictionary<int, string> MAC2Dictionary = linkData(noMACDupsList);
+            
+            int counter = 0;
+
+            int ipkey = -1,
+                mackey = -1;
+            string daykey = query[2];
+
+            if(IP1Dictionary.ContainsValue(query[0]))
             {
-                IPDictionary.Add(i, filteredIPList[i]);
-                MACDictionary.Add(i, filteredMACList[i]);
-                DAYDictionary.Add(i, filteredDAYList[i]);
+                ipkey = IP1Dictionary.FirstOrDefault(x => x.Value == query[0]).Key;
             }
 
-            string[] returnKey = null;
-            int IPkey = -1;
-            int MACkey = -1;
-            int DAYkey = -1;
-            for (int i = 0; i < IPDictionary.Count; i++)
+            if (MAC2Dictionary.ContainsValue(query[1]))
             {
-                string checkIP = IPDictionary.ElementAt(i).Value;
-                string checkMAC = MACDictionary.ElementAt(i).Value;
-                if (query[0] == checkIP)
-                {
-                    IPkey = IPDictionary.ElementAt(i).Key;
-                    
-                }
-                if (query[1] == checkMAC)
-                {
-                    MACkey = MACDictionary.ElementAt(i).Key;
-                   
-                }
-               
+                mackey = MAC2Dictionary.FirstOrDefault(x => x.Value == query[1]).Key;
 
-               
-               
             }
-            returnKey = new string[] { Convert.ToString(IPkey), Convert.ToString(MACkey), query[2]};
-            return returnKey;
+            
+            string ipValue = IP1Dictionary.FirstOrDefault(x => x.Key == ipkey).Value;
+            
+            string macValue = MAC2Dictionary.FirstOrDefault(x => x.Key == mackey).Value;
+            string value = checkCountForValue(ipValue, macValue, daykey, count);
+            
+            string [] data = new string[] { Convert.ToString(ipkey), Convert.ToString(mackey), daykey, value };
+            return data;
+            //foreach (string element in count.Keys)
+            //{
+            //    String[] myElement = element.Split('/');
+            //    if (IP1Dictionary.ContainsValue(myElement[0]))
+            //    {
+            //        ipkey = IP1Dictionary.FirstOrDefault(x => x.Value == myElement[0]).Key;
+
+            //    }
+
+            //    if (MAC2Dictionary.ContainsValue(myElement[1]))
+            //    {
+            //        mackey = MAC2Dictionary.FirstOrDefault(x => x.Value == myElement[1]).Key;
+
+            //    }
+            //    data[counter] = new string[] { Convert.ToString(ipkey), Convert.ToString(mackey), daykey, Convert.ToString(count.ElementAt(counter).Value) };
+            //    counter++;
+            //}
+
+
+
+
+            //var noDupsList = new HashSet<string>(count.Keys).ToList();
+
+            //String[] filteredIPList = new String[noDupsList.Count];
+            //String[] filteredMACList = new String[noDupsList.Count];
+            //String[] filteredDAYList = new String[noDupsList.Count];
+            //int counter = 0;
+            //foreach (string element in noDupsList)
+            //{
+            //    String[] myElement = element.Split('/');
+            //    filteredIPList[counter] = myElement[0];
+            //    filteredMACList[counter] = myElement[1];
+            //    filteredDAYList[counter] = myElement[2];
+            //    counter++;
+            //}
+
+            //Dictionary<int, string> IPDictionary = new Dictionary<int, string>();
+            //Dictionary<int, string> MACDictionary = new Dictionary<int, string>();
+            //Dictionary<int, string> DAYDictionary = new Dictionary<int, string>();
+            //for (int i = 0; i < filteredIPList.Count(); i++)
+            //{
+            //    IPDictionary.Add(i, filteredIPList[i]);
+            //    MACDictionary.Add(i, filteredMACList[i]);
+            //    DAYDictionary.Add(i, filteredDAYList[i]);
+            //}
+
+            //string[] returnKey = null;
+            //int IPkey = -1;
+            //int MACkey = -1;
+            //int DAYkey = -1;
+            //for (int i = 0; i < IPDictionary.Count; i++)
+            //{
+            //    string checkIP = IPDictionary.ElementAt(i).Value;
+            //    string checkMAC = MACDictionary.ElementAt(i).Value;
+            //    if (query[0] == checkIP)
+            //    {
+            //        IPkey = IPDictionary.ElementAt(i).Key;
+
+            //    }
+            //    if (query[1] == checkMAC)
+            //    {
+            //        MACkey = MACDictionary.ElementAt(i).Key;
+
+            //    }
+
+
+
+
+            //}
+            //returnKey = new string[] { Convert.ToString(IPkey), Convert.ToString(MACkey), query[2]};
+            //return returnKey;
         }
 
         public static string[][] getValueArray(string[][] ipAddressCollection)
@@ -275,52 +388,114 @@ namespace testingApp
             //    Console.WriteLine("Value {0} occurred {1} times.", pair.Key, pair.Value);
 
             //Removes any duplicate IP addresses/MAC address pair to get the Unique IP/ MAC address pair //
-            var noDupsList = new HashSet<string>(count.Keys).ToList();
-
-            String[] filteredIPList = new String[noDupsList.Count];
-            String[] filteredMACList = new String[noDupsList.Count];
-            String[] filteredDayList = new String[noDupsList.Count];
-            int counter = 0;
-            foreach (string element in noDupsList)
+            List<String> IPlist = new List<string>();
+            List<String> MAClist = new List<string>();
+            List<String> DAYlist = new List<string>();
+            foreach(string element in count.Keys)
             {
                 String[] myElement = element.Split('/');
-                filteredIPList[counter] = myElement[0];
-                filteredMACList[counter] = myElement[1];
-                filteredDayList[counter] = myElement[2];
-                counter++;
+                IPlist.Add(myElement[0]);
+                MAClist.Add(myElement[1]);
+                DAYlist.Add(myElement[2]);
             }
 
-            Dictionary<int, string> IPDictionary = new Dictionary<int, string>();
-            Dictionary<int, string> MACDictionary = new Dictionary<int, string>();
-            Dictionary<int, string> DayDictionary  = new Dictionary<int, string>();
-            for (int i = 0; i < filteredIPList.Count(); i++)
+            var noIPDupsList = removeDuplicate(IPlist);
+            var noMACDupsList = removeDuplicate(MAClist);
+            foreach (var element in noMACDupsList)
             {
-                IPDictionary.Add(i, filteredIPList[i]);
-                MACDictionary.Add(i, filteredMACList[i]);
-                DayDictionary.Add(i ,filteredDayList[i]);
+                Console.WriteLine(element);
             }
-            counter = 0;
-            string[][] data = new string[IPDictionary.Count()][];
-            foreach (var element in count)
+            Dictionary<int, string> IP1Dictionary = linkData(noIPDupsList);
+            Dictionary<int, string> MAC2Dictionary = linkData(noMACDupsList);
+            string[][] data = new string[count.Count][];
+            int counter = 0;
+            foreach (string element in count.Keys)
             {
-                string day = DayDictionary[counter];
-                for (int i = 0; i < IPDictionary.Count; i++)
+                int ipkey = -1,
+                    mackey = -1;
+                string daykey = DAYlist[counter];
+                String[] myElement = element.Split('/');
+                if(IP1Dictionary.ContainsValue(myElement[0]))
                 {
-                    
-                    string IP = IPDictionary.ElementAt(i).Value;
-                    string MAC = MACDictionary.ElementAt(i).Value;
-                    string DAY = DayDictionary.ElementAt(i).Value;
-                    string concat = IP + "/" + MAC + "/" + DAY;
-                    if (concat.Equals(element.Key))
-                    {
-                        //Console.WriteLine("The IP Address of " + IP + " with the mac address " + MAC + " has appeared " + element.Value);
-                        data[i] = new string[] { Convert.ToString(IPDictionary.ElementAt(i).Key), Convert.ToString(MACDictionary.ElementAt(i).Key) , day};
-                    }
+                    ipkey = IP1Dictionary.FirstOrDefault(x => x.Value == myElement[0]).Key;
+                   
                 }
+
+                if(MAC2Dictionary.ContainsValue(myElement[1]))
+                {
+                    mackey = MAC2Dictionary.FirstOrDefault(x => x.Value == myElement[1]).Key;
+               
+                }
+                data[counter] = new string[] { Convert.ToString(ipkey), Convert.ToString(mackey), daykey, Convert.ToString(count.ElementAt(counter).Value) };
                 counter++;
             }
 
             return data;
+            //int counter = 0;
+
+            //var noDupsList = new HashSet<string>(count.Keys).ToList();
+
+            //String[] filteredIPList = new String[noDupsList.Count];
+            //String[] filteredMACList = new String[noDupsList.Count];
+            //String[] filteredDayList = new String[noDupsList.Count];
+
+            //foreach (string element in noDupsList)
+            //{
+            //    String[] myElement = element.Split('/');
+            //    filteredIPList[counter] = myElement[0];
+            //    filteredMACList[counter] = myElement[1];
+            //    filteredDayList[counter] = myElement[2];
+            //    counter++;
+            //}
+
+            //Dictionary<int, string> IPDictionary = new Dictionary<int, string>();
+            //Dictionary<int, string> MACDictionary = new Dictionary<int, string>();
+            //Dictionary<int, string> DayDictionary = new Dictionary<int, string>();
+            //for (int i = 0; i < filteredIPList.Count(); i++)
+            //{
+            //    IPDictionary.Add(i, filteredIPList[i]);
+            //    MACDictionary.Add(i, filteredMACList[i]);
+            //    DayDictionary.Add(i, filteredDayList[i]);
+            //}
+            //counter = 0;
+            //string[][] data = new string[IPDictionary.Count()][];
+            //foreach (var element in count)
+            //{
+            //    string day = DayDictionary[counter];
+            //    for (int i = 0; i < IPDictionary.Count; i++)
+            //    {
+
+            //        string IP = IPDictionary.ElementAt(i).Value;
+            //        string MAC = MACDictionary.ElementAt(i).Value;
+            //        string DAY = DayDictionary.ElementAt(i).Value;
+            //        string concat = IP + "/" + MAC + "/" + DAY;
+            //        if (concat.Equals(element.Key))
+            //        {
+            //            //Console.WriteLine("The IP Address of " + IP + " with the mac address " + MAC + " has appeared " + element.Value);
+            //            data[i] = new string[] { Convert.ToString(IPDictionary.ElementAt(i).Key), Convert.ToString(MACDictionary.ElementAt(i).Key) , day};
+            //        }
+            //    }
+            //    counter++;
+            //}
+
+        }
+      
+
+        public static Dictionary<int , string> linkData(List<string> dataset)
+        {
+            Dictionary<int, string> linkDictionary = new Dictionary<int, string>();
+            int counter = 0;
+            foreach (var element in dataset)
+            {
+                linkDictionary.Add(counter, element);
+                counter++;
+            }
+            return linkDictionary;
+        }
+        public static List<String> removeDuplicate(List<string> dataset)
+        {
+            var hashSet = new HashSet<string>(dataset).ToList();
+            return hashSet;
         }
 
         private static string getCurrentPrivateIP()
