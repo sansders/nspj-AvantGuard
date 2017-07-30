@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Xps.Packaging;
 
 namespace Cloud.BinPage
 {
@@ -47,44 +48,13 @@ namespace Cloud.BinPage
             da.Fill(dt);
             listView.ItemsSource = dt.DefaultView;
             con.Close();
-
-            foreach (DataRowView item in listView.Items)
-            {
-                newList.Add(item.ToString());
-            }
         }
+
 
         //SEARCH FUNCTION
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
-            if (!string.IsNullOrWhiteSpace(searchBar.Text))
-            {
-
-                listView.Items.Clear();
-
-                for (int i = 0; i < newList.Count; i++)
-                {
-                    var item = newList[i];
-                    if (item.ToLower().Contains(searchBar.Text.ToLower()))
-                    {
-                        listView.Items.Add(item);
-                    }
-                }
-
-            }
-
-
-            else
-            {
-                listView.Items.Clear();
-
-                for (int i = 0; i < newList.Count; i++)
-                {
-                    var item = newList[i];
-                    listView.Items.Add(item);
-                }
-            }
+            dt.DefaultView.RowFilter = String.Format("docName LIKE '%{0}%'", searchBar.Text);
         }
 
 
@@ -396,6 +366,49 @@ namespace Cloud.BinPage
 
             MessageBox.Show("Downloaded.");
 
+        }
+
+
+        //UPLOAD AND OPEN PPT FROM FILE EXPLORER
+        public void openPPTBtn_Click(Object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            openFileDialog.RestoreDirectory = true;
+            openFileDialog.DefaultExt = ".ppt";
+            openFileDialog.Filter = "PowerPoint Presentations(*.ppt;*.pptx)|*.ppt;*.pptx";
+
+            Nullable<bool> result = openFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                String filename = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+                String fullfilename = System.IO.Path.GetFullPath(openFileDialog.FileName);
+                Microsoft.Office.Interop.PowerPoint.Application pptApp = new Microsoft.Office.Interop.PowerPoint.Application();
+                Microsoft.Office.Interop.PowerPoint.Presentation presentation = pptApp.Presentations.Open(fullfilename, MsoTriState.msoTrue, MsoTriState.msoFalse, MsoTriState.msoFalse);
+
+                var xpsFile = System.IO.Path.GetTempPath() + Guid.NewGuid() + ".xps";
+
+                try
+                {
+                    presentation.ExportAsFixedFormat(xpsFile, Microsoft.Office.Interop.PowerPoint.PpFixedFormatType.ppFixedFormatTypeXPS);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to export to XPS format: " + ex);
+                }
+                finally
+                {
+                    presentation.Close();
+                    pptApp.Quit();
+                }
+
+                var xpsDocument = new XpsDocument(xpsFile, FileAccess.Read);
+
+                pptViewer.Visibility = System.Windows.Visibility.Visible;
+                pptViewer.Document = xpsDocument.GetFixedDocumentSequence();
+
+            }
         }
 
 
