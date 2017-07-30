@@ -63,18 +63,10 @@ namespace Layout.Upload
                 Controllers.KeyController kc = new Controllers.KeyController();
                              
                 string fileName;
-                string stringFormatOfFile;
                 fileName = dlg.FileName; //Will be useful in the future when selecting files
+                byte[] byteFormatOfFile = File.ReadAllBytes(@fileName);
 
-                using (StreamReader streamReader = new StreamReader(fileName, Encoding.Unicode))
-                {
-                    stringFormatOfFile = streamReader.ReadToEnd();
-                }
-           
-                byte[] byteFormatOfFile = Encoding.Unicode.GetBytes(stringFormatOfFile);
-                Console.WriteLine("Gets bytes of file");
 
-         
 
                 //Hash Computation
                 SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
@@ -104,7 +96,7 @@ namespace Layout.Upload
                     Controllers.Prompt.ShowDialog("Hash does not match!", "Error");
                     userHashInput.Document.Blocks.Clear();
                 }
-                /*
+                
                 else
                 {
                     byte[] IV = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
@@ -114,7 +106,7 @@ namespace Layout.Upload
                     //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
                     byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
                     //Encrypts plaintext with symmetric key
-                    byte[] cipherText = kc.symmetricEncryption(stringFormatOfFile, decryptedSymmetricKey, IV);
+                    byte[] cipherText = kc.symmetricEncryption(byteFormatOfFile, decryptedSymmetricKey, IV);
 
                     //For debugging purposes
                     fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
@@ -122,7 +114,7 @@ namespace Layout.Upload
                     System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName, testOutput);
                     Console.WriteLine(fileName + " has successfully been encrypted!");
                     Console.WriteLine("");
-                }*/
+                }
 
                 // 25.7.17 UPDATE
                 //
@@ -133,7 +125,7 @@ namespace Layout.Upload
                 //    If key entered is correct, then the correct file will be extracted.
                 //    If key entered is incorrect, a corrupted file will be extracted.
                 //
-                // 3) File decryption not complete
+                // 3) File decryption not complete (SOLVED)
             }
         }
     }

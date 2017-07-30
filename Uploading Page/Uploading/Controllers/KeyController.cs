@@ -126,8 +126,10 @@ namespace Layout.Controllers
                 rm = new RijndaelManaged();
                 rm.Key = Key;
                 rm.IV = IV;
+                rm.Mode = CipherMode.CBC;
                 rm.Padding = PaddingMode.Zeros;
-
+                rm.BlockSize = 128;
+                
 
                 ms = new MemoryStream();
 
@@ -136,9 +138,10 @@ namespace Layout.Controllers
 
                 //Writes the data to memory to perform the transformation
                 cs = new CryptoStream(ms, Encryptor, CryptoStreamMode.Write);
-
+               
                 //Takes in string to be encrypted, offset value, & length of string to be encrypted
                 cs.Write(plainBytes, 0, plainBytes.Length);
+                cs.FlushFinalBlock();
             }
             finally
             {
@@ -210,8 +213,9 @@ namespace Layout.Controllers
                 rm = new RijndaelManaged();
                 rm.Key = Key;
                 rm.IV = IV;
+                rm.Mode = CipherMode.CBC;
                 rm.Padding = PaddingMode.Zeros;
-
+                rm.BlockSize = 128;
 
                 //Get stream of cipherText
                 ms = new MemoryStream(cipherText);
@@ -260,7 +264,6 @@ namespace Layout.Controllers
         // RSA can be used to encrypt the symmetric keys instead, if that makes any sense
         // - Sean
 
-
         // 13.7.2017 Update
         // Methods for symmetric key generation, symmetric encryption algorithm, & symmetric decryption algorithm have been completed
         // Next will be to alter asymmetric encryption & decryption methods so that they encrypt/decrypt the symmetric key instead of the files
@@ -276,6 +279,16 @@ namespace Layout.Controllers
         // Decryption decrypts, but gives incomplete output.
         // Vanilla does not match, chocolate matches.
         // Also, I've temporarily disabled encryption in Page1.xaml
-        // -Sean
+        // - Sean
+
+        // 30.7.2017 Update
+        // Decryption's output has been fixed.
+        // Solution was to flush the final block in order to get those last bytes.
+        // Encryption in Page1.xaml has ben re-enabled.
+        //
+        // However, (sigh)
+        // I realised that encryption/decryption only works properly on txt files and not other file formats like .png and .docx
+        // Thats a huge problem :/
+        // - Sean
     }
 }
