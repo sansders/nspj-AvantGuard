@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSPJProject", "NSPJProject\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profile Creation Page 1", "..\Behavior Layout\BehaviorAnalysis\WpfApp1\Profile Creation Page 1.csproj", "{4AF7A18C-F284-464D-8902-A5930C390AC0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserModel", "..\Resource\User Model\UserModel\UserModel\UserModel.csproj", "{BE36DE03-71D7-44C6-A6C6-D6B8AF6C6F61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4AF7A18C-F284-464D-8902-A5930C390AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AF7A18C-F284-464D-8902-A5930C390AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AF7A18C-F284-464D-8902-A5930C390AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE36DE03-71D7-44C6-A6C6-D6B8AF6C6F61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE36DE03-71D7-44C6-A6C6-D6B8AF6C6F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE36DE03-71D7-44C6-A6C6-D6B8AF6C6F61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE36DE03-71D7-44C6-A6C6-D6B8AF6C6F61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
