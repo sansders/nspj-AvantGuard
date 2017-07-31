@@ -195,6 +195,7 @@ namespace WpfApp1.Model1
         }
 
 
+
         //public static void setfirstpage(system.windows.controls.page page1)
         //{
         //    _page1 = page1;

@@ -21,7 +21,11 @@ namespace UserModel
         public String _securityQ1Ans;
         public String _securityQ2;
         public String _securityQ2Ans;
-
+        public String _profile1Answer;
+        public String _profile2Answer;
+        public String _profile3Answer; 
+        public String _profile4Answer;
+        public static UserModel _currentUserModel;
         public UserModel()
         {
 
@@ -101,6 +105,40 @@ namespace UserModel
             get { return _securityQ2Ans; }
             set { _securityQ2Ans = value; }
         }
+
+        public string profile1
+        {
+            get { return _profile1Answer; }
+            set { _profile1Answer = value; }
+        }
+
+        public string profile2
+        {
+            get { return _profile2Answer; }
+            set { _profile2Answer = value; }
+        }
+
+        public string profile3
+        {
+            get { return _profile3Answer; }
+            set { _profile3Answer = value; }
+        }
+
+        public string profile4
+        {
+            get { return _profile4Answer; }
+            set { _profile4Answer = value; }
+        }
+
+
+        public static UserModel currentUserModel
+        {
+            get { return _currentUserModel; }
+            set { _currentUserModel = value;  }
+        }
+
+        1
+
 
         public void saveToDatabase()
         {
