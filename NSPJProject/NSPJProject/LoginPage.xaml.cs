@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +37,7 @@ namespace NSPJProject
         public string GetSha512FromString(string strData)
         {
             //strData.Insert(0, "XYZ");
-            var message = Encoding.ASCII.GetBytes(strData.Insert(2, "026620758babadb008ee7b98e1bb07351f08d49228c15f6f31c4ee75cb9a26f5079b81c01f14f78cf5f9639e49d7319ee3c3fcc1f94e686b8d605c93f2ab9fb4"));
+            var message = Encoding.ASCII.GetBytes(strData.Insert(2, "02662028c15f6f31c4758babadb008ee7b98e1bb07351f08d492ee75cb9a26f5079b81c01f14f78cf5f9639e49d7319ee3c3fcc1f94e686b8d605c93f2ab9fb4"));
             SHA512Managed hashString = new SHA512Managed();
             string hex = "";
 
@@ -75,39 +77,57 @@ namespace NSPJProject
             {
                 con = new SqlConnection(connectionString);
                 con.Open();
-                //cmd = new SqlCommand("SELECT Username , Name , ContactNo , Password FROM [dbo].[UserAcc]", con);
-                cmd = new SqlCommand("select * from dbo.test where UserID = '" + UserIDTextBox.Text + "' and Password = '" + PasswordTextBox.Password + "'", con);
+                cmd = new SqlCommand("select * from [dbo].[test] where UserID = '" + UserIDTextBox.Text + "' and Password = '" + PasswordTextBox.Password + "'", con);
                 reader = cmd.ExecuteReader();
-
 
                 int count = 0;
                 while (reader.Read())
                 {
                     count += 1;
-                    Console.WriteLine(" | Username : " + reader.GetString(0) + " | Name : " + reader.GetString(1) + " | Contact No : " + reader.GetString(2) + " | Password : " + reader.GetString(3));
+                    //Bryan's code
+                    Console.WriteLine(" | UserID : " + reader.GetString(0) + " | Password : " + reader.GetString(1) + " | Name : " + reader.GetString(2) + " | Email : " + reader.GetString(3) + " | ContactNo : " + reader.GetString(4));
                 }
 
                 if (count == 1)
                 {
+                    //cmd = new SqlCommand("INSERT INTO dbo (UserID, DateOfLogin, TimeOfLogin, SuccessfulLogin, AccountLocked) VALUES (@UserID, @DateOfLogin, @TimeOfLogin, @SuccessfulLogin, @AccountLocked", con);
+                    //cmd.Parameters.AddWithValue('@UserID', UserIDTextBox.Text);
+                    //cmd.Parameters.AddWithValue("@DateOfLogin", DateTime.Now.ToShortDateString());
+                    //cmd.Parameters.AddWithValue("@TimeOfLogin", DateTime.Now.ToString("HH.mm"));
+                    //cmd.Parameters.AddWithValue("@SuccessfulLogin", 'Y');
+                    //cmd.Parameters.AddWithValue("@AccountLocked", null);
+
                     MessageBox.Show("Successful Login.");
 
                 }
 
-                else if (count > 0)
-                {
-                    MessageBox.Show("Duplicate userid and password.");
-                }
+                //else if (count > 0)
+                //{
+                //    cmd = new SqlCommand("INSERT INTO dbo.test (DateOfLogin, TimeOfLogin, SuccessfulLogin, AccountLocked) VALUES (@DateOfLogin, @TimeOfLogin, @SuccessfulLogin, @AccountLocked", con);
+                //    cmd.Parameters.AddWithValue("@DateOfLogin", DateTime.Now.ToShortDateString());
+                //    cmd.Parameters.AddWithValue("@TimeOfLogin", DateTime.Now.ToString("HH.mm"));
+                //    cmd.Parameters.AddWithValue("@SuccessfulLogin", 'N');
+                //    cmd.Parameters.AddWithValue("@AccountLocked", null);
+
+                //    MessageBox.Show("Duplicate userid and password.");
+                //}
 
                 else
                 {
-                    MessageBox.Show("Invalid userid or password");
-                }
+                    //cmd = new SqlCommand("INSERT INTO dbo.test (DateOfLogin, TimeOfLogin, SuccessfulLogin, AccountLocked) VALUES (@DateOfLogin, @TimeOfLogin, @SuccessfulLogin, @AccountLocked", con);
+                    //cmd.Parameters.AddWithValue("@DateOfLogin", DateTime.Now.ToShortDateString());
+                    //cmd.Parameters.AddWithValue("@TimeOfLogin", DateTime.Now.ToString("HH.mm"));
+                    //cmd.Parameters.AddWithValue("@SuccessfulLogin", 'N');
+                    //cmd.Parameters.AddWithValue("@AccountLocked", null);
+                    MessageBox.Show("Invalid user id or password.");
 
-                UserIDTextBox.Clear();
-                PasswordTextBox.Clear();
 
                     
-                
+                }   
+
+                UserIDTextBox.Clear();
+                PasswordTextBox.Clear();               
+
             }
             catch (Exception ex)
             {

@@ -19,5 +19,9 @@ namespace NSPJProject
         public string UserEmail { get; internal set; }
         public string UserContact { get; internal set; }
         public string UserDOB { get; internal set; }
+        public string SecurityQ1 { get; internal set; }
+        public string Q1Ans { get; internal set; }
+        public string SecurityQ2 { get; internal set; }
+        public string Q2Ans { get; internal set; }
     }
 }

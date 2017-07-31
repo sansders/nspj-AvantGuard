@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,107 +41,6 @@ namespace NSPJProject.Model1
             this._securityQ2 = _securityQ2;
             this._securityQ2Ans = _securityQ2Ans;
         }
-
-        public string getUserID()
-        {
-            return _userID;
-        }
-
-        public void setUserID(string _userID)
-        {
-            this._userID = _userID;
-        }
-
-        public string getUserPassword()
-        {
-            return _userPassword;
-        }
-
-        public void setUserPassword(string _userPassword)
-        {
-            this._userPassword = _userPassword;
-        }
-
-        public string getUserName()
-        {
-            return _userName;
-        }
-
-        public void setUserName(string _userName)
-        {
-            this._userName = _userName;
-        }
-
-        public string getUserEmail()
-        {
-            return _userEmail;
-        }
-
-        public void setUserEmail(string _userEmail)
-        {
-            this._userEmail = _userEmail;
-        }
-
-        public string getUserContact()
-        {
-            return _userContact;
-        }
-
-        public void setUserContact(string _userContact)
-        {
-            this._userContact = _userContact;
-        }
-
-        public string getUserDOB()
-        {
-            return _userDOB;
-        }
-
-        public void setUserDOB(string _userDOB)
-        {
-            this._userDOB = _userDOB;
-        }
-
-        public string getSecurityQ1()
-        {
-            return _securityQ1;
-        }
-
-        public void setSecurityQ1(string _securityQ1)
-        {
-            this._securityQ1 = _securityQ1;
-        }
-
-        public string getSecurityQ1Ans()
-        {
-            return _securityQ1Ans;
-        }
-
-        public void setSecurityQ1Ans(string _securityQ1Ans)
-        {
-            this._securityQ1Ans = _securityQ1Ans;
-        }
-
-        public string getSecurityQ2()
-        {
-            return _securityQ2;
-        }
-
-        public void setSecurityQ2(string _securityQ2)
-        {
-            this._securityQ2 = _securityQ2;
-        }
-
-        public string getSecurityQ2Ans()
-        {
-            return _securityQ2Ans;
-        }
-
-        public void setSecurityQ2Ans(string _securityQ2Ans)
-        {
-            this._securityQ2Ans = _securityQ2Ans;
-        }
-
         public string userID
         {
             
@@ -201,7 +102,42 @@ namespace NSPJProject.Model1
             set { _securityQ2Ans = value; }
         }
 
+        public void saveToDatabase()
+        {
+            ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+            string connectionString = conSettings.ConnectionString;
+            SqlConnection con = new SqlConnection();
+            SqlCommand cmd;
+            SqlDataReader reader;
+            try
+            {
+                con = new SqlConnection(connectionString);
+                con.Open();
+                cmd = new SqlCommand("INSERT INTO [dbo].[test] (UserID, Password, Name, Email, ContactNo, DOB, SecurityQ1, Q1Ans, SecurityQ2, Q2Ans) VALUES (@UserID, @Password, @Name, @Email, @ContactNo, @DOB, @SecurityQ1, @Q1Ans, @SecurityQ2, @Q2Ans)", con);
+                cmd.Parameters.AddWithValue("@UserID", userID);
+                cmd.Parameters.AddWithValue("@Password", userPassword);
+                cmd.Parameters.AddWithValue("@Name", userName);
+                cmd.Parameters.AddWithValue("@Email", userEmail);
+                cmd.Parameters.AddWithValue("@ContactNo", userContact);
+                cmd.Parameters.AddWithValue("@DOB", userDOB);
+                cmd.Parameters.AddWithValue("@SecurityQ1", securityQ1);
+                cmd.Parameters.AddWithValue("@Q1Ans", securityQ1Ans);
+                cmd.Parameters.AddWithValue("@SecurityQ2", securityQ2);
+                cmd.Parameters.AddWithValue("@Q2Ans", securityQ2Ans);
 
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+
+                con.Close();
+            }
+        }
 
 
         public string getAccessApplicationPreference()

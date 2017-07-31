@@ -98,38 +98,49 @@ namespace NSPJProject
 
                 string selected_userDOB = (App.Current as App).UserDOB;
 
-                ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
-                string connectionString = conSettings.ConnectionString;
+                string selected_securityQ1 = SecurityQuestion1TextBox.Text;
 
-                try
-                {
-                    con = new SqlConnection(connectionString);
-                    con.Open();
-                    cmd = new SqlCommand("INSERT INTO dbo.test (UserID, Password, Name, Email, ContactNo, DOB, SecurityQ1, SecurityQ1Ans, SecurityQ2, SecurityQ2Ans) VALUES (@UserID, @Password, @Name, @Email, @ContactNo, @DOB, @SecurityQ1, @SecurityQ1Ans, @SecurityQ2, @SecurityQ2Ans)", con);
-                    cmd.Parameters.AddWithValue("@UserID", selected_userID);
-                    cmd.Parameters.AddWithValue("@Password", selected_userPassword);
-                    cmd.Parameters.AddWithValue("@Name", selected_userName);
-                    cmd.Parameters.AddWithValue("@Email", selected_userEmail);
-                    cmd.Parameters.AddWithValue("@ContactNo", selected_userContact);
-                    cmd.Parameters.AddWithValue("@DOB", selected_userDOB);
-                    cmd.Parameters.AddWithValue("@SecurityQ1", SecurityQuestion1TextBox.Text);
-                    cmd.Parameters.AddWithValue("@SecurityQ1Ans", Answer1TextBox.Text);
-                    cmd.Parameters.AddWithValue("@SecurityQ2", SecurityQuestion2TextBox.Text);
-                    cmd.Parameters.AddWithValue("@SecurityQ2Ans", Answer2TextBox.Text);
+                string selected_securityQ1Ans = Answer1TextBox.Text;
 
-                    //cmd = new SqlCommand("INSERT INTO [dbo].[UserAcc] VALUES (user.userID, user.userPassword, user.userName, user.userEmail, user.userContact, user.userDOB); ", con);
-                    cmd.ExecuteNonQuery();
+                string selected_securityQ2 = SecurityQuestion2TextBox.Text;
 
-                }
-                catch (Exception ex)
-                {
-                    System.Windows.MessageBox.Show(ex.Message);
-                }
-                finally
-                {
+                string selected_securityQ2Ans = Answer2TextBox.Text;
 
-                    con.Close();
-                }
+                UserModel newModel = new UserModel(selected_userID, selected_userPassword, selected_userName, selected_userEmail, selected_userContact, selected_userDOB,
+                selected_securityQ1 , selected_securityQ1Ans, selected_securityQ2, selected_securityQ2Ans);
+
+                newModel.saveToDatabase();
+                //ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+                //string connectionString = conSettings.ConnectionString;
+
+                //try
+                //{
+                //    con = new SqlConnection(connectionString);
+                //    con.Open();
+                //    cmd = new SqlCommand("INSERT INTO [dbo].[test] (UserID, Password, Name, Email, ContactNo, DOB, SecurityQ1, Q1Ans, SecurityQ2, Q2Ans) VALUES (@UserID, @Password, @Name, @Email, @ContactNo, @DOB, @SecurityQ1, @Q1Ans, @SecurityQ2, @Q2Ans)", con);
+                //    cmd.Parameters.AddWithValue("@UserID", selected_userID);
+                //    cmd.Parameters.AddWithValue("@Password", selected_userPassword);
+                //    cmd.Parameters.AddWithValue("@Name", selected_userName);
+                //    cmd.Parameters.AddWithValue("@Email", selected_userEmail);
+                //    cmd.Parameters.AddWithValue("@ContactNo", selected_userContact);
+                //    cmd.Parameters.AddWithValue("@DOB", selected_userDOB);
+                //    cmd.Parameters.AddWithValue("@SecurityQ1", SecurityQuestion1TextBox.Text);
+                //    cmd.Parameters.AddWithValue("@Q1Ans", Answer1TextBox.Text);
+                //    cmd.Parameters.AddWithValue("@SecurityQ2", SecurityQuestion2TextBox.Text);
+                //    cmd.Parameters.AddWithValue("@Q2Ans", Answer2TextBox.Text);
+
+                //    cmd.ExecuteNonQuery();
+
+                //}
+                //catch (Exception ex)
+                //{
+                //    System.Windows.MessageBox.Show(ex.Message);
+                //}
+                //finally
+                //{
+
+                //    con.Close();
+                //}
 
                 //MessageBox.Show("You're almost done. An email has been sent to your email address. Please verify your email address, thank you!");
                 this.NavigationService.Navigate(new Uri(@"SignUp3.xaml", UriKind.RelativeOrAbsolute));

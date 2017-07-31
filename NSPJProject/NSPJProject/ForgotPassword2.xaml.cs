@@ -64,5 +64,23 @@ namespace NSPJProject
                 MessageBox.Show("(Still Incomplete.");
             }
         }
+
+        private void Q1Label_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            string selected_SecurityQ1 = (App.Current as App).SecurityQ1;
+            string selected_Q1Ans = (App.Current as App).Q1Ans;
+            string selected_SecurityQ2 = (App.Current as App).SecurityQ2;
+            string selected_Q2Ans = (App.Current as App).Q2Ans;
+
+            Q1Label.Content = selected_SecurityQ1;
+        }
+
+        //string selected_SecurityQ1 = (App.Current as App).SecurityQ1;
+        //string selected_Q1Ans = (App.Current as App).Q1Ans;
+        //string selected_SecurityQ2 = (App.Current as App).SecurityQ2;
+        //string selected_Q2Ans = (App.Current as App).Q2Ans;
+
+        //Q1Label.Content = selected_SecurityQ1;
+        //Q2Label.Content = selected_SecurityQ2;
     }
 }
