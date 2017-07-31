@@ -137,7 +137,7 @@ namespace UserModel
             set { _currentUserModel = value;  }
         }
 
-        1
+        
 
 
         public void saveToDatabase()
