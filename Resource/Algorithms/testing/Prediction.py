@@ -44,7 +44,7 @@ def calculateKneigh(xValue, yValue, trainingData, total):
         value = nearest.kneighbors(test1,total)
     return value[1][0]
 
-def convertCommandLineArg():
+def convertCommandLineArg(totalSize):
     testing = []
     for i in range (3, totalSize):
         myvar = sys.argv[i]
@@ -76,7 +76,7 @@ plt.ylabel('Day of the week user logs in')
 
 #print("Generating data set")
 #testing = np.empty(totalSize - 3)
-data = convertCommandLineArg()
+data = convertCommandLineArg(totalSize)
 
 #newdata = np.insert(datatest, len(datatest), [xTest,yTest] , axis= 0 )
 
@@ -292,7 +292,7 @@ if(total !=0):
         aTotal += i
 
     aTotal = aTotal / len(neighDist)
-    print(aTotal)
+    #print(aTotal)
 #if(float(count) > 22):
 #    probability = "Low possibility that the entry at " + str(xTest) + " on day " + str(yTest) + " is an anomaly"
 #    riskLevel = 1
@@ -325,7 +325,7 @@ if(total !=0):
         riskLevel = 5
 
 print(str(riskLevel) + "/" + str(probability))
-plt.show()
+#plt.show()
 
 
 
