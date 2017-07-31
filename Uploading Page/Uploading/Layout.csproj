@@ -98,6 +98,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controllers\UploadingModel.cs" />
     <Compile Include="Controllers\HashController.cs" />
     <Compile Include="Controllers\KeyController.cs" />
     <Compile Include="Controllers\Prompt.cs" />

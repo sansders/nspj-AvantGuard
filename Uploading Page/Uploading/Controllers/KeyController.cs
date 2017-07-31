@@ -127,7 +127,7 @@ namespace Layout.Controllers
                 rm.Key = Key;
                 rm.IV = IV;
                 rm.Mode = CipherMode.CBC;
-                rm.Padding = PaddingMode.Zeros;
+                rm.Padding = PaddingMode.PKCS7;
                 rm.BlockSize = 128;
                 
 
@@ -206,7 +206,7 @@ namespace Layout.Controllers
             //Crypto streams allow encryption in memory
             CryptoStream cs = null;
             StreamReader sr = null;
-            string plainText;
+            byte[] plainText;
 
             try
             {
@@ -214,7 +214,7 @@ namespace Layout.Controllers
                 rm.Key = Key;
                 rm.IV = IV;
                 rm.Mode = CipherMode.CBC;
-                rm.Padding = PaddingMode.Zeros;
+                rm.Padding = PaddingMode.PKCS7;
                 rm.BlockSize = 128;
 
                 //Get stream of cipherText
@@ -229,7 +229,7 @@ namespace Layout.Controllers
                 //Reads CryptoStream
                 sr = new StreamReader(cs);
                 //.ReadToEnd returns plain text
-                plainText = sr.ReadToEnd();
+                plainText = Encoding.UTF8.GetBytes(sr.ReadToEnd());
             }
             finally
             {
@@ -240,8 +240,8 @@ namespace Layout.Controllers
                 ms.Flush();
                 ms.Close();
             }
-            byte[] bytePlainText = Encoding.Unicode.GetBytes(plainText);
-            return bytePlainText;
+            //byte[] bytePlainText = Encoding.Unicode.GetBytes(plainText);
+            return plainText;
         }
 
 
