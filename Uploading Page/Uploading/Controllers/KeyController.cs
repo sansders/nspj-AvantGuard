@@ -228,8 +228,21 @@ namespace Layout.Controllers
 
                 //Reads CryptoStream
                 sr = new StreamReader(cs);
+
+                //Copy the streamReader to a memoryStream, then convert the result to a byteArray
+                var bytes = default(byte[]);
+                using (var memstream = new MemoryStream())
+                {
+                    sr.BaseStream.CopyTo(memstream);
+                    bytes = memstream.ToArray();
+                }
+
+                plainText = bytes;
+
+
+                // UPDATE 31.7.2017 THESE LINES BROKEN
                 //.ReadToEnd returns plain text
-                plainText = Encoding.UTF8.GetBytes(sr.ReadToEnd());
+                //plainText = Encoding.UTF8.GetBytes(sr.ReadToEnd());
             }
             finally
             {
@@ -240,7 +253,6 @@ namespace Layout.Controllers
                 ms.Flush();
                 ms.Close();
             }
-            //byte[] bytePlainText = Encoding.Unicode.GetBytes(plainText);
             return plainText;
         }
 
@@ -290,5 +302,8 @@ namespace Layout.Controllers
         // I realised that encryption/decryption only works properly on txt files and not other file formats like .png and .docx
         // Thats a huge problem :/
         // - Sean
+
+        // 31.7.2017
+        // Problem in previous update is solved >:D
     }
 }
