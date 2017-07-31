@@ -29,16 +29,16 @@
             <TextBlock x:Uid="4" Text="Q4: What time of the day will you be accessing this application usually?" Grid.Row="1" Width="525"  Style="{StaticResource QuestionDesign}" Margin="4.2,0,-0.8,0"/>
             <StackPanel Grid.Row="2" Margin="0,0,0,0">
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <CheckBox Grid.Row="2" Content ="Early Morning - Morning (3am - 10am)" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource checkButtonDesign}" RenderTransformOrigin="2.168,1.165"/>
+                    <CheckBox Grid.Row="2" Content ="Early Morning (12am - 6am)" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource checkButtonDesign}" RenderTransformOrigin="2.168,1.165"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <CheckBox Grid.Row="2" Content="Morning - Afternoon (10am - 3pm)" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource checkButtonDesign}"  RenderTransformOrigin="2.168,1.165"></CheckBox>
+                    <CheckBox Grid.Row="2" Content="Morning (6am - 12pm)" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource checkButtonDesign}"  RenderTransformOrigin="2.168,1.165"></CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <CheckBox  Grid.Row="2" Content="Mid Afternoon - Evening (3pm-7pm)" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource checkButtonDesign}"  RenderTransformOrigin="2.168,1.165"></CheckBox>
+                    <CheckBox  Grid.Row="2" Content="Afternoon (12pm-6pm)" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource checkButtonDesign}"  RenderTransformOrigin="2.168,1.165"></CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <CheckBox Grid.Row="2" Content="Night to Early Morning (7pm-3am)" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource checkButtonDesign}"  RenderTransformOrigin="2.168,1.165"></CheckBox>
+                    <CheckBox Grid.Row="2" Content="Night (6pm-12am)" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource checkButtonDesign}"  RenderTransformOrigin="2.168,1.165"></CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
                     <CheckBox  Grid.Row="2" Content="Anytime of the day" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource checkButtonDesign}"  RenderTransformOrigin="2.168,1.165"></CheckBox>

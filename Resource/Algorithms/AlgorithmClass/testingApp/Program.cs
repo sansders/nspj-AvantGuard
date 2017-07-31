@@ -21,9 +21,9 @@ namespace testingApp
 
         static void Main(string[] args)
         {
-            String allText = System.IO.File.ReadAllText(@"../../TextFile2.txt");
+            String allText = System.IO.File.ReadAllText(@"../../TextFile1.txt");
             string[][] logInCollection = PredictionModel.readFromFile(allText);
-            double testTime = 14;
+            double testTime = 24;
             double testDay = 3;
             PredictionModel logInPredictionModel = new PredictionModel(testTime, testDay, logInCollection);
             string logInRiskLevel = logInPredictionModel.logInRisk;
@@ -45,10 +45,12 @@ namespace testingApp
                 new string[] { "131.23.244.105", "D00008", "3" },
                 new string[] { currentPublicIP, "D8000", "4" },
                 new string[] { currentPublicIP, macAddress, date },
-                new string[] { currentPublicIP, macAddress, date }
+                new string[] { currentPublicIP, macAddress, date },
+                new string[] { "151.23.244.105", "C000324", date }
             };
-            string[] query = new string[] { "193.12.18.0", "E088", date};
-
+            //string[] query = new string[] { "1311.23.244.105", "C0000008", date};
+            //string[] query = new string[] { currentPublicIP, macAddress, date };
+            string[] query = new string[] { "151.23.244.105", "C000324", date };
 
             PredictionModel ipPredictionModel = new PredictionModel(ipAddressCollection, query);
             string ipRisk = ipPredictionModel.ipRisk;
@@ -63,6 +65,27 @@ namespace testingApp
             Console.WriteLine(logInPercentage);
             Console.WriteLine(ipRisk);
             Console.WriteLine(riskLevel);
+            string riskStatement = null;
+            //Can do anything 
+           if (riskLevel <= 0.4 )
+            {
+                riskStatement = "The risk level is low";
+            }
+
+           // Removing access control and giving access control
+            else if (riskLevel <= 0.70)
+            {
+                riskStatement = "The risk level is medium";
+            }
+
+           //Instantly Re authenticate
+            else if (riskLevel >0.70)
+            {
+                riskStatement = "The risk level is high";
+            }
+           
+
+            Console.WriteLine(riskStatement);
 
             //string fileName = @"../../../../testing/IPPrediction.py";
 

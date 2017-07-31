@@ -948,12 +948,11 @@ for i in range (len(data1)):
         mytickers.append("Set " + str(i))
 for i in range (len(data1)):
 
-    ax.scatter(df.ix[i][0] , df.ix[i][1] , s=100)
-
-    ax2.scatter(i, df.ix[i][2], s=100)
-    ax2.set_xticklabels(mytickers, fontsize=10)
-    ax3.bar(i , df.ix[i][3])
-    ax3.set_xticklabels(mytickers , fontsize=10)
+        ax.scatter(df.ix[i][0] , df.ix[i][1] , s=100)
+        ax2.scatter(i, df.ix[i][2], s=100)
+        ax2.set_xticklabels(mytickers, fontsize=10)
+        ax3.bar(i , df.ix[i][3])
+        ax3.set_xticklabels(mytickers , fontsize=10)
 
 ipcount = 0
 maccount= 0
@@ -967,8 +966,8 @@ for i in range (len(data1)):
 
 ax.set_xlabel("Unique IP")
 ax.set_ylabel("Unique MAC")
-ax.set_xticks(np.arange(0 , ipcount + 1, 1))
-ax.set_yticks(np.arange(0, maccount + 1 , 1))
+ax.set_xticks(np.arange(-1 , ipcount + 1, 1))
+ax.set_yticks(np.arange(-1, maccount + 1 , 1))
 
 
 ax2.set_xlabel("Set Number")
@@ -989,7 +988,7 @@ ax3.set_yticks(np.arange(0, totalcount + 1, 1))
 ax.legend(labels=mytickers)
 ax2.legend(labels=mylabels)
 ax3.legend(labels=mylabels)
-multipage("predictionImages")
+multipage("predictionImages.pdf")
 
 #print(plt.show())
 

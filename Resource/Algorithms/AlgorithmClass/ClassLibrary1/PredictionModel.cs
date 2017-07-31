@@ -101,6 +101,7 @@ namespace AlgorithmLibary
             args[0] = fileURL;
             string output = startPythonProgramm(python, args);
             string[] result = output.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            Console.WriteLine(output);
             this.ipRisk = result[result.Length - 2];
             this.ipOutput = result[result.Length - 1];
            

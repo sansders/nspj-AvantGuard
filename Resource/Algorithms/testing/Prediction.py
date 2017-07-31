@@ -4,6 +4,16 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
+from matplotlib.backends.backend_pdf import PdfPages
+
+def multipage(filename, figs=None, dpi=200):
+    pp = PdfPages(filename)
+   
+    if figs is None:
+        figs = [plt.figure(n) for n in plt.get_fignums()]
+    for fig in figs:
+        fig.savefig(pp, format='pdf')
+    pp.close()
 
 def calNeigh(value,df,num_rows):
     numset = []
@@ -69,10 +79,11 @@ arg2 = sys.argv[2]
 xTest = float(arg1)
 yTest = float(arg2)
 
-plt.xlim([0,24])
+plt.xlim([0,25])
 plt.ylim([0,8])
 plt.xlabel('Hour user logs in')
 plt.ylabel('Day of the week user logs in')
+
 
 #print("Generating data set")
 #testing = np.empty(totalSize - 3)
@@ -136,6 +147,9 @@ for i in range(num_rows):
  
 
 plt.scatter(query[0] , query[1] , s=200 , c='y')
+
+
+
 #print(plt.show())
 
 import math
@@ -324,8 +338,12 @@ if(total !=0):
         probability = "High possibility that the entry at " + str(xTest) + " on day " + str(yTest) + " is an anomaly"
         riskLevel = 5
 
+
 print(str(riskLevel) + "/" + str(probability))
-#plt.show()
+
+
+multipage("logInPrediction.pdf")
+
 
 
 
