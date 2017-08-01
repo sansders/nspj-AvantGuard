@@ -4,6 +4,139 @@
              xmlns:local="clr-namespace:NSPJProject"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Indigo.Named.xaml" />-->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#23aeff"/>
+            <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#23aeff"/>
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#23aeff"/>
+            <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#23aeff"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#23aeff"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#23aeff"/>
+
+            <!--<Style  TargetType="{x:Type TextBlock}" x:Key="TextBlockHeader" BasedOn="{StaticResource MaterialDesignHeadlineTextBlock}">
+                <Setter x:Name="Tee" Property="TextDecorations" Value="Underline"  ></Setter>
+                <Setter Property="Pen.Brush" Value="Red" ></Setter>
+                
+            </Style>-->
+
+            <!--Style for all the Question Header-->
+            <Style TargetType="{x:Type TextBlock}" x:Key="QuestionDesign">
+                <Setter Property="FontFamily" Value="Arial"></Setter>
+                <Setter Property="FontSize" Value="15"></Setter>
+                <Setter Property="Height" Value="Auto"></Setter>
+                <Setter Property="Margin" Value="20,0,0,0"></Setter>
+                <Setter Property="VerticalAlignment" Value="Top"></Setter>
+                <Setter Property="TextWrapping" Value="Wrap"></Setter>
+
+            </Style>
+
+            <!--Style for all the Choices-->
+            <!--<Style TargetType="{x:Type Label}" x:Key="LabelDesign">
+                <Setter Property="FontFamily" Value="Arial"></Setter>
+            </Style>-->
+
+            <!--Style for the Radio Buttons as well as the choices-->
+            <Style TargetType="{x:Type RadioButton}" x:Key="choiceButtonDesign" BasedOn="{StaticResource MaterialDesignRadioButton}">
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                <Setter Property="Margin" Value="40,0,0,0"></Setter>
+                <Setter Property="FontFamily" Value="Arial"></Setter>
+            </Style>
+
+            <!--Style for the check boxes as well as the choices-->
+            <Style TargetType="{x:Type CheckBox}" x:Key="checkButtonDesign" BasedOn="{StaticResource MaterialDesignCheckBox}">
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                <Setter Property="Margin" Value="40,0,0,0"></Setter>
+                <Setter Property="FontFamily" Value="Arial"></Setter>
+            </Style>
+
+            <!-- Style for the Mouse Clicking Buttons -->
+            <Style TargetType="{x:Type Button}" x:Key="mouseClickDesign" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#c9d1d6"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <ControlTemplate x:Key="mouseClickTemplate" TargetType="Button">
+                <Ellipse  Height="30" Width="30" Fill="{TemplateBinding Background}"></Ellipse>
+            </ControlTemplate>
+
+            <!-- Style for the State Buttons -->
+            <Style TargetType="{x:Type Button}" x:Key="stateButtonDesign" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="white"></Setter>
+            </Style>
+
+            <!--Used for the Page Indication Button at the bottom -->
+            <Style TargetType="{x:Type RadioButton}" x:Key="pageIndicatorDesign" BasedOn="{StaticResource MaterialDesignRadioButton}">
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+            </Style>
+
+            <!-- For the Previous button-->
+            <Style TargetType="{x:Type TextBlock}" x:Key="previousButtonDesign" BasedOn="{StaticResource MaterialDesignButtonTextBlock}">
+                <Setter Property="TextAlignment" Value="Left"></Setter>
+                <Setter Property="Margin" Value="30,0,220,3"></Setter>
+                <Setter Property="Width" Value="auto"></Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground" Value="#23aeff"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--For the next Button-->
+            <Style TargetType="{x:Type  TextBlock}" x:Key="nextButtonDesign" BasedOn="{StaticResource MaterialDesignButtonTextBlock}">
+                <Setter Property="TextAlignment" Value="Right"></Setter>
+                <Setter Property="Margin" Value="190,0,30,3"></Setter>
+                <Setter Property="Width" Value="auto"></Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground" Value="#23aeff"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--For the next Button-->
+            <Style TargetType="{x:Type  TextBlock}" x:Key="submitButtonDesign" BasedOn="{StaticResource MaterialDesignButtonTextBlock}">
+                <Setter Property="TextAlignment" Value="Right"></Setter>
+                <Setter Property="Margin" Value="175,0,30,3"></Setter>
+                <Setter Property="Width" Value="auto"></Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground" Value="#23aeff"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--For the Page Number-->
+            <Style TargetType="{x:Type  TextBlock}" x:Key="PageNumber" BasedOn="{StaticResource MaterialDesignButtonTextBlock}">
+                <Setter Property="VerticalAlignment" Value="Top"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                <Setter Property="Margin" Value="0,3,30,3"></Setter>
+                <Setter Property="FontSize" Value="5"></Setter>
+            </Style>
+
+            <!--For the Paragraph Design-->
+            <Style TargetType="{x:Type RichTextBox}" x:Key="paragraphDesign">
+                <Setter Property="BorderThickness" Value="0,0,0,0"></Setter>
+            </Style>
+
+
+        </ResourceDictionary>
+
     </Application.Resources>
 </Application>

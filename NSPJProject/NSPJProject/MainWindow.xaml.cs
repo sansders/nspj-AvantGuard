@@ -13,8 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
-
+using WpfApp1.Model1;
+using WpfApp1;
+using WpfApp1.NavigationControls;
 namespace NSPJProject
 {
     /// <summary>
@@ -25,7 +26,11 @@ namespace NSPJProject
         public MainWindow()
         {
             InitializeComponent();
+            //this.AddChild(new WpfApp1.ProfilePages.Page1());
             rootBox.Source = new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute);
+            //CurrentPageModel currentModel = new CurrentPageModel();
+            //Page currentPage = new WpfApp1.ProfilePages.Page1();
+            //rootBox.NavigationService.Navigate(currentPage);
         }
     }
 }

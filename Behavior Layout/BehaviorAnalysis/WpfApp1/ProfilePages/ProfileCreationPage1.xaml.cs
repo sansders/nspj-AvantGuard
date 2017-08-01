@@ -43,7 +43,11 @@ namespace WpfApp1.ProfilePages
             //Load the Saved Instance of the second page//
             Page page2 = CurrentPageModel.secondPage;
             if(page2 == null)
-            {  this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage2.xaml", UriKind.RelativeOrAbsolute));}
+            {
+                    Page newPage = new Page2();
+                    //this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage2.xaml", UriKind.RelativeOrAbsolute));
+                    this.NavigationService.Navigate(newPage);
+            }
             else
             {
                 this.NavigationService.Navigate(page2);
@@ -74,11 +78,13 @@ namespace WpfApp1.ProfilePages
 
         private void PreviousPageHandler(object sender, MouseButtonEventArgs e)
         {
+            this.NavigationService.Navigate(new Uri(@"SignUp2.xaml", UriKind.RelativeOrAbsolute));
             //Save the Instance of the first page
-            CurrentPageModel.firstPage = this;
+            ///CurrentPageModel.firstPage = this;
             //Save the Instance of the first page controls
-            CurrentPageModel.firstControl = page1Controls;
+            ///CurrentPageModel.firstControl = page1Controls;
             //Change
+           
             // Navigate to Xiangjing profile page 
             // this.NavigationService.Navigate();
         }

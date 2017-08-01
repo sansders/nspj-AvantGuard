@@ -32,6 +32,7 @@ namespace WpfApp1.NavigationControls
             CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
             PageNumber.Text = currentPageNumber(currentClass.currentpage);
             buttonManipulation(currentClass.currentpage);
+
         }
         public void buttonManipulation(string currentPage)
         {

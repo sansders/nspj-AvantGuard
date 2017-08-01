@@ -63,8 +63,9 @@ namespace WpfApp1.ProfilePages
             
                 if (page3 == null)
                 {
-                    this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage3.xaml", UriKind.RelativeOrAbsolute));
-                }
+                    Page currentPage = new ProfileCreationPage3();
+                    this.NavigationService.Navigate(currentPage);
+                       }
                 else
                 {
                    this.NavigationService.Navigate(page3);
@@ -91,7 +92,11 @@ namespace WpfApp1.ProfilePages
             //Gets the Saved Instance of the first page and load it//
             Page page1 = CurrentPageModel.firstPage;
             if (page1 == null)
-            { this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage1.xaml", UriKind.RelativeOrAbsolute)); }
+            {
+                Page currentPage = new Page1();
+                this.NavigationService.Navigate(currentPage);
+                this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage1.xaml", UriKind.RelativeOrAbsolute));
+            }
             else
             {
                 this.NavigationService.Navigate(page1);

@@ -552,7 +552,8 @@ namespace WpfApp1.ProfilePages
             Page page5 = CurrentPageModel.fifthPage;
             if (page5 == null)
             {
-                this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage4.xaml", UriKind.RelativeOrAbsolute));
+                Page currentPage = new ProfileCreationPage5();
+                this.NavigationService.Navigate(currentPage);
             }
             else
             {

@@ -5,9 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:NSPJProject"
       mc:Ignorable="d" 
-      d:DesignHeight="500" d:DesignWidth="500"
+      d:DesignHeight="600" d:DesignWidth="500"
       Title="SignUp 2/2">
-
+    <!-- Change height from 500 to 600-->
     <Border>
         <Grid>
             <!-- Enable scrolling if screen is too small -->
@@ -150,10 +150,10 @@
                                        Width="20"
                                        Visibility="Hidden"></Image>
                             </StackPanel>
-
+                             <!--Change stack panel margin fro 0 16 0 5 to  0 -20 0 5 -->
                             <!-- Button To Validation -->
                             <StackPanel Orientation="Horizontal"
-                                        Margin="0 16 0 5"
+                                        Margin="0 -20 0 5"
                                         HorizontalAlignment="Center">
 
                                 <Button Name="SignUp2NextButton"

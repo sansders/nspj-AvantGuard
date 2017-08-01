@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1.Model1;
 
 namespace NSPJProject
 {
@@ -143,7 +144,11 @@ namespace NSPJProject
                 //}
 
                 //MessageBox.Show("You're almost done. An email has been sent to your email address. Please verify your email address, thank you!");
-                this.NavigationService.Navigate(new Uri(@"SignUp3.xaml", UriKind.RelativeOrAbsolute));
+                CurrentPageModel currentModel = new CurrentPageModel();
+                Page currentPage = new WpfApp1.ProfilePages.Page1();
+                this.NavigationService.Navigate(currentPage);
+                //rootBox.NavigationService.Navigate(currentPage);
+                //this.NavigationService.Navigate(new Uri(@"SignUp3.xaml", UriKind.RelativeOrAbsolute));
             }
 
         }

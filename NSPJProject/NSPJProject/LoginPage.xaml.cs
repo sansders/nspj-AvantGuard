@@ -90,12 +90,10 @@ namespace NSPJProject
 
                 if (count == 1)
                 {
-                    //cmd = new SqlCommand("INSERT INTO dbo (UserID, DateOfLogin, TimeOfLogin, SuccessfulLogin, AccountLocked) VALUES (@UserID, @DateOfLogin, @TimeOfLogin, @SuccessfulLogin, @AccountLocked", con);
-                    //cmd.Parameters.AddWithValue('@UserID', UserIDTextBox.Text);
-                    //cmd.Parameters.AddWithValue("@DateOfLogin", DateTime.Now.ToShortDateString());
-                    //cmd.Parameters.AddWithValue("@TimeOfLogin", DateTime.Now.ToString("HH.mm"));
-                    //cmd.Parameters.AddWithValue("@SuccessfulLogin", 'Y');
-                    //cmd.Parameters.AddWithValue("@AccountLocked", null);
+                    cmd = new SqlCommand("INSERT INTO [dbo].[LogAnalysis] (UserID, LoginTime, LoginDate) VALUES (@UserID, @LoginTime, @LoginDate", con);
+                    cmd.Parameters.AddWithValue("@UserID", UserIDTextBox.Text);
+                    cmd.Parameters.AddWithValue("@LoginTime", DateTime.Now.ToString("HH.mm"));
+                    cmd.Parameters.AddWithValue("@LoginDate", DateTime.Now.ToShortDateString());
 
                     MessageBox.Show("Successful Login.");
 

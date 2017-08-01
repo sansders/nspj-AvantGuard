@@ -62,7 +62,8 @@ namespace WpfApp1.ProfilePages
                 Page page5 = CurrentPageModel.fifthPage;
                 if (page5 == null)
                 {
-                    this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage5.xaml", UriKind.RelativeOrAbsolute));
+                    Page currentPage = new ProfileCreationPage5();
+                    this.NavigationService.Navigate(currentPage);
                 }
                 else
                 {
@@ -96,7 +97,9 @@ namespace WpfApp1.ProfilePages
             Page page3 = CurrentPageModel.thirdPage;
             if (page3 == null)
             {
-                this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage3.xaml", UriKind.RelativeOrAbsolute));
+                Page currentPage = new ProfileCreationPage3();
+                this.NavigationService.Navigate(currentPage);
+                //this.NavigationService.Navigate(new Uri(@"\ProfilePages\ProfileCreationPage3.xaml", UriKind.RelativeOrAbsolute));
             }
             else
             {
