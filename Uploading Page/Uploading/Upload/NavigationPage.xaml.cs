@@ -805,12 +805,19 @@ namespace Layout.Upload
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 fileName = dlg.FileName;
-                byte[] imageData = System.IO.File.ReadAllBytes(@fileName);
-                using (var ms = new MemoryStream(imageData))
+                string fileExtention = fileName.Substring(fileName.Length-3);
+                if (fileExtention.Equals("jpg"))
                 {
-                    bmp = new Bitmap(ms);
+                    bmp = Steganography.ConvertToBitmap(fileName);
                 }
-
+                else
+                {
+                    byte[] imageData = System.IO.File.ReadAllBytes(@fileName);
+                    using (var ms = new MemoryStream(imageData))
+                    {
+                        bmp = new Bitmap(ms);
+                    }
+                }
                 OpenFileDialog dlg1 = new OpenFileDialog();
                 if (dlg1.ShowDialog() == DialogResult.OK)
                 {

@@ -237,8 +237,7 @@ namespace Layout.Controllers
                     bytes = memstream.ToArray();
                 }
 
-                plainText = bytes;
-
+                plainText = bytes;  
 
                 // UPDATE 31.7.2017 THESE LINES BROKEN
                 //.ReadToEnd returns plain text
