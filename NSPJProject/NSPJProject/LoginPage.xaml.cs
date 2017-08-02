@@ -211,10 +211,45 @@ namespace NSPJProject
                         Console.WriteLine(logInOutput);
                         Console.WriteLine("The risk level is " + logInRiskLevel);
 
-                        //Left with intergration of the IP MAC prediction and total risk factor 
-                        //If Risk is low , login 
-                        //Else if risk is medium disable access list 
-                        //Else if risk is high, do 2fa and set a counter into a new database called 
+
+                        string[][] ipAddressCollection = getUserIPAddressCollection(userID, connectionString);
+                        string[] query = new string[] { publicIP , publicMAC, date };
+                        PredictionModel ipPredictionModel = new PredictionModel(ipAddressCollection, query);
+                        string ipRisk = ipPredictionModel.ipRisk;
+                        string ipOutput = ipPredictionModel.ipOutput;
+                        Console.WriteLine(ipOutput);
+
+                        double logInPercentage = Convert.ToDouble(logInRiskLevel) / 5.0;
+                        double ipPercentage = Convert.ToDouble(ipRisk);
+
+                        logInPercentage = (logInPercentage / 100) * 30;
+                        ipPercentage = (ipPercentage / 100) * 70;
+                        double riskLevel = logInPercentage + ipPercentage;
+                        Console.WriteLine(logInPercentage);
+                        Console.WriteLine(ipRisk);
+                        Console.WriteLine(riskLevel);
+                        string riskStatement = null;
+                        //Can do anything 
+                        if (riskLevel <= 0.4)
+                        {
+                            riskStatement = "The risk level is low";
+                        }
+
+                        // Removing access control and giving access control
+                        else if (riskLevel <= 0.70)
+                        {
+                            riskStatement = "The risk level is medium";
+                            //Remove Access Control 
+                        }
+
+                        //Instantly Re authenticate
+                        else if (riskLevel > 0.70)
+                        {
+                            riskStatement = "The risk level is high";
+                            //Do 2FA
+                        }
+                        Console.WriteLine(riskStatement);
+                     
 
                     }
 
@@ -264,6 +299,48 @@ namespace NSPJProject
 
                 con.Close();
             }
+        }
+
+        private string[][] getUserIPAddressCollection(string userID, string connectionString)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            SqlDataReader reader;
+            con = new SqlConnection(connectionString);
+            con.Open();
+            string[][] myList = null;
+            try
+            {
+                con = new SqlConnection(connectionString);
+                con.Open();
+                cmd = new SqlCommand("SELECT * FROM [dbo].[LogAnalysis] where UserID = '" + userID + "'", con);
+                reader = cmd.ExecuteReader();
+                List<String[]> myCollection = new List<string[]>();
+                while (reader.Read())
+                {
+                    myCollection.Add(new string[] { reader.GetString(3), reader.GetString(4) , reader.GetString(2) });
+                }
+
+                int counter = 0;
+                myList = new string[myCollection.Count()][];
+                foreach (var element in myCollection)
+                {
+                    myList[counter] = element;
+                    counter++;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+
+                con.Close();
+            }
+
+            return myList;
         }
 
         private string[][] getUserLogInData(string userID, string connectionString)

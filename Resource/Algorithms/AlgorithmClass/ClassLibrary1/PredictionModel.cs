@@ -79,7 +79,7 @@ namespace AlgorithmLibary
             string[] argsSet = { fileURL, logInTimeConverted, logInDayConverted , dataList};
                
             string output = startPythonProgramm(python, argsSet);
-            Console.WriteLine("Can this work?");
+         
             Console.WriteLine(output);
             _logInRisk = PredictionModel.getRiskLevel(output);
             _logInOutput = PredictionModel.getOutput(output);
@@ -92,9 +92,11 @@ namespace AlgorithmLibary
 
         public void startIPMACPrediction(string[][] ipAddressCollection, string[] query)
         {
+            try { 
             string[][] passList = convertIPPredictionData(ipAddressCollection, query);
             string fileURL = @"../../../../Resource/Algorithms/testing/IPPrediction.py";
             string python = @"../../../../../Anaconda/python.exe";
+            Console.WriteLine("Is this working");
             query = checkQueryData(query, ipAddressCollection);
             string queryIP = query[0];
             string queryMAC = query[1];
@@ -114,17 +116,29 @@ namespace AlgorithmLibary
             string[] args = { fileURL, queryIP, queryMAC, queryDAY, datalist };
          
             args[0] = fileURL;
+           
             string output = startPythonProgramm(python, args);
+            
             string[] result = output.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+           
             Console.WriteLine(output);
             this.ipRisk = result[result.Length - 2];
             this.ipOutput = result[result.Length - 1];
-           
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+
+
         }
 
         private static string[][] convertIPPredictionData(string[][] ipAddressCollection, string[] query)
         {
+          
             string[][] keyData = getValueArray(ipAddressCollection);
+         
             string[] queryKey = checkQueryData(query, ipAddressCollection);
             Dictionary<string, int> count = getCountNumber(ipAddressCollection);
             string[] retrieveValue = new string[] { queryKey[0], queryKey[1], queryKey[2] };
@@ -479,6 +493,8 @@ namespace AlgorithmLibary
 
         private static string[][] getValueArray(string[][] ipAddressCollection)
         {
+            string[][] data = null;
+            try { 
             Dictionary<string, int> count = new Dictionary<string, int>();
             for (int i = 0; i < ipAddressCollection.Length; i++)
             {
@@ -492,6 +508,7 @@ namespace AlgorithmLibary
                     count[concat] = 1;
                 }
             }
+           
             //foreach (var pair in count)
             //    Console.WriteLine("Value {0} occurred {1} times.", pair.Key, pair.Value);
 
@@ -512,7 +529,7 @@ namespace AlgorithmLibary
             
             Dictionary<int, string> IP1Dictionary = linkData(noIPDupsList);
             Dictionary<int, string> MAC2Dictionary = linkData(noMACDupsList);
-            string[][] data = new string[count.Count][];
+            data = new string[count.Count][];
             int counter = 0;
             foreach (string element in count.Keys)
             {
@@ -533,6 +550,12 @@ namespace AlgorithmLibary
                 }
                 data[counter] = new string[] { Convert.ToString(ipkey), Convert.ToString(mackey), daykey, Convert.ToString(count.ElementAt(counter).Value) };
                 counter++;
+            }
+               
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
 
             return data;
