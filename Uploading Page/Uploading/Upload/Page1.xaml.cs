@@ -111,7 +111,7 @@ namespace Layout.Upload
                     //Stuff like an error message box pop up (done)
                     //Clear the userInputHash box (done)
                     //Break from the current method (done)
-                    Controllers.Prompt.ShowDialog1("Hash does not match!", "Error");
+                    Controllers.Prompt.ShowDialog("Hash does not match!", "Error");
                     userHashInput.Document.Blocks.Clear();
                 }
                 
@@ -172,6 +172,7 @@ namespace Layout.Upload
 
                         VirusName = reader1.GetString(0);
                         type = reader1.GetString(1);
+                        System.Windows.MessageBox.Show(" \n Virus Dected : " + VirusName + " | Type Of Virus : " + type);
                         Console.WriteLine(" \n Virus Dected : " + VirusName + " | Type Of Virus : " + type);
                         con.Close();
                         virus = virus + 1;
@@ -206,7 +207,7 @@ namespace Layout.Upload
                                 virus = virus + 1;
                                 VirusName = reader2.GetString(0);
                                 type = reader2.GetString(1);
-
+                                System.Windows.MessageBox.Show("\n VIRUS DECTED!Your File is not being Uploaded \n Virus Dected : " + VirusName + " | Type Of Virus : " + type);
                                 Console.WriteLine(" \n VIRUS DECTED! Your File is not being Uploaded");
                                 Console.WriteLine(" \n Virus Dected : " + VirusName + " | Type Of Virus : " + type);
                             }
@@ -214,6 +215,7 @@ namespace Layout.Upload
                             {
                                 Console.WriteLine("\n There is no virus! Very Good!! ");
                                 Console.WriteLine("\n File is now being uploaded......");
+                                System.Windows.MessageBox.Show("\n File is now being uploaded......");
                             }
 
                         }

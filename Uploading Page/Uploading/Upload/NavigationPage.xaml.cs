@@ -46,6 +46,7 @@ namespace Layout.Upload
         string path = "";
         String fullAdd = "";
         String updatedAdd = "";
+        String stegPass;
         public NavigationPage()
         {
             InitializeComponent();
@@ -817,12 +818,21 @@ namespace Layout.Upload
                     {
                         bmp = new Bitmap(ms);
                     }
+                   
                 }
                 OpenFileDialog dlg1 = new OpenFileDialog();
                 if (dlg1.ShowDialog() == DialogResult.OK)
                 {
+                    stegPass = stegPassBox.Text;
+                    
                     hideThis = File.ReadAllText(dlg1.FileName);
-                    bmp = Steganography.embedText(hideThis, bmp);
+                    byte[] toBytes = File.ReadAllBytes(hideThis);
+                    byte[] stegByte = File.ReadAllBytes(stegPass);
+                    byte[] IV = File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
+                    KeyController kc = new KeyController();
+                    byte[] EncryptedStr = kc.symmetricEncryption(toBytes, stegByte,IV);
+                    String hideThisStr = System.Text.Encoding.UTF8.GetString(EncryptedStr);
+                    bmp = Steganography.embedText(hideThisStr, bmp);
                     fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
 
                     bmp.Save(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\Harmless " + fileName + ".bmp");
@@ -851,7 +861,18 @@ namespace Layout.Upload
                 }
                 fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
                 extractThis = Steganography.extractText(bmp);
-                System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\DecryptedText\\SECRET MESSAGE.txt", extractThis);
+
+                stegPass = stegPassBox.Text;
+
+                byte[] toBytes = File.ReadAllBytes(extractThis);
+
+                byte[] stegByte = File.ReadAllBytes(stegPass);
+                byte[] IV = File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
+
+                KeyController kc = new KeyController();
+                byte[] DecryptedStr = kc.symmetricDecryption(toBytes,stegByte,IV);
+                string result = System.Text.Encoding.UTF8.GetString(DecryptedStr);
+                System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\DecryptedText\\SECRET MESSAGE.txt", result);
                 Console.WriteLine("!!! A SECRET MESSAGE HAS BEEN REVEALED FROM " + fileName+" !!!");
                 Console.WriteLine("");
             }
@@ -861,6 +882,11 @@ namespace Layout.Upload
                 Console.WriteLine("");
             }
             
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

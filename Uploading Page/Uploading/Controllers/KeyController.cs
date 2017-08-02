@@ -238,6 +238,10 @@ namespace Layout.Controllers
                 }
 
                 plainText = bytes;  
+
+                // UPDATE 31.7.2017 THESE LINES BROKEN
+                //.ReadToEnd returns plain text
+                //plainText = Encoding.UTF8.GetBytes(sr.ReadToEnd());
             }
             finally
             {
