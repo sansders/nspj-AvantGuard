@@ -111,7 +111,7 @@ namespace Layout.Upload
                     //Stuff like an error message box pop up (done)
                     //Clear the userInputHash box (done)
                     //Break from the current method (done)
-                    Controllers.Prompt.ShowDialog("Hash does not match!", "Error");
+                    Controllers.Prompt.ShowDialog1("Hash does not match!", "Error");
                     userHashInput.Document.Blocks.Clear();
                 }
                 

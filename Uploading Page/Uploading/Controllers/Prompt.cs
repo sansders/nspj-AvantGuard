@@ -9,7 +9,7 @@ namespace Layout.Controllers
 {
     public static class Prompt
     {
-        public static string ShowDialog(string text, string caption)
+        public static string ShowDialog1(string text, string caption)
         {
             Form prompt = new Form()
             {
@@ -30,5 +30,19 @@ namespace Layout.Controllers
             return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
         }
 
+        public static bool ShowDialog2(string text, string caption)
+        {
+            DialogResult result1 = System.Windows.Forms.MessageBox.Show(text, caption, MessageBoxButtons.YesNo);
+            
+            if (result1 == DialogResult.Yes)
+            {
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
+        }
     }
 }
