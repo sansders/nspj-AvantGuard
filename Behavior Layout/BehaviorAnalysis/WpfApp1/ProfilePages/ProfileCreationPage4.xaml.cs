@@ -71,8 +71,10 @@ namespace WpfApp1.ProfilePages
                 MessageBox.Show(currentUserModel.profile2);
                 MessageBox.Show(currentUserModel.profile3);
                 MessageBox.Show(currentUserModel.profile4);
-                //currentUserModel.saveToDatabase();
+                currentUserModel.saveToDatabase();
                 MessageBox.Show("Successfully Completed Profiling Survey");
+                this.NavigationService.Navigate(new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute));
+
             }
             else
             {

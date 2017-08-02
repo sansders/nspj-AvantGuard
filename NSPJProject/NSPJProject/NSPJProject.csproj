@@ -158,6 +158,10 @@
       <Project>{4AF7A18C-F284-464D-8902-A5930C390AC0}</Project>
       <Name>Profile Creation Page 1</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Resource\Algorithms\AlgorithmClass\ClassLibrary1\AlgorithmLibary.csproj">
+      <Project>{068596fc-3efc-419a-ac3e-b081d5854aab}</Project>
+      <Name>AlgorithmLibary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Resource\User Model\UserModel\UserModel\UserModel.csproj">
       <Project>{be36de03-71d7-44c6-a6c6-d6b8af6c6f61}</Project>
       <Name>UserModel</Name>

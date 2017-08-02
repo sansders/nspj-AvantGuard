@@ -153,7 +153,7 @@ namespace UserModel
             {
                 con = new SqlConnection(connectionString);
                 con.Open();
-                cmd = new SqlCommand("INSERT INTO [dbo].[test] (UserID, Password, Name, Email, ContactNo, DOB, SecurityQ1, Q1Ans, SecurityQ2, Q2Ans) VALUES (@UserID, @Password, @Name, @Email, @ContactNo, @DOB, @SecurityQ1, @Q1Ans, @SecurityQ2, @Q2Ans, @Profile1 , @Profile2 , @Profile3 , @Profile4)", con);
+                cmd = new SqlCommand("INSERT INTO [dbo].[test] (UserID, Password, Name, Email, ContactNo, DOB, SecurityQ1, Q1Ans, SecurityQ2, Q2Ans, Profile1 , Profile2, Profile3, Profile4) VALUES (@UserID, @Password, @Name, @Email, @ContactNo, @DOB, @SecurityQ1, @Q1Ans, @SecurityQ2, @Q2Ans, @Profile1 , @Profile2 , @Profile3 , @Profile4)", con);
                 cmd.Parameters.AddWithValue("@UserID", userID);
                 cmd.Parameters.AddWithValue("@Password", userPassword);
                 cmd.Parameters.AddWithValue("@Name", userName);
@@ -169,6 +169,7 @@ namespace UserModel
                 cmd.Parameters.AddWithValue("@Profile3", profile3);
                 cmd.Parameters.AddWithValue("@Profile4", profile4);
                 
+
 
                 cmd.ExecuteNonQuery();
 

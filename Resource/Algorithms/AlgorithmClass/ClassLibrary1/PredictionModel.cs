@@ -17,6 +17,7 @@ namespace AlgorithmLibary
         private string _ipRisk, _ipOutput;
         public PredictionModel(double logInTime, double logInDay, string[][] logInCollection)
         {
+           
             startLogInPrediction(logInTime, logInDay, logInCollection);
         }
 
@@ -52,34 +53,48 @@ namespace AlgorithmLibary
 
         public void startLogInPrediction(double logInTime, double logInDay , string[][] logInCollection)
         {
-            string fileURL = "../../../../testing/Prediction.py";
-            string python = "../../../../../../../../Anaconda/python.exe";
+
+            string fileURL = "../../../../Resource/Algorithms/testing/Prediction.py";
+          
+            string python = "../../../../../Anaconda/python.exe";
+
+            
             string logInTimeConverted = Convert.ToString(logInTime);
             string logInDayConverted = Convert.ToString(logInDay);
             string dataList = null;
-            int start = 0; 
+
+            
+            int start = 0;
+
+            ;
+          
             if (logInCollection.Length >= 100)
             {
                 start = logInCollection.Length - 100; 
             }
-            for(int i = start; i < logInCollection.Length; i++)
+            for (int i = start; i < logInCollection.Length; i++)
             {
                 dataList = dataList + " " + String.Join(" ", logInCollection[i][0], logInCollection[i][1]);
             }
-            
             string[] argsSet = { fileURL, logInTimeConverted, logInDayConverted , dataList};
+               
             string output = startPythonProgramm(python, argsSet);
+            Console.WriteLine("Can this work?");
+            Console.WriteLine(output);
             _logInRisk = PredictionModel.getRiskLevel(output);
             _logInOutput = PredictionModel.getOutput(output);
+            
 
-           
+
+
+
         }
 
         public void startIPMACPrediction(string[][] ipAddressCollection, string[] query)
         {
             string[][] passList = convertIPPredictionData(ipAddressCollection, query);
-            string fileURL = @"../../../../testing/IPPrediction.py";
-            string python = @"../../../../../../../../Anaconda/python.exe";
+            string fileURL = @"../../../../Resource/Algorithms/testing/IPPrediction.py";
+            string python = @"../../../../../Anaconda/python.exe";
             query = checkQueryData(query, ipAddressCollection);
             string queryIP = query[0];
             string queryMAC = query[1];
@@ -255,7 +270,7 @@ namespace AlgorithmLibary
             //string a4 = a3[0];
 
             string ip = new WebClient().DownloadString(@"http://icanhazip.com").Trim();
-            
+            Console.WriteLine(ip);
             return ip;
            
         }
@@ -328,6 +343,7 @@ namespace AlgorithmLibary
         public static string getCurrentDate()
         {
 
+            Console.WriteLine("Getting Current Date");
             int d = (int)DateTime.Now.DayOfWeek;
             if (d == 0)
             {
