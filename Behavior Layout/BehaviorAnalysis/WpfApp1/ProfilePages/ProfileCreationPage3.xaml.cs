@@ -42,15 +42,50 @@ namespace WpfApp1.ProfilePages
             }
             else
             {
+                string data = null;
+                if (option1.IsChecked == true)
+                {
+                    data = "a";
+                }
+                if (option2.IsChecked == true)
+                {
+                    data = "b";
+                }
+                if (option3.IsChecked == true)
+                {
+                    data = "c";
+                }
+               
                 CurrentPageModel.thirdValidation = true;
-                Console.WriteLine(button.Content);
+              
+                
             }
         }
 
         private void NextPageHandler(object sender, MouseButtonEventArgs e)
         {
             Boolean isValidated = CurrentPageModel.thirdValidation;
-            if(isValidated == true)
+            string data = null;
+            if (option1.IsChecked == true)
+            {
+                data = "a";
+            }
+            if (option2.IsChecked == true)
+            {
+                data = "b";
+            }
+            if (option3.IsChecked == true)
+            {
+                data = "c";
+            }
+          
+            UserModel.UserModel currentUserModel = UserModel.UserModel.currentUserModel;
+            currentUserModel.profile3 = data;
+            UserModel.UserModel.currentUserModel = currentUserModel;
+
+            CurrentPageModel.secondValidation = true;
+         
+            if (isValidated == true)
             { 
                 CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
                 currentClass._currentPage = "3";

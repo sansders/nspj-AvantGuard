@@ -95,6 +95,15 @@ namespace NSPJProject
                     cmd.Parameters.AddWithValue("@LoginTime", DateTime.Now.ToString("HH.mm"));
                     cmd.Parameters.AddWithValue("@LoginDate", DateTime.Now.ToShortDateString());
 
+                    //select Log In Time and Date for user with certain ID name 
+                    //If total data >= 30 then i start this prediction with my Log In Time and Day  prediction 
+                    //If data >= 30 then start the IP and MAC / DAY prediction 
+                    //Get the risk Result 
+                    //If Risk is low , login 
+                    //Else if risk is medium disable access list 
+                    //Else if risk is high, do 2fa and set a counter into a new database called 
+                    
+
                     MessageBox.Show("Successful Login.");
 
                 }

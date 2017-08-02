@@ -182,5 +182,11 @@
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\nugetexample.js" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Resource\User Model\UserModel\UserModel\UserModel.csproj">
+      <Project>{BE36DE03-71D7-44C6-A6C6-D6B8AF6C6F61}</Project>
+      <Name>UserModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

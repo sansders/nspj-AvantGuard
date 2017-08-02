@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UserModel;
 using WpfApp1.Model1;
 using WpfApp1.ViewModel;
 
@@ -36,7 +37,29 @@ namespace WpfApp1.ProfilePages
         private void NextPageHandler(object sender, MouseButtonEventArgs e)
         {
             Boolean isValidated = checkValidation();
-            if(isValidated == true)
+            string data = null;
+            if (option1.IsChecked == true)
+            {
+                data = "a";
+            }
+            if (option2.IsChecked == true)
+            {
+                data = "b";
+            }
+            if (option3.IsChecked == true)
+            {
+                data = "c";
+            }
+            if (option4.IsChecked == true)
+            {
+                data = "d";
+            }
+
+            UserModel.UserModel currentUserModel = UserModel.UserModel.currentUserModel;
+            currentUserModel.profile1 = data;
+            UserModel.UserModel.currentUserModel = currentUserModel;
+
+            if (isValidated == true)
             { 
             CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
             currentClass._currentPage = "1";
@@ -101,8 +124,7 @@ namespace WpfApp1.ProfilePages
             else
             {
                 CurrentPageModel.firstValidation = true;
-                String data = radioButton.Content as String;
-                Console.WriteLine(data);
+               
             }
         }
 

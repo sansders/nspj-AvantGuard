@@ -39,54 +39,109 @@ namespace WpfApp1.ProfilePages
             {
                 Console.WriteLine("No option is checked");
             }
+            
             else
             {
                 _checkBoxValue.Add(Convert.ToString(button.Content));
                 CurrentPageModel.fourthValidation = true;
                 Console.WriteLine(button.Content);
+
             }
         }
 
         private void NextPageHandler(object sender, MouseButtonEventArgs e)
         {
             Boolean isValidated = CurrentPageModel.fourthValidation;
-            if(isValidated == true)
-            { 
-                //Get the current instance of the navigation class
-                CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
-                currentClass.currentpage = "4";
-                for(int i = 0; i < _checkBoxValue.Count(); i++)
-                {
-                    Console.WriteLine(_checkBoxValue[i]);
-                }
-                Page page5 = CurrentPageModel.fifthPage;
-                if (page5 == null)
-                {
-                    Page currentPage = new ProfileCreationPage5();
-                    this.NavigationService.Navigate(currentPage);
-                }
-                else
-                {
-                    //Load in the instance of the page 
-                    this.NavigationService.Navigate(page5);
-                    //Load in the current navigation control
-                    WpfApp1.NavigationControls.NavigationControls fifthControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.fifthControl;
-                    //Set the button manipulation 
-                    fifthControl.buttonManipulation(currentClass.currentpage);
-                    //Set the page number 
-                    fifthControl.PageNumber.Text = fifthControl.currentPageNumber(currentClass.currentpage);
-              
-                }
+            string finalString = getFinalString();
+            UserModel.UserModel currentUserModel = UserModel.UserModel.currentUserModel;
+            currentUserModel.profile4 = finalString;
+            UserModel.UserModel.currentUserModel = currentUserModel; 
+            
+
+
+            if (
+                CurrentPageModel.firstValidation == true &&
+                CurrentPageModel.secondValidation == true &&
+                CurrentPageModel.thirdValidation == true &&
+                CurrentPageModel.fourthValidation == true 
+                )
+            {
+                MessageBox.Show(currentUserModel.userName);
+                MessageBox.Show(currentUserModel.profile1);
+                MessageBox.Show(currentUserModel.profile2);
+                MessageBox.Show(currentUserModel.profile3);
+                MessageBox.Show(currentUserModel.profile4);
+                //currentUserModel.saveToDatabase();
+                MessageBox.Show("Successfully Completed Profiling Survey");
             }
             else
             {
-                MessageBox.Show("No option have been chosen. Please choose your option");
+                MessageBox.Show("Typing test hasn't been completed");
             }
+            //if (isValidated == true)
+            //{ 
+            //    //Get the current instance of the navigation class
+            //    CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
+            //    currentClass.currentpage = "4";
+            //    for(int i = 0; i < _checkBoxValue.Count(); i++)
+            //    {
+            //        Console.WriteLine(_checkBoxValue[i]);
+            //    }
+            //    Page page5 = CurrentPageModel.fifthPage;
+            //    if (page5 == null)
+            //    {
+            //        Page currentPage = new ProfileCreationPage5();
+            //        this.NavigationService.Navigate(currentPage);
+            //    }
+            //    else
+            //    {
+            //        //Load in the instance of the page 
+            //        this.NavigationService.Navigate(page5);
+            //        //Load in the current navigation control
+            //        WpfApp1.NavigationControls.NavigationControls fifthControl = (WpfApp1.NavigationControls.NavigationControls)CurrentPageModel.fifthControl;
+            //        //Set the button manipulation 
+            //        fifthControl.buttonManipulation(currentClass.currentpage);
+            //        //Set the page number 
+            //        fifthControl.PageNumber.Text = fifthControl.currentPageNumber(currentClass.currentpage);
+
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No option have been chosen. Please choose your option");
+            //}
             //Save current instance of the page
             CurrentPageModel.fourthPage = this;
             //Save current instance of the user control
             CurrentPageModel.fourthControl = page4Controls;
 
+        }
+
+        private string getFinalString()
+        {
+            string finalString = null;
+
+            if (option1.IsChecked == true)
+            {
+                finalString = finalString + "a";
+            }
+            if (option2.IsChecked == true)
+            {
+                finalString = finalString + "b";
+            }
+            if (option3.IsChecked == true)
+            {
+                finalString = finalString + "c";
+            }
+            if (option4.IsChecked == true)
+            {
+                finalString = finalString + "d";
+            }
+            if (option5.IsChecked == true)
+            {
+                finalString = finalString + "e";
+            }
+            return finalString;
         }
 
         private void PreviousPageHandler(object sender, MouseButtonEventArgs e)
@@ -116,6 +171,11 @@ namespace WpfApp1.ProfilePages
             CurrentPageModel.fourthPage = this;
             //Save current instance of the user control
             CurrentPageModel.fourthControl = page4Controls;
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

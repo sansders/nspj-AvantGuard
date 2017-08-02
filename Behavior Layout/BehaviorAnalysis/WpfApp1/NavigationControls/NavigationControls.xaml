@@ -9,14 +9,14 @@
     
 
             <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal"  Margin="420,0,0,0" >
+                <StackPanel Orientation="Horizontal"  Margin="455,0,0,0" >
                     <RadioButton GroupName="PageNumberIndicator" x:Name="pg1Button" IsChecked="False" IsEnabled="True" IsHitTestVisible="False" Style="{StaticResource pageIndicatorDesign}"/>
                     <RadioButton GroupName="PageNumberIndicator" x:Name="pg2Button" IsChecked="False" IsEnabled="True" IsHitTestVisible="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
                     <RadioButton GroupName="PageNumberIndicator" x:Name="pg3Button" IsChecked="False" IsEnabled="True" IsHitTestVisible="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
                     <RadioButton GroupName="PageNumberIndicator" x:Name="pg4Button" IsChecked="False" IsEnabled="True" IsHitTestVisible="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
-                    <RadioButton GroupName="PageNumberIndicator" x:Name="pg5Button" IsChecked="False" IsEnabled="True" IsHitTestVisible="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
-                    <RadioButton GroupName="PageNumberIndicator" x:Name="pg6Button" IsChecked="False" IsEnabled="True" IsHitTestVisible="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
-                </StackPanel>
+                    <RadioButton GroupName="PageNumberIndicator" x:Name="pg5Button" Visibility="Collapsed" IsChecked="False" IsEnabled="True" IsHitTestVisible="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+                    <RadioButton GroupName="PageNumberIndicator" x:Name="pg6Button" Visibility="Collapsed" IsChecked="False" IsEnabled="True" IsHitTestVisible="False" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
+        </StackPanel>
                 <TextBlock x:Name="PageNumber" Style="{StaticResource PageNumber}">Pg1</TextBlock>
             </StackPanel>
       

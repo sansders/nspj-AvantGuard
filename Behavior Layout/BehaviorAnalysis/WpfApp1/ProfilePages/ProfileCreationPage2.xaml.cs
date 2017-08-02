@@ -48,14 +48,35 @@ namespace WpfApp1.ProfilePages
             else
             {
                 CurrentPageModel.secondValidation = true;
-                Console.WriteLine(button.Content);
+
             }
         }
 
         private void NextPageHandler(object sender, MouseButtonEventArgs e)
         {
             Boolean isValidated = CurrentPageModel.secondValidation;
-            if(isValidated == true)
+            string data = null;
+            if (option1.IsChecked == true)
+            {
+                data = "a";
+            }
+            if (option2.IsChecked == true)
+            {
+                data = "b";
+            }
+            if (option3.IsChecked == true)
+            {
+                data = "c";
+            }
+            if (option4.IsChecked == true)
+            {
+                data = "d";
+            }
+            CurrentPageModel.secondValidation = true;
+            UserModel.UserModel currentUserModel = UserModel.UserModel.currentUserModel;
+            currentUserModel.profile2 = data;
+            UserModel.UserModel.currentUserModel = currentUserModel;
+            if (isValidated == true)
             { 
                 CurrentPageModel currentClass = CurrentPageModel.getcurrentclass();
                 currentClass._currentPage = "2";
@@ -65,7 +86,7 @@ namespace WpfApp1.ProfilePages
                 {
                     Page currentPage = new ProfileCreationPage3();
                     this.NavigationService.Navigate(currentPage);
-                       }
+                }
                 else
                 {
                    this.NavigationService.Navigate(page3);

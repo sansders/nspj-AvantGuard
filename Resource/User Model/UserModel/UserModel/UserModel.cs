@@ -137,6 +137,8 @@ namespace UserModel
             set { _currentUserModel = value;  }
         }
 
+
+
         
 
 
@@ -151,7 +153,7 @@ namespace UserModel
             {
                 con = new SqlConnection(connectionString);
                 con.Open();
-                cmd = new SqlCommand("INSERT INTO [dbo].[test] (UserID, Password, Name, Email, ContactNo, DOB, SecurityQ1, Q1Ans, SecurityQ2, Q2Ans) VALUES (@UserID, @Password, @Name, @Email, @ContactNo, @DOB, @SecurityQ1, @Q1Ans, @SecurityQ2, @Q2Ans)", con);
+                cmd = new SqlCommand("INSERT INTO [dbo].[test] (UserID, Password, Name, Email, ContactNo, DOB, SecurityQ1, Q1Ans, SecurityQ2, Q2Ans) VALUES (@UserID, @Password, @Name, @Email, @ContactNo, @DOB, @SecurityQ1, @Q1Ans, @SecurityQ2, @Q2Ans, @Profile1 , @Profile2 , @Profile3 , @Profile4)", con);
                 cmd.Parameters.AddWithValue("@UserID", userID);
                 cmd.Parameters.AddWithValue("@Password", userPassword);
                 cmd.Parameters.AddWithValue("@Name", userName);
@@ -162,6 +164,11 @@ namespace UserModel
                 cmd.Parameters.AddWithValue("@Q1Ans", securityQ1Ans);
                 cmd.Parameters.AddWithValue("@SecurityQ2", securityQ2);
                 cmd.Parameters.AddWithValue("@Q2Ans", securityQ2Ans);
+                cmd.Parameters.AddWithValue("@Profile1", profile1);
+                cmd.Parameters.AddWithValue("@Profile2", profile2);
+                cmd.Parameters.AddWithValue("@Profile3", profile3);
+                cmd.Parameters.AddWithValue("@Profile4", profile4);
+                
 
                 cmd.ExecuteNonQuery();
 

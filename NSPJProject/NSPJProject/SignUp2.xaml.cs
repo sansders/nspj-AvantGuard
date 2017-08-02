@@ -107,10 +107,14 @@ namespace NSPJProject
 
                 string selected_securityQ2Ans = Answer2TextBox.Text;
 
+                //Comment out the method to save to database 
                 UserModel.UserModel newModel = new UserModel.UserModel(selected_userID, selected_userPassword, selected_userName, selected_userEmail, selected_userContact, selected_userDOB,
                 selected_securityQ1 , selected_securityQ1Ans, selected_securityQ2, selected_securityQ2Ans);
 
-                newModel.saveToDatabase();
+                UserModel.UserModel.currentUserModel = newModel;
+
+                //newModel.saveToDatabase();
+                
                 //ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
                 //string connectionString = conSettings.ConnectionString;
 

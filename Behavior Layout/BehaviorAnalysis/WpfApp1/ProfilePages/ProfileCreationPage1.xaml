@@ -33,16 +33,16 @@
             <TextBlock x:Name="page1" x:FieldModifier="public" Text="Q1: How long do you think you will stay logged in to the application on average?" Grid.Row="1" Style="{StaticResource QuestionDesign}" Margin="20,0,-0.8,0"/>
             <StackPanel Grid.Row="2" Margin="0,0,0,0">
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <RadioButton GroupName="One" Grid.Row="2" Content ="Less Than 15 Minutes" x:Name="testing" IsChecked="False" Click="ToggleCheckOption " Style="{StaticResource choiceButtonDesign}" RenderTransformOrigin="2.168,1.165"/>
+                    <RadioButton x:Name ="option1" GroupName="One"  Grid.Row="2" Content ="Less Than 15 Minutes" IsChecked="False" Click="ToggleCheckOption " Style="{StaticResource choiceButtonDesign}" RenderTransformOrigin="2.168,1.165"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <RadioButton GroupName="One" Grid.Row="2" Content="Around 30 Minutes" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                    <RadioButton x:Name ="option2" GroupName="One" Grid.Row="2" Content="Around 30 Minutes" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <RadioButton GroupName="One" Grid.Row="2" Content="More than an Hour" IsChecked="False" Click="ToggleCheckOption " Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                    <RadioButton x:Name ="option3" GroupName="One" Grid.Row="2" Content="More than an Hour" IsChecked="False" Click="ToggleCheckOption " Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <RadioButton GroupName="One" Grid.Row="2" Content="For as long as my workstation is operational" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                    <RadioButton x:Name ="option4" GroupName="One" Grid.Row="2" Content="For as long as my workstation is operational" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
                 </StackPanel>
                 <!--<StackPanel Orientation="Horizontal" Height="30">
                     <RadioButton GroupName="One" Grid.Row="2" Content="{Binding showOption}" IsChecked="False" Click="{Binding }" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
@@ -53,7 +53,7 @@
                     <TextBlock Uid="PreviousButton" MouseLeftButtonDown="PreviousPageHandler"  Style="{StaticResource previousButtonDesign}" Text="Previous"></TextBlock>
                     <TextBlock Uid="NextButton" MouseLeftButtonDown="NextPageHandler"  Style="{StaticResource nextButtonDesign}" Text="Next" ></TextBlock>
                 </StackPanel>
-                <views:NavigationControls x:Name="page1Controls"/>
+                <views:NavigationControls x:Name="page1Controls" HorizontalAlignment="Left" Width="554"/>
                 <!--<StackPanel Orientation="Horizontal"  Margin="420,0,0,0" >
                     <RadioButton GroupName="PageNumberIndicator" Uid="pg1Button" IsChecked="False" IsEnabled="True" Style="{StaticResource pageIndicatorDesign}"></RadioButton>
                     <RadioButton GroupName="PageNumberIndicator" Uid="pg2Button" IsChecked="False" IsEnabled="True" Style="{StaticResource pageIndicatorDesign}"></RadioButton>

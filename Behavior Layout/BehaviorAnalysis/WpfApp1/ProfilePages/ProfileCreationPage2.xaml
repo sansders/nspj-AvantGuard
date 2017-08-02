@@ -29,16 +29,16 @@
             <TextBlock x:Uid="2" Text="Q2: On Average, how often do you log out of your account?" Grid.Row="1" Style="{StaticResource QuestionDesign}" Margin="20,0,-0.8,0"/>
             <StackPanel Grid.Row="2" Margin="0,0,0,0">
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <RadioButton GroupName="One" Grid.Row="2" Content ="Everytime" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}" RenderTransformOrigin="2.168,1.165"/>
+                    <RadioButton x:Name="option1" GroupName="One" Grid.Row="2" Content ="Everytime" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}" RenderTransformOrigin="2.168,1.165"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <RadioButton GroupName="One" Grid.Row="2" Content="Most of the time" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                    <RadioButton x:Name="option2" GroupName="One" Grid.Row="2" Content="Most of the time" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <RadioButton GroupName="One" Grid.Row="2" Content="Sometimes" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                    <RadioButton x:Name="option3" GroupName="One" Grid.Row="2" Content="Sometimes" IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Height="30">
-                    <RadioButton GroupName="One" Grid.Row="2" Content="Not to sure / Never " IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                    <RadioButton x:Name="option4" GroupName="One" Grid.Row="2" Content="Not to sure / Never " IsChecked="False" Click="ToggleCheckOption" Style="{StaticResource choiceButtonDesign}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
                 </StackPanel>
             </StackPanel>
            <StackPanel Grid.Row="3">
