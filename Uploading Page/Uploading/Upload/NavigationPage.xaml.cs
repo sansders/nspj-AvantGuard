@@ -806,7 +806,7 @@ namespace Layout.Upload
             {
                 fileName = dlg.FileName;
                 string fileExtention = fileName.Substring(fileName.Length-3);
-                if (fileExtention.Equals("jpg"))
+                if (!fileExtention.Equals("bmp"))
                 {
                     bmp = Steganography.ConvertToBitmap(fileName);
                 }
