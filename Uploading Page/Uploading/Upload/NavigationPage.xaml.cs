@@ -826,11 +826,11 @@ namespace Layout.Upload
                     stegPass = stegPassBox.Text;
                     
                     hideThis = File.ReadAllText(dlg1.FileName);
-                    byte[] toBytes = File.ReadAllBytes(hideThis);
-                    byte[] stegByte = File.ReadAllBytes(stegPass);
+                    byte[] toBytes = Encoding.Unicode.GetBytes(hideThis);
+                    byte[] stegByte = Encoding.Unicode.GetBytes(stegPass); 
                     byte[] IV = File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
                     KeyController kc = new KeyController();
-                    byte[] EncryptedStr = kc.symmetricEncryption(toBytes, stegByte,IV);
+                    byte[] EncryptedStr = kc.symmetricEncryption(toBytes, stegByte,IV); 
                     String hideThisStr = System.Text.Encoding.UTF8.GetString(EncryptedStr);
                     bmp = Steganography.embedText(hideThisStr, bmp);
                     fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
