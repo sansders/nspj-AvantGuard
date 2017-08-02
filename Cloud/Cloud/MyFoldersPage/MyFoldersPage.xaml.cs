@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Xps.Packaging;
+using System.Windows.Xps.Serialization;
 
 namespace Cloud.MyFoldersPage
 {
@@ -29,6 +31,7 @@ namespace Cloud.MyFoldersPage
     /// </summary>
     public partial class MyFoldersPage : Page
     {
+
         private List<String> newList = new List<String>();
         SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Chester\Documents\test_db.mdf;Integrated Security=True;Connect Timeout=30");
         string dtformat = "yyyy-MM-dd HH:mm:ss";
@@ -74,7 +77,7 @@ namespace Cloud.MyFoldersPage
         private void openClick(object sender, RoutedEventArgs e)
         {
             String theText = "";
-            String selectedText = ((DataRowView)listView.SelectedItem)["docName"].ToString();
+            String selectedText = ((DataRowView)((ListView)sender).SelectedItem)["docName"].ToString();
             fileName.Content = selectedText;
             con.Open();
             SqlCommand cmd = con.CreateCommand();
@@ -84,7 +87,8 @@ namespace Cloud.MyFoldersPage
             {
                 while (read.Read())
                 {
-                    theText = (read["text"].ToString());
+                    byte[] retrieve = ((byte[])read["text"]);
+                    theText = System.Text.Encoding.ASCII.GetString(retrieve);
                 }
             }
 
@@ -139,39 +143,82 @@ namespace Cloud.MyFoldersPage
         }
 
 
+        void p_Exited(object sender, EventArgs e)
+        {
+            File.Delete("temp.ppt");
+        }
+
+
         //CLICK ON LIST VIEW ITEM TO OPEN
         private void listView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             String theText = "";
+            String ext = "";
             String selectedText = ((DataRowView)((ListView)sender).SelectedItem)["docName"].ToString();
-            fileName.Content = selectedText;
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "select text from [table] where docName = '" + selectedText + "'";
+            cmd.CommandText = "select fileType from [table] where docName = '" + selectedText + "'";
             using (SqlDataReader read = cmd.ExecuteReader())
             {
                 while (read.Read())
                 {
-                    theText = (read["text"].ToString());
+                    ext = (read["fileType"].ToString());
                 }
             }
-            
-            con.Close();
 
-            byte[] byteArray = Encoding.ASCII.GetBytes(theText);
-            
-            using (MemoryStream ms = new MemoryStream(byteArray))
+            if (ext == ".doc" || ext == ".docx")
             {
-                TextRange tr = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-                tr.Load(ms, DataFormats.Rtf);
-                
+                fileName.Content = selectedText;
+                cmd.CommandText = "select text from [table] where docName = '" + selectedText + "'";
+                using (SqlDataReader read = cmd.ExecuteReader())
+                {
+                    while (read.Read())
+                    {
+                        byte[] retrieve = ((byte[])read["text"]);
+                        theText = System.Text.Encoding.ASCII.GetString(retrieve);
+                    }
+                }
+
+                con.Close();
+
+                byte[] byteArray = Encoding.ASCII.GetBytes(theText);
+
+                using (MemoryStream ms = new MemoryStream(byteArray))
+                {
+                    TextRange tr = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+                    tr.Load(ms, DataFormats.Rtf);
+
+                }
+
+                listView.Visibility = System.Windows.Visibility.Hidden;
+                mainToolBar.Visibility = System.Windows.Visibility.Hidden;
+                rtbEditor.Visibility = System.Windows.Visibility.Visible;
+                secondToolBar.Visibility = System.Windows.Visibility.Visible;
             }
 
-            listView.Visibility = System.Windows.Visibility.Hidden;
-            mainToolBar.Visibility = System.Windows.Visibility.Hidden;
-            rtbEditor.Visibility = System.Windows.Visibility.Visible;
-            secondToolBar.Visibility = System.Windows.Visibility.Visible;
+            else if (ext == ".ppt" || ext == ".pptx")
+            {
+                cmd.CommandText = "select text from [table] where docName = '" + selectedText + "'";
+                using (SqlDataReader read = cmd.ExecuteReader())
+                {
+                    while (read.Read())
+                    {
+                        byte[] retrieve = ((byte[])read["text"]);
+                        File.WriteAllBytes("temp.ppt", retrieve);
+                        Process process = new Process();
+                        process.StartInfo.FileName = "temp.ppt";
+                        process.StartInfo.UseShellExecute = true;
+                        process.Start();
+                        process.EnableRaisingEvents = true;
+                        process.Exited += new EventHandler(p_Exited);
+                    }
+                }
+
+                con.Close();
+
+                
+            }
         }
 
         
@@ -193,7 +240,7 @@ namespace Cloud.MyFoldersPage
             con.Open();
             SqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "insert into [table] values('" + textbox1.Text + "', '', '', '" + current.ToString(dtformat) + "')";
+            cmd.CommandText = "insert into [table] values('" + textbox1.Text + "', '', '', '" + current.ToString(dtformat) + "', 'no', 'no')";
             cmd.ExecuteNonQuery();
             con.Close();
             textbox1.Text = String.Empty;
@@ -324,6 +371,12 @@ namespace Cloud.MyFoldersPage
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = "update [table] set text = '" + rtfText + "', fileSize = '" + fileSizeDisplayed + "', lastModified = '" + current.ToString(dtformat) + "' where docName = '" + fileName.Content + "'";
             cmd.ExecuteNonQuery();
+            using (var sqlWrite = new SqlCommand("update [table] set text = '" + byteArray + "', fileSize = '" + fileSizeDisplayed + "', lastModified = '" + current.ToString(dtformat) + "' where docName = '" + fileName.Content + "'", con))
+            {
+                SqlParameter file2 = new SqlParameter("@File", byteArray);
+                sqlWrite.Parameters.Add(file2);
+                sqlWrite.ExecuteNonQuery();
+            }
             con.Close();
             MessageBox.Show("Save was done.");
         }
@@ -347,7 +400,8 @@ namespace Cloud.MyFoldersPage
             {
                 while (read.Read())
                 {
-                    theText = (read["text"].ToString());
+                    byte[] retrieve = ((byte[])read["text"]);
+                    theText = System.Text.Encoding.ASCII.GetString(retrieve);
                 }
             }
             con.Close();
@@ -370,6 +424,10 @@ namespace Cloud.MyFoldersPage
 
         }
 
+        private void powerpnt_SlideShowEnd(Microsoft.Office.Interop.PowerPoint.Presentation Pres)
+        {
+            
+        }
 
         //UPLOAD AND OPEN PPT FROM FILE EXPLORER
         public void openPPTBtn_Click(Object sender, RoutedEventArgs e)
@@ -386,30 +444,91 @@ namespace Cloud.MyFoldersPage
             {
                 String filename = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
                 String fullfilename = System.IO.Path.GetFullPath(openFileDialog.FileName);
-                Microsoft.Office.Interop.PowerPoint.Application pptApp = new Microsoft.Office.Interop.PowerPoint.Application();
-                Microsoft.Office.Interop.PowerPoint.Presentation presentation = pptApp.Presentations.Open(fullfilename, MsoTriState.msoTrue, MsoTriState.msoFalse, MsoTriState.msoFalse);
+                String extension = System.IO.Path.GetExtension(openFileDialog.FileName);
 
-                var xpsFile = System.IO.Path.GetTempPath() + Guid.NewGuid() + ".xps"; 
-                
-                try
+                byte[] file;
+                using (var stream = new FileStream(fullfilename, FileMode.Open, FileAccess.Read))
                 {
-                    presentation.ExportAsFixedFormat(xpsFile, Microsoft.Office.Interop.PowerPoint.PpFixedFormatType.ppFixedFormatTypeXPS);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Failed to export to XPS format: " + ex);
-                }
-                finally
-                {
-                    presentation.Close();
-                    pptApp.Quit();
+                    using (var reader = new BinaryReader(stream))
+                    {
+                        file = reader.ReadBytes((int)stream.Length);
+                    }
                 }
 
-                var xpsDocument = new XpsDocument(xpsFile, FileAccess.Read);
+                Process process = new Process();
+                process.StartInfo.FileName = fullfilename;
+                process.StartInfo.UseShellExecute = true;
+                process.Start();
 
-                pptViewer.Visibility = System.Windows.Visibility.Visible;
-                pptViewer.Document = xpsDocument.GetFixedDocumentSequence();
 
+                double fileSize = file.Length;
+
+                var culture = CultureInfo.CurrentUICulture;
+                const String format = "#,0.0";
+                String fileSizeDisplayed = "";
+
+                if (fileSize < 1024)
+                {
+                    fileSizeDisplayed = fileSize.ToString("#,0", culture) + "bytes";
+                }
+
+                else
+                {
+                    fileSize /= 1024;
+
+                    if (fileSize < 1024)
+                    {
+                        fileSizeDisplayed = fileSize.ToString(format, culture) + " KB";
+                    }
+
+                    else
+                    {
+                        fileSize /= 1024;
+
+                        if (fileSize < 1024)
+                        {
+                            fileSizeDisplayed = fileSize.ToString(format, culture) + " MB";
+                        }
+
+                        else
+                        {
+                            fileSize /= 1024;
+
+                            if (fileSize < 1024)
+                            {
+                                fileSizeDisplayed = fileSize.ToString(format, culture) + " GB";
+                            }
+
+                            else
+                            {
+                                fileSize /= 1024;
+
+                                if (fileSize < 1024)
+                                {
+                                    fileSizeDisplayed = fileSize.ToString(format, culture) + " TB";
+                                }
+                            }
+                        }
+                    }
+                }
+
+                DateTime current = new DateTime();
+                current = DateTime.Now;
+
+                con.Open();
+
+
+
+                using (var sqlWrite = new SqlCommand("insert into [table] values(@FileName, @File, '" + fileSizeDisplayed + "', '" + current.ToString(dtformat) + "', 'no', 'no', '" + extension + "')", con))
+                {
+                    SqlParameter file2 = new SqlParameter("@File", file);
+                    SqlParameter filename2 = new SqlParameter("@FileName", filename);
+                    sqlWrite.Parameters.Add(filename2);
+                    sqlWrite.Parameters.Add(file2);
+                    sqlWrite.ExecuteNonQuery();
+                }
+
+                con.Close();
             }
         }
 
@@ -509,10 +628,12 @@ namespace Cloud.MyFoldersPage
                 current = DateTime.Now;
 
                 con.Open();
-                SqlCommand cmd = con.CreateCommand();
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "insert into [table] values('" + fileName.Content + "', '" + rtfText + "', '" + fileSizeDisplayed + "', '" + current.ToString(dtformat) + "', 'no', 'no')";
-                cmd.ExecuteNonQuery();
+                using (var sqlWrite = new SqlCommand("insert into [table] values('" + filename +"', @File, '" + fileSizeDisplayed + "', '" + current.ToString(dtformat) + "', 'no', 'no')", con))
+                {
+                    SqlParameter file2 = new SqlParameter("@File", byteArray);
+                    sqlWrite.Parameters.Add(file2);
+                    sqlWrite.ExecuteNonQuery();
+                }
                 con.Close();
 
                 listView.Visibility = System.Windows.Visibility.Collapsed;
