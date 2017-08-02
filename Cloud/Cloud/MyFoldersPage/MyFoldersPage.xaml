@@ -25,7 +25,7 @@
             <Button fa:Awesome.Content="Save" Name="btnSave" Click="btnSave_Click"></Button>
         </ToolBar>
         <ToolBar Name="mainToolBar" HorizontalAlignment="Left" VerticalAlignment="Top" Height="35" Width="525">
-            <TextBox x:Name="searchBar" HorizontalAlignment="Left" Height="23" Margin="0,3,0,0" TextWrapping="Wrap" GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged" VerticalAlignment="Top" Width="199" Foreground="DarkGray">
+            <TextBox x:Name="searchBar" HorizontalAlignment="Left" Height="23" Margin="0,3,0,0" TextWrapping="Wrap" TextChanged="TextBox_TextChanged" VerticalAlignment="Top" Width="199" Foreground="DarkGray">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="10"/>
@@ -56,6 +56,7 @@
             </TextBox>
             <Button fa:Awesome.Content="FileWordOutline" Name="openMSBtn" Click="openMSBtn_Click" Margin="60,0,0,0"></Button>
             <Button fa:Awesome.Content="FilePowerpointOutline" Name="openPPTBtn" Click="openPPTBtn_Click"></Button>
+            <Button fa:Awesome.Content="FileExcelOutline" Name="openEXLBtn" Click="openEXLBtn_Click"></Button>
             <Button fa:Awesome.Content="FileText" Name="newTextBtn" Click="newTextBtn_Click"></Button>
             <Button fa:Awesome.Content="Download" Name="downloadBtn" Click="TestDownload"></Button>
         </ToolBar>
