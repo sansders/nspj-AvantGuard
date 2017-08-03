@@ -159,7 +159,7 @@ namespace NSPJProject
 
         private void SignUp2BackButton_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute));
+            this.NavigationService.Navigate(new Uri(@"SignUp1.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }

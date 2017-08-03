@@ -16,8 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
-
+using WpfApp1.Model1;
 
 namespace NSPJProject
 {
@@ -187,6 +186,7 @@ namespace NSPJProject
                 (App.Current as App).UserDOB = SignUpDOBDatePicker.Text;
 
                 this.NavigationService.Navigate(new Uri(@"SignUp2.xaml? key1=" + SignUpUserIDTextBox.Text, UriKind.RelativeOrAbsolute));
+               
             }
         }
 
