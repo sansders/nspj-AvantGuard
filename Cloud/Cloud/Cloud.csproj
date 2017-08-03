@@ -110,6 +110,7 @@
     <Compile Include="Controllers\Steganography.cs" />
     <Compile Include="Controllers\UploadingModel.cs" />
     <Compile Include="Models\KeyModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="MyItem.cs" />
     <Compile Include="NavigationPage.xaml.cs">
       <DependentUpon>NavigationPage.xaml</DependentUpon>
