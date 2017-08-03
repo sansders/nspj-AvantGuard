@@ -124,6 +124,7 @@ namespace Layout.Controllers
             try
             {
                 rm = new RijndaelManaged();
+                Console.WriteLine("rm KeySize: "+ rm.KeySize);
                 rm.Key = Key;
                 rm.IV = IV;
                 rm.Mode = CipherMode.CBC;
