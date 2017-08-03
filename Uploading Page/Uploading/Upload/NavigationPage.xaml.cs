@@ -796,6 +796,7 @@ namespace Layout.Upload
 
         }
 
+
         private void stegEncrypt(object sender, RoutedEventArgs e)
         {
             string fileName;
@@ -823,33 +824,43 @@ namespace Layout.Upload
                 OpenFileDialog dlg1 = new OpenFileDialog();
                 if (dlg1.ShowDialog() == DialogResult.OK)
                 {
-                    stegPass = stegPassBox.Text;
+                    stegPass = stegPassBox.Text.ToString();
                     hideThis = File.ReadAllBytes(dlg1.FileName);
-
-                    byte[] stegByte = Convert.FromBase64String(stegPass);
-                    
-                    while (stegByte.Length != 32)
+                    if(stegPass.Length < 8)
                     {
-                        stegByte = stegByte.Concat(Encoding.ASCII.GetBytes("0")).ToArray();
-                        Console.WriteLine(stegByte);
+                        System.Windows.MessageBox.Show("Please enter an 8-character password");
+                    } else
+                    {
+                        if(stegPass.Length >= 8)
+                        {
+                            stegPass = stegPass.Substring(0, 8);
+                        }
+                        byte[] stegByte = Convert.FromBase64String(stegPass);
+
+                        while (stegByte.Length != 32)
+                        {
+                            stegByte = stegByte.Concat(Encoding.ASCII.GetBytes("0")).ToArray();
+                            Console.WriteLine(stegByte);
+                        }
+
+                        byte[] IV = File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
+                        KeyController kc = new KeyController();
+                        byte[] EncryptedStr = kc.symmetricEncryption(hideThis, stegByte, IV);
+                        String hideThisStr = Convert.ToBase64String(EncryptedStr);
+                        //String hideThisStr = System.Text.Encoding.UTF8.GetString(EncryptedStr);
+                        bmp = Steganography.embedText(hideThisStr, bmp);
+                        fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
+
+                        bmp.Save(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\Harmless " + fileName + ".bmp");
+                        Console.WriteLine("A txt file has successfully been hidden in " + fileName + "!");
+                        Console.WriteLine("");
+
                     }
-
-                    byte[] IV = File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
-                    KeyController kc = new KeyController();
-                    byte[] EncryptedStr = kc.symmetricEncryption(hideThis,stegByte,IV); 
-                    String hideThisStr = System.Text.Encoding.UTF8.GetString(EncryptedStr);
-                    bmp = Steganography.embedText(hideThisStr, bmp);
-                    fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
-
-                    bmp.Save(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\Harmless " + fileName + ".bmp");
-                    Console.WriteLine("A txt file has successfully been hidden in " +fileName+"!");
-                    Console.WriteLine("");
 
                 }
             }
             
         }
-
         private void stegDecrypt(object sender, RoutedEventArgs e)
         {
             string extractThis;
@@ -867,17 +878,22 @@ namespace Layout.Upload
                     bmp = new Bitmap(ms);
                 }
                 fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
-                //  extractThis = Convert.FromBase64String(Steganography.extractText(bmp));
                 extractThis = Steganography.extractText(bmp);
-                stegPass = stegPassBox.Text;
-              
-               byte[] toBytes = Encoding.Unicode.GetBytes(extractThis);
+                stegPass = stegPassBox.Text.ToString();
+                Console.WriteLine(extractThis);
 
-                byte[] stegByte = Encoding.Unicode.GetBytes(stegPass);
+                if (stegPass.Length > 8)
+                {
+                    stegPass = stegPass.Substring(0, 8);
+                }
+                
+               
+                 byte[] toBytes = Convert.FromBase64String(extractThis);
+
+                byte[] stegByte = Convert.FromBase64String(stegPass);
 
                 while (stegByte.Length != 32)
                 {
-                    //stegByte = Encoding.ASCII.GetBytes(Convert.ToBase64String(stegByte) + "0");
                     stegByte = stegByte.Concat(Encoding.ASCII.GetBytes("0")).ToArray();
                     Console.WriteLine(stegByte);
                 }
@@ -886,8 +902,8 @@ namespace Layout.Upload
                 byte[] IV = File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
 
                 byte[] DecryptedStr = kc.symmetricDecryption(toBytes,stegByte, IV);
-                string result = System.Text.Encoding.UTF8.GetString(DecryptedStr);
 
+                string result = System.Text.Encoding.UTF8.GetString(DecryptedStr);
                 System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\DecryptedText\\SECRET MESSAGE.txt", result);
                 Console.WriteLine("!!! A SECRET MESSAGE HAS BEEN REVEALED FROM " + fileName+" !!!");
                 Console.WriteLine("");
