@@ -83,6 +83,10 @@ namespace NSPJProject
 
                         con.Close();
                     }
+
+                    MessageBox.Show("You have changed your password.");
+                    this.NavigationService.Navigate(new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute));
+
                 }
                 else
                 {
@@ -101,6 +105,7 @@ namespace NSPJProject
             }
 
             OldPasswordTextBox.Clear();
+            NewPasswordTextBox.Clear();
         }
     }
 }

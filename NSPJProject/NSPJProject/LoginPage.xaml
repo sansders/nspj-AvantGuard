@@ -160,16 +160,16 @@
                                     </Button.Style>
                                 </Button>
 
-                                <!-- Forget Password Button -->
-                                <Button Name="ButtonForgetPass" 
-                                        Content="Forget Your Password?"
+                                <!-- Change Password Button -->
+                                <Button Name="ButtonChangePass" 
+                                        Content="Change Password"
                                         HorizontalAlignment="Center"
                                         FontFamily="Gulim"
                                         FontWeight="Bold"
                                         BorderThickness="0"
                                         Padding="10 10 10 10"
                                         Foreground="#23aeff"
-                                        Click="ButtonForgetPass_Click">
+                                        Click="ButtonChangePass_Click">
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Background" Value="Transparent"></Setter>

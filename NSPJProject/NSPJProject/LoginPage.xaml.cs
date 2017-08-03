@@ -597,7 +597,7 @@ namespace NSPJProject
             this.NavigationService.Navigate(new Uri(@"SignUp1.xaml", UriKind.RelativeOrAbsolute));
         }
 
-        private void ButtonForgetPass_Click(object sender, RoutedEventArgs e)
+        private void ButtonChangePass_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri(@"ForgotPassword1.xaml", UriKind.RelativeOrAbsolute));
         }
