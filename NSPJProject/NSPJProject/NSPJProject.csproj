@@ -72,6 +72,12 @@
     <Compile Include="ForgotPassword2.xaml.cs">
       <DependentUpon>ForgotPassword2.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ForgotPassword3.xaml.cs">
+      <DependentUpon>ForgotPassword3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ForgotPassword4.xaml.cs">
+      <DependentUpon>ForgotPassword4.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -90,6 +96,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ForgotPassword2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ForgotPassword3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ForgotPassword4.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

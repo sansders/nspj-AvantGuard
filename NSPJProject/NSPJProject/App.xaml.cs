@@ -23,5 +23,7 @@ namespace NSPJProject
         public string Q1Ans { get; internal set; }
         public string SecurityQ2 { get; internal set; }
         public string Q2Ans { get; internal set; }
+        public string ForgotPasswordEmail { get; internal set; }
+        public string ForgotPasswordCode { get; internal set; }
     }
 }

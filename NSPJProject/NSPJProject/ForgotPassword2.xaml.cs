@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,67 +24,91 @@ namespace NSPJProject
     /// </summary>
     public partial class ForgotPassword2 : Page
     {
+        SqlConnection con;
+        SqlCommand cmd;
+        SqlDataReader reader;
+
         public ForgotPassword2()
         {
             InitializeComponent();
+            string selected_SecurityQ1 = (App.Current as App).SecurityQ1;
+            Q1Label.Content = selected_SecurityQ1;
+
+            string selected_SecurityQ2 = (App.Current as App).SecurityQ2;
+            Q2Label.Content = selected_SecurityQ2;
         }
 
         private void ForgotPassword2BackButton_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute));
+            this.NavigationService.Navigate(new Uri(@"ForgotPassword1.xaml", UriKind.RelativeOrAbsolute));
         }
 
         private void ForgotPassword2NextButton_Click(object sender, RoutedEventArgs e)
         {
-            if (String.IsNullOrEmpty(SecurityQ1Ans.Text) || String.IsNullOrEmpty(SecurityQ2Ans.Text))
-            {
-                MessageBox.Show("Please fill in all blanks!");
+            string selected_ForgotPasswordEmail = (App.Current as App).ForgotPasswordEmail;
 
-                if (String.IsNullOrEmpty(SecurityQ1Ans.Text))
+            try
+            {
+                ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+                string connectionString = conSettings.ConnectionString;
+
+                con = new SqlConnection(connectionString);
+                con.Open();
+                cmd = new SqlCommand("select * from [dbo].[test] where Q1Ans = '" + SecurityQ1Ans.Text + "' and Q2Ans = '" + SecurityQ2Ans.Text + "'", con);
+                reader = cmd.ExecuteReader();
+
+                int count = 0;
+                while (reader.Read())
                 {
-                    ForgotPassword2Image1.Visibility = Visibility.Visible;
+                    count += 1;
+                }
+                if (count == 1)
+                {
+                    Random rnd = new Random();
+                    int code = rnd.Next(1000, 9999);
+                    string ForgotPasswordCode = code.ToString();
+
+                    try
+                    {
+                        SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+                        client.EnableSsl = true;
+                        client.Timeout = 10000;
+                        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        client.UseDefaultCredentials = false;
+                        client.Credentials = new NetworkCredential("nspjproject1718@gmail.com", "avantguard");
+                        MailMessage mail = new MailMessage();
+                        mail.To.Add(selected_ForgotPasswordEmail);
+                        mail.From = new MailAddress("nspjproject1718@gmail.com");
+                        mail.Subject = "Change Password Request";
+                        mail.Body = "Your authentication code is " + ForgotPasswordCode;
+                        client.Send(mail);
+                        System.Windows.MessageBox.Show("An authentication code has been sent to your email.");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Windows.MessageBox.Show(ex.Message);
+                    }
+
+                    Console.WriteLine(ForgotPasswordCode);
+                    (App.Current as App).ForgotPasswordCode = ForgotPasswordCode;
+                    this.NavigationService.Navigate(new Uri(@"ForgotPassword3.xaml? key1=" + SecurityQ1Ans.Text, UriKind.RelativeOrAbsolute));
                 }
 
                 else
                 {
-                    ForgotPassword2Image1.Visibility = Visibility.Hidden;
-                }
-
-                if (String.IsNullOrEmpty(SecurityQ2Ans.Text))
-                {
-                    ForgotPassword2Image2.Visibility = Visibility.Visible;
-                }
-
-                else
-                {
-                    ForgotPassword2Image2.Visibility = Visibility.Hidden;
+                    MessageBox.Show("Please make sure that all answers are correct.");
                 }
             }
-
-            else
+            catch (Exception ex)
             {
-                ForgotPassword2Image1.Visibility = Visibility.Hidden;
-                ForgotPassword2Image2.Visibility = Visibility.Hidden;
-                MessageBox.Show("(Still Incomplete.");
+                System.Windows.MessageBox.Show(ex.Message);
             }
+            finally
+            {
+
+                con.Close();
+            }
+
         }
-
-        private void Q1Label_GiveFeedback(object sender, GiveFeedbackEventArgs e)
-        {
-            string selected_SecurityQ1 = (App.Current as App).SecurityQ1;
-            string selected_Q1Ans = (App.Current as App).Q1Ans;
-            string selected_SecurityQ2 = (App.Current as App).SecurityQ2;
-            string selected_Q2Ans = (App.Current as App).Q2Ans;
-
-            Q1Label.Content = selected_SecurityQ1;
-        }
-
-        //string selected_SecurityQ1 = (App.Current as App).SecurityQ1;
-        //string selected_Q1Ans = (App.Current as App).Q1Ans;
-        //string selected_SecurityQ2 = (App.Current as App).SecurityQ2;
-        //string selected_Q2Ans = (App.Current as App).Q2Ans;
-
-        //Q1Label.Content = selected_SecurityQ1;
-        //Q2Label.Content = selected_SecurityQ2;
     }
 }

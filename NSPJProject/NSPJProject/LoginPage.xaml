@@ -51,7 +51,6 @@
                                          Padding="10"
                                          Margin="0 5 0 5"
                                          BorderThickness="0 0 0 1"
-                                         FontWeight="Bold"
                                          Width="375">
                                     <TextBox.Style>
                                         <Style TargetType="TextBox">

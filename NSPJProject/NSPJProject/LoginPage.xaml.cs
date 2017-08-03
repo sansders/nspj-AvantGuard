@@ -164,7 +164,6 @@ namespace NSPJProject
                 while (reader.Read())
                 {
                     count += 1;
-                    //Bryan's code
                     Console.WriteLine(" | UserID : " + reader.GetString(0) + " | Password : " + reader.GetString(1) + " | Name : " + reader.GetString(2) + " | Email : " + reader.GetString(3) + " | ContactNo : " + reader.GetString(4));
                   
                 }
