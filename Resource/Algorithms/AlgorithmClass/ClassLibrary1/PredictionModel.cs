@@ -104,6 +104,7 @@ namespace AlgorithmLibary
             string queryCombined = null;
             int start = 0;
             string datalist = null;
+            
             if (passList.Count() >= 100)
             {
                 start = passList.Count() - 100;
@@ -116,9 +117,8 @@ namespace AlgorithmLibary
             string[] args = { fileURL, queryIP, queryMAC, queryDAY, datalist };
          
             args[0] = fileURL;
-           
             string output = startPythonProgramm(python, args);
-            
+            Console.WriteLine("end");            
             string[] result = output.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
            
             Console.WriteLine(output);
@@ -188,6 +188,7 @@ namespace AlgorithmLibary
 
 
         }
+
 
         private static string getRiskLevel(string input)
         {
@@ -283,10 +284,13 @@ namespace AlgorithmLibary
             //string[] a3 = a2.Split('<');
             //string a4 = a3[0];
 
-            string ip = new WebClient().DownloadString(@"http://icanhazip.com").Trim();
+            //string ip = new WebClient().DownloadString(@"http://icanhazip.com").Trim();
+            //Console.WriteLine(ip);
+
+            IPHostEntry IPHost = Dns.GetHostByName(Dns.GetHostName());
+            string ip = IPHost.AddressList[0].ToString();
             Console.WriteLine(ip);
             return ip;
-           
         }
 
         public static string getCurrentPublicIPLocation(string a4)

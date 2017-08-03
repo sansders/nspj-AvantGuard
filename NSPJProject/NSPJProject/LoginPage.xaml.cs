@@ -42,6 +42,7 @@ namespace NSPJProject
             string userID = "trying";
             string currentPublicIP = PredictionModel.getCurrentPublicIP();
             string macAddress = PredictionModel.getCurrentMAC();
+            Console.WriteLine(macAddress);
             string date = PredictionModel.getCurrentDate();
             string[][] ipAddressCollection =
            {
@@ -213,6 +214,7 @@ namespace NSPJProject
 
 
                         string[][] ipAddressCollection = getUserIPAddressCollection(userID, connectionString);
+                        Console.Write(ipAddressCollection.Count());
                         string[] query = new string[] { publicIP , publicMAC, date };
                         PredictionModel ipPredictionModel = new PredictionModel(ipAddressCollection, query);
                         string ipRisk = ipPredictionModel.ipRisk;
@@ -233,6 +235,8 @@ namespace NSPJProject
                         if (riskLevel <= 0.4)
                         {
                             riskStatement = "The risk level is low";
+                            saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
+                            //Navigate To Chester
                         }
 
                         // Removing access control and giving access control

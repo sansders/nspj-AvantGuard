@@ -722,6 +722,7 @@ def classfierSkewed(skewed, dayprioritySet , dayleftoverSet , otherPrioritySet ,
         print("MAC does not matches day leftover mac set")
         print("MAC does not matches other priority mac set")
         print("MAC does not matches other leftover mac set")
+       
         ipRisk = 0.9
         macRisk = 1.0
         riskLevel = calculateRisk(ipRisk, macRisk)
@@ -941,10 +942,10 @@ mylabels = []
 mytickers = []
 for i in range (len(data1)):
     if(i == len(data1) - 1):
-        mylabels.append("IP: " + str(data1[i][0]) + " / MAC :" + str(data1[i][1]))
+        mylabels.append("IP: " + str(data1[i][0]) + " / MAC :" + str(data1[i][1]) + " / DAY " + str(data1[i][3]))
         mytickers.append("Query Vector")
     else:
-        mylabels.append("IP: " + str(data1[i][0]) + " / MAC :" + str(data1[i][1]))
+        mylabels.append("IP: " + str(data1[i][0]) + " / MAC :" + str(data1[i][1])+ " / DAY " + str(data1[i][3]))
         mytickers.append("Set " + str(i))
 for i in range (len(data1)):
 
@@ -956,6 +957,8 @@ for i in range (len(data1)):
 
 ipcount = 0
 maccount= 0
+
+print("Is this working")
 for i in range (len(data1)):
     if(data1[i][0] > ipcount):
         ipcount = data1[i][0]
