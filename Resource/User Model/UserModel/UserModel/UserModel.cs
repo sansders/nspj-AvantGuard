@@ -165,7 +165,7 @@ namespace UserModel
         }
 
 
-        public UserModel retrieveUserFromDatabase(string userID)
+        public static UserModel retrieveUserFromDatabase(string userID)
         {
             ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
             string connectionString = conSettings.ConnectionString;
@@ -200,6 +200,7 @@ namespace UserModel
 
                 while (reader.Read())
                 {
+                    
                     _userID = reader.GetString(0);
                     _userPassword = reader.GetString(1);
                     _userName = reader.GetString(2);
@@ -215,7 +216,7 @@ namespace UserModel
                     _profile3Answer = reader.GetString(12);
                     _profile4Answer = reader.GetString(13);
                 }
-
+                Console.WriteLine(_userID + "|" + _userPassword + "|" + _userName + "|" + _userEmail + "|" + _userContact + "|" + _userDOB + "|" + _securityQ1 + "|" + _securityQ1Ans + "|" + _securityQ2 + "|" + _securityQ2Ans + "|" + _profile1Answer + "|" + _profile2Answer + "|" + _profile3Answer + "|" + _profile4Answer);
                 currentUserModel = new UserModel(
                     _userID, _userPassword, _userName, _userEmail, _userContact, _userDOB, _securityQ1, _securityQ1Ans, _securityQ2, _securityQ2Ans, _profile1Answer, _profile2Answer, _profile3Answer, _profile4Answer);
 
@@ -231,7 +232,7 @@ namespace UserModel
                 con.Close();
             }
 
-            return currentUser;
+            return currentUserModel;
         }
 
 

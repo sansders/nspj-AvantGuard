@@ -166,7 +166,7 @@ namespace NSPJProject
                     count += 1;
                     //Bryan's code
                     Console.WriteLine(" | UserID : " + reader.GetString(0) + " | Password : " + reader.GetString(1) + " | Name : " + reader.GetString(2) + " | Email : " + reader.GetString(3) + " | ContactNo : " + reader.GetString(4));
-                   
+                  
                 }
 
                 if (count == 1)
@@ -174,8 +174,12 @@ namespace NSPJProject
                     string userID = UserIDTextBox.Text;
                     string[][] userList = checkUserEligibility(userID , connectionString);
                     UserModel.UserModel.currentUserID = userID;
+                    string currentUser = UserModel.UserModel.currentUserID;
                     
-                    if(userList.Count() < 30 )
+                    MessageBox.Show(currentUser + "is thios");
+                    UserModel.UserModel um = UserModel.UserModel.retrieveUserFromDatabase(currentUser);
+                    Console.WriteLine(um.userPassword);
+                    if (userList.Count() < 30 )
                     {
                         
                         string date = AlgorithmLibary.PredictionModel.getCurrentDate();
@@ -291,71 +295,7 @@ namespace NSPJProject
             }
         }
 
-        private UserModel.UserModel getCurrentUserData(string userID, string connectionString)
-        {
-            String _userID = null;
-            String _userPassword = null;
-            String _userName = null;
-            String _userEmail = null;
-            String _userContact = null;
-            String _userDOB = null;
-            String _securityQ1 = null;
-            String _securityQ1Ans = null;
-            String _securityQ2 = null;
-            String _securityQ2Ans = null;
-            String _profile1Answer = null;
-            String _profile2Answer = null;
-            String _profile3Answer = null;
-            String _profile4Answer = null;
-            SqlConnection con;
-            SqlCommand cmd;
-            SqlDataReader reader;
-            con = new SqlConnection(connectionString);
-            con.Open();
-            string choice = null;
-            try
-            {
-                con = new SqlConnection(connectionString);
-                con.Open();
-                cmd = new SqlCommand("SELECT * FROM [dbo].[test] where UserID = '" + userID + "'", con);
-                reader = cmd.ExecuteReader();
-                List<String[]> myCollection = new List<string[]>();
-
-                while (reader.Read())
-                {
-                    _userID = reader.GetString(0);
-                    _userPassword = reader.GetString(1);
-                    _userName = reader.GetString(2);
-                    _userEmail = reader.GetString(3);
-                    _userContact = reader.GetString(4);
-                    _userDOB = reader.GetString(5);
-                    _securityQ1 = reader.GetString(6);
-                    _securityQ1Ans = reader.GetString(7);
-                    _securityQ2 = reader.GetString(8);
-                    _securityQ2Ans = reader.GetString(9);
-                    _profile1Answer = reader.GetString(10);
-                    _profile2Answer = reader.GetString(11);
-                    _profile3Answer = reader.GetString(12);
-                    _profile4Answer = reader.GetString(13);
-                }
-
-                UserModel.UserModel currentUser = new UserModel.UserModel(
-                    _userID, _userPassword, _userName, _userEmail, _userContact, _userDOB, _securityQ1, _securityQ1Ans, _securityQ2, _securityQ2Ans, _profile1Answer, _profile2Answer, _profile3Answer, _profile4Answer);
-
-           
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-
-                con.Close();
-            }
-
-            return choice;
-        }
+        
 
         
 
