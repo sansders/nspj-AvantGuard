@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -15,26 +17,60 @@ namespace Layout.Controllers
         {
             checkForKeys();
         }
+
+        static string bigPath = null;
+
         public static void checkForKeys()
         {
             Console.WriteLine("Checking for keys...");
 
             //CHANGE PATH WHEREVER NECESSARY 
-            string path1 = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt";
-            string path2 = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt";
-            string path3 = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt";
-            string path4 = @"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt";
-            if (!File.Exists(path1) || !File.Exists(path2) || !File.Exists(path3) || !File.Exists(path4))
+            
+ 
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            SqlConnection con1;
+            SqlCommand cmd;
+            ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+            string connectionString1 = conSettings.ConnectionString;
+            con1 = new SqlConnection(connectionString1);
+            con1.Open();
+            string sqlQuery1 = "SELECT keyPath FROM dbo.test WHERE UserID='testing'";
+            string sqlQuery2;
+            cmd = new SqlCommand(sqlQuery1, con1);
+            SqlDataReader DataRead1 = cmd.ExecuteReader();
+            
+            if (DataRead1.Read())
             {
-                Console.WriteLine("Keys not found!");
-                Console.WriteLine("Proceeding with Key generation, please wait...");
-                ivCreation();
-                asymmetricKeyCreation();
-                asymmetricEncryption(symmetricKeyCreation());
-                Console.WriteLine("New keys successfully generated!");
-                Console.WriteLine("Commencing encryption...");
-                Console.WriteLine("");
+                if (DataRead1.IsDBNull(0))
+                {
+                    DataRead1.Close();
+                    Console.WriteLine("Keys not found!");
+                    Console.WriteLine("Proceeding with Key generation, please wait...");
+
+                    Controllers.Prompt.ShowDialog1("Please select a directory to store your keys", "Alert");
+                    fbd.ShowDialog();
+                    bigPath = fbd.SelectedPath;
+                    //When username is obtainable, please concatenate it into these paths.
+
+                    sqlQuery2 = "UPDATE dbo.test SET keyPath = @bigPath WHERE UserID='testing'";
+                    cmd = new SqlCommand(sqlQuery2, con1);
+                    cmd.Parameters.Add(new SqlParameter("@bigPath", bigPath));
+                    cmd.ExecuteNonQuery();
+
+                    ivCreation();
+                    asymmetricKeyCreation();
+                    asymmetricEncryption(symmetricKeyCreation());
+                    Console.WriteLine("New keys successfully generated!");
+                    Console.WriteLine("Commencing encryption...");
+                    Console.WriteLine("");
+                }
+                else
+                {
+                    bigPath = DataRead1.GetString(0);
+                }
+                
             }
+            con1.Close();
         }
         public static void asymmetricKeyCreation()
         {
@@ -73,14 +109,14 @@ namespace Layout.Controllers
 
             //Sets key pair into txt files
             //CHANGE PATH WHEREVER NECESSARY 
-            System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt", pubKeyString);
-            System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt", privKeyString);
+            System.IO.File.WriteAllText(@bigPath+"\\pubKey.txt", pubKeyString);
+            System.IO.File.WriteAllText(@bigPath + "\\privKey.txt", privKeyString);
             
            
         }
         public static byte[] symmetricKeyCreation()
         {
-            //Creates an instance of Rijndael that will contain all the methods required for AES Symmetric Encryption
+            //Creates an instance of Rijndael that will contain all the methods required for Symmetric Encryption
             RijndaelManaged Crypto = new RijndaelManaged();
 
             //Assigns key to byte[] and string variables
@@ -90,7 +126,7 @@ namespace Layout.Controllers
             //Saves string of IV
             //CHANGE PATH WHENEVER NECCESSARY
             //System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\symmetricKey.txt", stringSymmetricKey);
-            File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt", byteSymmetricKey);
+            File.WriteAllBytes(@bigPath+"\\encryptedSymmetricKey.txt", byteSymmetricKey);
 
 
             return byteSymmetricKey;
@@ -104,7 +140,7 @@ namespace Layout.Controllers
             //Saves string of IV
             //CHANGE PATH WHENEVER NECCESSARY
             //System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt", stringIV);
-            File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt", IV);
+            File.WriteAllBytes(@bigPath + "\\IV.txt", IV);
         }
 
 
@@ -124,7 +160,6 @@ namespace Layout.Controllers
             try
             {
                 rm = new RijndaelManaged();
-                Console.WriteLine("rm KeySize: "+ rm.KeySize);
                 rm.Key = Key;
                 rm.IV = IV;
                 rm.Mode = CipherMode.CBC;
@@ -161,7 +196,7 @@ namespace Layout.Controllers
             //Converts Public key back from String object to var(?)
             //Gets a stream from the publicKey string
             //CHANGE PATH WHEREVER NECESSARY 
-            string pubKeyReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\pubKey.txt");
+            string pubKeyReader = System.IO.File.ReadAllText(@bigPath + "\\pubKey.txt");
             var stringReader1 = new System.IO.StringReader(pubKeyReader);
             //Use a serializer
             var xmlSeralize1 = new System.Xml.Serialization.XmlSerializer(typeof(RSAParameters));
@@ -175,7 +210,7 @@ namespace Layout.Controllers
             byte[] encryptedSymmetricKeyBytes = csp.Encrypt(symmetricKey, false);
 
             //Saves byte[] of encryptedSymmetricKey into a file
-            File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt", encryptedSymmetricKeyBytes);
+            File.WriteAllBytes(@bigPath + "\\encryptedSymmetricKey.txt", encryptedSymmetricKeyBytes);
         }
         public byte[] asymmetricDecryption(byte[] encryptedSymmetricKeyBytes)
         {
@@ -185,7 +220,7 @@ namespace Layout.Controllers
             //Converts Private key back from String object to var(?)           
             //Gets a stream from the privateKey string
             //CHANGE PATH WHEREVER NECESSARY 
-            string privKeyReader = System.IO.File.ReadAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\privKey.txt");
+            string privKeyReader = System.IO.File.ReadAllText(@bigPath + "\\privKey.txt");
             var stringReader2 = new System.IO.StringReader(privKeyReader);
             //Use a serializer
             var xmlSeralize2 = new System.Xml.Serialization.XmlSerializer(typeof(RSAParameters));
