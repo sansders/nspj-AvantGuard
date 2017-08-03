@@ -150,11 +150,8 @@ namespace NSPJProject
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
             PasswordTextBox.Password = GetSha512FromString(PasswordTextBox.Password);
-            MessageBox.Show(PasswordTextBox.Password);
-
-            
+            MessageBox.Show(PasswordTextBox.Password);         
            
-
             try
             {
                 con = new SqlConnection(connectionString);
@@ -257,25 +254,9 @@ namespace NSPJProject
 
                     }
 
-
-
-              
-
-
                     MessageBox.Show("Successful Login.");
 
                 }
-
-                //else if (count > 0)
-                //{
-                //    cmd = new SqlCommand("INSERT INTO dbo.test (DateOfLogin, TimeOfLogin, SuccessfulLogin, AccountLocked) VALUES (@DateOfLogin, @TimeOfLogin, @SuccessfulLogin, @AccountLocked", con);
-                //    cmd.Parameters.AddWithValue("@DateOfLogin", DateTime.Now.ToShortDateString());
-                //    cmd.Parameters.AddWithValue("@TimeOfLogin", DateTime.Now.ToString("HH.mm"));
-                //    cmd.Parameters.AddWithValue("@SuccessfulLogin", 'N');
-                //    cmd.Parameters.AddWithValue("@AccountLocked", null);
-
-                //    MessageBox.Show("Duplicate userid and password.");
-                //}
 
                 else
                 {
@@ -285,10 +266,7 @@ namespace NSPJProject
                     //cmd.Parameters.AddWithValue("@SuccessfulLogin", 'N');
                     //cmd.Parameters.AddWithValue("@AccountLocked", null);
                     MessageBox.Show("Invalid user id or password.");
-
-
-                    
-                }   
+                }
 
                 UserIDTextBox.Clear();
                 PasswordTextBox.Clear();               

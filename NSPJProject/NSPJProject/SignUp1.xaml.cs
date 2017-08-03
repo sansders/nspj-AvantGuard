@@ -31,6 +31,10 @@ namespace NSPJProject
             InitializeComponent();
         }
 
+        SqlConnection con;
+        SqlCommand cmd;
+        SqlDataReader reader;
+
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = IsTextNumeric(e.Text);
@@ -44,10 +48,23 @@ namespace NSPJProject
 
         private void SignUp1NextButton_Click(object sender, RoutedEventArgs e)
         {
+            ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+            string connectionString = conSettings.ConnectionString;
+
+            con = new SqlConnection(connectionString);
+            con.Open();
+            cmd = new SqlCommand("SELECT COUNT (UserID) FROM [dbo].[test] WHERE UserID = '" + SignUpUserIDTextBox.Text + "' ", con);
+            Int32 tempUserID = (Int32)cmd.ExecuteScalar();
+
+            cmd = new SqlCommand("SELECT COUNT (Email) FROM [dbo].[test] WHERE Email = '" + SignUpEmailTextBox.Text + "' ", con);
+            Int32 tempEmail = (Int32)cmd.ExecuteScalar();
+
+            con.Close();
+
             if (String.IsNullOrEmpty(SignUpUserIDTextBox.Text) || SignUpPasswordTextBox.SecurePassword.Length == 0 || SignUpPasswordTextBox.SecurePassword.Length < 8
                 || String.IsNullOrEmpty(SignUpNameTextBox.Text) || String.IsNullOrEmpty(SignUpEmailTextBox.Text) ||
                 !Regex.IsMatch(SignUpEmailTextBox.Text, @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$") ||
-                String.IsNullOrEmpty(SignUpContactTextBox.Text) || SignUpDOBDatePicker.SelectedDate == null)
+                String.IsNullOrEmpty(SignUpContactTextBox.Text) || SignUpDOBDatePicker.SelectedDate == null || tempUserID > 0 || tempEmail > 0)
             {
                 MessageBox.Show("Please make sure that all blanks are filled.");
 
@@ -132,6 +149,29 @@ namespace NSPJProject
                 {
                     EmailImage.Visibility = Visibility.Hidden;
                 }
+
+                if (tempUserID > 0)
+                {
+                    UserIDImage.Visibility = Visibility.Visible;
+                    MessageBox.Show("User ID already exist.");
+                }
+
+                else
+                {
+                    UserIDImage.Visibility = Visibility.Hidden;
+                }
+
+                if (tempEmail > 0)
+                {
+                    EmailImage.Visibility = Visibility.Visible;
+                    MessageBox.Show("Email has already been used.");
+                }
+
+                else
+                {
+                    EmailImage.Visibility = Visibility.Hidden;
+                }
+
             }
 
             else
