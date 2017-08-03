@@ -186,20 +186,53 @@ namespace NSPJProject
                         string publicIP = PredictionModel.getCurrentPublicIP();
                         string publicMAC = PredictionModel.getCurrentMAC();
                         string userLogInPreference = getUserLogInPreference(userID, connectionString);
-                        Boolean consideredNormal = evaulateUserLogInString(userLogInPreference , loginTime);
-
                         string userComputerPreference = getUserComputerPreference(userID, connectionString);
-
-
-                        if (consideredNormal == true)
-                        { 
-                            saveDateTimeOfUser(userID, connectionString , loginTime , date , publicIP , publicMAC);
-                        }
-
-                        else
+                        //The method below is supposed to read from the database all the entries of hostname for this specific user
+                        string[] currentHostnameSet =
                         {
-                            //Do 2fa and if authenticated then save date time 
+                            "JUSTINSOH-PC",
+                            "JUSTINSOH-PC",
+                            "JUSTINSOH-PC",
+                            "JUSTINSOH-PCC",
+                            "JUSTINSOH-PCC",
+                            "JUSTINSOH-PCC",
+
+                        };
+                        double logInRisk = evaulateUserLogInString(userLogInPreference , loginTime);
+
+                        double userHostRisk = evaulateUserComputerPreference(userComputerPreference, currentHostnameSet);
+
+                        logInRisk = logInRisk * 0.4;
+                        userHostRisk = userHostRisk * 0.6;
+
+                        double totalRisk = logInRisk + userHostRisk;
+                        Console.WriteLine(userHostRisk + " HOSTNAME");
+                        Console.WriteLine(logInRisk + "LOG IN RISK");
+                        Console.WriteLine(totalRisk);
+                        string riskStatement = null;
+                        if (totalRisk <= 0.4)
+                        {
+                            riskStatement = "The risk level is low";
+                            saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
+                            //Navigate To Chester
                         }
+
+                        // Removing access control and giving access control
+                        else if (totalRisk <= 0.70)
+                        {
+                            riskStatement = "The risk level is medium";
+                            //Remove Access Control 
+
+                        }
+
+                        //Instantly Re authenticate
+                        else if (totalRisk > 0.70)
+                        {
+                            riskStatement = "The risk level is high";
+                            //Do 2FA
+                        }
+                        Console.WriteLine(riskStatement);
+                     
                     }
                     
                     else if (userList.Count() >= 30)
@@ -294,9 +327,51 @@ namespace NSPJProject
             }
         }
 
-        
+        private double evaulateUserComputerPreference(string userComputerPreference, string[] currentHostnameSet)
+        {
+            double riskLevel = 0;
+            double likelihood = 0;
+            if(userComputerPreference.Contains("a"))
+            {
+                riskLevel = 0.7;
+            }
+            if(userComputerPreference.Contains("b"))
+            {
+                riskLevel = 0.3; 
+            }
+            if(userComputerPreference.Contains("c"))
+            {
+                riskLevel = 0.5;
+            }
+            string currentHostname = System.Environment.MachineName.ToString();
+     
+            double totalMatch = 0;
+            foreach (var element in currentHostnameSet)
+            {
+                if(currentHostname.Equals(element))
+                {
+                    totalMatch++;
+                   
+                }
+            }
 
-        
+            if(currentHostnameSet.Count() == 0)
+            {
+                likelihood = 1- riskLevel;
+            }
+            else
+            {
+                likelihood = (totalMatch / currentHostnameSet.Count()) ;
+            }
+
+            riskLevel = 1 - likelihood;
+            Console.WriteLine(riskLevel + "risk level");
+
+            return likelihood;
+        }
+
+      
+
 
         private string getUserComputerPreference(string userID, string connectionString)
         {
@@ -419,47 +494,165 @@ namespace NSPJProject
 
         }
 
-        private bool evaulateUserLogInString(string userLogInPreference , string logInTime)
+        private double evaulateUserLogInString(string userLogInPreference , string logInTime)
         {
-            int start = 0;
-            int end = 0; 
-            if(userLogInPreference.Contains("a"))
+            double start = 0;
+            double end = 0;
+            Console.WriteLine(userLogInPreference);
+            List<double[]> userList = new List<double[]>();
+            if (userLogInPreference.Contains("a"))
             {
-                end += 6;
-               
+                start = 0;
+                end = start + 6;
+                double[] newSet = new double[] { start, end };
+                userList.Add(newSet);
             }
-            if(userLogInPreference.Contains("b"))
+            else if (userLogInPreference.Contains("b"))
             {
-                end += 6;
+                start = 6;
+                end = start + 6;
+                double[] newSet = new double[] { start, end };
+                userList.Add(newSet);
             }
             if (userLogInPreference.Contains("c"))
             {
-                end += 6;
+                start = 12;
+                end = start + 6;
+                double[] newSet = new double[] { start, end };
+                userList.Add(newSet);
             }
             if (userLogInPreference.Contains("d"))
             {
-                end += 6;
+                start = 18;
+                end = start + 6;
+                double[] newSet = new double[] { start, end };
+                userList.Add(newSet);
             }
-            if(userLogInPreference.Contains("e"))
+            if (userLogInPreference.Contains("e"))
             {
                 start = 0;
-                end = 24;
+                end = start + 24;
+                double[] newSet = new double[] { start, end };
+                userList.Add(newSet);
+            }
+            double riskPercent = 0;
+            double logInTimeDbl = Convert.ToDouble(logInTime);
+            int counter = 0;
+            foreach(var element in userList)
+            {
+                do
+                {
+                    Console.WriteLine("Matching Exactly");
+                    riskPercent = matchExactly(element[0], element[1], logInTimeDbl);
+                    if (riskPercent == 0)
+                    {
+                        Console.WriteLine("Matching 3 Hours Buffer");
+                        riskPercent = match3Buffer(element[0], element[1], logInTimeDbl);
+                        if (riskPercent == 0)
+                        {
+                            Console.WriteLine("Matching 6 Hours Buffer");
+                            riskPercent = match6Buffer(element[0], element[1], logInTimeDbl);
+                            if (riskPercent == 0)
+                            {
+                                Console.WriteLine("Not in any range");
+                                riskPercent = 0.8;
+                                counter++;
+                                break;
+                            }
+                           
+
+                        }
+                        else
+                        {
+                            counter++;
+                            break;
+                        }
+
+                    }
+                    else
+                    {
+                        counter++;
+                        break;
+                    }
+                }
+                while (counter == 0);
+                if(counter != 0)
+                {
+                    break;
+                }
+
             }
 
-            double logInTimeDbl = Convert.ToDouble(logInTime);
+          
+
+         
+
+            return riskPercent;
+
+            //double riskPercent = 0;
+            //double logInTimeDbl = Convert.ToDouble(logInTime);
+            //Console.WriteLine(start.ToString() + " to " + end.ToString());
+            //if(start <= logInTimeDbl && logInTimeDbl <= end)
+            //{
+            //    Console.WriteLine(Convert.ToString(start) + " is the start and the end is " + Convert.ToString(end));
+            //    Console.WriteLine("Within the exact range");
+            //    riskPercent = 0.1;
+            //}
+            //else if(start - 3<= logInTimeDbl && logInTimeDbl <= end + 3)
+            //{
+            //    Console.WriteLine("Not within the exact range but with 3 hours buffer");
+            //    riskPercent = 0.4;
+            //}
+            //else if (start - 6 <= logInTimeDbl && logInTimeDbl <= end + 6)
+            //{
+            //    Console.WriteLine("Not within the exact range but with 6 hours buffer");
+            //    riskPercent = 0.6;
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Not in any range");
+            //    riskPercent = 0.8;
+            //}
+            //Console.WriteLine(riskPercent);
+            //return riskPercent;
+
+
+        }
+
+        private double matchExactly(double start , double end, double logInTimeDbl)
+        {
+            double riskPercent = 0;
             if(start <= logInTimeDbl && logInTimeDbl <= end)
             {
                 Console.WriteLine(Convert.ToString(start) + " is the start and the end is " + Convert.ToString(end));
-                Console.WriteLine("Within the range");
-                return true;
+                Console.WriteLine("Within the exact range");
+                riskPercent = 0.1;
             }
-            else
+            return riskPercent;
+        }
+
+        private double match3Buffer(double start, double end, double logInTimeDbl)
+        {
+            double riskPercent = 0;
+            if (start -3 <= logInTimeDbl && logInTimeDbl <= end + 3)
             {
-                Console.WriteLine("Not within the range");
-                return false;
+                Console.WriteLine(Convert.ToString(start) + " is the start and the end is " + Convert.ToString(end));
+                Console.WriteLine("Not within the exact range but with 3 hours buffer");
+                riskPercent = 0.4;
             }
+            return riskPercent;
+        }
 
-
+        private double match6Buffer(double start, double end, double logInTimeDbl)
+        {
+            double riskPercent = 0;
+            if (start - 6 <= logInTimeDbl && logInTimeDbl <= end + 6)
+            {
+                Console.WriteLine(Convert.ToString(start) + " is the start and the end is " + Convert.ToString(end));
+                Console.WriteLine("Not within the exact range but with 6 hours buffer");
+                riskPercent = 0.6;
+            }
+            return riskPercent;
         }
 
         private string getUserLogInPreference(string userID, string connectionString)

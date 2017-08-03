@@ -285,11 +285,11 @@ namespace AlgorithmLibary
             //string[] a3 = a2.Split('<');
             //string a4 = a3[0];
 
-            //string ip = new WebClient().DownloadString(@"http://icanhazip.com").Trim();
-            //Console.WriteLine(ip);
+            string ip = new WebClient().DownloadString(@"http://icanhazip.com").Trim();
+            Console.WriteLine(ip);
 
-            IPHostEntry IPHost = Dns.GetHostByName(Dns.GetHostName());
-            string ip = IPHost.AddressList[0].ToString();
+            //IPHostEntry IPHost = Dns.GetHostByName(Dns.GetHostName());
+            //string ip = IPHost.AddressList[0].ToString();
             Console.WriteLine(ip);
             return ip;
         }
