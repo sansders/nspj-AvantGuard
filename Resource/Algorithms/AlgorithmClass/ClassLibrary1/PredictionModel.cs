@@ -247,7 +247,8 @@ namespace AlgorithmLibary
                 string[] myNew = { first, second };
                 myList.Add(myNew);
             }
-
+            Console.WriteLine(myList[0].Count());
+            Console.WriteLine(myList[1].Count());
             string[][] finalList = new string[myList.Count()][];
             for (int a = 0; a < myList.Count(); a++)
             {

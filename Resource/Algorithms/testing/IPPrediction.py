@@ -942,10 +942,10 @@ mylabels = []
 mytickers = []
 for i in range (len(data1)):
     if(i == len(data1) - 1):
-        mylabels.append("IP: " + str(data1[i][0]) + " / MAC :" + str(data1[i][1]) + " / DAY " + str(data1[i][3]))
+        mylabels.append("IP: " + str(data1[i][0]) + " / MAC :" + str(data1[i][1]) + " / DAY " + str(data1[i][2]))
         mytickers.append("Query Vector")
     else:
-        mylabels.append("IP: " + str(data1[i][0]) + " / MAC :" + str(data1[i][1])+ " / DAY " + str(data1[i][3]))
+        mylabels.append("IP: " + str(data1[i][0]) + " / MAC :" + str(data1[i][1])+ " / DAY " + str(data1[i][2]))
         mytickers.append("Set " + str(i))
 for i in range (len(data1)):
 

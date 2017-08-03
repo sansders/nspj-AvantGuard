@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UserModel;
 
 namespace NSPJProject
 {
@@ -172,7 +173,8 @@ namespace NSPJProject
                 {
                     string userID = UserIDTextBox.Text;
                     string[][] userList = checkUserEligibility(userID , connectionString);
-
+                    UserModel.UserModel.currentUserID = userID;
+                    
                     if(userList.Count() < 30 )
                     {
                         
@@ -182,10 +184,15 @@ namespace NSPJProject
                         string publicMAC = PredictionModel.getCurrentMAC();
                         string userLogInPreference = getUserLogInPreference(userID, connectionString);
                         Boolean consideredNormal = evaulateUserLogInString(userLogInPreference , loginTime);
-                        if(consideredNormal == true)
+
+                        string userComputerPreference = getUserComputerPreference(userID, connectionString);
+
+
+                        if (consideredNormal == true)
                         { 
                             saveDateTimeOfUser(userID, connectionString , loginTime , date , publicIP , publicMAC);
                         }
+
                         else
                         {
                             //Do 2fa and if authenticated then save date time 
@@ -241,6 +248,7 @@ namespace NSPJProject
                         {
                             riskStatement = "The risk level is medium";
                             //Remove Access Control 
+
                         }
 
                         //Instantly Re authenticate
@@ -281,6 +289,110 @@ namespace NSPJProject
 
                 con.Close();
             }
+        }
+
+        private UserModel.UserModel getCurrentUserData(string userID, string connectionString)
+        {
+            String _userID = null;
+            String _userPassword = null;
+            String _userName = null;
+            String _userEmail = null;
+            String _userContact = null;
+            String _userDOB = null;
+            String _securityQ1 = null;
+            String _securityQ1Ans = null;
+            String _securityQ2 = null;
+            String _securityQ2Ans = null;
+            String _profile1Answer = null;
+            String _profile2Answer = null;
+            String _profile3Answer = null;
+            String _profile4Answer = null;
+            SqlConnection con;
+            SqlCommand cmd;
+            SqlDataReader reader;
+            con = new SqlConnection(connectionString);
+            con.Open();
+            string choice = null;
+            try
+            {
+                con = new SqlConnection(connectionString);
+                con.Open();
+                cmd = new SqlCommand("SELECT * FROM [dbo].[test] where UserID = '" + userID + "'", con);
+                reader = cmd.ExecuteReader();
+                List<String[]> myCollection = new List<string[]>();
+
+                while (reader.Read())
+                {
+                    _userID = reader.GetString(0);
+                    _userPassword = reader.GetString(1);
+                    _userName = reader.GetString(2);
+                    _userEmail = reader.GetString(3);
+                    _userContact = reader.GetString(4);
+                    _userDOB = reader.GetString(5);
+                    _securityQ1 = reader.GetString(6);
+                    _securityQ1Ans = reader.GetString(7);
+                    _securityQ2 = reader.GetString(8);
+                    _securityQ2Ans = reader.GetString(9);
+                    _profile1Answer = reader.GetString(10);
+                    _profile2Answer = reader.GetString(11);
+                    _profile3Answer = reader.GetString(12);
+                    _profile4Answer = reader.GetString(13);
+                }
+
+                UserModel.UserModel currentUser = new UserModel.UserModel(
+                    _userID, _userPassword, _userName, _userEmail, _userContact, _userDOB, _securityQ1, _securityQ1Ans, _securityQ2, _securityQ2Ans, _profile1Answer, _profile2Answer, _profile3Answer, _profile4Answer);
+
+           
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+
+                con.Close();
+            }
+
+            return choice;
+        }
+
+        
+
+        private string getUserComputerPreference(string userID, string connectionString)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            SqlDataReader reader;
+            con = new SqlConnection(connectionString);
+            con.Open();
+            string choice = null;
+            try
+            {
+                con = new SqlConnection(connectionString);
+                con.Open();
+                cmd = new SqlCommand("SELECT * FROM [dbo].[test] where UserID = '" + userID + "'", con);
+                reader = cmd.ExecuteReader();
+                List<String[]> myCollection = new List<string[]>();
+               
+                while (reader.Read())
+                {
+                   choice = reader.GetString(12);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+
+                con.Close();
+            }
+
+            return choice;
         }
 
         private string[][] getUserIPAddressCollection(string userID, string connectionString)

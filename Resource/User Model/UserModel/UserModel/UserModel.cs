@@ -26,6 +26,7 @@ namespace UserModel
         public String _profile3Answer; 
         public String _profile4Answer;
         public static UserModel _currentUserModel;
+        public static string _currentUserID;
         public UserModel()
         {
 
@@ -45,6 +46,26 @@ namespace UserModel
             this._securityQ2 = _securityQ2;
             this._securityQ2Ans = _securityQ2Ans;
         }
+
+        public UserModel(String _userID, String _userPassword, String _userName, String _userEmail, String _userContact, String _userDOB,
+            String _securityQ1, String _securityQ1Ans, String _securityQ2, String _securityQ2Ans , String _Profile1 , String _Profile2 , String _Profile3 , String _Profile4)
+        {
+            this._userID = _userID;
+            this._userPassword = _userPassword;
+            this._userName = _userName;
+            this._userEmail = _userEmail;
+            this._userContact = _userContact;
+            this._userDOB = _userDOB;
+            this._securityQ1 = _securityQ1;
+            this._securityQ1Ans = _securityQ1Ans;
+            this._securityQ2 = _securityQ2;
+            this._securityQ2Ans = _securityQ2Ans;
+            this.profile1 = _Profile1;
+            this.profile2 = _Profile2;
+            this.profile3 = _Profile3;
+            this.profile4 = _Profile4;
+        }
+
         public string userID
         {
 
@@ -137,9 +158,81 @@ namespace UserModel
             set { _currentUserModel = value;  }
         }
 
-        
+        public static string currentUserID
+        {
+            get { return _currentUserID; }
+            set { _currentUserID = value; }
+        }
 
-        
+
+        public UserModel retrieveUserFromDatabase(string userID)
+        {
+            ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+            string connectionString = conSettings.ConnectionString;
+            String _userID = null;
+            String _userPassword = null;
+            String _userName = null;
+            String _userEmail = null;
+            String _userContact = null;
+            String _userDOB = null;
+            String _securityQ1 = null;
+            String _securityQ1Ans = null;
+            String _securityQ2 = null;
+            String _securityQ2Ans = null;
+            String _profile1Answer = null;
+            String _profile2Answer = null;
+            String _profile3Answer = null;
+            String _profile4Answer = null;
+            UserModel currentUser = null;
+            SqlConnection con;
+            SqlCommand cmd;
+            SqlDataReader reader;
+            con = new SqlConnection(connectionString);
+            con.Open();
+            string choice = null;
+            try
+            {
+                con = new SqlConnection(connectionString);
+                con.Open();
+                cmd = new SqlCommand("SELECT * FROM [dbo].[test] where UserID = '" + userID + "'", con);
+                reader = cmd.ExecuteReader();
+                List<String[]> myCollection = new List<string[]>();
+
+                while (reader.Read())
+                {
+                    _userID = reader.GetString(0);
+                    _userPassword = reader.GetString(1);
+                    _userName = reader.GetString(2);
+                    _userEmail = reader.GetString(3);
+                    _userContact = reader.GetString(4);
+                    _userDOB = reader.GetString(5);
+                    _securityQ1 = reader.GetString(6);
+                    _securityQ1Ans = reader.GetString(7);
+                    _securityQ2 = reader.GetString(8);
+                    _securityQ2Ans = reader.GetString(9);
+                    _profile1Answer = reader.GetString(10);
+                    _profile2Answer = reader.GetString(11);
+                    _profile3Answer = reader.GetString(12);
+                    _profile4Answer = reader.GetString(13);
+                }
+
+                currentUserModel = new UserModel(
+                    _userID, _userPassword, _userName, _userEmail, _userContact, _userDOB, _securityQ1, _securityQ1Ans, _securityQ2, _securityQ2Ans, _profile1Answer, _profile2Answer, _profile3Answer, _profile4Answer);
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+
+                con.Close();
+            }
+
+            return currentUser;
+        }
 
 
         public void saveToDatabase()
