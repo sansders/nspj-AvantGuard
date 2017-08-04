@@ -621,6 +621,7 @@ namespace NSPJProject
         {
             double start = 0;
             double end = 0;
+          
             Console.WriteLine(userLogInPreference);
             List<double[]> userList = new List<double[]>();
             if (userLogInPreference.Contains("a"))
@@ -630,7 +631,7 @@ namespace NSPJProject
                 double[] newSet = new double[] { start, end };
                 userList.Add(newSet);
             }
-            else if (userLogInPreference.Contains("b"))
+            if (userLogInPreference.Contains("b"))
             {
                 start = 6;
                 end = start + 6;
@@ -662,10 +663,11 @@ namespace NSPJProject
             double logInTimeDbl = Convert.ToDouble(logInTime);
             int counter = 0;
 
-       
-            foreach(var element in userList)
+            int totalCount = 0;
+            Console.WriteLine(userList.Count());
+            foreach (var element in userList)
             {
-                if (counter != 0)
+                if (counter == 0)
                 {
                     Console.WriteLine("Matching Exactly");
                     riskPercent = matchExactly(element[0], element[1], logInTimeDbl);
@@ -680,29 +682,34 @@ namespace NSPJProject
                             if (riskPercent == 0)
                             {
                                 Console.WriteLine("Not in any range");
-                                riskPercent = 0.8;
-                                counter = 1;
-                                break;
+                                totalCount++;
+                                if(totalCount == userList.Count())
+                                {
+                                    riskPercent = 0.8;
+                                    counter = 1;
+                                    
+                                }
+                              
                             }
                             else
                             {
                                 counter = 1;
-                                break;
+                              
                             }
                         }
                         else
                         {
                             counter = 1;
-                            break;
+                        
                         }
                     }
                     else
                     {
                         counter = 1;
-                        break;
+                    
                     }
                 }
-                    
+                Console.WriteLine(riskPercent + "is the risk percent");
                     
             }
          
