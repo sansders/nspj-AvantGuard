@@ -1,4 +1,5 @@
-﻿using Layout.Models;
+﻿using Cloud.StartupPage;
+using Layout.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -192,7 +193,8 @@ namespace Layout.Upload
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new NavigationPage());
+            Page cloud = new StartupPage();
+            this.NavigationService.Navigate(cloud);
 
         }
 
