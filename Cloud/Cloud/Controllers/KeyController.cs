@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UserModel;
 
 namespace Layout.Controllers
 {
@@ -19,6 +20,7 @@ namespace Layout.Controllers
         }
 
         static string bigPath = null;
+        static string currentUserName = UserModel.UserModel.currentUserID;
 
         public static void checkForKeys()
         {
@@ -34,7 +36,7 @@ namespace Layout.Controllers
             string connectionString1 = conSettings.ConnectionString;
             con1 = new SqlConnection(connectionString1);
             con1.Open();
-            string sqlQuery1 = "SELECT keyPath FROM dbo.test WHERE UserID='testing'";
+            string sqlQuery1 = "SELECT keyPath FROM dbo.test WHERE UserID='"+currentUserName+"'";
             string sqlQuery2;
             cmd = new SqlCommand(sqlQuery1, con1);
             SqlDataReader DataRead1 = cmd.ExecuteReader();
@@ -49,10 +51,10 @@ namespace Layout.Controllers
 
                     System.Windows.MessageBox.Show("Please select a directory to store your keys");
                     fbd.ShowDialog();
-                    bigPath = fbd.SelectedPath;
+                    bigPath = fbd.SelectedPath+"\\" + currentUserName;
                     //When username is obtainable, please concatenate it into these paths.
 
-                    sqlQuery2 = "UPDATE dbo.test SET keyPath = @bigPath WHERE UserID='testing'";
+                    sqlQuery2 = "UPDATE dbo.test SET keyPath = @bigPath WHERE UserID='" + currentUserName + "'";
                     cmd = new SqlCommand(sqlQuery2, con1);
                     cmd.Parameters.Add(new SqlParameter("@bigPath", bigPath));
                     cmd.ExecuteNonQuery();
@@ -276,6 +278,7 @@ namespace Layout.Controllers
                 plainText = bytes;
 
                 // UPDATE 31.7.2017 THESE LINES BROKEN
+
                 //.ReadToEnd returns plain text
                 //plainText = Encoding.UTF8.GetBytes(sr.ReadToEnd());
             }
