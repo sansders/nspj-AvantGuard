@@ -61,14 +61,12 @@ namespace NSPJProject
                 }
                 if (count == 1)
                 {
-                    MessageBox.Show("Correct old password.");
-
                     try
                     {
                         ConnectionStringSettings conSettings1 = ConfigurationManager.ConnectionStrings["connString"];
-                        string connectionString1 = conSettings.ConnectionString;
+                        string connectionString1 = conSettings1.ConnectionString;
 
-                        con = new SqlConnection(connectionString);
+                        con = new SqlConnection(connectionString1);
                         con.Open();
                         cmd = new SqlCommand("UPDATE [dbo].[test] SET Password = '" + NewPasswordTextBox.Password + "' WHERE Email = '" + selected_ForgotPasswordEmail + "'" , con);
                         cmd.ExecuteNonQuery();
@@ -84,6 +82,8 @@ namespace NSPJProject
                     }
 
                     MessageBox.Show("You have changed your password.");
+                    OldPasswordTextBox.Clear();
+                    NewPasswordTextBox.Clear();
                     this.NavigationService.Navigate(new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute));
 
                 }

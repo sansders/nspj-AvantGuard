@@ -21,105 +21,57 @@
                               HorizontalScrollBarVisibility="Auto">
                     <StackPanel>
 
-                        <!-- Password -->
-                        <StackPanel>
-                            <Label Content="Password:"
-                                   FontFamily="Gulim"
-                                   FontWeight="Bold"
-                                   FontSize="15"/>
-
-                            <PasswordBox Name="ChangeInfoPassword"
-                                         FontSize="10"
-                                         FontFamily="Gulim"
-                                         Width="300"
-                                         HorizontalAlignment="Left"
-                                         Margin="0 -5 0 20 ">
-                            </PasswordBox>
-
-                        </StackPanel>
-
                         <!-- Name -->
                         <StackPanel>
                             <Label Content="Name:"
                                    FontFamily="Gulim"
                                    FontWeight="Bold"
                                    FontSize="15"/>
-                            
-                            <TextBox Name="ChangeInfoName"
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Name="ChangeInfoName"
                                      FontSize="10"
                                      FontFamily="Gulim"
                                      Width="300"
                                      HorizontalAlignment="Left"
                                      Margin="0 -5 0 20 ">
 
-                            </TextBox>
-                        </StackPanel>
-                        
-                        <!-- Email -->
-                        <StackPanel>
-                            <Label Content="Email:"
-                                   FontFamily="Gulim"
-                                   FontWeight="Bold"
-                                   FontSize="15"/>
-                            
-                            <TextBox Name="ChangeInfoEmail"
-                                     FontSize="10"
-                                     FontFamily="Gulim"
-                                     Width="300"
-                                     HorizontalAlignment="Left"
-                                     Margin="0 -5 0 20 ">
-
-                            </TextBox>
-                        </StackPanel>
-                        
-                        <!-- Contact Number -->
-                        <StackPanel>
-                            <Label Content="Contact Number:"
-                                   FontFamily="Gulim"
-                                   FontWeight="Bold"
-                                   FontSize="15"/>
-                            
-                            <TextBox Name="ChangeInfoContact"
-                                     FontSize="10"
-                                     FontFamily="Gulim"
-                                     Width="300"
-                                     HorizontalAlignment="Left"
-                                     Margin="0 -5 0 20 ">
-
-                            </TextBox>
-                        </StackPanel>
-
-                        <!-- DOB -->
-                        <StackPanel>
-                            <Label Content="DOB:"
-                                   FontFamily="Gulim"
-                                   FontWeight="Bold"
-                                   FontSize="15"/>
-                            
-                            <DatePicker Name="ChangeInfoDOB"
+                                </TextBox>
+                                <Button Name="ChangeNameButton"
+                                        Content="Confirm"
+                                        Width="70"
+                                        Foreground="#23aeff"
+                                        Background="Transparent"
+                                        BorderThickness="0 0 0 0"
                                         FontSize="10"
-                                        FontFamily="Gulim"
-                                        Width="300"
-                                        HorizontalAlignment="Left"
-                                        Margin="0 -5 0 20 ">
-                            </DatePicker>
+                                        FontFamily="Gulim" Click="ChangeNameButton_Click"></Button>
+                            </StackPanel>
                         </StackPanel>
-
+                                                                                                                 
                         <!-- Security Q1 -->
                         <StackPanel>
                             <Label Content="Security Q1:"
                                    FontFamily="Gulim"
                                    FontWeight="Bold"
                                    FontSize="15"/>
-                            
-                            <TextBox Name="ChangeInfoQ1"
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Name="ChangeInfoQ1"
                                      FontSize="10"
                                      FontFamily="Gulim"
                                      Width="300"
                                      HorizontalAlignment="Left"
                                      Margin="0 -5 0 20 ">
+                                </TextBox>
 
-                            </TextBox>
+                                <Button Name="ChangeQ1Button"
+                                        Content="Confirm"
+                                        Width="70"
+                                        Foreground="#23aeff"
+                                        Background="Transparent"
+                                        BorderThickness="0 0 0 0"
+                                        FontSize="10"
+                                        FontFamily="Gulim" Click="ChangeQ1Button_Click"></Button>
+                            </StackPanel>
                         </StackPanel>
 
                         <!-- Q1 Answer -->
@@ -128,15 +80,25 @@
                                    FontFamily="Gulim"
                                    FontWeight="Bold"
                                    FontSize="15"/>
-                            
-                            <TextBox Name="ChangeInfoQ1Ans"
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Name="ChangeInfoQ1Ans"
                                      FontSize="10"
                                      FontFamily="Gulim"
                                      Width="300"
                                      HorizontalAlignment="Left"
                                      Margin="0 -5 0 20 ">
+                                </TextBox>
 
-                            </TextBox>
+                                <Button Name="ChangeQ1AnsButton"
+                                        Content="Confirm"
+                                        Width="70"
+                                        Foreground="#23aeff"
+                                        Background="Transparent"
+                                        BorderThickness="0 0 0 0"
+                                        FontSize="10"
+                                        FontFamily="Gulim" Click="ChangeQ1AnsButton_Click"></Button>
+                            </StackPanel>
                         </StackPanel>
 
                         <!-- Security Q2 -->
@@ -145,15 +107,25 @@
                                    FontFamily="Gulim"
                                    FontWeight="Bold"
                                    FontSize="15"/>
-                            
-                            <TextBox Name="ChangeInfoQ2"
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Name="ChangeInfoQ2"
                                      FontSize="10"
                                      FontFamily="Gulim"
                                      Width="300"
                                      HorizontalAlignment="Left"
                                      Margin="0 -5 0 20 ">
+                                </TextBox>
 
-                            </TextBox>
+                                <Button Name="ChangeQ2Button"
+                                        Content="Confirm"
+                                        Width="70"
+                                        Foreground="#23aeff"
+                                        Background="Transparent"
+                                        BorderThickness="0 0 0 0"
+                                        FontSize="10"
+                                        FontFamily="Gulim" Click="ChangeQ2Button_Click"></Button>
+                            </StackPanel>
                         </StackPanel>
 
                         <!-- Q2 Answer -->
@@ -163,14 +135,85 @@
                                    FontWeight="Bold"
                                    FontSize="15"/>
 
-                            <TextBox Name="ChangeInfoQ2Ans"
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Name="ChangeInfoQ2Ans"
                                      FontFamily="Gulim"
                                      FontSize="10"
                                      Width="300"
                                      HorizontalAlignment="Left"
                                      Margin="0 -5 0 20 ">
-                            </TextBox>
+                                </TextBox>
 
+                                <Button Name="ChangeQ2AnsButton"
+                                        Content="Confirm"
+                                        Width="70"
+                                        Foreground="#23aeff"
+                                        Background="Transparent"
+                                        BorderThickness="0 0 0 0"
+                                        FontSize="10"
+                                        FontFamily="Gulim" Click="ChangeQ2AnsButton_Click"></Button>
+                            </StackPanel>
+
+                            <!-- Password -->
+                            <StackPanel>
+                                <Button Content="Change Password"
+                                        FontFamily="Gulim"
+                                        FontWeight="Bold"
+                                        FontSize="15"
+                                        Background="Transparent"
+                                        BorderThickness="0 0 0 0"
+                                        HorizontalAlignment="Left"
+                                        Foreground="Black"
+                                        Opacity="0.75"
+                                        Margin="-9 0 0 0"
+                                        Name="PopUpPasswordButton" 
+                                        Click="PopUpPasswordButton_Click"/>
+
+                                <Label Name="CurrentPasswordLabel"
+                                       Content="Current Password:"
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Visibility="Hidden"></Label>
+
+                                <PasswordBox Name="ChangeInfoCurrentPassword"
+                                             FontSize="10"
+                                             FontFamily="Gulim"
+                                             Width="300"
+                                             HorizontalAlignment="Left"
+                                             Margin="0 -5 0 20 "
+                                             Visibility="Hidden">
+                                </PasswordBox>
+
+                                <Label Name="NewPasswordLabel" 
+                                       Content="New Password:"
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Visibility="Hidden"></Label>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <PasswordBox Name="ChangeInfoNewPassword"
+                                                 FontSize="10"
+                                                 FontFamily="Gulim"
+                                                 Width="300"
+                                                 HorizontalAlignment="Left"
+                                                 Margin="0 -5 0 20 "
+                                                 Visibility="Hidden">
+                                    </PasswordBox>
+
+                                    <Button Name="ChangePasswordButton"
+                                        Content="Confirm"
+                                        Width="70"
+                                        Foreground="#23aeff"
+                                        Background="Transparent"
+                                        BorderThickness="0 0 0 0"
+                                        FontSize="10"
+                                        FontFamily="Gulim" 
+                                        Visibility="Hidden"
+                                        Click="ChangePasswordButton_Click"></Button>
+                                </StackPanel>
+                            </StackPanel>
 
                         </StackPanel>
                         
