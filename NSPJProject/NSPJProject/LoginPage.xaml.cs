@@ -37,7 +37,7 @@ namespace NSPJProject
         {
             InitializeComponent();
             connectionString = conSettings.ConnectionString;
-           
+            
             String allText = System.IO.File.ReadAllText(@"../../../../Resource/Algorithms/AlgorithmClass/ClassLibrary1/TextFile1.txt");
             string[][] myList = PredictionModel.readFromFile(allText);
             string userID = "trying";
@@ -112,10 +112,35 @@ namespace NSPJProject
                 counter++;
                 //saveDateTimeOfUser(userID, connectionString, loginTime, date , ipAddress , macAddress);
                 //deleteDateTimeOfUser(userID, connectionString, loginTime, date);
+             
             }
+            //string username = "username";
+            //deleteACertainUser(username, connectionString);
+            //string test = "0";
+            //deleteDateTimeOfUser(username, connectionString, test, date);
         }
 
-        
+        private void deleteACertainUser(string userID, string connectionString)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            con = new SqlConnection(connectionString);
+            con.Open();
+            try
+            {
+                cmd = new SqlCommand("DELETE FROM [dbo].[test] where UserID = '" + userID + "'", con);
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
 
         public string GetSha512FromString(string strData)
         {
