@@ -260,7 +260,10 @@ namespace NSPJProject
                         else if (totalRisk > 0.70)
                         {
                             riskStatement = "The risk level is high";
-                            //Do 2FA
+                            string subject = "Authentication Message";
+                            string subjectBody = "Authentication Code is ";
+                            UserModel.UserModel.do2fa(subject, subjectBody, "hoggersoh@gmail.com");
+
                         }
                         Console.WriteLine(riskStatement);
                      

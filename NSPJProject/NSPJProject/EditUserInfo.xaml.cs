@@ -74,7 +74,7 @@ namespace NSPJProject
             }
         }
 
-        private void ChangeInfoButton_Click(object sender, RoutedEventArgs e)
+        private void ChangeInfoConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             //string selected_UserID = (App.Current as App).LoginUserID;
 
@@ -244,71 +244,79 @@ namespace NSPJProject
 
         private void ChangePasswordButton_Click(object sender, RoutedEventArgs e)
         {
-            LoginPage LP = new LoginPage();
-            ChangeInfoCurrentPassword.Password = LP.GetSha512FromString(ChangeInfoCurrentPassword.Password);
-            ChangeInfoNewPassword.Password = LP.GetSha512FromString(ChangeInfoNewPassword.Password);
 
-            string selected_UserID = (App.Current as App).LoginUserID;
-
-            try
+            if (ChangeInfoNewPassword.Password != ChangeInfoReNewPassword.Password)
             {
-                ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
-                string connectionString = conSettings.ConnectionString;
-
-                con = new SqlConnection(connectionString);
-                con.Open();
-                cmd = new SqlCommand("select * from [dbo].[test] where Password = '" + ChangeInfoCurrentPassword.Password + "'", con);
-                reader = cmd.ExecuteReader();
-
-                int count = 0;
-                while (reader.Read())
-                {
-                    count += 1;
-                }
-                if (count == 1)
-                {
-                    try
-                    {
-                        ConnectionStringSettings conSettings1 = ConfigurationManager.ConnectionStrings["connString"];
-                        string connectionString1 = conSettings1.ConnectionString;
-
-                        con = new SqlConnection(connectionString1);
-                        con.Open();
-                        cmd = new SqlCommand("UPDATE [dbo].[test] SET Password = '" + ChangeInfoNewPassword.Password + "' WHERE UserID = '" + selected_UserID + "'", con);
-                        cmd.ExecuteNonQuery();
-
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Windows.MessageBox.Show(ex.Message);
-                    }
-                    finally
-                    {
-                        con.Close();
-                    }
-
-                    MessageBox.Show("You have changed your password.");
-                    ChangeInfoCurrentPassword.Clear();
-                    ChangeInfoNewPassword.Clear();
-                    //this.NavigationService.Navigate(new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute));
-
-                }
-                else
-                {
-                    MessageBox.Show("Incorrect current password.");
-                    ChangeInfoCurrentPassword.Clear();
-                    ChangeInfoNewPassword.Clear();
-                }
-
+                MessageBox.Show("New password do not match.");
             }
-            catch (Exception ex)
+            else
             {
-                System.Windows.MessageBox.Show(ex.Message);
-            }
-            finally
-            {
+                LoginPage LP = new LoginPage();
+                ChangeInfoCurrentPassword.Password = LP.GetSha512FromString(ChangeInfoCurrentPassword.Password);
+                ChangeInfoNewPassword.Password = LP.GetSha512FromString(ChangeInfoNewPassword.Password);
 
-                con.Close();
+                try
+                {
+                    string selected_UserID = (App.Current as App).LoginUserID;
+
+                    ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+                    string connectionString = conSettings.ConnectionString;
+
+                    con = new SqlConnection(connectionString);
+                    con.Open();
+                    cmd = new SqlCommand("select * from [dbo].[test] where Password = '" + ChangeInfoCurrentPassword.Password + "' and UserID = '" + selected_UserID + "'", con);
+                    reader = cmd.ExecuteReader();
+
+                    int count = 0;
+                    while (reader.Read())
+                    {
+                        count += 1;
+                    }
+                    if (count == 1)
+                    {
+                        try
+                        {
+                            ConnectionStringSettings conSettings1 = ConfigurationManager.ConnectionStrings["connString"];
+                            string connectionString1 = conSettings1.ConnectionString;
+
+                            con = new SqlConnection(connectionString1);
+                            con.Open();
+                            cmd = new SqlCommand("UPDATE [dbo].[test] SET Password = '" + ChangeInfoNewPassword.Password + "' WHERE UserID = '" + selected_UserID + "'", con);
+                            cmd.ExecuteNonQuery();
+
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Windows.MessageBox.Show(ex.Message);
+                        }
+                        finally
+                        {
+                            con.Close();
+                        }
+
+                        MessageBox.Show("You have changed your password.");
+                        ChangeInfoCurrentPassword.Clear();
+                        ChangeInfoNewPassword.Clear();
+                        ChangeInfoReNewPassword.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Incorrect current password.");
+                        ChangeInfoCurrentPassword.Clear();
+                        ChangeInfoNewPassword.Clear();
+                        ChangeInfoReNewPassword.Clear();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+
+                    con.Close();
+                }
             }
         }
 
@@ -318,9 +326,11 @@ namespace NSPJProject
             {
                 CurrentPasswordLabel.Visibility = Visibility.Hidden;
                 NewPasswordLabel.Visibility = Visibility.Hidden;
+                ReNewPasswordLabel.Visibility = Visibility.Hidden;
 
                 ChangeInfoCurrentPassword.Visibility = Visibility.Hidden;
                 ChangeInfoNewPassword.Visibility = Visibility.Hidden;
+                ChangeInfoReNewPassword.Visibility = Visibility.Hidden;
 
                 ChangePasswordButton.Visibility = Visibility.Hidden;
             }
@@ -328,9 +338,12 @@ namespace NSPJProject
             {
                 CurrentPasswordLabel.Visibility = Visibility.Visible;
                 NewPasswordLabel.Visibility = Visibility.Visible;
+                ReNewPasswordLabel.Visibility = Visibility.Visible;
 
                 ChangeInfoCurrentPassword.Visibility = Visibility.Visible;
                 ChangeInfoNewPassword.Visibility = Visibility.Visible;
+                ChangeInfoReNewPassword.Visibility = Visibility.Visible;
+
 
                 ChangePasswordButton.Visibility = Visibility.Visible;
             }

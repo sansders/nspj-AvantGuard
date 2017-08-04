@@ -290,7 +290,7 @@ namespace AlgorithmLibary
 
             //IPHostEntry IPHost = Dns.GetHostByName(Dns.GetHostName());
             //string ip = IPHost.AddressList[0].ToString();
-            Console.WriteLine(ip);
+            //Console.WriteLine(ip);
             return ip;
         }
 

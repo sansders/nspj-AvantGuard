@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -279,6 +281,33 @@ namespace UserModel
             }
         }
 
+        public static void do2fa(string subject , string subjectBody , string destinationEmail)
+        {
+            Random rnd = new Random();
+            int randomNumber = rnd.Next(1000, 9999);
+            string code = randomNumber.ToString();
+
+            try
+            {
+                SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+                client.EnableSsl = true;
+                client.Timeout = 10000;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential("nspjproject1718@gmail.com", "avantguard");
+                MailMessage mail = new MailMessage();
+                mail.To.Add(destinationEmail);
+                mail.From = new MailAddress("nspjproject1718@gmail.com");
+                mail.Subject = subject;
+                mail.Body = subjectBody + code;
+                client.Send(mail);
+                //System.Windows.MessageBox.Show("An authentication code has been sent to your email.");
+            }
+            catch (Exception ex)
+            {
+                //System.Windows.MessageBox.Show(ex.Message);
+            }
+        }
 
         public string getAccessApplicationPreference()
         {

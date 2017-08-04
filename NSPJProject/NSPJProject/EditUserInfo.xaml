@@ -192,8 +192,24 @@
                                        FontSize="15"
                                        Visibility="Hidden"></Label>
 
-                                <StackPanel Orientation="Horizontal">
                                     <PasswordBox Name="ChangeInfoNewPassword"
+                                                 FontSize="10"
+                                                 FontFamily="Gulim"
+                                                 Width="300"
+                                                 HorizontalAlignment="Left"
+                                                 Margin="0 -5 0 20 "
+                                                 Visibility="Hidden">
+                                    </PasswordBox>
+                                
+                                <Label Name="ReNewPasswordLabel" 
+                                       Content="Re-enter New Password:"
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Visibility="Hidden"></Label>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <PasswordBox Name="ChangeInfoReNewPassword"
                                                  FontSize="10"
                                                  FontFamily="Gulim"
                                                  Width="300"
@@ -217,14 +233,14 @@
 
                         </StackPanel>
                         
-                        <Button Name="ChangeInfoButton" 
+                        <Button Name="ChangeInfoConfirmButton" 
                                 Content="Confirm"
                                 Foreground="#23aeff"
                                 Background="Transparent"
                                 BorderThickness="0 0 0 0"
                                 FontSize="20"
                                 FontFamily="Gulim"
-                                Click="ChangeInfoButton_Click"></Button>
+                                Click="ChangeInfoConfirmButton_Click"></Button>
                       
                     </StackPanel>
                 </ScrollViewer>
