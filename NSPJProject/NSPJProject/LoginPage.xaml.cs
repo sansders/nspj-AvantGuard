@@ -673,11 +673,11 @@ namespace NSPJProject
                     riskPercent = matchExactly(element[0], element[1], logInTimeDbl);
                     if (riskPercent == 0)
                     {
-                        Console.WriteLine("Matching 3 Hours Buffer");
+                        Console.WriteLine("Matching 2 Hours Buffer");
                         riskPercent = match3Buffer(element[0], element[1], logInTimeDbl);
                         if (riskPercent == 0)
                         {
-                            Console.WriteLine("Matching 6 Hours Buffer");
+                            Console.WriteLine("Matching 4 Hours Buffer");
                             riskPercent = match6Buffer(element[0], element[1], logInTimeDbl);
                             if (riskPercent == 0)
                             {
@@ -813,10 +813,10 @@ namespace NSPJProject
         private double match3Buffer(double start, double end, double logInTimeDbl)
         {
             double riskPercent = 0;
-            if (start -3 <= logInTimeDbl && logInTimeDbl <= end + 3)
+            if (start -2 <= logInTimeDbl && logInTimeDbl <= end + 2)
             {
                 Console.WriteLine(Convert.ToString(start) + " is the start and the end is " + Convert.ToString(end));
-                Console.WriteLine("Not within the exact range but with 3 hours buffer");
+                Console.WriteLine("Not within the exact range but with 2 hours buffer");
                 riskPercent = 0.4;
             }
             return riskPercent;
@@ -825,10 +825,10 @@ namespace NSPJProject
         private double match6Buffer(double start, double end, double logInTimeDbl)
         {
             double riskPercent = 0;
-            if (start - 6 <= logInTimeDbl && logInTimeDbl <= end + 6)
+            if (start - 4 <= logInTimeDbl && logInTimeDbl <= end + 4)
             {
                 Console.WriteLine(Convert.ToString(start) + " is the start and the end is " + Convert.ToString(end));
-                Console.WriteLine("Not within the exact range but with 6 hours buffer");
+                Console.WriteLine("Not within the exact range but with 4 hours buffer");
                 riskPercent = 0.6;
             }
             return riskPercent;
