@@ -74,7 +74,7 @@ namespace Layout.Upload
             {
                 con = new SqlConnection(connectionString);
                 con.Open();
-                cmd = new SqlCommand("SELECT Username , Name , ContactNo , Password FROM [dbo].[UserAcc]", con);
+                cmd = new SqlCommand("SELECT * FROM [dbo].[test]", con);
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -202,20 +202,20 @@ namespace Layout.Upload
                             virus = virus + 1;
                             VirusName = reader2.GetString(0);
                             type = reader2.GetString(1);
-                            
-                            Console.WriteLine(" \n VIRUS DECTED! Your File is not being Uploaded");
-                            Console.WriteLine(" \n Virus Dected : " + VirusName + " | Type Of Virus : " + type);
+
+                            System.Windows.MessageBox.Show(" \n VIRUS DECTED! Your File is not being Uploaded");
+                            System.Windows.MessageBox.Show(" \n Virus Dected : " + VirusName + " | Type Of Virus : " + type);
                         }
                         else
                         {
-                            Console.WriteLine("\n There is no virus! Very Good!! ");
-                            Console.WriteLine("\n File is now being uploaded......");
+                            System.Windows.MessageBox.Show("\n There is no virus! Very Good!! ");
+                            System.Windows.MessageBox.Show("\n File is now being uploaded......");
                         }
 
                     } else
                     {
-                        Console.WriteLine("\n There is no virus! Very Good!! ");
-                        Console.WriteLine("\n File is now being uploaded......");
+                        System.Windows.MessageBox.Show("\n There is no virus! Very Good!! ");
+                        System.Windows.MessageBox.Show("\n File is now being uploaded......");
                     }
                         con.Close();
                 }
@@ -275,22 +275,19 @@ namespace Layout.Upload
                         //  BitArray bits2 = new BitArray(images2);
                         // BitArray bits3 = new BitArray(images3);
 
-                        string sqlQuery = "Insert into dbo.UserFiles(Username,Name,Image)Values( 'superman' , 'man' , @images )";
-                        cmd = new SqlCommand(sqlQuery, con);
-                        cmd.Parameters.Add(new SqlParameter("@images", images));
-                        cmd.ExecuteNonQuery();
+                        
 
-                        string sqlQuery1 = "Insert into dbo.UserFiles1(Username,Name,Image)Values( '123456' , 'man' , @images1 )";
+                        string sqlQuery1 = "Insert into dbo.UserFiles1(Username,Name,[File])Values( '1234567' , 'man' , @images1 )";
                         cmd = new SqlCommand(sqlQuery1, con1);
                         cmd.Parameters.Add(new SqlParameter("@images1", images1));
                         cmd.ExecuteNonQuery();
 
-                        string sqlQuery2 = "Insert into dbo.UserFiles3(Username,Name,Image)Values( '123456' , 'man' , @images2 )";
+                        string sqlQuery2 = "Insert into dbo.UserFiles3(Username,Name,[File])Values( '1234567' , 'man' , @images2 )";
                         cmd = new SqlCommand(sqlQuery2, con2);
                         cmd.Parameters.Add(new SqlParameter("@images2", images3));
                         cmd.ExecuteNonQuery();
 
-                        string sqlQuery3 = "Insert into dbo.UserFiles2(Username,Name,Image)Values( '123456' , 'man' , @images3 )";
+                        string sqlQuery3 = "Insert into dbo.UserFiles2(Username,Name,[File])Values( '1234567' , 'man' , @images3 )";
                         cmd = new SqlCommand(sqlQuery3, con3);
                         cmd.Parameters.Add(new SqlParameter("@images3", images2));
                         cmd.ExecuteNonQuery();
@@ -634,15 +631,15 @@ namespace Layout.Upload
             //  string sqlQuery = "select Image FROM [dbo].[UserFiles] where Username='Random'";
             //  cmd = new SqlCommand(sqlQuery, con);
 
-            string sqlQuery1 = "select Image FROM [dbo].[UserFiles1] where Username='123456'";
+            string sqlQuery1 = "select [File] FROM [dbo].[UserFiles1] where Username='1234567'";
             cmd = new SqlCommand(sqlQuery1, con1);
             SqlDataReader DataRead1 = cmd.ExecuteReader();
 
-            string sqlQuery2 = "select Image FROM [dbo].[UserFiles3] where Username='123456'";
+            string sqlQuery2 = "select [File] FROM [dbo].[UserFiles3] where Username='1234567'";
             cmd = new SqlCommand(sqlQuery2, con2);
             SqlDataReader DataRead2 = cmd.ExecuteReader();
 
-            string sqlQuery3 = "select Image FROM [dbo].[UserFiles2] where Username='123456'";
+            string sqlQuery3 = "select [File] FROM [dbo].[UserFiles2] where Username='1234567'";
             cmd = new SqlCommand(sqlQuery3, con3);
             SqlDataReader DataRead3 = cmd.ExecuteReader();
 
