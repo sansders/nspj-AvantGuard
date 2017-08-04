@@ -262,16 +262,16 @@ namespace NSPJProject
                             {
                                 riskStatement = "The risk level is low";
                                 UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
-                                //Page cloud = new StartupPage();
-                                //this.NavigationService.Navigate(cloud);
+                                Page cloud = new StartupPage();
+                                this.NavigationService.Navigate(cloud);
                             }
 
                             // Removing access control and giving access control
                             else if (totalRisk <= 0.70)
                             {
                                 riskStatement = "The risk level is medium";
-                                //Page cloud = new StartupPage();
-                                //this.NavigationService.Navigate(cloud);
+                                Page cloud = new StartupPage();
+                                this.NavigationService.Navigate(cloud);
                                 //Remove Access Control 
 
                             }
@@ -332,22 +332,21 @@ namespace NSPJProject
                             Console.WriteLine(riskLevel);
                             string riskStatement = null;
                             //Can do anything 
-                            riskLevel = 1;
                             if (riskLevel <= 0.4)
                             {
                                 riskStatement = "The risk level is low";
                                 UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                                 //Navigate To Chester
-                                //Page cloud = new StartupPage();
-                                //this.NavigationService.Navigate(cloud);
+                                Page cloud = new StartupPage();
+                                this.NavigationService.Navigate(cloud);
                             }
 
                             // Removing access control and giving access control
                             else if (riskLevel <= 0.70)
                             {
                                 riskStatement = "The risk level is medium";
-                                //Page cloud = new StartupPage();
-                                //this.NavigationService.Navigate(cloud);
+                                Page cloud = new StartupPage();
+                                this.NavigationService.Navigate(cloud);
                                 //Remove Access Control 
 
                             }
@@ -367,6 +366,8 @@ namespace NSPJProject
                                 this.NavigationService.Navigate(authentication);
                                 MessageBox.Show("2FA has been sent to your email");
                             }
+
+                            Console.WriteLine("The current Risk Level is " + riskLevel);
                             Console.WriteLine(riskStatement);
 
 

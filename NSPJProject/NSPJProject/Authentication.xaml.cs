@@ -55,16 +55,16 @@ namespace NSPJProject
                 {
                     UserModel.UserModel.updateFollowUp(userID, connectionString, "False");
                     //Navigate to Chester page
-                    //Page cloud = new StartupPage();
-                    //this.NavigationService.Navigate(cloud);
+                    Page cloud = new StartupPage();
+                    this.NavigationService.Navigate(cloud);
                 }
               
                 else
                 { 
                     UserModel.UserModel.saveFollowUp(userID, connectionString, "False");
                     //Navigate To chester page
-                    //Page cloud = new StartupPage();
-                    //this.NavigationService.Navigate(cloud);
+                    Page cloud = new StartupPage();
+                    this.NavigationService.Navigate(cloud);
                 }
             }
             else

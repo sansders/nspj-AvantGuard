@@ -77,7 +77,7 @@ namespace Layout.Upload
 
             openAllConnections();
 
-            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values(@id,@fileName,@toSend1,@fileSize,@lastModified,@isFavorite,@isDeleted,@fileType,@sharedBy");
+            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values(@id,@fileName,@toSend1,@fileSize,@lastModified,@isFavorite,@isDeleted,@fileType,@sharedBy)");
             cmd1 = new SqlCommand(sqlQuery1, con1);
             
             cmd1.Parameters.Add(new SqlParameter("@id",id));
@@ -91,39 +91,40 @@ namespace Layout.Upload
             cmd1.Parameters.Add(new SqlParameter("@fileType", fileType));
             cmd1.Parameters.Add(new SqlParameter("@sharedBy", sharedBy));
 
-            string sqlQuery2 = ("insert into [dbo].[UserFiles2] values(@id,@fileName,@toSend2,@fileSize,@lastModified,@isFavorite,@isDeleted,@fileType,@sharedBy");
+            string sqlQuery2 = ("insert into [dbo].[UserFiles3] values(@id2,@fileName2,@toSend2,@fileSize2,@lastModified2,@isFavorite2,@isDeleted2,@fileType2,@sharedBy2)");
             cmd2 = new SqlCommand(sqlQuery2, con2);
 
-            cmd1.Parameters.Add(new SqlParameter("@id", id));
-            cmd1.Parameters.Add(new SqlParameter("@fileName", fileName));
+            cmd2.Parameters.Add(new SqlParameter("@id2", id));
+            cmd2.Parameters.Add(new SqlParameter("@fileName2", fileName));
             SqlParameter para2 = new SqlParameter("@toSend2", toSend2);
-            cmd1.Parameters.Add(para2);
-            cmd1.Parameters.Add(new SqlParameter("@fileSize", fileSize));
-            cmd1.Parameters.Add(new SqlParameter("@lastModified", lastModified));
-            cmd1.Parameters.Add(new SqlParameter("@isFavorite", isFavorite));
-            cmd1.Parameters.Add(new SqlParameter("@isDeleted", isDeleted));
-            cmd1.Parameters.Add(new SqlParameter("@fileType", fileType));
-            cmd1.Parameters.Add(new SqlParameter("@sharedBy", sharedBy));
+            cmd2.Parameters.Add(para2);
+            cmd2.Parameters.Add(new SqlParameter("@fileSize2", fileSize));
+            cmd2.Parameters.Add(new SqlParameter("@lastModified2", lastModified));
+            cmd2.Parameters.Add(new SqlParameter("@isFavorite2", isFavorite));
+            cmd2.Parameters.Add(new SqlParameter("@isDeleted2", isDeleted));
+            cmd2.Parameters.Add(new SqlParameter("@fileType2", fileType));
+            cmd2.Parameters.Add(new SqlParameter("@sharedBy2", sharedBy));
 
 
-            string sqlQuery3 = ("insert into [dbo].[UserFiles3] values(@id,@fileName,@toSend3,@fileSize,@lastModified,@isFavorite,@isDeleted,@fileType,@sharedBy");
+            string sqlQuery3 = ("insert into [dbo].[UserFiles2] values(@id3,@fileName3,@toSend3,@fileSize3,@lastModified3,@isFavorite3,@isDeleted3,@fileType3,@sharedBy3)");
             cmd3 = new SqlCommand(sqlQuery3, con3);
 
-            cmd1.Parameters.Add(new SqlParameter("@id", id));
-            cmd1.Parameters.Add(new SqlParameter("@fileName", fileName));
+            cmd3.Parameters.Add(new SqlParameter("@id3", id));
+            cmd3.Parameters.Add(new SqlParameter("@fileName3", fileName));
             SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
-            cmd1.Parameters.Add(para3);
-            cmd1.Parameters.Add(new SqlParameter("@fileSize", fileSize));
-            cmd1.Parameters.Add(new SqlParameter("@lastModified", lastModified));
-            cmd1.Parameters.Add(new SqlParameter("@isFavorite", isFavorite));
-            cmd1.Parameters.Add(new SqlParameter("@isDeleted", isDeleted));
-            cmd1.Parameters.Add(new SqlParameter("@fileType", fileType));
-            cmd1.Parameters.Add(new SqlParameter("@sharedBy", sharedBy));
+            cmd3.Parameters.Add(para3);
+            cmd3.Parameters.Add(new SqlParameter("@fileSize3", fileSize));
+            cmd3.Parameters.Add(new SqlParameter("@lastModified3", lastModified));
+            cmd3.Parameters.Add(new SqlParameter("@isFavorite3", isFavorite));
+            cmd3.Parameters.Add(new SqlParameter("@isDeleted3", isDeleted));
+            cmd3.Parameters.Add(new SqlParameter("@fileType3", fileType));
+            cmd3.Parameters.Add(new SqlParameter("@sharedBy3", sharedBy));
 
             cmd1.ExecuteNonQuery();
             cmd2.ExecuteNonQuery();
             cmd3.ExecuteNonQuery();
 
+            closeAllConnections();
         }
 
         private void openAllConnections()

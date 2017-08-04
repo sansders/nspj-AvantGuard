@@ -466,6 +466,8 @@ namespace Cloud.StartupPage
 
             else if (ext == ".ppt" || ext == ".pptx")
             {
+                closeAllConnections();
+                openAllConnections();
                 string sqlQuery1 = "select [File] from [dbo].[UserFiles1] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
                 SqlCommand cmd1 = new SqlCommand(sqlQuery1, con1);
                 string sqlQuery2 = "select [File] from [dbo].[UserFiles3] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
@@ -477,6 +479,8 @@ namespace Cloud.StartupPage
                 SqlDataReader Reader2 = cmd2.ExecuteReader();
                 SqlDataReader Reader3 = cmd3.ExecuteReader();
                
+                //Cannot read data! Aku Justin Big Boi and Bryan Small Boi Tak Boleh Do this Functiono 
+                //So we tiredo, so we helpo youdo tomorrowdo! Aso!
                 byte[] retrieve1 = ((byte[])Reader1[0]);
                 byte[] retrieve2 = ((byte[])Reader2[0]);
                 byte[] retrieve3 = ((byte[])Reader3[0]);
@@ -1101,8 +1105,14 @@ namespace Cloud.StartupPage
                         string sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
                         cmd = new SqlCommand(sqlQuery, con);
                         SqlDataReader DataRead1 = cmd.ExecuteReader();
-                        string bigPath = DataRead1.GetString(0);
-
+                        string bigPath = null;
+                        while(DataRead1.Read())
+                        { 
+                         bigPath = DataRead1.GetString(0);
+                        }
+                        con.Close();
+                        
+                      
                         byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
                         Console.WriteLine("Gets bytes of IV");
                         byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
@@ -1118,22 +1128,30 @@ namespace Cloud.StartupPage
 
                         if (inWhere.Equals("My Folders") || inWhere.Equals("Recent") || inWhere.Equals("Shared") || inWhere.Equals("Favorites") || inWhere.Equals("Bin"))
                         {
+                            con1.Open();
+                            //inWhere.Text is parent or child in the Datbase?!
                             String sqlQuery1 = "insert into [dbo].[AccessControl] values('" + filename + "', '', '" + currentUserName + "')";
                             cmd1 = new SqlCommand(sqlQuery1, con1);
 
                             cmd1.ExecuteNonQuery();
+                            con1.Close();
                         }
 
                         else if (!inWhere.Equals("My Folders") || !inWhere.Equals("Recent") || !inWhere.Equals("Shared") || !inWhere.Equals("Favorites") || !inWhere.Equals("Bin"))
                         {
-                            String sqlQuery1 = "insert into [dbo].[AccessControl] values('" + filename + "', '" + inWhere.Text + "', '" + currentUserName + "')";
+                            con1.Open();
+                            //inWhere.Text is parent or child in the Datbase?!
+                            
+                            String sqlQuery1 = "insert into [dbo].[AccessControl] values('" + filename + "' ,' ', '" + inWhere.Text + "', '" + currentUserName + "')";
                             cmd1 = new SqlCommand(sqlQuery1, con1);
 
                             cmd1.ExecuteNonQuery();
+                            con1.Close();
                         }
 
                         //FileModel fm = FileModel.getFileModel();
-                        NavigationService.Navigate(new Uri("UploadingConsole.xaml"), UriKind.RelativeOrAbsolute);
+                        Page UploadingConsole = new Layout.Upload.Page2();
+                        NavigationService.Navigate(UploadingConsole);
                     }
 
                     /*int len = file.Length / 3;

@@ -176,7 +176,7 @@
                 </Button.Resources>
             </Button>
             <Ellipse Name="ellipse"  Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="35 " Margin="465,3,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
-            <TextBox Name="nameBox" HorizontalAlignment="Left" Height="16" Margin="383,14,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="70" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
+            <TextBox Name="nameBox" HorizontalAlignment="Left" Height="31" Margin="375,11,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="85" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
             <Grid HorizontalAlignment="Left" Height="281" Margin="50,42,0,-0.2" VerticalAlignment="Top" Width="470">
                 <ToolBar Name="secondToolBar" Visibility="Collapsed" VerticalAlignment="Top" HorizontalAlignment="Left" Height="35" Width="525">
                     <Label x:Name="fileName" Width="120" FontSize="12"/>
@@ -335,7 +335,7 @@
                     </StackPanel>
                 </Border>
             </Grid>
-        
+
         </Grid>
     </Viewbox>
 </Page>
