@@ -211,7 +211,9 @@ namespace NSPJProject
                         MessageBox.Show("Account is locked , please complete TWO FA");
                         string subject = "Authentication Message";
                         string subjectBody = "Authentication Code is ";
-                        UserModel.UserModel.do2fa(subject, subjectBody, "hoggersoh@gmail.com");
+                        UserModel.UserModel cm = UserModel.UserModel.currentUserModel;
+                        string email = cm.userEmail;
+                        UserModel.UserModel.do2fa(subject, subjectBody, email);
                         Page authentication = new Authentication();
                         this.NavigationService.Navigate(authentication);
                     }
@@ -260,16 +262,16 @@ namespace NSPJProject
                             {
                                 riskStatement = "The risk level is low";
                                 UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
-                                Page cloud = new StartupPage();
-                                this.NavigationService.Navigate(cloud);
+                                //Page cloud = new StartupPage();
+                                //this.NavigationService.Navigate(cloud);
                             }
 
                             // Removing access control and giving access control
                             else if (totalRisk <= 0.70)
                             {
                                 riskStatement = "The risk level is medium";
-                                Page cloud = new StartupPage();
-                                this.NavigationService.Navigate(cloud);
+                                //Page cloud = new StartupPage();
+                                //this.NavigationService.Navigate(cloud);
                                 //Remove Access Control 
 
                             }
@@ -281,7 +283,9 @@ namespace NSPJProject
 
                                 string subject = "Authentication Message";
                                 string subjectBody = "Authentication Code is ";
-                                UserModel.UserModel.do2fa(subject, subjectBody, "hoggersoh@gmail.com");
+                                UserModel.UserModel cm = UserModel.UserModel.currentUserModel;
+                                string email = cm.userEmail;
+                                UserModel.UserModel.do2fa(subject, subjectBody, email);
                                 Page authentication = new Authentication();
                                 this.NavigationService.Navigate(authentication);
                                 MessageBox.Show("2FA has been sent to your email");
@@ -334,16 +338,16 @@ namespace NSPJProject
                                 riskStatement = "The risk level is low";
                                 UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                                 //Navigate To Chester
-                                Page cloud = new StartupPage();
-                                this.NavigationService.Navigate(cloud);
+                                //Page cloud = new StartupPage();
+                                //this.NavigationService.Navigate(cloud);
                             }
 
                             // Removing access control and giving access control
                             else if (riskLevel <= 0.70)
                             {
                                 riskStatement = "The risk level is medium";
-                                Page cloud = new StartupPage();
-                                this.NavigationService.Navigate(cloud);
+                                //Page cloud = new StartupPage();
+                                //this.NavigationService.Navigate(cloud);
                                 //Remove Access Control 
 
                             }
@@ -356,7 +360,9 @@ namespace NSPJProject
 
                                 string subject = "Authentication Message";
                                 string subjectBody = "Authentication Code is ";
-                                UserModel.UserModel.do2fa(subject, subjectBody, "hoggersoh@gmail.com");
+                                UserModel.UserModel cm = UserModel.UserModel.currentUserModel;
+                                string email = cm.userEmail;
+                                UserModel.UserModel.do2fa(subject, subjectBody, email);
                                 Page authentication = new Authentication();
                                 this.NavigationService.Navigate(authentication);
                                 MessageBox.Show("2FA has been sent to your email");
@@ -655,9 +661,11 @@ namespace NSPJProject
             double riskPercent = 0;
             double logInTimeDbl = Convert.ToDouble(logInTime);
             int counter = 0;
+
+       
             foreach(var element in userList)
             {
-                do
+                if (counter != 0)
                 {
                     Console.WriteLine("Matching Exactly");
                     riskPercent = matchExactly(element[0], element[1], logInTimeDbl);
@@ -673,32 +681,79 @@ namespace NSPJProject
                             {
                                 Console.WriteLine("Not in any range");
                                 riskPercent = 0.8;
-                                counter++;
+                                counter = 1;
                                 break;
                             }
-                           
-
+                            else
+                            {
+                                counter = 1;
+                                break;
+                            }
                         }
                         else
                         {
-                            counter++;
+                            counter = 1;
                             break;
                         }
-
                     }
                     else
                     {
-                        counter++;
+                        counter = 1;
                         break;
                     }
                 }
-                while (counter == 0);
-                if(counter != 0)
-                {
-                    break;
-                }
-
+                    
+                    
             }
+         
+           
+            //foreach(var element in userList)
+            //{
+                
+            //        Console.WriteLine("Matching Exactly");
+            //        riskPercent = matchExactly(element[0], element[1], logInTimeDbl);
+            //        if(riskPercent == 0)
+            //        {
+            //            //Run Others
+            //        }
+            //        else
+            //        {
+            //            counter++;
+            //            break;
+            //        }
+            //        //if (riskPercent == 0)
+            //        //{
+            //        //    Console.WriteLine("Matching 3 Hours Buffer");
+            //        //    riskPercent = match3Buffer(element[0], element[1], logInTimeDbl);
+            //        //    if (riskPercent == 0)
+            //        //    {
+            //        //        Console.WriteLine("Matching 6 Hours Buffer");
+            //        //        riskPercent = match6Buffer(element[0], element[1], logInTimeDbl);
+            //        //        if (riskPercent == 0)
+            //        //        {
+                    //            Console.WriteLine("Not in any range");
+                    //            riskPercent = 0.8;
+                    //            counter++;
+            //        //            break;
+            //        //        }
+                           
+
+            //        //    }
+            //        //    else
+            //        //    {
+            //        //        counter++;
+            //        //        break;
+            //        //    }
+
+            //        //}
+            //        //else
+            //        //{
+            //        //    counter++;
+            //        //    break;
+            //        //}
+            //    }
+            //    while (counter == 0);
+            //}
 
           
 
