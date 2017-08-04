@@ -16,6 +16,7 @@ using NSPJProject;
 using System.Configuration;
 using AlgorithmLibary;
 using System.Data.SqlClient;
+using Cloud.StartupPage;
 
 namespace NSPJProject
 {
@@ -54,12 +55,16 @@ namespace NSPJProject
                 {
                     UserModel.UserModel.updateFollowUp(userID, connectionString, "False");
                     //Navigate to Chester page
+                    Page cloud = new StartupPage();
+                    this.NavigationService.Navigate(cloud);
                 }
               
                 else
                 { 
                     UserModel.UserModel.saveFollowUp(userID, connectionString, "False");
                     //Navigate To chester page
+                    Page cloud = new StartupPage();
+                    this.NavigationService.Navigate(cloud);
                 }
             }
             else

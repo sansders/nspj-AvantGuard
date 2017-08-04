@@ -1,4 +1,5 @@
 ﻿using AlgorithmLibary;
+using Cloud.StartupPage;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -259,13 +260,16 @@ namespace NSPJProject
                             {
                                 riskStatement = "The risk level is low";
                                 UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
-                                //Navigate To Chester
+                                Page cloud = new StartupPage();
+                                this.NavigationService.Navigate(cloud);
                             }
 
                             // Removing access control and giving access control
                             else if (totalRisk <= 0.70)
                             {
                                 riskStatement = "The risk level is medium";
+                                Page cloud = new StartupPage();
+                                this.NavigationService.Navigate(cloud);
                                 //Remove Access Control 
 
                             }
@@ -330,12 +334,16 @@ namespace NSPJProject
                                 riskStatement = "The risk level is low";
                                 UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                                 //Navigate To Chester
+                                Page cloud = new StartupPage();
+                                this.NavigationService.Navigate(cloud);
                             }
 
                             // Removing access control and giving access control
                             else if (riskLevel <= 0.70)
                             {
                                 riskStatement = "The risk level is medium";
+                                Page cloud = new StartupPage();
+                                this.NavigationService.Navigate(cloud);
                                 //Remove Access Control 
 
                             }

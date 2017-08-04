@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesign, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesign.dll.1.0.0\lib\MaterialDesign.dll</HintPath>
     </Reference>
@@ -185,6 +188,10 @@
     <ProjectReference Include="..\..\Behavior Layout\BehaviorAnalysis\WpfApp1\Profile Creation Page 1.csproj">
       <Project>{4AF7A18C-F284-464D-8902-A5930C390AC0}</Project>
       <Name>Profile Creation Page 1</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Cloud\Cloud\Cloud.csproj">
+      <Project>{7945a18d-fa66-4c46-91ec-efa73672f077}</Project>
+      <Name>Cloud</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Resource\Algorithms\AlgorithmClass\ClassLibrary1\AlgorithmLibary.csproj">
       <Project>{068596fc-3efc-419a-ac3e-b081d5854aab}</Project>

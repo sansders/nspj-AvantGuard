@@ -439,6 +439,44 @@ namespace Layout.Upload
             return result;
         }
 
+        private void MyFoldersButton_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
+
+        private void RecentButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FavoritesButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BinButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void changeSettings(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SharedButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
