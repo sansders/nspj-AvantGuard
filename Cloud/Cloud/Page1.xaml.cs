@@ -21,6 +21,8 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Collections;
 using System.IO.Compression;
+using Layout.Models;
+using System.Globalization;
 
 namespace Layout.Upload
 {
@@ -49,6 +51,9 @@ namespace Layout.Upload
         public string hash;
         public string stringComputedHash;
         string filename1;
+        static String currentUserName = UserModel.UserModel.currentUserID;
+        UserModel.UserModel currentUser = UserModel.UserModel.retrieveUserFromDatabase(currentUserName);
+
 
         private void userHashInput_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -102,6 +107,9 @@ namespace Layout.Upload
                 hash = stringUserHashInput(userHashInput);
                 Console.WriteLine(hash);
 
+                String filename = System.IO.Path.GetFileNameWithoutExtension(dlg.FileName);
+                String fullfilename = System.IO.Path.GetFullPath(dlg.FileName);
+                String extension = System.IO.Path.GetExtension(dlg.FileName);
 
 
                 //Actions to take if hash not equals to computed hash
@@ -231,77 +239,12 @@ namespace Layout.Upload
 
                     if (virus == 0)
                     {
-                        ConnectionStringSettings conSettings1 = ConfigurationManager.ConnectionStrings["connString1"];
-                        ConnectionStringSettings conSettings2 = ConfigurationManager.ConnectionStrings["connString2"];
-                        ConnectionStringSettings conSettings3 = ConfigurationManager.ConnectionStrings["connString3"];
 
-                        string connectionString1 = conSettings1.ConnectionString;
-                        string connectionString2 = conSettings2.ConnectionString;
-                        string connectionString3 = conSettings3.ConnectionString;
-
-                        imgLocation = dlg.FileName.ToString();
-                        con = new SqlConnection(connectionString);
-                        con1 = new SqlConnection(connectionString1);
-                        con2 = new SqlConnection(connectionString2);
-                        con3 = new SqlConnection(connectionString3);
-                        byte[] images = null;
-                        byte[] images1 = null;
-                        byte[] images2 = null;
-                        byte[] images3 = null;
-
-                        BitArray b1;
-
-                        FileStream Stream = new FileStream(imgLocation, FileMode.Open, FileAccess.Read);
-                        BinaryReader brs = new BinaryReader(Stream);
-                        images = brs.ReadBytes((int)Stream.Length);
-
-                        String strImage = System.Text.Encoding.UTF8.GetString(images);
-                        // Console.Write(strImage);
-                        int leng = images.Length / 3;
-                        Console.Write("Length : " + leng);
-                        images1 = images.Take(leng).ToArray();
-                        // images1 = strImage.Substring(1,leng);
-
-                    
-                        images2 = images.Skip(leng).Take(leng).ToArray();
-                        int leng2 = leng + leng;
-                        images3 = images.Skip(leng2).Take(leng).ToArray();
-                        con.Open();
-                        con1.Open();
-                        con2.Open();
-                        con3.Open();
-
-                        //BitArray bits1 = new BitArray(images1);
-                        //  BitArray bits2 = new BitArray(images2);
-                        // BitArray bits3 = new BitArray(images3);
-
-                        string sqlQuery = "Insert into dbo.UserFiles(Username,Name,Image)Values( 'superman' , 'man' , @images )";
-                        cmd = new SqlCommand(sqlQuery, con);
-                        cmd.Parameters.Add(new SqlParameter("@images", images));
-                        cmd.ExecuteNonQuery();
-
-                        string sqlQuery1 = "Insert into dbo.UserFiles1(Username,Name,Image)Values( '123456' , 'man' , @images1 )";
-                        cmd = new SqlCommand(sqlQuery1, con1);
-                        cmd.Parameters.Add(new SqlParameter("@images1", images1));
-                        cmd.ExecuteNonQuery();
-
-                        string sqlQuery2 = "Insert into dbo.UserFiles3(Username,Name,Image)Values( '123456' , 'man' , @images2 )";
-                        cmd = new SqlCommand(sqlQuery2, con2);
-                        cmd.Parameters.Add(new SqlParameter("@images2", images3));
-                        cmd.ExecuteNonQuery();
-
-                        string sqlQuery3 = "Insert into dbo.UserFiles2(Username,Name,Image)Values( '123456' , 'man' , @images3 )";
-                        cmd = new SqlCommand(sqlQuery3, con3);
-                        cmd.Parameters.Add(new SqlParameter("@images3", images2));
-                        cmd.ExecuteNonQuery();
-
-                        // cmd.Parameters.Add(new SqlParameter("@images",images));
-
-                        // int N = cmd.ExecuteNonQuery();
-                        con.Close();
-                        Console.WriteLine("\n Data Has Been Uploaded");
-                        System.Windows.MessageBox.Show("Datas Saved Success");
-                        NavigationService.Navigate(new Page2());
+                        FileModel fm = new FileModel(currentUserName, filename, cipherText, getFileSize(cipherText.Length), getCurrent(), "no", "no", extension, "");
+                        fm.setShow(true);
+                        FileModel.setFileModel(fm);
+                        //FileModel fm = FileModel.getFileModel();
+                        NavigationService.Navigate(new Uri("UploadingConsole.xaml"), UriKind.RelativeOrAbsolute);
                     }
 
                 }
@@ -317,6 +260,59 @@ namespace Layout.Upload
                 //
                 // 3) File decryption not complete (SOLVED)
             }
+        }
+
+        private String getFileSize(double fileSize)
+        {
+            var culture = CultureInfo.CurrentUICulture;
+            const String format = "#,0.0";
+            String fileSizeDisplayed = "";
+
+            if (fileSize < 1024)
+            {
+                fileSizeDisplayed = fileSize.ToString("#,0", culture) + " bytes";
+            }
+
+            else
+            {
+                fileSize /= 1024;
+
+                if (fileSize < 1024)
+                {
+                    fileSizeDisplayed = fileSize.ToString(format, culture) + " KB";
+                }
+
+                else
+                {
+                    fileSize /= 1024;
+
+                    if (fileSize < 1024)
+                    {
+                        fileSizeDisplayed = fileSize.ToString(format, culture) + " MB";
+                    }
+
+                    else
+                    {
+                        fileSize /= 1024;
+
+                        if (fileSize < 1024)
+                        {
+                            fileSizeDisplayed = fileSize.ToString(format, culture) + " GB";
+                        }
+
+                        else
+                        {
+                            fileSize /= 1024;
+
+                            if (fileSize < 1024)
+                            {
+                                fileSizeDisplayed = fileSize.ToString(format, culture) + " TB";
+                            }
+                        }
+                    }
+                }
+            }
+            return fileSizeDisplayed;
         }
 
         private void SetfullPath(string updatedAdd)
@@ -341,6 +337,16 @@ namespace Layout.Upload
             }
 
             return sb.ToString();
+        }
+
+        string dtformat = "yyyy-MM-dd HH:mm:ss";
+        
+
+        private String getCurrent()
+        {
+            DateTime current = new DateTime();
+            current = DateTime.Now;
+            return current.ToString(dtformat);
         }
 
         private byte[] ComputeMd5Hash(string fileName)
