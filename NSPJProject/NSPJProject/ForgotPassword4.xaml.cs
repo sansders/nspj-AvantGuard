@@ -80,7 +80,6 @@ namespace NSPJProject
                     }
                     finally
                     {
-
                         con.Close();
                     }
 

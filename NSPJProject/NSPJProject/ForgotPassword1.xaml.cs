@@ -53,7 +53,6 @@ namespace NSPJProject
                 while (reader.Read())
                 {
                     count += 1;
-                    //Bryan's code
                     Console.WriteLine(" | UserID : " + reader.GetString(0) + " | Password : " + reader.GetString(1) + " | Name : " + reader.GetString(2) + " | Email : " + reader.GetString(3) + " | ContactNo : " + reader.GetString(4) + " | DOB : " + reader.GetString(5) + " | SecurityQ1 : " + reader.GetString(6) + " | Q1Ans : " + reader.GetString(7) + " | SecurityQ2 : " + reader.GetString(8) + " | Q2Ans : " + reader.GetString(9));
                     (App.Current as App).SecurityQ1 = reader.GetString(6);
                     (App.Current as App).Q1Ans = reader.GetString(7);

@@ -329,7 +329,9 @@ namespace NSPJProject
 
                     }
 
+                    (App.Current as App).LoginUserID = UserIDTextBox.Text;
                     MessageBox.Show("Successful Login.");
+                    this.NavigationService.Navigate(new Uri(@"EditUserInfo.xaml", UriKind.RelativeOrAbsolute));
 
                 }
 
