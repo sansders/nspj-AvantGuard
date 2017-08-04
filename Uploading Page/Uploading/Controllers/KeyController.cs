@@ -23,10 +23,7 @@ namespace Layout.Controllers
         public static void checkForKeys()
         {
             Console.WriteLine("Checking for keys...");
-
-            //CHANGE PATH WHEREVER NECESSARY 
             
- 
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             SqlConnection con1;
             SqlCommand cmd;
@@ -34,7 +31,7 @@ namespace Layout.Controllers
             string connectionString1 = conSettings.ConnectionString;
             con1 = new SqlConnection(connectionString1);
             con1.Open();
-            string sqlQuery1 = "SELECT keyPath FROM dbo.test WHERE UserID='testing'";
+            string sqlQuery1 = "SELECT keyPath FROM dbo.test WHERE UserID='trying'";
             string sqlQuery2;
             cmd = new SqlCommand(sqlQuery1, con1);
             SqlDataReader DataRead1 = cmd.ExecuteReader();
@@ -47,12 +44,12 @@ namespace Layout.Controllers
                     Console.WriteLine("Keys not found!");
                     Console.WriteLine("Proceeding with Key generation, please wait...");
 
-                    Controllers.Prompt.ShowDialog1("Please select a directory to store your keys", "Alert");
+                    System.Windows.MessageBox.Show("Please select a directory to store your keys");
                     fbd.ShowDialog();
                     bigPath = fbd.SelectedPath;
                     //When username is obtainable, please concatenate it into these paths.
 
-                    sqlQuery2 = "UPDATE dbo.test SET keyPath = @bigPath WHERE UserID='testing'";
+                    sqlQuery2 = "UPDATE dbo.test SET keyPath = @bigPath WHERE UserID='trying'";
                     cmd = new SqlCommand(sqlQuery2, con1);
                     cmd.Parameters.Add(new SqlParameter("@bigPath", bigPath));
                     cmd.ExecuteNonQuery();

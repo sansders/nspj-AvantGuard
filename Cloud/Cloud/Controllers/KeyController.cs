@@ -47,7 +47,7 @@ namespace Layout.Controllers
                     Console.WriteLine("Keys not found!");
                     Console.WriteLine("Proceeding with Key generation, please wait...");
 
-                    Controllers.Prompt.ShowDialog1("Please select a directory to store your keys", "Alert");
+                    System.Windows.MessageBox.Show("Please select a directory to store your keys");
                     fbd.ShowDialog();
                     bigPath = fbd.SelectedPath;
                     //When username is obtainable, please concatenate it into these paths.
