@@ -4,83 +4,89 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Layout.Models
 {
     class FileModel
     {
 
-        private string filePath;
-        private string UserID;
-        private string fileName;
-        private string fileSize;
-        private string lastModified;
-        private string isFavorite;
-        private string isDeleted;
-        private string fileType;
-        private string sharedBy;
+        public static string fileBytes { get; set; }
+        public static string UserID { get; set; } 
+        public static string fileName { get; set; } 
+        public static string fileSize { get; set; } 
+        public static string lastModified { get; set; } 
+        public static string isFavorite { get; set; } 
+        public static string isDeleted { get; set; } 
+        public static string fileType { get; set; } 
+        public static string sharedBy { get; set; }
+        public static Boolean show { get; set; } 
 
-        public FileModel(String UserID, String fileName, String filePath , String fileSize, String lastModified , String isFavorite , String isDeleted , String fileType , String sharedBy )
+        
+     
+
+        public FileModel(string id , string filename , string filebytes , string filesize , string lastmodified , string isfavorite, string isdeleted , string filetype , string sharedby)
         {
-            this.UserID = UserID;
-            this.fileName = fileName;
-            this.filePath = filePath;
-            this.fileSize = fileSize;
-            this.lastModified = lastModified;
-            this.isFavorite = isFavorite;
-            this.isDeleted = isDeleted;
-            this.fileType = fileType;
-            this.sharedBy = sharedBy;
+
+            UserID = id;
+            fileName = filename;
+            fileBytes = filebytes;
+            fileSize = filesize;
+            lastModified = lastmodified;
+            isFavorite = isfavorite;
+            isDeleted = isdeleted;
+            fileType = filetype;
+            sharedBy = sharedby;
+               
+            
         }
 
-        public void setFilePath(String filePath){
-            this.filePath = filePath;
-                        
-        }
-
-        public string ReturnFilePath()
+        public static Boolean returnShow()
         {
-            return filePath;
+            return show;
         }
 
-        public void setUserID(String UserID)
+        
+
+        public static string ReturnFileBytes()
         {
-            this.UserID = UserID;
-
+            return fileBytes;
         }
 
-        public string ReturnUserID()
+       
+
+        public static string ReturnUserID()
         {
             return UserID;
         }
 
-        public string ReturnfileName()
+        public static string ReturnfileName()
         {
             return fileName;
         }
 
-        public string ReturnFileSize()
+        public static string ReturnFileSize()
         {
             return fileSize;
         }
 
-        public string ReturnLastModified()
+        public static string ReturnLastModified()
         {
             return lastModified;
         }
 
-        public string ReturnIsFavorite()
+        public static string ReturnIsFavorite()
         {
             return isFavorite;
         }
-        public string ReturnIsDeleted()
+        public static string ReturnIsDeleted()
         {
             return isDeleted;
         }
-        public string ReturnFileType()
+        public static string ReturnFileType()
         {
             return fileType;
         }
-        public string ReturnSharedBy()
+        public static string ReturnSharedBy()
         {
             return sharedBy;
         }

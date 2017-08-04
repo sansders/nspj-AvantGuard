@@ -59,6 +59,8 @@ namespace Layout.Upload
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            FileModel fm = new FileModel("superman","name.png","w231412312312","100kb","today","no","no","png","bryan");
+
             NavigationService.Navigate(new Page2());
         }
 
