@@ -41,6 +41,8 @@ namespace Layout.Models
             
         }
 
+
+
         public  Boolean getShow()
         {
             return show;
@@ -68,39 +70,39 @@ namespace Layout.Models
 
        
 
-        public static string ReturnUserID()
+        public string ReturnUserID()
         {
             return UserID;
         }
 
-        public static string ReturnfileName()
+        public string ReturnfileName()
         {
             return fileName;
         }
 
-        public static string ReturnFileSize()
+        public string ReturnFileSize()
         {
             return fileSize;
         }
 
-        public static string ReturnLastModified()
+        public string ReturnLastModified()
         {
             return lastModified;
         }
 
-        public static string ReturnIsFavorite()
+        public string ReturnIsFavorite()
         {
             return isFavorite;
         }
-        public static string ReturnIsDeleted()
+        public string ReturnIsDeleted()
         {
             return isDeleted;
         }
-        public static string ReturnFileType()
+        public string ReturnFileType()
         {
             return fileType;
         }
-        public static string ReturnSharedBy()
+        public string ReturnSharedBy()
         {
             return sharedBy;
         }

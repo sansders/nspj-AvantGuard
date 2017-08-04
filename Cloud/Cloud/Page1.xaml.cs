@@ -207,13 +207,13 @@ namespace Layout.Upload
                                 virus = virus + 1;
                                 VirusName = reader2.GetString(0);
                                 type = reader2.GetString(1);
-                                System.Windows.MessageBox.Show("\n VIRUS DECTED!Your File is not being Uploaded \n Virus Dected : " + VirusName + " | Type Of Virus : " + type);
-                                Console.WriteLine(" \n VIRUS DECTED! Your File is not being Uploaded");
-                                Console.WriteLine(" \n Virus Dected : " + VirusName + " | Type Of Virus : " + type);
+                               
+                                System.Windows.MessageBox.Show(" \n VIRUS DECTED! Your File is not being Uploaded");
+                                System.Windows.MessageBox.Show(" \n Virus Dected : " + VirusName + " | Type Of Virus : " + type);
                             }
                             else
                             {
-                                Console.WriteLine("\n There is no virus! Very Good!! ");
+                                System.Windows.MessageBox.Show("\n There is no virus! Very Good!! ");
                                 Console.WriteLine("\n File is now being uploaded......");
                                 System.Windows.MessageBox.Show("\n File is now being uploaded......");
                             }
@@ -221,8 +221,8 @@ namespace Layout.Upload
                         }
                         else
                         {
-                            Console.WriteLine("\n There is no virus! Very Good!! ");
-                            Console.WriteLine("\n File is now being uploaded......");
+                            System.Windows.MessageBox.Show("\n There is no virus! Very Good!! ");
+                            System.Windows.MessageBox.Show("\n File is now being uploaded......");
                         }
                         con.Close();
                     }

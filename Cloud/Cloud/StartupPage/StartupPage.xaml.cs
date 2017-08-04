@@ -137,6 +137,7 @@ namespace Cloud.StartupPage
                         byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
                         byte[] plainText = kc.symmetricDecryption(file, decryptedSymmetricKey, IV);
 
+                        
                         int len = file.Length / 3;
                         byte[] toSend1 = file.Take(len).ToArray();
                         byte[] toSend2 = file.Skip(len).Take(len).ToArray();
