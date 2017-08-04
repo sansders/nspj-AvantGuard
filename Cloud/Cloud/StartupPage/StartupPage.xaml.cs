@@ -1758,6 +1758,16 @@ namespace Cloud.StartupPage
             return fileSizeDisplayed;
         }
 
+        private void changeSettings(object sender, RoutedEventArgs e)
+        {
+
+        }
+        
+             private void moveTo(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
 
