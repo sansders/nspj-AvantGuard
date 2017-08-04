@@ -1103,7 +1103,7 @@ namespace Cloud.StartupPage
                         SqlDataReader DataRead1 = cmd.ExecuteReader();
                         string bigPath = DataRead1.GetString(0);
 
-                        byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "+\\IV.txt");
+                        byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
                         Console.WriteLine("Gets bytes of IV");
                         byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
 
