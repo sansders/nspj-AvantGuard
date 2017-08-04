@@ -40,7 +40,7 @@ namespace NSPJProject
             
             String allText = System.IO.File.ReadAllText(@"../../../../Resource/Algorithms/AlgorithmClass/ClassLibrary1/TextFile1.txt");
             string[][] myList = PredictionModel.readFromFile(allText);
-            string userID = "trying";
+            string userID = "Justin";
             string currentPublicIP = PredictionModel.getCurrentPublicIP();
             string macAddress = PredictionModel.getCurrentMAC();
             Console.WriteLine(macAddress);
@@ -110,11 +110,11 @@ namespace NSPJProject
                 string ipAddress = ipAddressCollection[counter][0];
                 macAddress = ipAddressCollection[counter][1];
                 counter++;
-                //saveDateTimeOfUser(userID, connectionString, loginTime, date , ipAddress , macAddress);
+                //UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date , ipAddress , macAddress);
                 //deleteDateTimeOfUser(userID, connectionString, loginTime, date);
              
             }
-            //string username = "username";
+            //string username = "trying";
             //deleteACertainUser(username, connectionString);
             //string test = "0";
             //deleteDateTimeOfUser(username, connectionString, test, date);
@@ -128,7 +128,7 @@ namespace NSPJProject
             con.Open();
             try
             {
-                cmd = new SqlCommand("DELETE FROM [dbo].[test] where UserID = '" + userID + "'", con);
+                cmd = new SqlCommand("DELETE FROM [dbo].[test]", con);
                 cmd.ExecuteNonQuery();
 
             }
@@ -195,6 +195,7 @@ namespace NSPJProject
 
                 if (count == 1)
                 {
+                    
                     string userID = UserIDTextBox.Text;
                     string[][] userList = checkUserEligibility(userID , connectionString);
                     UserModel.UserModel.currentUserID = userID;
@@ -203,138 +204,164 @@ namespace NSPJProject
                     UserModel.UserModel um = UserModel.UserModel.retrieveUserFromDatabase(currentUser);
                     
                     Console.WriteLine(um.userPassword);
-                    if (userList.Count() < 30 )
+                    string checkForFollowUp = UserModel.UserModel.checkFollowUp(userID, connectionString);
+                    if (checkForFollowUp == "True")
                     {
-                        
-                        string date = AlgorithmLibary.PredictionModel.getCurrentDate();
-                        string loginTime = DateTime.Now.ToString("HH.mm");
-                        string publicIP = PredictionModel.getCurrentPublicIP();
-                        string publicMAC = PredictionModel.getCurrentMAC();
-                        string userLogInPreference = getUserLogInPreference(userID, connectionString);
-                        string userComputerPreference = getUserComputerPreference(userID, connectionString);
-                        //The method below is supposed to read from the database all the entries of hostname for this specific user
-
-                        string[] currentHostnameSet = getUserHostNameSet(userID, connectionString); 
-                        foreach(var element in currentHostnameSet)
-                        {
-                            Console.WriteLine(element + "JADSjc"); 
-                        }
-                        //string[] currentHostnameSet =
-                        //{
-                        //    "JUSTINSOH-PC",
-                        //    "JUSTINSOH-PC",
-                        //    "JUSTINSOH-PC",
-                        //    "JUSTINSOH-PCC",
-                        //    "JUSTINSOH-PCC",
-                        //    "JUSTINSOH-PCC",
-
-                        //};
-                        double logInRisk = evaulateUserLogInString(userLogInPreference , loginTime);
-
-                        double userHostRisk = evaulateUserComputerPreference(userComputerPreference, currentHostnameSet);
-
-                        logInRisk = logInRisk * 0.3;
-                        userHostRisk = userHostRisk * 0.7;
-
-                        double totalRisk = logInRisk + userHostRisk;
-                        Console.WriteLine(userHostRisk + " HOSTNAME");
-                        Console.WriteLine(logInRisk + "LOG IN RISK");
-                        Console.WriteLine(totalRisk);
-                        string riskStatement = null;
-                        if (totalRisk <= 0.4)
-                        {
-                            riskStatement = "The risk level is low";
-                            saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
-                            //Navigate To Chester
-                        }
-
-                        // Removing access control and giving access control
-                        else if (totalRisk <= 0.70)
-                        {
-                            riskStatement = "The risk level is medium";
-                            //Remove Access Control 
-
-                        }
-
-                        //Instantly Re authenticate
-                        else if (totalRisk > 0.70)
-                        {
-                            riskStatement = "The risk level is high";
-                            string subject = "Authentication Message";
-                            string subjectBody = "Authentication Code is ";
-                            UserModel.UserModel.do2fa(subject, subjectBody, "hoggersoh@gmail.com");
-
-                        }
-                        Console.WriteLine(riskStatement);
-                     
+                        MessageBox.Show("Account is locked , please complete TWO FA");
+                        string subject = "Authentication Message";
+                        string subjectBody = "Authentication Code is ";
+                        UserModel.UserModel.do2fa(subject, subjectBody, "hoggersoh@gmail.com");
+                        Page authentication = new Authentication();
+                        this.NavigationService.Navigate(authentication);
                     }
-                    
-                    else if (userList.Count() >= 30)
+                    else
                     {
-                        //Run the login prediction  
-                        string date = AlgorithmLibary.PredictionModel.getCurrentDate();
-                        string loginTime = DateTime.Now.ToString("HH.mm");
-                        string publicIP = PredictionModel.getCurrentPublicIP();
-                        string publicMAC = PredictionModel.getCurrentMAC();
-                        string[][] logInCollection = getUserLogInData(userID, connectionString);
-                        double testTime = Convert.ToDouble(loginTime);
-                        double testDay = Convert.ToDouble(date);
 
-                        PredictionModel logInPredictionModel = new PredictionModel(testTime, testDay, logInCollection);
-                        string logInRiskLevel = logInPredictionModel.logInRisk;
-                        string logInOutput = logInPredictionModel.logInOutput;
-                        Console.WriteLine(logInOutput);
-                        Console.WriteLine("The risk level is " + logInRiskLevel);
-
-
-                        string[][] ipAddressCollection = getUserIPAddressCollection(userID, connectionString);
-                        Console.Write(ipAddressCollection.Count());
-                        string[] query = new string[] { publicIP , publicMAC, date };
-                        PredictionModel ipPredictionModel = new PredictionModel(ipAddressCollection, query);
-                        string ipRisk = ipPredictionModel.ipRisk;
-                        string ipOutput = ipPredictionModel.ipOutput;
-                        Console.WriteLine(ipOutput);
-
-                        double logInPercentage = Convert.ToDouble(logInRiskLevel) / 5.0;
-                        double ipPercentage = Convert.ToDouble(ipRisk);
-
-                        logInPercentage = (logInPercentage / 100) * 30;
-                        ipPercentage = (ipPercentage / 100) * 70;
-                        double riskLevel = logInPercentage + ipPercentage;
-                        Console.WriteLine(logInPercentage);
-                        Console.WriteLine(ipRisk);
-                        Console.WriteLine(riskLevel);
-                        string riskStatement = null;
-                        //Can do anything 
-                        if (riskLevel <= 0.4)
+                        if (userList.Count() < 30)
                         {
-                            riskStatement = "The risk level is low";
-                            saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
-                            //Navigate To Chester
+
+                            string date = AlgorithmLibary.PredictionModel.getCurrentDate();
+                            string loginTime = DateTime.Now.ToString("HH.mm");
+                            string publicIP = PredictionModel.getCurrentPublicIP();
+                            string publicMAC = PredictionModel.getCurrentMAC();
+                            string userLogInPreference = getUserLogInPreference(userID, connectionString);
+                            string userComputerPreference = getUserComputerPreference(userID, connectionString);
+                            //The method below is supposed to read from the database all the entries of hostname for this specific user
+
+                            string[] currentHostnameSet = getUserHostNameSet(userID, connectionString);
+                            foreach (var element in currentHostnameSet)
+                            {
+                                Console.WriteLine(element + "JADSjc");
+                            }
+                            //string[] currentHostnameSet =
+                            //{
+                            //    "JUSTINSOH-PC",
+                            //    "JUSTINSOH-PC",
+                            //    "JUSTINSOH-PC",
+                            //    "JUSTINSOH-PCC",
+                            //    "JUSTINSOH-PCC",
+                            //    "JUSTINSOH-PCC",
+
+                            //};
+                            double logInRisk = evaulateUserLogInString(userLogInPreference, loginTime);
+
+                            double userHostRisk = evaulateUserComputerPreference(userComputerPreference, currentHostnameSet);
+
+                            logInRisk = logInRisk * 0.3;
+                            userHostRisk = userHostRisk * 0.7;
+
+                            double totalRisk = logInRisk + userHostRisk;
+                            Console.WriteLine(userHostRisk + " HOSTNAME");
+                            Console.WriteLine(logInRisk + "LOG IN RISK");
+                            Console.WriteLine(totalRisk);
+                            string riskStatement = null;
+                            if (totalRisk <= 0.4)
+                            {
+                                riskStatement = "The risk level is low";
+                                UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
+                                //Navigate To Chester
+                            }
+
+                            // Removing access control and giving access control
+                            else if (totalRisk <= 0.70)
+                            {
+                                riskStatement = "The risk level is medium";
+                                //Remove Access Control 
+
+                            }
+
+                            //Instantly Re authenticate
+                            else if (totalRisk > 0.70)
+                            {
+                                riskStatement = "The risk level is high";
+
+                                string subject = "Authentication Message";
+                                string subjectBody = "Authentication Code is ";
+                                UserModel.UserModel.do2fa(subject, subjectBody, "hoggersoh@gmail.com");
+                                Page authentication = new Authentication();
+                                this.NavigationService.Navigate(authentication);
+                                MessageBox.Show("2FA has been sent to your email");
+
+                            }
+                            Console.WriteLine(riskStatement);
+
                         }
 
-                        // Removing access control and giving access control
-                        else if (riskLevel <= 0.70)
+                        else if (userList.Count() >= 30)
                         {
-                            riskStatement = "The risk level is medium";
-                            //Remove Access Control 
+                            //Run the login prediction  
+                            string date = AlgorithmLibary.PredictionModel.getCurrentDate();
+                            string loginTime = DateTime.Now.ToString("HH.mm");
+                            string publicIP = PredictionModel.getCurrentPublicIP();
+                            string publicMAC = PredictionModel.getCurrentMAC();
+                            string[][] logInCollection = getUserLogInData(userID, connectionString);
+                            double testTime = Convert.ToDouble(loginTime);
+                            double testDay = Convert.ToDouble(date);
+
+                            PredictionModel logInPredictionModel = new PredictionModel(testTime, testDay, logInCollection);
+                            string logInRiskLevel = logInPredictionModel.logInRisk;
+                            string logInOutput = logInPredictionModel.logInOutput;
+                            Console.WriteLine(logInOutput);
+                            Console.WriteLine("The risk level is " + logInRiskLevel);
+
+
+                            string[][] ipAddressCollection = getUserIPAddressCollection(userID, connectionString);
+                            Console.Write(ipAddressCollection.Count());
+                            string[] query = new string[] { publicIP, publicMAC, date };
+                            PredictionModel ipPredictionModel = new PredictionModel(ipAddressCollection, query);
+                            string ipRisk = ipPredictionModel.ipRisk;
+                            string ipOutput = ipPredictionModel.ipOutput;
+                            Console.WriteLine(ipOutput);
+
+                            double logInPercentage = Convert.ToDouble(logInRiskLevel) / 5.0;
+                            double ipPercentage = Convert.ToDouble(ipRisk);
+
+                            logInPercentage = (logInPercentage / 100) * 30;
+                            ipPercentage = (ipPercentage / 100) * 70;
+                            double riskLevel = logInPercentage + ipPercentage;
+                            Console.WriteLine(logInPercentage);
+                            Console.WriteLine(ipRisk);
+                            Console.WriteLine(riskLevel);
+                            string riskStatement = null;
+                            //Can do anything 
+                            riskLevel = 1;
+                            if (riskLevel <= 0.4)
+                            {
+                                riskStatement = "The risk level is low";
+                                UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
+                                //Navigate To Chester
+                            }
+
+                            // Removing access control and giving access control
+                            else if (riskLevel <= 0.70)
+                            {
+                                riskStatement = "The risk level is medium";
+                                //Remove Access Control 
+
+                            }
+
+                            //Instantly Re authenticate
+                            else if (riskLevel > 0.70)
+                            {
+                                riskStatement = "The risk level is high";
+                                //Do 2FA
+
+                                string subject = "Authentication Message";
+                                string subjectBody = "Authentication Code is ";
+                                UserModel.UserModel.do2fa(subject, subjectBody, "hoggersoh@gmail.com");
+                                Page authentication = new Authentication();
+                                this.NavigationService.Navigate(authentication);
+                                MessageBox.Show("2FA has been sent to your email");
+                            }
+                            Console.WriteLine(riskStatement);
+
 
                         }
-
-                        //Instantly Re authenticate
-                        else if (riskLevel > 0.70)
-                        {
-                            riskStatement = "The risk level is high";
-                            //Do 2FA
-                        }
-                        Console.WriteLine(riskStatement);
-                     
-
                     }
 
-                    (App.Current as App).LoginUserID = UserIDTextBox.Text;
+                    //(App.Current as App).LoginUserID = UserIDTextBox.Text;
                     MessageBox.Show("Successful Login.");
-                    this.NavigationService.Navigate(new Uri(@"EditUserInfo.xaml", UriKind.RelativeOrAbsolute));
+                    //this.NavigationService.Navigate(new Uri(@"EditUserInfo.xaml", UriKind.RelativeOrAbsolute));
 
                 }
 
@@ -789,7 +816,7 @@ namespace NSPJProject
             con.Open();
             try
             {
-                cmd = new SqlCommand("DELETE FROM [dbo].[LogAnalysis] where UserID = '" + userID  + "'", con);
+                cmd = new SqlCommand("DELETE FROM [dbo].[LogAnalysis]", con);
                 cmd.ExecuteNonQuery();
 
             }
@@ -799,40 +826,41 @@ namespace NSPJProject
             }
             finally
             {
+                Console.WriteLine("Log Analaysis of " + userID + " have been deleeted");
                 con.Close();
             }
         }
 
-        private void saveDateTimeOfUser(string userID, string connectionString , string loginTime, string date , string publicIP , string publicMAC )
-        {
-            SqlConnection con;
-            SqlCommand cmd;
-            con = new SqlConnection(connectionString);
-            string currentHostname = System.Environment.MachineName.ToString();
-            con.Open();
-            try
-            {
+        //private void saveDateTimeOfUser(string userID, string connectionString , string loginTime, string date , string publicIP , string publicMAC )
+        //{
+        //    SqlConnection con;
+        //    SqlCommand cmd;
+        //    con = new SqlConnection(connectionString);
+        //    string currentHostname = System.Environment.MachineName.ToString();
+        //    con.Open();
+        //    try
+        //    {
 
                
-                cmd = new SqlCommand("INSERT INTO [dbo].[LogAnalysis] (UserID, LoginTime, LoginDate, IpAddress , MacAddress , hostname) VALUES (@UserID, @LoginTime, @LoginDate , @IPAddress , @MACAddress , @HostName)", con);
-                cmd.Parameters.AddWithValue("@UserID", userID);
-                cmd.Parameters.AddWithValue("@LoginTime", loginTime);
-                cmd.Parameters.AddWithValue("@LoginDate", date.ToString());
-                cmd.Parameters.AddWithValue("@IPAddress", publicIP);
-                cmd.Parameters.AddWithValue("@MACAddress", publicMAC);
-                cmd.Parameters.AddWithValue("@HostName", currentHostname);
-                cmd.ExecuteNonQuery();
+        //        cmd = new SqlCommand("INSERT INTO [dbo].[LogAnalysis] (UserID, LoginTime, LoginDate, IpAddress , MacAddress , hostname) VALUES (@UserID, @LoginTime, @LoginDate , @IPAddress , @MACAddress , @HostName)", con);
+        //        cmd.Parameters.AddWithValue("@UserID", userID);
+        //        cmd.Parameters.AddWithValue("@LoginTime", loginTime);
+        //        cmd.Parameters.AddWithValue("@LoginDate", date.ToString());
+        //        cmd.Parameters.AddWithValue("@IPAddress", publicIP);
+        //        cmd.Parameters.AddWithValue("@MACAddress", publicMAC);
+        //        cmd.Parameters.AddWithValue("@HostName", currentHostname);
+        //        cmd.ExecuteNonQuery();
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                con.Close();
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
+        //    finally
+        //    {
+        //        con.Close();
+        //    }
+        //}
 
         private string[][] checkUserEligibility(string userID , string connectionString)
         {

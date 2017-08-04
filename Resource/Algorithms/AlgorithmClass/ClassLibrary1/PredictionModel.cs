@@ -285,13 +285,13 @@ namespace AlgorithmLibary
             //string[] a3 = a2.Split('<');
             //string a4 = a3[0];
 
-            string ip = new WebClient().DownloadString(@"http://icanhazip.com").Trim();
-            Console.WriteLine(ip);
+            //string ip = new WebClient().DownloadString(@"http://icanhazip.com").Trim();
+            //Console.WriteLine(ip);
 
             //IPHostEntry IPHost = Dns.GetHostByName(Dns.GetHostName());
             //string ip = IPHost.AddressList[0].ToString();
             //Console.WriteLine(ip);
-            return ip;
+            return "10.10.10.1";
         }
 
         public static string getCurrentPublicIPLocation(string a4)
@@ -337,6 +337,7 @@ namespace AlgorithmLibary
         public static string getCurrentMAC()
         {
             string localIP = getCurrentPrivateIP();
+            Console.WriteLine(localIP);
             string macAdd = null;
             foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
             {
@@ -356,6 +357,7 @@ namespace AlgorithmLibary
                     }
                 }
             }
+            Console.WriteLine(macAdd);
             return macAdd;
         }
 

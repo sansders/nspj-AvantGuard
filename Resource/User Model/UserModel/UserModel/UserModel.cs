@@ -25,8 +25,9 @@ namespace UserModel
         public String _securityQ2Ans;
         public String _profile1Answer;
         public String _profile2Answer;
-        public String _profile3Answer; 
+        public String _profile3Answer;
         public String _profile4Answer;
+        public static String _twoFACode;
         public static UserModel _currentUserModel;
         public static string _currentUserID;
         public UserModel()
@@ -50,7 +51,7 @@ namespace UserModel
         }
 
         public UserModel(String _userID, String _userPassword, String _userName, String _userEmail, String _userContact, String _userDOB,
-            String _securityQ1, String _securityQ1Ans, String _securityQ2, String _securityQ2Ans , String _Profile1 , String _Profile2 , String _Profile3 , String _Profile4)
+            String _securityQ1, String _securityQ1Ans, String _securityQ2, String _securityQ2Ans, String _Profile1, String _Profile2, String _Profile3, String _Profile4)
         {
             this._userID = _userID;
             this._userPassword = _userPassword;
@@ -157,7 +158,7 @@ namespace UserModel
         public static UserModel currentUserModel
         {
             get { return _currentUserModel; }
-            set { _currentUserModel = value;  }
+            set { _currentUserModel = value; }
         }
 
         public static string currentUserID
@@ -166,8 +167,13 @@ namespace UserModel
             set { _currentUserID = value; }
         }
 
+        public static string twoFAcode
+        {
+            get { return _twoFACode; }
+            set { _twoFACode = value; }
+        }
 
-        public static UserModel retrieveUserFromDatabase(string userID)
+    public static UserModel retrieveUserFromDatabase(string userID)
         {
             ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
             string connectionString = conSettings.ConnectionString;
@@ -202,7 +208,7 @@ namespace UserModel
 
                 while (reader.Read())
                 {
-                    
+
                     _userID = reader.GetString(0);
                     _userPassword = reader.GetString(1);
                     _userName = reader.GetString(2);
@@ -264,7 +270,7 @@ namespace UserModel
                 cmd.Parameters.AddWithValue("@Profile2", profile2);
                 cmd.Parameters.AddWithValue("@Profile3", profile3);
                 cmd.Parameters.AddWithValue("@Profile4", profile4);
-                
+
 
 
                 cmd.ExecuteNonQuery();
@@ -281,11 +287,15 @@ namespace UserModel
             }
         }
 
+       
+
+
         public static void do2fa(string subject , string subjectBody , string destinationEmail)
         {
             Random rnd = new Random();
             int randomNumber = rnd.Next(1000, 9999);
             string code = randomNumber.ToString();
+            UserModel.twoFAcode = code;
 
             try
             {
@@ -348,5 +358,126 @@ namespace UserModel
         {
             throw new NotImplementedException();
         }
+
+        public static void saveDateTimeOfUser(string userID, string connectionString, string loginTime, string date, string publicIP, string publicMAC)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            con = new SqlConnection(connectionString);
+            string currentHostname = System.Environment.MachineName.ToString();
+            con.Open();
+            try
+            {
+
+
+                cmd = new SqlCommand("INSERT INTO [dbo].[LogAnalysis] (UserID, LoginTime, LoginDate, IpAddress , MacAddress , hostname) VALUES (@UserID, @LoginTime, @LoginDate , @IPAddress , @MACAddress , @HostName)", con);
+                cmd.Parameters.AddWithValue("@UserID", userID);
+                cmd.Parameters.AddWithValue("@LoginTime", loginTime);
+                cmd.Parameters.AddWithValue("@LoginDate", date.ToString());
+                cmd.Parameters.AddWithValue("@IPAddress", publicIP);
+                cmd.Parameters.AddWithValue("@MACAddress", publicMAC);
+                cmd.Parameters.AddWithValue("@HostName", currentHostname);
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static void saveFollowUp(string userID, string connectionString , string status)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            con = new SqlConnection(connectionString);
+            // string currentHostname = System.Environment.MachineName.ToString();
+            con.Open();
+            try
+            {
+                cmd = new SqlCommand("INSERT INTO [dbo].[checkFollowUp] (UserID, followUp) VALUES (@UserID, @followUp)", con);
+                cmd.Parameters.AddWithValue("@UserID", userID);
+                cmd.Parameters.AddWithValue("@followUp", status);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static void updateFollowUp(string userID , string connectionString , string status)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            con = new SqlConnection(connectionString);
+            // string currentHostname = System.Environment.MachineName.ToString();
+            con.Open();
+            try
+            {
+                cmd = new SqlCommand("UPDATE [dbo].[checkFollowUp] SET followUp = '" + status + "' where UserID = '" + userID + "'", con);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                con.Close();
+            }
+          
+        }
+
+        public static string checkFollowUp(string userID, string connectionString)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            SqlDataReader reader;
+            con = new SqlConnection(connectionString);
+            string value = null;
+            //string currentHostname = System.Environment.MachineName.ToString();
+            con.Open();
+            try
+            {
+                cmd = new SqlCommand("SELECT *  FROM [dbo].[checkFollowUp] where UserID = '" + userID + "'", con);
+                reader = cmd.ExecuteReader();
+                if (reader == null)
+                {
+                    value = null;
+                }
+                else
+                {
+
+                  
+                        while (reader.Read())
+                        {
+                            value = reader.GetString(1);
+                        }
+                    
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                con.Close();
+
+            }
+            return value;
+        }
     }
+
+   
 }
