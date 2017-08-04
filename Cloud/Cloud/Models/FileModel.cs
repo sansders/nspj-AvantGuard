@@ -22,6 +22,7 @@ namespace Layout.Models
         public static Boolean show { get; set; }
         public static FileModel currentModel;
         
+        
      
 
         public FileModel(string id , string filename , byte[] filebytes , string filesize , string lastmodified , string isfavorite, string isdeleted , string filetype , string sharedby)
