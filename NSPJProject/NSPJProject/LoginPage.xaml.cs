@@ -233,8 +233,8 @@ namespace NSPJProject
 
                         double userHostRisk = evaulateUserComputerPreference(userComputerPreference, currentHostnameSet);
 
-                        logInRisk = logInRisk * 0.4;
-                        userHostRisk = userHostRisk * 0.6;
+                        logInRisk = logInRisk * 0.3;
+                        userHostRisk = userHostRisk * 0.7;
 
                         double totalRisk = logInRisk + userHostRisk;
                         Console.WriteLine(userHostRisk + " HOSTNAME");
@@ -378,7 +378,7 @@ namespace NSPJProject
 
                 while (reader.Read())
                 {
-                    Console.WriteLine(reader.GetString(5));
+                   
                     hostName = reader.GetString(5);
                     fullHostName.Add(hostName);
                 }
@@ -444,7 +444,7 @@ namespace NSPJProject
             riskLevel = 1 - likelihood;
             Console.WriteLine(riskLevel + "risk level");
 
-            return likelihood;
+            return riskLevel;
         }
 
       
