@@ -174,9 +174,9 @@ namespace NSPJProject
                     string[][] userList = checkUserEligibility(userID , connectionString);
                     UserModel.UserModel.currentUserID = userID;
                     string currentUser = UserModel.UserModel.currentUserID;
-                    
                     MessageBox.Show(currentUser + "is thios");
                     UserModel.UserModel um = UserModel.UserModel.retrieveUserFromDatabase(currentUser);
+                    
                     Console.WriteLine(um.userPassword);
                     if (userList.Count() < 30 )
                     {
@@ -188,16 +188,22 @@ namespace NSPJProject
                         string userLogInPreference = getUserLogInPreference(userID, connectionString);
                         string userComputerPreference = getUserComputerPreference(userID, connectionString);
                         //The method below is supposed to read from the database all the entries of hostname for this specific user
-                        string[] currentHostnameSet =
-                        {
-                            "JUSTINSOH-PC",
-                            "JUSTINSOH-PC",
-                            "JUSTINSOH-PC",
-                            "JUSTINSOH-PCC",
-                            "JUSTINSOH-PCC",
-                            "JUSTINSOH-PCC",
 
-                        };
+                        string[] currentHostnameSet = getUserHostNameSet(userID, connectionString); 
+                        foreach(var element in currentHostnameSet)
+                        {
+                            Console.WriteLine(element + "JADSjc"); 
+                        }
+                        //string[] currentHostnameSet =
+                        //{
+                        //    "JUSTINSOH-PC",
+                        //    "JUSTINSOH-PC",
+                        //    "JUSTINSOH-PC",
+                        //    "JUSTINSOH-PCC",
+                        //    "JUSTINSOH-PCC",
+                        //    "JUSTINSOH-PCC",
+
+                        //};
                         double logInRisk = evaulateUserLogInString(userLogInPreference , loginTime);
 
                         double userHostRisk = evaulateUserComputerPreference(userComputerPreference, currentHostnameSet);
@@ -327,6 +333,52 @@ namespace NSPJProject
             }
         }
 
+        private string[] getUserHostNameSet(string userID, string connectionString)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            SqlDataReader reader;
+            con = new SqlConnection(connectionString);
+            con.Open();
+            string hostName = null;
+            string[] fullList = null;
+            List<string> fullHostName = new List<string>();
+            try
+            {
+                con = new SqlConnection(connectionString);
+                con.Open();
+                cmd = new SqlCommand("SELECT * FROM [dbo].[LogAnalysis] where UserID = '" + userID + "'", con);
+                reader = cmd.ExecuteReader();
+                List<String[]> myCollection = new List<string[]>();
+
+                while (reader.Read())
+                {
+                    Console.WriteLine(reader.GetString(5));
+                    hostName = reader.GetString(5);
+                    fullHostName.Add(hostName);
+                }
+                int counter = 0;
+                fullList = new string[fullHostName.Count()];
+                foreach(var element in fullHostName)
+                {
+                    fullList[counter] = element;
+                    counter++;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+
+                con.Close();
+            }
+
+            return fullList;
+        }
+
         private double evaulateUserComputerPreference(string userComputerPreference, string[] currentHostnameSet)
         {
             double riskLevel = 0;
@@ -357,7 +409,7 @@ namespace NSPJProject
 
             if(currentHostnameSet.Count() == 0)
             {
-                likelihood = 1- riskLevel;
+                likelihood = 0;
             }
             else
             {
@@ -726,17 +778,19 @@ namespace NSPJProject
             SqlConnection con;
             SqlCommand cmd;
             con = new SqlConnection(connectionString);
+            string currentHostname = System.Environment.MachineName.ToString();
             con.Open();
             try
             {
 
                
-                cmd = new SqlCommand("INSERT INTO [dbo].[LogAnalysis] (UserID, LoginTime, LoginDate, IpAddress , MacAddress) VALUES (@UserID, @LoginTime, @LoginDate , @IPAddress , @MACAddress)", con);
+                cmd = new SqlCommand("INSERT INTO [dbo].[LogAnalysis] (UserID, LoginTime, LoginDate, IpAddress , MacAddress , hostname) VALUES (@UserID, @LoginTime, @LoginDate , @IPAddress , @MACAddress , @HostName)", con);
                 cmd.Parameters.AddWithValue("@UserID", userID);
                 cmd.Parameters.AddWithValue("@LoginTime", loginTime);
                 cmd.Parameters.AddWithValue("@LoginDate", date.ToString());
                 cmd.Parameters.AddWithValue("@IPAddress", publicIP);
                 cmd.Parameters.AddWithValue("@MACAddress", publicMAC);
+                cmd.Parameters.AddWithValue("@HostName", currentHostname);
                 cmd.ExecuteNonQuery();
 
             }
