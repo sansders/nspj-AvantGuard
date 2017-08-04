@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Layout.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,13 @@ namespace Layout.Upload
         public Page2()
         {
             InitializeComponent();
+
+            //Added this
+
+        
+            MessageBox.Show(FileModel.ReturnfileName());
+            MessageBox.Show(FileModel.ReturnUserID());
+
         }
 
         private void ToggleButton_Checked(object sender, RoutedEventArgs e)
