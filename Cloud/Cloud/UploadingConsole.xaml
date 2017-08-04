@@ -10,15 +10,21 @@
 
     <Grid>
         <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top" Width="529"/>
-        <StackPanel HorizontalAlignment="Left" Height="281" Margin="0,42,0,-0.2" VerticalAlignment="Top" Width="131" Background="#747577">
-            <Button Content="SEARCH" HorizontalAlignment="Left" Height="30" Width="131" Margin="0,20,0,0" FontFamily="Arial Black" Foreground="White">
+        <StackPanel HorizontalAlignment="Left" Height="281" Margin="0,42,0,-0.2" VerticalAlignment="Top" Width="50" Background="#747577">
+            <Button x:Name="MyFoldersButton" Background="#23aeff" HorizontalAlignment="Left" Height="40" Width="40" FontFamily="Arial Black" Foreground="White" Margin="5,20,0,0" Click="MyFoldersButton_Click">
+                <StackPanel>
+                    <fa:FontAwesome Icon="Folder"></fa:FontAwesome>
+                    <TextBlock FontSize="6">
+                            My Folders
+                    </TextBlock>
+                </StackPanel>
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="#747577"/>
+                        <Setter Property="Background" Value="#8c9199"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}">
+                                    <Border BorderThickness="0" CornerRadius="4" Background="{TemplateBinding Background}">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
@@ -32,14 +38,20 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Content="MY FOLDERS" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White">
+            <Button x:Name="RecentButton" HorizontalAlignment="Left" Height="40" Width="40" FontFamily="Arial Black" Foreground="White" Click="RecentButton_Click" Margin="5,5,0,0">
+                <StackPanel>
+                    <fa:FontAwesome Icon="ClockOutline"></fa:FontAwesome>
+                    <TextBlock FontSize="6">
+                            Recent
+                    </TextBlock>
+                </StackPanel>
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="#747577"/>
+                        <Setter Property="Background" Value="#8c9199"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}">
+                                    <Border BorderThickness="0" CornerRadius="4" Background="{TemplateBinding Background}">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
@@ -53,14 +65,20 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Content="RECENT" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White">
+            <Button x:Name="SharedButton" HorizontalAlignment="Left" Height="40" Width="40" FontFamily="Arial Black" Foreground="White" Click="SharedButton_Click" Margin="5,5,0,0">
+                <StackPanel>
+                    <fa:FontAwesome Icon="Share"></fa:FontAwesome>
+                    <TextBlock FontSize="6">
+                            Shared
+                    </TextBlock>
+                </StackPanel>
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="#747577"/>
+                        <Setter Property="Background" Value="#8c9199"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}">
+                                    <Border BorderThickness="0" CornerRadius="4" Background="{TemplateBinding Background}">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
@@ -74,14 +92,18 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Content="SHARED" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White">
+            <Button x:Name="FavoritesButton" HorizontalAlignment="Left" Height="40" Width="40" FontFamily="Arial Black" Foreground="White" Click="FavoritesButton_Click" Margin="5,5,0,0">
+                <StackPanel>
+                    <fa:FontAwesome Icon="Star"></fa:FontAwesome>
+                    <TextBlock FontSize="6">Favorites</TextBlock>
+                </StackPanel>
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="#747577"/>
+                        <Setter Property="Background" Value="#8c9199"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}">
+                                    <Border BorderThickness="0" CornerRadius="4" Background="{TemplateBinding Background}">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
@@ -95,35 +117,20 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Content="FAVORITES" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White">
+            <Button x:Name="BinButton" HorizontalAlignment="Left" Height="40" Width="40" FontFamily="Arial Black" Foreground="White" Click="BinButton_Click" Margin="5,5,0,0">
+                <StackPanel>
+                    <fa:FontAwesome Icon="Trash"></fa:FontAwesome>
+                    <TextBlock FontSize="6">
+                            Bin
+                    </TextBlock>
+                </StackPanel>
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="#747577"/>
+                        <Setter Property="Background" Value="#8c9199"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#23aeff"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button Content="BIN" HorizontalAlignment="Left" Height="30" Width="131" FontFamily="Arial Black" Foreground="White">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="#747577"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="{TemplateBinding Background}">
+                                    <Border BorderThickness="0" CornerRadius="4" Background="{TemplateBinding Background}">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
@@ -138,11 +145,36 @@
                 </Button.Style>
             </Button>
         </StackPanel>
-        <Button HorizontalAlignment="Left" Height="28" Margin="5,7,0,0" VerticalAlignment="Top" Width="28"/>
-        <Button HorizontalAlignment="Left" Height="28" Margin="37,7,0,0" VerticalAlignment="Top" Width="28"/>
-        <Button HorizontalAlignment="Left" Height="28" Margin="69,7,0,0" VerticalAlignment="Top" Width="28"/>
-        <Button HorizontalAlignment="Left" Height="28" Margin="101,7,0,0" VerticalAlignment="Top" Width="28"/>
-        <TextBox HorizontalAlignment="Left" Height="21" Margin="449,10,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="70" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
+        <Button fa:Awesome.Content="AngleDoubleLeft" HorizontalAlignment="Left" Height="28" Margin="5,7,0,0" VerticalAlignment="Top" Width="28" Click="Button_Click_6">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="3"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button fa:Awesome.Content="AngleDoubleRight" HorizontalAlignment="Left" Height="28" Margin="37,7,0,0" VerticalAlignment="Top" Width="28" Click="Button_Click_7">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="3"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button fa:Awesome.Content="Gear" HorizontalAlignment="Left" Height="28" Margin="69,7,0,0" VerticalAlignment="Top" Width="28" Click="changeSettings">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="3"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button fa:Awesome.Content="File" HorizontalAlignment="Left" Height="28" Margin="101,7,0,0" VerticalAlignment="Top" Width="28">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="3"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Ellipse Name="ellipse"  Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="35 " Margin="465,3,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
+        <TextBox Name="nameBox" HorizontalAlignment="Left" Height="16" Margin="383,14,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="70" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
         <Label Content="Uploading File" HorizontalAlignment="Left" Margin="271,51,0,0" VerticalAlignment="Top" Width="90"/>
 
         <fa:ImageAwesome Icon="Spinner" Spin="True" SpinDuration="0.5" Margin="359,51,145.2,245.8" />
