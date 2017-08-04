@@ -1,5 +1,7 @@
-﻿using Microsoft.Win32;
+﻿using Layout.Models;
+using Microsoft.Win32;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -8,7 +10,9 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +20,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using UserModel;
+
 namespace Cloud.StartupPage
 {
     /// <summary>
@@ -26,14 +30,17 @@ namespace Cloud.StartupPage
     {
         private List<String> newList = new List<String>();
 
+        static ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
         static ConnectionStringSettings conSettings1 = ConfigurationManager.ConnectionStrings["connString1"];
         static ConnectionStringSettings conSettings2 = ConfigurationManager.ConnectionStrings["connString2"];
         static ConnectionStringSettings conSettings3 = ConfigurationManager.ConnectionStrings["connString3"];
 
+        static string connectionString = conSettings.ConnectionString;
         static string connectionString1 = conSettings1.ConnectionString;
         static string connectionString2 = conSettings2.ConnectionString;
         static string connectionString3 = conSettings3.ConnectionString;
 
+        SqlConnection con = new SqlConnection(connectionString);
         SqlConnection con1 = new SqlConnection(connectionString1);
         SqlConnection con2 = new SqlConnection(connectionString2);
         SqlConnection con3 = new SqlConnection(connectionString3);
@@ -43,12 +50,21 @@ namespace Cloud.StartupPage
         SqlCommand cmd2;
         SqlCommand cmd3;
 
+        String path = "";
+        String fullAdd = "";
+        String updatedAdd = "";
+
+        string parent;
+        string storage;
+        string storage2;
         string dtformat = "yyyy-MM-dd HH:mm:ss";
         DataTable dt = new DataTable();
         String currentPage = "";
 
         static String currentUserName = UserModel.UserModel.currentUserID;
         UserModel.UserModel currentUser = UserModel.UserModel.retrieveUserFromDatabase(currentUserName);
+
+        Layout.Controllers.KeyController kc = new Layout.Controllers.KeyController();
 
         //DEFAULT CONSTRUCTOR
         public StartupPage()
@@ -61,15 +77,17 @@ namespace Cloud.StartupPage
              * imgBrush.ImageSource = image
              * ellipse.Fill = imgBrush;
             */
-            
+
             nameBox.Text = currentUserName;
 
             currentPage = "MyFolders";
             cmbFontFamily.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
             cmbFontSize.ItemsSource = new List<double>() { 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72 };
 
+            inWhere.Text = currentPage;
+
             openAllConnections();
-             
+
             string sqlQuery = "select Name, sharedBy, lastModified, fileSize from [dbo].[UserFiles1] where Username = '" + currentUserName + "'";
             cmd1 = new SqlCommand(sqlQuery, con1);
             cmd1.ExecuteNonQuery();
@@ -77,7 +95,68 @@ namespace Cloud.StartupPage
             da.Fill(dt);
             listView.ItemsSource = dt.DefaultView;
 
-            closeAllConnections();
+            FileModel fm = FileModel.getFileModel();
+            if (fm.getShow() == true)
+            {
+                byte[] file = fm.ReturnFileBytes();
+                File.WriteAllBytes("temp.ppt", file);
+
+                Process process = new Process();
+                process.StartInfo.FileName = "temp.ppt";
+                process.StartInfo.UseShellExecute = true;
+                process.Start();
+                process.EnableRaisingEvents = true;
+
+                process.Exited += (sender2, eventArgs) =>
+                {
+                    using (var stream = new FileStream("temp.ppt", FileMode.Open, FileAccess.Read))
+                    {
+                        using (var reader = new BinaryReader(stream))
+                        {
+                            file = reader.ReadBytes((int)stream.Length);
+                        }
+                    }
+
+                    //Sean's Decryption Codes
+
+                    sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                    SqlDataReader DataRead1 = cmd.ExecuteReader();
+                    String bigPath = DataRead1.GetString(0);
+
+                    //Gets IV & Encrypted Symmetric Key
+                    byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
+                    byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                    byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    byte[] plainText = kc.symmetricDecryption(file, decryptedSymmetricKey, IV);
+
+                    int len = file.Length / 3;
+                    byte[] toSend1 = file.Take(len).ToArray();
+                    byte[] toSend2 = file.Skip(len).Take(len).ToArray();
+                    int len2 = len + len;
+                    byte[] toSend3 = file.Skip(len2).Take(len).ToArray();
+
+                    String sqlQuery1 = ("update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'");
+                    cmd1 = new SqlCommand(sqlQuery1, con1);
+                    SqlParameter para1 = new SqlParameter("@toSend1", toSend1);
+                    cmd1.Parameters.Add(para1);
+                    String sqlQuery2 = ("update [dbo].[UserFiles2] set [File] = @toSend2, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'");
+                    cmd2 = new SqlCommand(sqlQuery2, con2);
+                    SqlParameter para2 = new SqlParameter("@toSend2", toSend2);
+                    cmd2.Parameters.Add(para2);
+                    String sqlQuery3 = ("update [dbo].[UserFiles3] set [File] = @toSend3, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'");
+                    cmd3 = new SqlCommand(sqlQuery3, con3);
+                    SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
+                    cmd3.Parameters.Add(para3);
+
+                    cmd1.ExecuteNonQuery();
+                    cmd2.ExecuteNonQuery();
+                    cmd3.ExecuteNonQuery();
+
+                    File.Delete("temp.ppt");
+                };
+                closeAllConnections();
+            }
         }
 
         private void openAllConnections()
@@ -131,17 +210,47 @@ namespace Cloud.StartupPage
             sortNormally();
         }
 
+
+        //RIGHTCLICK -> SHARE
+        private void shareClick(object sender, RoutedEventArgs e)
+        {
+            String selectedText = ((DataRowView)listView.SelectedItem)["Name"].ToString();
+
+            con1.Open();
+            
+            string sqlQuery1 = "select fileType from [dbo].[UserFiles1] where where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
+            cmd1 = new SqlCommand(sqlQuery1, con1);
+
+            SqlDataReader reader1 = cmd1.ExecuteReader();
+            reader1.Read();
+            string ext = (reader1[0].ToString());
+
+            con1.Close();
+
+            if (ext == ".fol")
+            {
+                MessageBox.Show("You cannot share a folder.");
+            }
+
+            userField.Visibility = System.Windows.Visibility.Visible;
+            shareWith.Text = "Share " + selectedText + ext + " with:";
+            storage = selectedText;
+            storage2 = ext;
+        }
+
+
+        //RIGHTCLICK -> UNFAVORITE
         private void unfavoriteClick(object sender, RoutedEventArgs e)
         {
-            String selectedText = ((DataRowView)listView.SelectedItem)["docName"].ToString();
+            String selectedText = ((DataRowView)listView.SelectedItem)["Name"].ToString();
 
             openAllConnections();
 
-            string sqlQuery1 = "update [dbo].[UserFiles1] set isFavorite = 'no' where Name = '" + selectedText + "'";
+            string sqlQuery1 = "update [dbo].[UserFiles1] set isFavorite = 'no' where Username = '" + currentUserName +"' and Name = '" + selectedText + "'";
             SqlCommand cmd1 = new SqlCommand(sqlQuery1, con1);
-            string sqlQuery2 = "update [dbo].[UserFiles3] set isFavorite = 'no' where Name = '" + selectedText + "'";
+            string sqlQuery2 = "update [dbo].[UserFiles3] set isFavorite = 'no' where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
             SqlCommand cmd2 = new SqlCommand(sqlQuery2, con2);
-            string sqlQuery3 = "update [dbo].[UserFiles2] set isFavorite = 'no' where Name = '" + selectedText + "'";
+            string sqlQuery3 = "update [dbo].[UserFiles2] set isFavorite = 'no' where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
             SqlCommand cmd3 = new SqlCommand(sqlQuery3, con3);
 
             cmd1.ExecuteNonQuery();
@@ -153,10 +262,11 @@ namespace Cloud.StartupPage
             sortFavorites();
         }
 
+
         //RIGHTCLICK -> DELETE
         private void deleteClick(object sender, RoutedEventArgs e)
         {
-            String selectedText = ((DataRowView)listView.SelectedItem)["docName"].ToString();
+            String selectedText = ((DataRowView)listView.SelectedItem)["Name"].ToString();
 
             openAllConnections();
 
@@ -174,6 +284,11 @@ namespace Cloud.StartupPage
                 cmd3.ExecuteNonQuery();
 
                 sortBin();
+
+                sqlQuery1 = "delete from [dbo].[AccessControl] where FileName = '" + selectedText + "'";
+                cmd1 = new SqlCommand(sqlQuery1, con1);
+
+                cmd1.ExecuteNonQuery();
             }
 
             else {
@@ -202,6 +317,8 @@ namespace Cloud.StartupPage
             closeAllConnections();
         }
 
+
+        //RIGHTCLICK -> RECOVER
         private void recoverClick(object sender, RoutedEventArgs e)
         {
             String selectedText = ((DataRowView)listView.SelectedItem)["Name"].ToString();
@@ -220,6 +337,7 @@ namespace Cloud.StartupPage
             sortBin();
         }
 
+
         private void openFile(String selectedText)
         {
             bool doThis = false;
@@ -228,7 +346,7 @@ namespace Cloud.StartupPage
 
             openAllConnections();
 
-            String sqlQuery = "select fileType from [dbo].[UserFiles1] where Name = '" + selectedText + "'";
+            String sqlQuery = "select fileType from [dbo].[UserFiles1] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
             SqlCommand cmd = new SqlCommand(sqlQuery, con1);
 
             reader = cmd.ExecuteReader();
@@ -236,17 +354,48 @@ namespace Cloud.StartupPage
 
             ext = (reader[0].ToString());
 
+            if (ext == ".fol")
+            { 
+                ArrayList list = new ArrayList();
+                string sqlQuery1 = "select FileName from [dbo].[AccessControl] where Parent = '" + selectedText + "'";
+                cmd1 = new SqlCommand(sqlQuery1, con1);
+                reader = cmd1.ExecuteReader();
+
+                if (reader.Read() == true)
+                {
+                    while (reader.Read())
+                    {
+                        string currentFile = reader.GetString(0);
+                        list.Add(currentFile);
+                    }
+                }
+
+                dt.Clear();
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    sqlQuery = "select Name, sharedBy, lastModified, fileSize from [dbo].[UserFiles1] where Username = '" + currentUserName + "' and Name = '" + list[i] +"'";
+                    cmd1 = new SqlCommand(sqlQuery, con1);
+                    cmd1.ExecuteNonQuery();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd1);
+                    da.Fill(dt);
+                }
+
+                listView.ItemsSource = dt.DefaultView;
+
+                inWhere.Text = selectedText;
+            }
 
             if (ext == ".doc" || ext == ".docx")
             {
                 fileName.Content = selectedText;
 
-                string sqlQuery1 = "select [File] from [dbo].[UserFiles1] where Name = '" + selectedText + "'";
-                SqlCommand cmd1 = new SqlCommand(sqlQuery1, con1);
-                string sqlQuery2 = "select [File] from [dbo].[UserFiles3] where Name = '" + selectedText + "'";
-                SqlCommand cmd2 = new SqlCommand(sqlQuery2, con2);
-                string sqlQuery3 = "select [File] from [dbo].[UserFiles2] where Name = '" + selectedText + "'";
-                SqlCommand cmd3 = new SqlCommand(sqlQuery3, con3);
+                string sqlQuery1 = "select [File] from [dbo].[UserFiles1] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
+                cmd1 = new SqlCommand(sqlQuery1, con1);
+                string sqlQuery2 = "select [File] from [dbo].[UserFiles3] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
+                cmd2 = new SqlCommand(sqlQuery2, con2);
+                string sqlQuery3 = "select [File] from [dbo].[UserFiles2] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
+                cmd3 = new SqlCommand(sqlQuery3, con3);
 
                 SqlDataReader Reader1 = cmd1.ExecuteReader();
                 SqlDataReader Reader2 = cmd2.ExecuteReader();
@@ -260,7 +409,21 @@ namespace Cloud.StartupPage
 
                     byte[] retrieve = retrieve1.Concat(retrieve3).Concat(retrieve2).ToArray();
 
-                    theText = System.Text.Encoding.ASCII.GetString(retrieve);
+                    //Sean's Decryption Codes
+                   
+                    sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                    cmd = new SqlCommand(sqlQuery, con);
+                    SqlDataReader DataRead1 = cmd.ExecuteReader();
+                    string bigPath = DataRead1.GetString(0);
+
+                    //Gets IV & Encrypted Symmetric Key
+                    byte[] IV = System.IO.File.ReadAllBytes(@bigPath+"\\IV.txt");
+                    byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath+"\\encryptedSymmetricKey.txt");
+                    byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    byte[] plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
+
+
+                    theText = System.Text.Encoding.ASCII.GetString(plainText);
                     doThis = true;
                 }
 
@@ -293,11 +456,11 @@ namespace Cloud.StartupPage
 
             else if (ext == ".ppt" || ext == ".pptx")
             {
-                string sqlQuery1 = "select [File] from [dbo].[UserFiles1] where Name = '" + selectedText + "'";
+                string sqlQuery1 = "select [File] from [dbo].[UserFiles1] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
                 SqlCommand cmd1 = new SqlCommand(sqlQuery1, con1);
-                string sqlQuery2 = "select [File] from [dbo].[UserFiles3] where Name = '" + selectedText + "'";
+                string sqlQuery2 = "select [File] from [dbo].[UserFiles3] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
                 SqlCommand cmd2 = new SqlCommand(sqlQuery2, con2);
-                string sqlQuery3 = "select [File] from [dbo].[UserFiles2] where Name = '" + selectedText + "'";
+                string sqlQuery3 = "select [File] from [dbo].[UserFiles2] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
                 SqlCommand cmd3 = new SqlCommand(sqlQuery3, con3);
 
                 SqlDataReader Reader1 = cmd1.ExecuteReader();
@@ -310,7 +473,20 @@ namespace Cloud.StartupPage
 
                 byte[] retrieve = retrieve1.Concat(retrieve3).Concat(retrieve2).ToArray();
 
-                File.WriteAllBytes("temp.ppt", retrieve);
+                //Sean's Decryption Codes
+
+                sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                cmd = new SqlCommand(sqlQuery, con);
+                SqlDataReader DataRead1 = cmd.ExecuteReader();
+                string bigPath = DataRead1.GetString(0);
+
+                //Gets IV & Encrypted Symmetric Key
+                byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
+                byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                byte[] plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
+
+                File.WriteAllBytes("temp.ppt", plainText);
                 Process process = new Process();
                 process.StartInfo.FileName = "temp.ppt";
                 process.StartInfo.UseShellExecute = true;
@@ -327,21 +503,36 @@ namespace Cloud.StartupPage
                         }
                     }
 
+                    //Sean's encryption codes
+                    sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                    cmd = new SqlCommand(sqlQuery, con);
+                    DataRead1 = cmd.ExecuteReader();
+                    bigPath = DataRead1.GetString(0);
+
+                    IV = System.IO.File.ReadAllBytes(@bigPath + "+\\IV.txt");
+                    Console.WriteLine("Gets bytes of IV");
+                    encryptedSymmetricKey = System.IO.File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+
+                    //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
+                    decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    //Encrypts plaintext with symmetric key
+                    byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
+
                     int len = file.Length / 3;
                     byte[] toSend1 = file.Take(len).ToArray();
                     byte[] toSend2 = file.Skip(len).Take(len).ToArray();
                     int len2 = len + len;
                     byte[] toSend3 = file.Skip(len2).Take(len).ToArray();
 
-                    sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "'";
+                    sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
                     cmd1 = new SqlCommand(sqlQuery1, con1);
                     SqlParameter para1 = new SqlParameter("@toSend1", toSend1);
                     cmd1.Parameters.Add(para1);
-                    sqlQuery2 = "update [dbo].[UserFiles2] set [File] = @toSend2, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "'";
+                    sqlQuery2 = "update [dbo].[UserFiles2] set [File] = @toSend2, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
                     cmd2 = new SqlCommand(sqlQuery2, con2);
                     SqlParameter para2 = new SqlParameter("@toSend1", toSend1);
                     cmd2.Parameters.Add(para2);
-                    sqlQuery3 = "update [dbo].[UserFiles3] set [File] = @toSend3, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "'";
+                    sqlQuery3 = "update [dbo].[UserFiles3] set [File] = @toSend3, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
                     cmd3 = new SqlCommand(sqlQuery3, con3);
                     SqlParameter para3 = new SqlParameter("@toSend1", toSend1);
                     cmd3.Parameters.Add(para3);
@@ -356,11 +547,11 @@ namespace Cloud.StartupPage
 
             else if (ext == ".xlsx")
             {
-                string sqlQuery1 = "select [File] from [dbo].[UserFiles1] where Name = '" + selectedText + "'";
+                string sqlQuery1 = "select [File] from [dbo].[UserFiles1] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
                 SqlCommand cmd1 = new SqlCommand(sqlQuery1, con1);
-                string sqlQuery2 = "select [File] from [dbo].[UserFiles3] where Name = '" + selectedText + "'";
+                string sqlQuery2 = "select [File] from [dbo].[UserFiles3] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
                 SqlCommand cmd2 = new SqlCommand(sqlQuery2, con2);
-                string sqlQuery3 = "select [File] from [dbo].[UserFiles2] where Name = '" + selectedText + "'";
+                string sqlQuery3 = "select [File] from [dbo].[UserFiles2] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
                 SqlCommand cmd3 = new SqlCommand(sqlQuery3, con3);
 
                 SqlDataReader Reader1 = cmd1.ExecuteReader();
@@ -373,7 +564,20 @@ namespace Cloud.StartupPage
 
                 byte[] retrieve = retrieve1.Concat(retrieve3).Concat(retrieve2).ToArray();
 
-                File.WriteAllBytes("temp.ppt", retrieve);
+                //Sean's Decryption Codes
+
+                sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                cmd = new SqlCommand(sqlQuery, con);
+                SqlDataReader DataRead1 = cmd.ExecuteReader();
+                string bigPath = DataRead1.GetString(0);
+
+                //Gets IV & Encrypted Symmetric Key
+                byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
+                byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                byte[] plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
+
+                File.WriteAllBytes("temp.ppt", plainText);
                 Process process = new Process();
                 process.StartInfo.FileName = "temp.ppt";
                 process.StartInfo.UseShellExecute = true;
@@ -390,21 +594,36 @@ namespace Cloud.StartupPage
                         }
                     }
 
+                    //Sean's encryption codes
+                    sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                    cmd = new SqlCommand(sqlQuery, con);
+                    DataRead1 = cmd.ExecuteReader();
+                    bigPath = DataRead1.GetString(0);
+
+                    IV = System.IO.File.ReadAllBytes(@bigPath + "+\\IV.txt");
+                    Console.WriteLine("Gets bytes of IV");
+                    encryptedSymmetricKey = System.IO.File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+
+                    //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
+                    decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    //Encrypts plaintext with symmetric key
+                    byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
+
                     int len = file.Length / 3;
                     byte[] toSend1 = file.Take(len).ToArray();
                     byte[] toSend2 = file.Skip(len).Take(len).ToArray();
                     int len2 = len + len;
                     byte[] toSend3 = file.Skip(len2).Take(len).ToArray();
 
-                    sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "'";
+                    sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
                     cmd1 = new SqlCommand(sqlQuery1, con1);
                     SqlParameter para1 = new SqlParameter("@toSend1", toSend1);
                     cmd1.Parameters.Add(para1);
-                    sqlQuery2 = "update [dbo].[UserFiles2] set [File] = @toSend2, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "'";
+                    sqlQuery2 = "update [dbo].[UserFiles2] set [File] = @toSend2, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
                     cmd2 = new SqlCommand(sqlQuery2, con2);
                     SqlParameter para2 = new SqlParameter("@toSend2", toSend2);
                     cmd2.Parameters.Add(para2);
-                    sqlQuery3 = "update [dbo].[UserFiles3] set [File] = @toSend3, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "'";
+                    sqlQuery3 = "update [dbo].[UserFiles3] set [File] = @toSend3, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
                     cmd3 = new SqlCommand(sqlQuery3, con3);
                     SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
                     cmd3.Parameters.Add(para3);
@@ -418,11 +637,73 @@ namespace Cloud.StartupPage
             }
             closeAllConnections();
         }
+
         
         //CLICK ON LIST VIEW ITEM TO OPEN
         private void listView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             openFile(((DataRowView)((ListView)sender).SelectedItem)["Name"].ToString());
+        }
+
+
+        private void OkButton2_Click(object sender, RoutedEventArgs e)
+        {
+            string toShare = textbox2.Text;
+
+            openAllConnections();
+
+            string sqlQuery = "select count(*) from [dbo].[test] where UserID = '" + toShare + "'";
+            SqlCommand cmd = new SqlCommand(sqlQuery, con);
+            int count = (int)cmd.ExecuteScalar();
+
+            if (count == 0)
+            {
+                MessageBox.Show("User doesn't exist!");
+            }
+
+            else if (count > 0)
+            {
+                string sqlQuery1 = "select [File] from [dbo].[UserFiles1] where Name = '" + storage + "' and Username = '" + currentUserName + "'";
+                SqlCommand cmd1 = new SqlCommand(sqlQuery1, con1);
+                string sqlQuery2 = "select [File] from [dbo].[UserFiles3] where Name = '" + storage + "' and Username = '" + currentUserName + "'";
+                SqlCommand cmd2 = new SqlCommand(sqlQuery2, con2);
+                string sqlQuery3 = "select [File] from [dbo].[UserFiles2] where Name = '" + storage + "' and Username = '" + currentUserName + "'";
+                SqlCommand cmd3 = new SqlCommand(sqlQuery3, con3);
+
+                SqlDataReader Reader1 = cmd1.ExecuteReader();
+                SqlDataReader Reader2 = cmd2.ExecuteReader();
+                SqlDataReader Reader3 = cmd3.ExecuteReader();
+
+                byte[] retrieve1 = ((byte[])Reader1[0]);
+                byte[] retrieve2 = ((byte[])Reader2[0]);
+                byte[] retrieve3 = ((byte[])Reader3[0]);
+
+                byte[] retrieve = retrieve1.Concat(retrieve3).Concat(retrieve2).ToArray();
+
+
+                sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + toShare + "'. '" + storage + "', @toSend1, '" + getFileSize(retrieve.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + storage2 + "', '" + currentUserName + "')");
+                cmd1 = new SqlCommand(sqlQuery1, con1);
+                SqlParameter para1 = new SqlParameter("@toSend1", retrieve1);
+                cmd1.Parameters.Add(para1);
+                sqlQuery2 = ("insert into [dbo].[UserFiles2] values('" + toShare + "', '" + storage + "', @toSend2, '" + getFileSize(retrieve.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + storage2 + "', '" + currentUserName + "')");
+                cmd2 = new SqlCommand(sqlQuery2, con2);
+                SqlParameter para2 = new SqlParameter("@toSend2", retrieve3);
+                cmd2.Parameters.Add(para2);
+                sqlQuery3 = ("insert into [dbo].[UserFiles3] values('" + toShare + "', '" + storage + "', @toSend3, '" + getFileSize(retrieve.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + storage2 + "', '" + currentUserName + "')");
+                cmd3 = new SqlCommand(sqlQuery3, con3);
+                SqlParameter para3 = new SqlParameter("@toSend3", retrieve2);
+                cmd3.Parameters.Add(para3);
+
+                cmd1.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
+                cmd3.ExecuteNonQuery();
+
+                sqlQuery1 = "insert into [dbo].[AccessControl] values('" + storage + "', '', '" + toShare + "'";
+                cmd1 = new SqlCommand(sqlQuery1, con1);
+                cmd1.ExecuteNonQuery();
+
+                userField.Visibility = Visibility.Collapsed;
+            }
         }
 
 
@@ -432,23 +713,25 @@ namespace Cloud.StartupPage
             NewFile.Visibility = System.Windows.Visibility.Visible;
         }
 
+
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             NewFile.Visibility = System.Windows.Visibility.Collapsed;
 
             String input = textbox1.Text;
             fileName.Content = input;
+
             openAllConnections();
 
-            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.doc')");
+            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.doc',  '')");
             cmd1 = new SqlCommand(sqlQuery1, con1);
             cmd1.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
             cmd1.Parameters["@Null"].Value = DBNull.Value;
-            string sqlQuery2 = ("insert into [dbo].[UserFiles2] values('" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.doc')");
+            string sqlQuery2 = ("insert into [dbo].[UserFiles2] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.doc',  '')");
             cmd2 = new SqlCommand(sqlQuery2, con2);
             cmd2.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
             cmd2.Parameters["@Null"].Value = DBNull.Value;
-            string sqlQuery3 = ("insert into [dbo].[UserFiles3] values('" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.doc')");
+            string sqlQuery3 = ("insert into [dbo].[UserFiles3] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.doc',  '')");
             cmd3 = new SqlCommand(sqlQuery3, con3);
             cmd3.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
             cmd3.Parameters["@Null"].Value = DBNull.Value;
@@ -456,6 +739,23 @@ namespace Cloud.StartupPage
             cmd1.ExecuteNonQuery();
             cmd2.ExecuteNonQuery();
             cmd3.ExecuteNonQuery();
+
+            if (inWhere.Equals("My Folders") || inWhere.Equals("Recent") || inWhere.Equals("Shared") || inWhere.Equals("Favorites") || inWhere.Equals("Bin"))
+            {
+                sqlQuery1 = "insert into [dbo].[AccessControl] values('" + textbox1.Text + "', '', '" + currentUserName + "')";
+                cmd1 = new SqlCommand(sqlQuery1, con1);
+
+                cmd1.ExecuteNonQuery();
+            }
+
+            else if (!inWhere.Equals("My Folders") || !inWhere.Equals("Recent") || !inWhere.Equals("Shared") || !inWhere.Equals("Favorites") || !inWhere.Equals("Bin"))
+            {
+                sqlQuery1 = "insert into [dbo].[AccessControl] values('" + textbox1.Text + "', '" + inWhere.Text + "', '" + currentUserName + "')";
+                cmd1 = new SqlCommand(sqlQuery1, con1);
+
+                cmd1.ExecuteNonQuery();
+            }
+            
 
             textbox1.Text = String.Empty;
 
@@ -468,13 +768,53 @@ namespace Cloud.StartupPage
         }
 
 
+        private void OkButton3_Click(object sender, RoutedEventArgs e)
+        {
+            string toCreate = textbox3.Text;
+
+            openAllConnections();
+
+            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.fol',  '')");
+            cmd1 = new SqlCommand(sqlQuery1, con1);
+            cmd1.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
+            cmd1.Parameters["@Null"].Value = DBNull.Value;
+            string sqlQuery2 = ("insert into [dbo].[UserFiles2] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.fol',  '')");
+            cmd2 = new SqlCommand(sqlQuery2, con2);
+            cmd2.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
+            cmd2.Parameters["@Null"].Value = DBNull.Value;
+            string sqlQuery3 = ("insert into [dbo].[UserFiles3] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.fol',  '')");
+            cmd3 = new SqlCommand(sqlQuery3, con3);
+            cmd3.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
+            cmd3.Parameters["@Null"].Value = DBNull.Value;
+
+            cmd1.ExecuteNonQuery();
+            cmd2.ExecuteNonQuery();
+            cmd3.ExecuteNonQuery();
+
+            closeAllConnections();
+        }
+
+
         //CANCEL 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            NewFile.Visibility = System.Windows.Visibility.Collapsed;
+            NewFile.Visibility = Visibility.Collapsed;
             textbox1.Text = String.Empty;
         }
-        
+
+
+        private void CancelButton2_Click(object sender, RoutedEventArgs e)
+        {
+            userField.Visibility = Visibility.Collapsed;
+            textbox2.Text = String.Empty;
+        }
+
+
+        private void CancelButton3_Click(object sender, RoutedEventArgs e)
+        {
+            NewFolder.Visibility = Visibility.Collapsed;
+            textbox3.Text = String.Empty;
+        }
 
         //SET FONT FAMILY THINGS
         private void cmbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -606,6 +946,12 @@ namespace Cloud.StartupPage
         }
 
 
+        public void createFolder(object sender, RoutedEventArgs e)
+        {
+            NewFolder.Visibility = Visibility.Visible;
+        }
+
+
         //UPLOAD AND OPEN PPT FROM FILE EXPLORER
         public void openPPTBtn_Click(Object sender, RoutedEventArgs e)
         {
@@ -629,55 +975,109 @@ namespace Cloud.StartupPage
                     String fullfilename = System.IO.Path.GetFullPath(openFileDialog.FileName);
                     String extension = System.IO.Path.GetExtension(openFileDialog.FileName);
 
-                    byte[] file;
-                    using (var stream = new FileStream(fullfilename, FileMode.Open, FileAccess.Read))
-                    {
-                        using (var reader = new BinaryReader(stream))
+                    ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+                    string connectionString = conSettings.ConnectionString;
+
+                    string VirusName;
+                    string type;
+                    SqlCommand cmd5;
+
+                    String imgLocation = "";
+                   
+
+
+                    int virus = 0;
+
+                    byte[] checkMD5;
+
+                  
+                      
+
+                        Console.Write(fullfilename);
+
+                        byte[] md5HashBytes = ComputeMd5Hash(fullfilename);
+
+                        String strMd5 = ToHexadecimal(md5HashBytes);
+
+                        Console.Write(strMd5);
+
+
+                        con = new SqlConnection(connectionString);
+                        con.Open();
+                        // cmd5 = new SqlCommand("SELECT vxVirusName, vxType FROM [User].[dbo].[vx] WHERE vxMD5 = " + checkMD5 + " ; ", con);
+                        cmd5 = new SqlCommand("SELECT vxVirusName, vxType,vxMD5,BYTE FROM [User].[dbo].[vx] WHERE vxMD5 =  @checkMD5 ", con);
+
+                        cmd5.Parameters.Add(new SqlParameter("@checkMD5", strMd5));
+
+
+
+                        Console.Write(strMd5);
+
+                        SqlDataReader reader1 = cmd5.ExecuteReader();
+                        if (reader1.Read() == true)
                         {
-                            file = reader.ReadBytes((int)stream.Length);
+
+                            VirusName = reader1.GetString(0);
+                            type = reader1.GetString(1);
+                            Console.WriteLine(" \n Virus Dected : " + VirusName + " | Type Of Virus : " + type);
+                            con.Close();
+                            virus = virus + 1;
+
+
                         }
-                    }
+                        else
+                        {
+                            con.Close();
 
-                    //encrypt file with seans method
-                    //send encrypted file to model
-                    //do navigation here
-                    
-                    File.WriteAllBytes("temp.ppt", file);
+                            con.Open();
 
-                    Process process = new Process();
-                    process.StartInfo.FileName = "temp.ppt";
-                    process.StartInfo.UseShellExecute = true;
-                    process.Start();
-                    process.EnableRaisingEvents = true;
+                            string finalPath = fullPath();
 
-                    int len = file.Length / 3;
-                    byte[] toSend1 = file.Take(len).ToArray();
-                    byte[] toSend2 = file.Skip(len).Take(len).ToArray();
-                    int len2 = len + len;
-                    byte[] toSend3 = file.Skip(len2).Take(len).ToArray();
+                            FileStream Stream = new FileStream(finalPath, FileMode.Open, FileAccess.Read);
+                            BinaryReader brs = new BinaryReader(Stream);
+                            byte[] images = brs.ReadBytes((int)Stream.Length);
 
-                    openAllConnections();
+                            String strImage = System.Text.Encoding.UTF8.GetString(images);
 
-                    string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + filename + "', @toSend1, '" + getFileSize(file.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "')");
-                    cmd1 = new SqlCommand(sqlQuery1, con1);
-                    SqlParameter para1 = new SqlParameter("@toSend1", toSend1);
-                    cmd1.Parameters.Add(para1);
-                    string sqlQuery2 = ("insert into [dbo].[UserFiles2] values('" + filename + "', @toSend2, '" + getFileSize(file.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "')");
-                    cmd2 = new SqlCommand(sqlQuery2, con2);
-                    SqlParameter para2 = new SqlParameter("@toSend2", toSend2);
-                    cmd2.Parameters.Add(para2);
-                    string sqlQuery3 = ("insert into [dbo].[UserFiles3] values('" + filename + "', @toSend3, '" + getFileSize(file.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "')");
-                    cmd3 = new SqlCommand(sqlQuery3, con3);
-                    SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
-                    cmd3.Parameters.Add(para3);
 
-                    cmd1.ExecuteNonQuery();
-                    cmd2.ExecuteNonQuery();
-                    cmd3.ExecuteNonQuery();
+                            cmd2 = new SqlCommand("SELECT vxVirusName, vxType,vxMD5,BYTE FROM [User].[dbo].[vx] WHERE tID = 5002 ", con);
 
-                    process.Exited += (sender2, eventArgs) =>
+                            //  cmd2.Parameters.Add(new SqlParameter("@BYTE", strImage));
+
+                            SqlDataReader reader2 = cmd2.ExecuteReader();
+
+                            if (reader2.Read() == true)
+                            {
+                                if (strImage.Contains(reader2.GetString(3)))
+                                {
+                                    virus = virus + 1;
+                                    VirusName = reader2.GetString(0);
+                                    type = reader2.GetString(1);
+
+                                    MessageBox.Show(" \n VIRUS DECTED! Your File is not being Uploaded");
+                                MessageBox.Show(" \n Virus Dected : " + VirusName + " | Type Of Virus : " + type);
+                                }
+                                else
+                                {
+                                MessageBox.Show("\n There is no virus! Very Good!! ");
+                                MessageBox.Show("\n File is now being uploaded......");
+                                }
+
+                            }
+                            else
+                            {
+                            MessageBox.Show("\n There is no virus! Very Good!! ");
+                            MessageBox.Show("\n File is now being uploaded......");
+                            }
+                            con.Close();
+                        }
+
+
+
+                    if (virus == 0)
                     {
-                        using (var stream = new FileStream("temp.ppt", FileMode.Open, FileAccess.Read))
+                        byte[] file;
+                        using (var stream = new FileStream(fullfilename, FileMode.Open, FileAccess.Read))
                         {
                             using (var reader = new BinaryReader(stream))
                             {
@@ -685,36 +1085,59 @@ namespace Cloud.StartupPage
                             }
                         }
 
-                        len = file.Length / 3;
-                        toSend1 = file.Take(len).ToArray();
-                        toSend2 = file.Skip(len).Take(len).ToArray();
-                        len2 = len + len;
-                        toSend3 = file.Skip(len2).Take(len).ToArray();
+                        //Sean's Encryption Codes
 
-                        sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "'";
-                        cmd1 = new SqlCommand(sqlQuery1, con1);
-                        para1 = new SqlParameter("@toSend1", toSend1);
-                        cmd1.Parameters.Add(para1);
-                        sqlQuery2 = "update [dbo].[UserFiles2] set [File] = @toSend2, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "'";
-                        cmd2 = new SqlCommand(sqlQuery2, con2);
-                        para2 = new SqlParameter("@toSend2", toSend2);
-                        cmd2.Parameters.Add(para2);
-                        sqlQuery3 = "update [dbo].[UserFiles3] set [File] = @toSend3, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "'";
-                        cmd3 = new SqlCommand(sqlQuery3, con3);
-                        para3 = new SqlParameter("@toSend3", toSend3);
-                        cmd3.Parameters.Add(para3);
+                        SqlCommand cmd;
+                        string sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                        cmd = new SqlCommand(sqlQuery, con);
+                        SqlDataReader DataRead1 = cmd.ExecuteReader();
+                        string bigPath = DataRead1.GetString(0);
 
-                        cmd1.ExecuteNonQuery();
-                        cmd2.ExecuteNonQuery();
-                        cmd3.ExecuteNonQuery();
+                        byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "+\\IV.txt");
+                        Console.WriteLine("Gets bytes of IV");
+                        byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
 
-                        File.Delete("temp.ppt");
-                    };
+                        //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
+                        byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                        //Encrypts plaintext with symmetric key
+                        byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
+
+                        FileModel fm = new FileModel(currentUserName, filename, cipherText, getFileSize(cipherText.Length), getCurrent(), "no", "no", extension, "");
+                        fm.setShow(true);
+                        FileModel.setFileModel(fm);
+
+                        if (inWhere.Equals("My Folders") || inWhere.Equals("Recent") || inWhere.Equals("Shared") || inWhere.Equals("Favorites") || inWhere.Equals("Bin"))
+                        {
+                            String sqlQuery1 = "insert into [dbo].[AccessControl] values('" + filename + "', '', '" + currentUserName + "')";
+                            cmd1 = new SqlCommand(sqlQuery1, con1);
+
+                            cmd1.ExecuteNonQuery();
+                        }
+
+                        else if (!inWhere.Equals("My Folders") || !inWhere.Equals("Recent") || !inWhere.Equals("Shared") || !inWhere.Equals("Favorites") || !inWhere.Equals("Bin"))
+                        {
+                            String sqlQuery1 = "insert into [dbo].[AccessControl] values('" + filename + "', '" + inWhere.Text + "', '" + currentUserName + "')";
+                            cmd1 = new SqlCommand(sqlQuery1, con1);
+
+                            cmd1.ExecuteNonQuery();
+                        }
+
+                        //FileModel fm = FileModel.getFileModel();
+                        NavigationService.Navigate(new Uri("UploadingConsole.xaml"), UriKind.RelativeOrAbsolute);
+                    }
+
+                    /*int len = file.Length / 3;
+                    byte[] toSend1 = file.Take(len).ToArray();
+                    byte[] toSend2 = file.Skip(len).Take(len).ToArray();
+                    int len2 = len + len;
+                    byte[] toSend3 = file.Skip(len2).Take(len).ToArray();*/
+                    
+                    
                     closeAllConnections();
-                }
+                
             }
         }
-
+    }
 
         //UPLOAD AND OPEN MS WORD DOC FROM FILE EXPLORER
         public void openMSBtn_Click(object sender, RoutedEventArgs e)
@@ -728,9 +1151,9 @@ namespace Cloud.StartupPage
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
 
-            openFileDialog.RestoreDirectory = true;
-            openFileDialog.DefaultExt = ".doc";
-            openFileDialog.Filter = "Word Documents(*.doc;*.docx)|*.doc;*.docx";
+                openFileDialog.RestoreDirectory = true;
+                openFileDialog.DefaultExt = ".doc";
+                openFileDialog.Filter = "Word Documents(*.doc;*.docx)|*.doc;*.docx";
 
             Nullable<bool> result = openFileDialog.ShowDialog();
 
@@ -765,12 +1188,28 @@ namespace Cloud.StartupPage
                         rtfText = Encoding.ASCII.GetString(ms.ToArray());
                     }
 
-                    //encrypt file with seans method
-                    //send encrypted file to model
-                    //do navigation here
-
                     byte[] byteArray = Encoding.ASCII.GetBytes(rtfText);
                     double fileSize = byteArray.Length;
+
+
+                    //Sean's encryption codes
+                    SqlCommand cmd;
+                    string sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                    cmd = new SqlCommand(sqlQuery, con);
+                    SqlDataReader DataRead1 = cmd.ExecuteReader();
+                    string bigPath = DataRead1.GetString(0);
+
+                    byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "+\\IV.txt");
+                    Console.WriteLine("Gets bytes of IV");
+                    byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+
+                    //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
+                    byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    //Encrypts plaintext with symmetric key
+                    byte[] cipherText = kc.symmetricEncryption(byteArray, decryptedSymmetricKey, IV);
+
+                    //send encrypted file to model
+                    //do navigation here
 
                     int len = byteArray.Length / 3;
                     byte[] toSend1 = byteArray.Take(len).ToArray();
@@ -780,15 +1219,15 @@ namespace Cloud.StartupPage
 
                     openAllConnections();
 
-                    string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + filename + "', @toSend1, '" + getFileSize(byteArray.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "')");
+                    string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + currentUserName + "', '" + filename + "', @toSend1, '" + getFileSize(byteArray.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "', '')");
                     cmd1 = new SqlCommand(sqlQuery1, con1);
                     SqlParameter para1 = new SqlParameter("@toSend1", toSend1);
                     cmd1.Parameters.Add(para1);
-                    string sqlQuery2 = ("insert into [dbo].[UserFiles2] values('" + filename + "', @toSend2, '" + getFileSize(byteArray.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "')");
+                    string sqlQuery2 = ("insert into [dbo].[UserFiles2] values('" + currentUserName + "', '" + filename + "', @toSend2, '" + getFileSize(byteArray.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "', '')");
                     cmd2 = new SqlCommand(sqlQuery2, con2);
                     SqlParameter para2 = new SqlParameter("@toSend2", toSend2);
                     cmd2.Parameters.Add(para2);
-                    string sqlQuery3 = ("insert into [dbo].[UserFiles3] values('" + filename + "', @toSend3, '" + getFileSize(byteArray.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "')");
+                    string sqlQuery3 = ("insert into [dbo].[UserFiles3] values('" + currentUserName + "', '" + filename + "', @toSend3, '" + getFileSize(byteArray.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "', '')");
                     cmd3 = new SqlCommand(sqlQuery3, con3);
                     SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
                     cmd3.Parameters.Add(para3);
@@ -796,6 +1235,22 @@ namespace Cloud.StartupPage
                     cmd1.ExecuteNonQuery();
                     cmd2.ExecuteNonQuery();
                     cmd3.ExecuteNonQuery();
+
+                    if (inWhere.Equals("My Folders") || inWhere.Equals("Recent") || inWhere.Equals("Shared") || inWhere.Equals("Favorites") || inWhere.Equals("Bin"))
+                    {
+                        sqlQuery1 = "insert into [dbo].[AccessControl] values('" + filename + "', '', '" + currentUserName + "')";
+                        cmd1 = new SqlCommand(sqlQuery1, con1);
+
+                        cmd1.ExecuteNonQuery();
+                    }
+
+                    else if (!inWhere.Equals("My Folders") || !inWhere.Equals("Recent") || !inWhere.Equals("Shared") || !inWhere.Equals("Favorites") || !inWhere.Equals("Bin"))
+                    {
+                        sqlQuery1 = "insert into [dbo].[AccessControl] values('" + filename + "', '" + inWhere.Text + "', '" + currentUserName + "')";
+                        cmd1 = new SqlCommand(sqlQuery1, con1);
+
+                        cmd1.ExecuteNonQuery();
+                    }
 
                     closeAllConnections();
 
@@ -841,7 +1296,22 @@ namespace Cloud.StartupPage
                         }
                     }
 
-                    //encrypt file with seans method
+
+                    //Sean's encryption codes
+                    SqlCommand cmd;
+                    string sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                    cmd = new SqlCommand(sqlQuery, con);
+                    SqlDataReader DataRead1 = cmd.ExecuteReader();
+                    string bigPath = DataRead1.GetString(0);
+
+                    byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "+\\IV.txt");
+                    Console.WriteLine("Gets bytes of IV");
+                    byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+
+                    //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
+                    byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    //Encrypts plaintext with symmetric key
+                    byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
                     //send encrypted file to model
                     //do navigation here
 
@@ -861,15 +1331,15 @@ namespace Cloud.StartupPage
 
                     openAllConnections();
 
-                    string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + filename + "', @toSend1, '" + getFileSize(file.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "')");
+                    string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + currentUserName + "', '" + filename + "', @toSend1, '" + getFileSize(file.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "', '')");
                     cmd1 = new SqlCommand(sqlQuery1, con1);
                     SqlParameter para1 = new SqlParameter("@toSend1", toSend1);
                     cmd1.Parameters.Add(para1);
-                    string sqlQuery2 = ("insert into [dbo].[UserFiles2] values('" + filename + "', @toSend2, '" + getFileSize(file.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "')");
+                    string sqlQuery2 = ("insert into [dbo].[UserFiles2] values('" + currentUserName + "', '" + filename + "', @toSend2, '" + getFileSize(file.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "', '')");
                     cmd2 = new SqlCommand(sqlQuery2, con2);
                     SqlParameter para2 = new SqlParameter("@toSend2", toSend2);
                     cmd2.Parameters.Add(para2);
-                    string sqlQuery3 = ("insert into [dbo].[UserFiles3] values('" + filename + "', @toSend3, '" + getFileSize(file.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "')");
+                    string sqlQuery3 = ("insert into [dbo].[UserFiles3] values('" + currentUserName + "', '" + filename + "', @toSend3, '" + getFileSize(file.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + extension + "', '')");
                     cmd3 = new SqlCommand(sqlQuery3, con3);
                     SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
                     cmd3.Parameters.Add(para3);
@@ -877,6 +1347,22 @@ namespace Cloud.StartupPage
                     cmd1.ExecuteNonQuery();
                     cmd2.ExecuteNonQuery();
                     cmd3.ExecuteNonQuery();
+
+                    if (inWhere.Equals("My Folders") || inWhere.Equals("Recent") || inWhere.Equals("Shared") || inWhere.Equals("Favorites") || inWhere.Equals("Bin"))
+                    {
+                        sqlQuery1 = "insert into [dbo].[AccessControl] values('" + filename + "', '', '" + currentUserName + "')";
+                        cmd1 = new SqlCommand(sqlQuery1, con1);
+
+                        cmd1.ExecuteNonQuery();
+                    }
+
+                    else if (!inWhere.Equals("My Folders") || !inWhere.Equals("Recent") || !inWhere.Equals("Shared") || !inWhere.Equals("Favorites") || !inWhere.Equals("Bin"))
+                    {
+                        sqlQuery1 = "insert into [dbo].[AccessControl] values('" + filename + "', '" + inWhere.Text + "', '" + currentUserName + "')";
+                        cmd1 = new SqlCommand(sqlQuery1, con1);
+
+                        cmd1.ExecuteNonQuery();
+                    }
 
                     process.Exited += (sender2, eventArgs) =>
                     {
@@ -888,21 +1374,34 @@ namespace Cloud.StartupPage
                             }
                         }
 
+                        //Sean's Decryption Codes
+
+                        sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                        cmd = new SqlCommand(sqlQuery, con);
+                        DataRead1 = cmd.ExecuteReader();
+                        bigPath = DataRead1.GetString(0);
+
+                        //Gets IV & Encrypted Symmetric Key
+                        IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
+                        encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                        decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                        byte[] plainText = kc.symmetricDecryption(file, decryptedSymmetricKey, IV);
+
                         len = file.Length / 3;
                         toSend1 = file.Take(len).ToArray();
                         toSend2 = file.Skip(len).Take(len).ToArray();
                         len2 = len + len;
                         toSend3 = file.Skip(len2).Take(len).ToArray();
 
-                        sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "'";
+                        sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
                         cmd1 = new SqlCommand(sqlQuery1, con1);
                         para1 = new SqlParameter("@toSend1", toSend1);
                         cmd1.Parameters.Add(para1);
-                        sqlQuery2 = "update [dbo].[UserFiles2] set [File] = @toSend2, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "'";
+                        sqlQuery2 = "update [dbo].[UserFiles2] set [File] = @toSend2, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
                         cmd2 = new SqlCommand(sqlQuery2, con2);
                         para2 = new SqlParameter("@toSend2", toSend2);
                         cmd2.Parameters.Add(para2);
-                        sqlQuery3 = "update [dbo].[UserFiles3] set [File] = @toSend3, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "'";
+                        sqlQuery3 = "update [dbo].[UserFiles3] set [File] = @toSend3, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
                         cmd3 = new SqlCommand(sqlQuery3, con3);
                         para3 = new SqlParameter("@toSend3", toSend3);
                         cmd3.Parameters.Add(para3);
@@ -926,6 +1425,8 @@ namespace Cloud.StartupPage
             deleteHeader.Visibility = Visibility.Visible;
 
             currentPage = "MyFolders";
+            inWhere.Text = currentPage;
+
             sortNormally();
 
             MyFoldersButton.Background = (Brush)(new BrushConverter().ConvertFrom("#23aeff"));
@@ -944,6 +1445,7 @@ namespace Cloud.StartupPage
             deleteHeader.Visibility = Visibility.Visible;
 
             currentPage = "Recent";
+            inWhere.Text = currentPage;
             sortByLastModified();
 
             MyFoldersButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
@@ -961,6 +1463,7 @@ namespace Cloud.StartupPage
             deleteHeader.Visibility = Visibility.Visible;
 
             currentPage = "Shared";
+            inWhere.Text = currentPage;
             sortNormally();
 
             MyFoldersButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
@@ -978,6 +1481,7 @@ namespace Cloud.StartupPage
             deleteHeader.Visibility = Visibility.Visible;
 
             currentPage = "Favorites";
+            inWhere.Text = currentPage;
             sortFavorites();
 
             MyFoldersButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
@@ -995,6 +1499,7 @@ namespace Cloud.StartupPage
             deleteHeader.Visibility = Visibility.Collapsed;
 
             currentPage = "Bin";
+            inWhere.Text = currentPage;
             sortBin();
 
             MyFoldersButton.Background = (Brush)(new BrushConverter().ConvertFrom("#8c9199"));
@@ -1024,7 +1529,117 @@ namespace Cloud.StartupPage
             view.SortDescriptions.Add(new SortDescription("lastModified", ListSortDirection.Descending));
         }
 
+        static string ToHexadecimal(byte[] source)
+        {
+            if (source == null) return string.Empty;
 
+            StringBuilder sb = new StringBuilder();
+
+            foreach (byte b in source)
+            {
+                sb.Append(b.ToString("X2")); // print byte as Hexadecimal string
+            }
+
+            return sb.ToString();
+        }
+
+        private void SetfullPath(string updatedAdd)
+        {
+            this.updatedAdd = updatedAdd;
+        }
+
+        private string fullPath()
+        {
+            return updatedAdd;
+        }
+
+
+        private byte[] ComputeMd5Hash(string fileName)
+        {
+            byte[] result = null;
+
+            Boolean zips = true;
+            using (MD5 md5 = MD5.Create())
+            {
+                int bufferSize = 10 * 1024 * 1024; // 10MB
+
+                if (System.IO.Path.GetExtension(fileName).Equals(".zip"))
+                {
+
+                    do
+                    {
+                        using (ZipArchive zipFile = ZipFile.OpenRead(fileName))
+                        {
+
+
+
+                            foreach (ZipArchiveEntry zip in zipFile.Entries)
+                            {
+                                System.Console.WriteLine("Zipfile: {0}", zip.FullName);
+                                System.Console.WriteLine("Zipfile: {0}", zip.Length);
+                                string dirpath = fileName;
+                                path = System.IO.Path.Combine(dirpath, zip.FullName);
+                                Console.Write(path);
+                                String SavePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+                                if (zip.FullName.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    zips = true;
+                                    // fileName = path;
+                                    // extract to document then later read from there again and extract again
+                                    fileName = System.IO.Path.Combine(SavePath, zip.FullName);
+
+                                    if (File.Exists(fileName))
+                                    {
+                                        File.Delete(fileName);
+                                        zip.ExtractToFile(System.IO.Path.Combine(SavePath, zip.FullName));
+
+                                    }
+                                    else
+                                    {
+                                        zip.ExtractToFile(System.IO.Path.Combine(SavePath, zip.FullName));
+                                    }
+
+                                }
+                                else
+                                {
+                                    fullAdd = System.IO.Path.Combine(SavePath, zip.FullName);
+                                    if (File.Exists(fullAdd))
+                                    {
+                                        File.Delete(fullAdd);
+                                        zip.ExtractToFile(System.IO.Path.Combine(SavePath, zip.FullName));
+
+                                    }
+                                    else
+                                    {
+                                        zip.ExtractToFile(System.IO.Path.Combine(SavePath, zip.FullName));
+                                    }
+                                    zips = false;
+                                }
+                            }
+                        }
+
+
+
+                    } while (zips == true);
+
+                    using (var stream = new BufferedStream(File.OpenRead(fullAdd), bufferSize))
+                    {
+                        result = md5.ComputeHash(stream);
+                        SetfullPath(fullAdd);
+                    }
+                }
+                else
+                {
+                    using (var stream = new BufferedStream(File.OpenRead(fileName), bufferSize))
+                    {
+                        result = md5.ComputeHash(stream);
+                        SetfullPath(fileName);
+                    }
+                }
+            }
+            return result;
+        }
         private void sortNormally()
         {
             openAllConnections();

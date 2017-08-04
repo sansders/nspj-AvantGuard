@@ -10,7 +10,7 @@ namespace Layout.Models
     class FileModel
     {
 
-        public static string fileBytes { get; set; }
+        public static byte[] fileBytes { get; set; }
         public static string UserID { get; set; } 
         public static string fileName { get; set; } 
         public static string fileSize { get; set; } 
@@ -19,12 +19,12 @@ namespace Layout.Models
         public static string isDeleted { get; set; } 
         public static string fileType { get; set; } 
         public static string sharedBy { get; set; }
-        public static Boolean show { get; set; } 
-
+        public static Boolean show { get; set; }
+        public static FileModel currentModel;
         
      
 
-        public FileModel(string id , string filename , string filebytes , string filesize , string lastmodified , string isfavorite, string isdeleted , string filetype , string sharedby)
+        public FileModel(string id , string filename , byte[] filebytes , string filesize , string lastmodified , string isfavorite, string isdeleted , string filetype , string sharedby)
         {
 
             UserID = id;
@@ -40,14 +40,27 @@ namespace Layout.Models
             
         }
 
-        public static Boolean returnShow()
+        public  Boolean getShow()
         {
             return show;
         }
 
+        public  void setShow(bool value)
+        {
+            show = value;
+        } 
         
+        public static FileModel getFileModel()
+        {
+            return currentModel;
+        }
+        
+        public static void setFileModel(FileModel value)
+        {
+            currentModel = value;
+        }
 
-        public static string ReturnFileBytes()
+        public byte[] ReturnFileBytes()
         {
             return fileBytes;
         }

@@ -19,8 +19,8 @@ namespace Layout.Controllers
             checkForKeys();
         }
 
-        static string bigPath = null;
-        static string currentUserName = UserModel.UserModel.currentUserID;
+        public static string bigPath = null;
+        public static string currentUserName = UserModel.UserModel.currentUserID;
 
         public static void checkForKeys()
         {

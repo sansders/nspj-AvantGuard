@@ -161,7 +161,7 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button fa:Awesome.Content="Gear" HorizontalAlignment="Left" Height="28" Margin="69,7,0,0" VerticalAlignment="Top" Width="28">
+            <Button fa:Awesome.Content="Gear" HorizontalAlignment="Left" Height="28" Margin="69,7,0,0" VerticalAlignment="Top" Width="28" Click="changeSettings">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="3"/>
@@ -222,7 +222,9 @@
                             </Style>
                         </TextBox.Style>
                     </TextBox>
-                    <Button fa:Awesome.Content="FileWordOutline" Name="openMSBtn" Click="openMSBtn_Click" Margin="60,0,0,0"></Button>
+                    <TextBlock Name="inWhere" VerticalAlignment="Center" Margin="20,0,0,0">My Folders</TextBlock>
+                    <Button fa:Awesome.Content="File" Name="newFolderBtn" Click="createFolder" Margin="60,0,0,0"></Button>
+                    <Button fa:Awesome.Content="FileWordOutline" Name="openMSBtn" Click="openMSBtn_Click"></Button>
                     <Button fa:Awesome.Content="FilePowerpointOutline" Name="openPPTBtn" Click="openPPTBtn_Click"></Button>
                     <Button fa:Awesome.Content="FileExcelOutline" Name="openEXLBtn" Click="openEXLBtn_Click"></Button>
                     <Button fa:Awesome.Content="FileText" Name="newTextBtn" Click="newTextBtn_Click"></Button>
@@ -246,21 +248,22 @@
                         <ContextMenu>
                             <MenuItem Header="Open" Click="openClick"></MenuItem>
                             <MenuItem Header="Favorite" Click="favoriteClick"></MenuItem>
+                            <MenuItem Header="New Folder" Click="createFolder"></MenuItem>
+                            <MenuItem Header="Move to" Click="moveTo"></MenuItem>
                             <MenuItem Name="unfavoriteHeader" Header="Unfavorite" Click="unfavoriteClick" Visibility="Collapsed"></MenuItem>
-                            <MenuItem Header="Share"></MenuItem>
+                            <MenuItem Header="Share" Click="shareClick"></MenuItem>
                             <MenuItem Header="Download" Click="TestDownload"></MenuItem>
                             <MenuItem Name="deleteHeader" Header="Delete" Click="deleteClick"></MenuItem>
                             <MenuItem Name ="recoverHeader" Header="Recover" Click="recoverClick" Visibility="Collapsed"></MenuItem>
                         </ContextMenu>
                     </ListView.ContextMenu>
                 </ListView>
-                <DocumentViewer Visibility="Collapsed" Name="pptViewer" Height="250" VerticalAlignment="Top" Width="525"></DocumentViewer>
                 <RichTextBox Visibility="Collapsed" Name="rtbEditor" HorizontalAlignment="Left" Height="250" VerticalAlignment="Bottom" Width="525" SelectionChanged="rtbEditor_SelectionChanged"/>
                 <Grid x:Name="NewFile" Visibility="Collapsed">
                     <Grid Background="Black" Opacity="0.5"/>
-                    <Border MinWidth="250" Background="LightBlue" BorderBrush="White" BorderThickness="1" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Border MinWidth="250" Background="#747577" BorderBrush="White" BorderThickness="1" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <StackPanel>
-                            <TextBlock Margin="5" Text="New File Name:"/>
+                            <TextBlock Margin="5" Foreground="White" Text="New File Name:"/>
                             <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="textbox1"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Button Width="30" x:Name="OkButton" Margin="5" Content="Ok" Background="White" Click="OkButton_Click">
@@ -282,6 +285,57 @@
                     </Border>
                 </Grid>
             </Grid>
+            <Grid x:Name="NewFolder" Visibility="Collapsed">
+                <Grid Background="Black" Opacity="0.5"/>
+                <Border MinWidth="250" Background="#747577" BorderBrush="White" BorderThickness="1" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel>
+                        <TextBlock Margin="5" Foreground="White" Text="New File Name:"/>
+                        <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="textbox3"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Width="30" x:Name="OkButton3" Margin="5" Content="Ok" Background="White" Click="OkButton3_Click">
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="3"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button Width="50" x:Name="CancelButton3" Margin="5" Content="Cancel" Background="White" Click="CancelButton3_Click">
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="3"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <Grid x:Name="userField" Visibility="Collapsed">
+                <Grid Background="Black" Opacity="0.5"/>
+                <Border MinWidth="250" Background="#747577" BorderBrush="White" BorderThickness="1" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel>
+                        <TextBlock Name="shareWith" Margin="5" Foreground="White" Text="Share file with: "/>
+                        <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="textbox2"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Width="30" x:Name="OkButton2" Margin="5" Content="Ok" Background="White" Click="OkButton2_Click">
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="3"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <Button Width="50" x:Name="CancelButton2" Margin="5" Content="Cancel" Background="White" Click="CancelButton2_Click">
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="3"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        
         </Grid>
     </Viewbox>
 </Page>

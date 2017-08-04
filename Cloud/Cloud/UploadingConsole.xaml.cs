@@ -25,18 +25,21 @@ namespace Layout.Upload
         public Page2()
         {
             InitializeComponent();
-
             //Added this
 
-        
+            MessageBox.Show("This starts");
+
+
+
             MessageBox.Show(FileModel.ReturnfileName());
             MessageBox.Show(FileModel.ReturnUserID());
+
 
         }
 
         private void ToggleButton_Checked(object sender, RoutedEventArgs e)
         {
-          
+
             if (console.Visibility == Visibility.Hidden && isToggled == false)
             {
 
@@ -87,7 +90,7 @@ namespace Layout.Upload
 
         }
 
-       
+
 
 
     }
