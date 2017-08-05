@@ -30,6 +30,10 @@ namespace NSPJProject
 
         }
 
+        SqlConnection con;
+        SqlCommand cmd;
+        SqlDataReader reader;
+
         private static readonly string _allowedCharacters = "abcdfghjklmnpqrstvxz0123456789";
 
         private void ForgotPassword3NextButton_Click(object sender, RoutedEventArgs e)
@@ -48,7 +52,7 @@ namespace NSPJProject
                     qs.Append(_allowedCharacters.Substring(r.Next(from, to), 1));
                 }
 
-                MessageBox.Show(qs.ToString());
+                LoginPage LP = new LoginPage();
 
                 string selected_ForgotPasswordEmail = (App.Current as App).ForgotPasswordEmail;
 
@@ -72,11 +76,35 @@ namespace NSPJProject
                 {
                     System.Windows.MessageBox.Show(ex.Message);
                 }
+
+                ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+                string connectionString = conSettings.ConnectionString;
+
+                try
+                {
+                    ConnectionStringSettings conSettings1 = ConfigurationManager.ConnectionStrings["connString"];
+                    string connectionString1 = conSettings1.ConnectionString;
+
+                    con = new SqlConnection(connectionString1);
+                    con.Open();
+                    cmd = new SqlCommand("UPDATE [dbo].[test] SET Password = '" + LP.GetSha512FromString(qs.ToString()) + "' WHERE Email = '" + selected_ForgotPasswordEmail + "'", con);
+                    cmd.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
+
                 this.NavigationService.Navigate(new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute));
             }
             else
             {
-                MessageBox.Show("Invalid code!");
+                MessageBox.Show("Invalid authentication code!");
             }
         }
 
