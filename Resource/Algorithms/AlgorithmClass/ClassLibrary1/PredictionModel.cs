@@ -346,14 +346,19 @@ namespace AlgorithmLibary
                 {
                     //Console.WriteLine(nic.NetworkInterfaceType.ToString());
                     var test = nic.GetIPProperties();
+                    Console.WriteLine(test.UnicastAddresses.Count + "JCUASJC");
                     if (test.UnicastAddresses.Count != 0)
                     {
-                        var testing = test.UnicastAddresses[1];
-
-                        if (testing.Address.ToString() == localIP)
+                        foreach(var element in test.UnicastAddresses)
                         {
-                            macAdd = nic.GetPhysicalAddress().ToString();
+                            var testing = element;
+                            
+                            if(testing.Address.ToString() == localIP)
+                            {
+                                macAdd = nic.GetPhysicalAddress().ToString();
+                            }
                         }
+                        
                     }
                 }
             }
