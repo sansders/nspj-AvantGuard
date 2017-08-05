@@ -52,6 +52,7 @@ namespace Layout.Controllers
                     System.Windows.MessageBox.Show("Please select a directory to store your keys");
                     fbd.ShowDialog();
                     bigPath = fbd.SelectedPath+"\\" + currentUserName;
+                    Directory.CreateDirectory(bigPath);
                     //When username is obtainable, please concatenate it into these paths.
 
                     sqlQuery2 = "UPDATE dbo.test SET keyPath = @bigPath WHERE UserID='" + currentUserName + "'";
