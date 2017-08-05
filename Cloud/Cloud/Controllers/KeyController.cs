@@ -83,6 +83,18 @@ namespace Layout.Controllers
                 else
                 {             
                     bigPath = DataRead1.GetString(0);
+
+
+                    //If the path does not exist in current machine, get user to select the correct directory with his/her keys
+                    if (!Directory.Exists(bigPath))
+                    {
+                        System.Windows.MessageBox.Show("You already have keys!");
+                        System.Windows.MessageBox.Show("Please select your new path to keys");
+
+                        FolderBrowserDialog fbd1 = new FolderBrowserDialog();
+                        fbd1.ShowDialog();
+                        bigPath = fbd1.SelectedPath;
+                    }
                 }
 
             }
