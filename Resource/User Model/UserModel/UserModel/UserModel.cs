@@ -366,6 +366,7 @@ namespace UserModel
             con = new SqlConnection(connectionString);
             string currentHostname = System.Environment.MachineName.ToString();
             con.Open();
+            Console.WriteLine("IS THIS STUPIO FUCNTOIP ");
             try
             {
 

@@ -1181,9 +1181,10 @@ namespace Cloud.StartupPage
                 if (dlg.ShowDialog() == true)
                 {
                     fileName = dlg.FileName;
-                    fileExtension = Path.GetFileNameWithoutExtension(dlg.FileName);
+                    fileExtension = Path.GetExtension(fileName);
                     if (!fileExtension.Equals(".bmp"))
                     {
+                        fileExtension = ".bmp";
                         bmp = Steganography.ConvertToBitmap(fileName);
                     }
                     else
@@ -1219,7 +1220,7 @@ namespace Cloud.StartupPage
 
                             while (stegByte.Length != 32)
                             {
-                                stegByte = stegByte.Concat(Encoding.Unicode.GetBytes("0")).ToArray();
+                                stegByte = stegByte.Concat(Encoding.ASCII.GetBytes("0")).ToArray();
                                 Console.WriteLine(stegByte);
                             }
 
@@ -1315,13 +1316,17 @@ namespace Cloud.StartupPage
 
             string extractThis;
             Bitmap bmp;
-            System.Drawing.Image img;
+            //System.Drawing.Image img;
             KeyController kc = new KeyController();
 
-            MemoryStream ms = new MemoryStream(retrieve);
-            img = System.Drawing.Image.FromStream(ms);
+            using (var ms = new MemoryStream(retrieve))
+            {
+                bmp = new Bitmap(ms);
+            }
 
-            bmp = new Bitmap(img);
+            //extractThis = Steganography.extractText(bmp);
+
+            //bmp = new Bitmap(img);
             extractThis = Steganography.extractText(bmp);
      
             stegPass = Layout.Controllers.Prompt.ShowDialog3("Enter password", "Prompt");

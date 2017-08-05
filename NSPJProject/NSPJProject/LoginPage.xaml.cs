@@ -287,6 +287,7 @@ namespace NSPJProject
                                         riskStatement = "The risk level is low";
                                         UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                                         Page cloud = new StartupPage();
+                                        
                                         this.NavigationService.Navigate(cloud);
                                     }
 
@@ -304,10 +305,10 @@ namespace NSPJProject
                                     else if (totalRisk > 0.70)
                                     {
                                         riskStatement = "The risk level is high";
-
                                         string subject = "Authentication Message";
                                         string subjectBody = "Authentication Code is ";
                                         UserModel.UserModel cm = UserModel.UserModel.currentUserModel;
+                                        Console.WriteLine(cm.userName + "Hellolols");
                                         string email = cm.userEmail;
                                         UserModel.UserModel.do2fa(subject, subjectBody, email);
                                         Page authentication = new Authentication();
@@ -400,7 +401,7 @@ namespace NSPJProject
 
                             (App.Current as App).LoginUserID = UserIDTextBox.Text;
                             MessageBox.Show("Successful Login.");
-                            this.NavigationService.Navigate(new Uri(@"EditUserInfo.xaml", UriKind.RelativeOrAbsolute));
+                            //this.NavigationService.Navigate(new Uri(@"EditUserInfo.xaml", UriKind.RelativeOrAbsolute));
                         }
 
                     }

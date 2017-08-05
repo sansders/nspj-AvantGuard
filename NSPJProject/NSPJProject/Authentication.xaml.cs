@@ -40,6 +40,7 @@ namespace NSPJProject
             string selected_ForgotPasswordCode = UserModel.UserModel.twoFAcode;
             UserModel.UserModel cm = UserModel.UserModel._currentUserModel;
             string userID = cm.userID;
+            Console.WriteLine(userID + "TEICJASMCA");
             if (ForgotPasswordCodeTextBox.Text == selected_ForgotPasswordCode)
             {
                 MessageBox.Show("Correct!");
@@ -49,7 +50,7 @@ namespace NSPJProject
                 string publicMAC = PredictionModel.getCurrentMAC();
                 Console.WriteLine(publicMAC + "HELLO");
                
-               saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
+                saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                 string exist = UserModel.UserModel.checkFollowUp(userID, connectionString);
                 if(exist != null)
                 {
