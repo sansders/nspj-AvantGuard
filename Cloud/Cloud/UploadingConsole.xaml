@@ -10,7 +10,7 @@
     <Viewbox Stretch="UniformToFill">
         <Grid  ClipToBounds="True" SnapsToDevicePixels="True" >
             <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top" Width="610"/>
-            <StackPanel HorizontalAlignment="Left" Margin="0,42,0,0" VerticalAlignment="Top" Width="auto" Background="#747577">
+            <StackPanel HorizontalAlignment="Left" Margin="0,42,0,0" Width="auto" Background="#747577">
                 <Button x:Name="MyFoldersButton" Background="#23aeff" HorizontalAlignment="Left" Height="40" Width="40" FontFamily="Arial Black" Foreground="White" Margin="5,20,0,0" Click="MyFoldersButton_Click">
                     <StackPanel>
                         <fa:FontAwesome Icon="Folder"></fa:FontAwesome>
