@@ -87,6 +87,7 @@ namespace NSPJProject
                     }
                     Page LoginPage = new LoginPage();
                     this.NavigationService.Navigate(LoginPage);
+                    counter = 0; 
                 }
             }
         }
