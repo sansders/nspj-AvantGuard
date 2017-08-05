@@ -160,9 +160,9 @@
                                     </Button.Style>
                                 </Button>
 
-                                <!-- Change Password Button -->
+                                <!-- Forgot Password Button -->
                                 <Button Name="ButtonChangePass" 
-                                        Content="Change Password"
+                                        Content="Forgot Your Password?"
                                         HorizontalAlignment="Center"
                                         FontFamily="Gulim"
                                         FontWeight="Bold"

@@ -30,13 +30,49 @@ namespace NSPJProject
 
         }
 
+        private static readonly string _allowedCharacters = "abcdfghjklmnpqrstvxz0123456789";
+
         private void ForgotPassword3NextButton_Click(object sender, RoutedEventArgs e)
         {
             string selected_ForgotPasswordCode = (App.Current as App).ForgotPasswordCode;
             if (ForgotPasswordCodeTextBox.Text == selected_ForgotPasswordCode)
             {
-                MessageBox.Show("Correct!");
-                this.NavigationService.Navigate(new Uri(@"ForgotPassword4.xaml", UriKind.RelativeOrAbsolute));
+
+                const int from = 0;
+                int to = _allowedCharacters.Length;
+                Random r = new Random();
+
+                StringBuilder qs = new StringBuilder();
+                for (int i = 0; i < 15; i++)
+                {
+                    qs.Append(_allowedCharacters.Substring(r.Next(from, to), 1));
+                }
+
+                MessageBox.Show(qs.ToString());
+
+                string selected_ForgotPasswordEmail = (App.Current as App).ForgotPasswordEmail;
+
+                try
+                {
+                    SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+                    client.EnableSsl = true;
+                    client.Timeout = 10000;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential("nspjproject1718@gmail.com", "avantguard");
+                    MailMessage mail = new MailMessage();
+                    mail.To.Add(selected_ForgotPasswordEmail);
+                    mail.From = new MailAddress("nspjproject1718@gmail.com");
+                    mail.Subject = "This is an email.";
+                    mail.Body = "Your new password is " + qs.ToString();
+                    client.Send(mail);
+                    System.Windows.MessageBox.Show("Your new password has been sent to your email. You are encouraged to change your password.");
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+                this.NavigationService.Navigate(new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute));
             }
             else
             {
