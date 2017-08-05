@@ -244,7 +244,8 @@ namespace Layout.Upload
                         fm.setShow(true);
                         FileModel.setFileModel(fm);
                         //FileModel fm = FileModel.getFileModel();
-                        NavigationService.Navigate(new Uri("UploadingConsole.xaml"), UriKind.RelativeOrAbsolute);
+                        Page UploadingConsole = new Layout.Upload.Page2();
+                        NavigationService.Navigate(UploadingConsole);
                     }
 
                 }

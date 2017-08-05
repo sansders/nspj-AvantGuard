@@ -5,14 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Layout.Upload"
       xmlns:fa="http://schemas.fontawesome.io/icons/"
-      mc:Ignorable="d" 
-      d:DesignHeight="300"
-      Title="Page1" Width="525" Height="300" Background="White">
-
+      mc:Ignorable="d"
+      Title="Page1" Background="White">
+    <Viewbox Stretch="UniformToFill">
         <Grid Background="LightPink">
 
-            <Viewbox Margin="50,0,3.2,0">
-                <Grid Margin="60,30,-0.333,0" RenderTransformOrigin="0.592,0.546">
+            <Viewbox Margin="-7,-41,60,41" Stretch="UniformToFill">
+                <Grid Margin="60,30,-0.333,0" RenderTransformOrigin="0.592,0.546" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <RichTextBox x:Name="userHashInput" HorizontalAlignment="Left" Height="23" Margin="105,107,0,0" VerticalAlignment="Top" Width="200" TextChanged="userHashInput_TextChanged">
                         <FlowDocument/>
                     </RichTextBox>
@@ -25,8 +24,8 @@
 
 
             <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top" Width="520"/>
-            <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top" Width="520"/>
-            <StackPanel HorizontalAlignment="Left" Height="281" Margin="0,42,0,-0.2" VerticalAlignment="Top" Width="50" Background="#747577">
+            <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top"/>
+            <StackPanel HorizontalAlignment="Left" Margin="0,42,0,-0.2" VerticalAlignment="Top" Width="50" Background="#747577">
                 <Button x:Name="MyFoldersButton" Background="#23aeff" HorizontalAlignment="Left" Height="40" Width="40" FontFamily="Arial Black" Foreground="White" Margin="5,20,0,0" Click="MyFoldersButton_Click">
                     <StackPanel>
                         <fa:FontAwesome Icon="Folder"></fa:FontAwesome>
@@ -197,5 +196,5 @@
 
 
         </Grid>
- 
+    </Viewbox>
 </Page>

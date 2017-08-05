@@ -1533,7 +1533,9 @@ namespace Cloud.StartupPage
         {
             if (Layout.Controllers.Prompt.ShowDialog2("Do you want to ensure file integrity? (Includes extra steps)", "Prompt") == true)
             {
-                NavigationService.Navigate(new Uri("Page1.xaml", UriKind.RelativeOrAbsolute));
+                //NavigationService.Navigate(new Uri("Page1.xaml", UriKind.RelativeOrAbsolute));
+                Page seanPage = new Layout.Upload.Page1();
+                NavigationService.Navigate(seanPage);
             }
 
             else {
@@ -1733,10 +1735,8 @@ namespace Cloud.StartupPage
         {
             if (Layout.Controllers.Prompt.ShowDialog2("Do you want to ensure file integrity? (Includes extra steps)", "Prompt") == true)
             {
-                Page page1 = new Page1();
-                
-
-                NavigationService.Navigate(page1);
+                Page seanPage = new Layout.Upload.Page1();
+                NavigationService.Navigate(seanPage);
             }
 
             else
@@ -1936,7 +1936,8 @@ namespace Cloud.StartupPage
         {
             if (Layout.Controllers.Prompt.ShowDialog2("Do you want to ensure file integrity? (Includes extra steps)", "Prompt") == true)
             {
-                NavigationService.Navigate(new Uri("Page1.xaml", UriKind.RelativeOrAbsolute));
+                Page seanPage = new Layout.Upload.Page1();
+                NavigationService.Navigate(seanPage);
             }
 
             else

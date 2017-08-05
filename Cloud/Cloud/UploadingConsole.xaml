@@ -9,7 +9,7 @@
       Title="Page2" Background="white" WindowHeight="4">
     <Viewbox Stretch="UniformToFill">
         <Grid  ClipToBounds="True" SnapsToDevicePixels="True" >
-            <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top" Width="610"/>
+            <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top" Width="600"/>
             <StackPanel HorizontalAlignment="Left" Margin="0,42,0,0" Width="auto" Background="#747577">
                 <Button x:Name="MyFoldersButton" Background="#23aeff" HorizontalAlignment="Left" Height="40" Width="40" FontFamily="Arial Black" Foreground="White" Margin="5,20,0,0" Click="MyFoldersButton_Click">
                     <StackPanel>
@@ -174,17 +174,39 @@
                 </Button.Resources>
             </Button>
             <Ellipse Name="ellipse"  Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="35 " Margin="565,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
-            <TextBox Name="nameBox" HorizontalAlignment="Left" Height="16" Margin="482,13,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="70" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
+            <TextBox Name="nameBox" HorizontalAlignment="Left" Height="22" Margin="482,13,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="78" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
             <Label Content="Uploading File" HorizontalAlignment="Left" Margin="271,51,0,0" VerticalAlignment="Top" Width="90"/>
 
-            <fa:ImageAwesome x:Name="spinner" Icon="Spinner" Spin="True" SpinDuration="0.5" Margin="351,0,214,221.667" Height="30" VerticalAlignment="Bottom" />
+            <fa:ImageAwesome x:Name="spinner" Icon="Spinner" Spin="True" SpinDuration="0.5" Margin="351,0,214,236" Height="20" VerticalAlignment="Bottom" />
 
             <ToggleButton  x:Name="toggle" HorizontalAlignment="Left"  Margin="487,55,0,0" VerticalAlignment="Top" Unchecked="ToggleButton_unChecked" Checked="ToggleButton_Checked" Height="17" Width="43"/>
-            <Border x:Name="console" Visibility="Hidden" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="174" Margin="148,100,0,0" VerticalAlignment="Top" Width="353"/>
+            <Border x:Name="console" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="174" Margin="148,100,0,0" VerticalAlignment="Top" Width="353" Visibility="Hidden">
+
+                <RichTextBox x:Name="paragraphBox" IsReadOnly="True" Focusable="False" Style="{StaticResource paragraphDesign}">
+                    <FlowDocument>
+                        <Paragraph>
+                            <InlineUIContainer>
+                                <Label x:Name="server" Content="Waiting For Server...." RenderTransformOrigin="0.5,0.462" Width="344"/>
+                            </InlineUIContainer>
+                            <InlineUIContainer>
+                                <Label x:Name="upload" Content="File is Being Uploaded to the database...." RenderTransformOrigin="0.5,0.462" Width="344" Visibility="Hidden"/>
+                            </InlineUIContainer>
+                            <InlineUIContainer>
+                                <Label x:Name="uploaded" Content="Your File has been Uploaded" RenderTransformOrigin="0.5,0.462" Width="344" Visibility="Hidden"/>
+                            </InlineUIContainer>
+                        </Paragraph>
+
+
+
+                    </FlowDocument>
+
+                </RichTextBox>
+            </Border>
             <Label HorizontalAlignment="Left" Margin="314,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.049,0.491"/>
             <Button Content="Exit" Background="AliceBlue" HorizontalAlignment="Left" Margin="288,279,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" />
             <Label MouseLeftButtonUp="consoleClicked" Content="Console" FontSize="10px"  HorizontalAlignment="Left" Margin="530,51,0,0" VerticalAlignment="Top" Height="26"/>
-            <Label x:Name="loading" Content="0%" HorizontalAlignment="Left" Margin="314,82,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.324,-0.727"/>
+            <Label x:Name="loading" Content="0%" HorizontalAlignment="Left" Margin="314,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.324,-0.727"/>
+            
         </Grid>
     </Viewbox>
 </Page>

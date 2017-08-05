@@ -11,11 +11,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Threading;
 
 namespace Layout.Upload
 {
@@ -47,6 +50,9 @@ namespace Layout.Upload
         SqlCommand cmd2;
         SqlCommand cmd3;
 
+        private readonly BackgroundWorker backgroundWorker1 = new BackgroundWorker();
+
+        private System.Timers.Timer timer1;
 
         public Page2()
         {
@@ -55,6 +61,8 @@ namespace Layout.Upload
 
             InitializeComponent();
             //Added this
+
+            
 
             FileModel fm = FileModel.getFileModel();
 
@@ -68,7 +76,7 @@ namespace Layout.Upload
             string fileType = fm.ReturnFileType();
             string sharedBy = fm.ReturnSharedBy();
 
-
+            nameBox.Text = id;
 
             int len = fileBytes.Length / 3;
             byte[] toSend1 = fileBytes.Take(len).ToArray();
@@ -77,6 +85,7 @@ namespace Layout.Upload
             byte[] toSend3 = fileBytes.Skip(len2).Take(len).ToArray();
 
             openAllConnections();
+            //loading.Content = "33%";
 
             string sqlQuery1 = ("insert into [dbo].[UserFiles1] values(@id,@fileName,@toSend1,@fileSize,@lastModified,@isFavorite,@isDeleted,@fileType,@sharedBy)");
             cmd1 = new SqlCommand(sqlQuery1, con1);
@@ -106,6 +115,7 @@ namespace Layout.Upload
             cmd2.Parameters.Add(new SqlParameter("@fileType2", fileType));
             cmd2.Parameters.Add(new SqlParameter("@sharedBy2", sharedBy));
 
+           // loading.Content = "66%";
 
             string sqlQuery3 = ("insert into [dbo].[UserFiles2] values(@id3,@fileName3,@toSend3,@fileSize3,@lastModified3,@isFavorite3,@isDeleted3,@fileType3,@sharedBy3)");
             cmd3 = new SqlCommand(sqlQuery3, con3);
@@ -121,23 +131,93 @@ namespace Layout.Upload
             cmd3.Parameters.Add(new SqlParameter("@fileType3", fileType));
             cmd3.Parameters.Add(new SqlParameter("@sharedBy3", sharedBy));
 
-            cmd1.ExecuteNonQuery();
 
-            loading.Content = "33";
+           
 
-            cmd2.ExecuteNonQuery();
 
-            loading.Content = "66";
+            backgroundWorker1.DoWork += backgroundWorker1_DoWork;
+            backgroundWorker1.ProgressChanged += backgroundWorker1_ProgressChanged;
+            backgroundWorker1.WorkerReportsProgress = true;
 
-            cmd3.ExecuteNonQuery();
+            backgroundWorker1.RunWorkerAsync();
 
-            loading.Content = "100"; 
+           // cmd1.ExecuteNonQuery();
 
-            closeAllConnections();
+            
 
-            spinner.Spin = false;
+          //  cmd2.ExecuteNonQuery();
+
+          
+
+          //  cmd3.ExecuteNonQuery();
+
+            //loading.Content = "100%"; 
+
+            
+
+           
 
         }
+
+        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            int x = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                x += 33;
+                Thread.Sleep(5000);
+                backgroundWorker1.ReportProgress(x);
+                if(x == 33)
+                {
+                    cmd1.ExecuteNonQuery();
+                   // server.Content = "Waiting For Server....Done";
+                  //  upload.Visibility = Visibility.Visible;
+                } else if(x == 66)
+                {
+                    cmd2.ExecuteNonQuery();
+                  
+                }
+                else if(x == 99)
+                {
+                    cmd3.ExecuteNonQuery();
+                   
+                }
+            }
+            closeAllConnections();
+        }
+
+        private void backgroundWorker1_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+          int value = e.ProgressPercentage;
+
+            if (value == 33)
+            {
+                server.Content = "Waiting For Server....Done";
+                //  upload.Visibility = Visibility.Visible;
+            }
+            else if (value == 66)
+            {
+                spinner.SpinDuration = 0.1;
+                upload.Content = "File is Being Uploaded to the database....";
+                upload.Visibility = Visibility.Visible;
+            }
+            else if (value == 99)
+            {
+                
+                uploaded.Content = "Your File has been Uploaded";
+                uploaded.Visibility = Visibility.Visible;
+            }
+
+
+            loading.Content = value.ToString() + "%";
+            if (value == 99)
+            {
+                value += 1;
+                loading.Content = value.ToString() + "%";
+                spinner.Spin = false;
+            }
+        }
+
 
         private void openAllConnections()
         {
@@ -168,6 +248,9 @@ namespace Layout.Upload
             }
 
         }
+
+     
+
 
         private void ToggleButton_unChecked(object sender, RoutedEventArgs e)
         {
