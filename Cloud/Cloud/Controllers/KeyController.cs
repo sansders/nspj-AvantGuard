@@ -79,21 +79,28 @@ namespace Layout.Controllers
 
 
 
-                //If path already exists, just get the path from Bryan's database
+                //If path already exists in the database, then just get it from there
                 else
                 {             
                     bigPath = DataRead1.GetString(0);
 
 
-                    //If the path does not exist in current machine, get user to select the correct directory with his/her keys
+                    //If the obtained path does not exist in current machine, get user to select the new key path
                     if (!Directory.Exists(bigPath))
                     {
                         System.Windows.MessageBox.Show("You already have keys!");
                         System.Windows.MessageBox.Show("Please select your new path to keys");
 
+                        //Path selection
                         FolderBrowserDialog fbd1 = new FolderBrowserDialog();
                         fbd1.ShowDialog();
                         bigPath = fbd1.SelectedPath;
+
+                        //Updates the key path for the user in Bryan's database
+                        sqlQuery2 = "UPDATE dbo.test SET keyPath = @bigPath WHERE UserID='" + currentUserName + "'";
+                        cmd = new SqlCommand(sqlQuery2, con1);
+                        cmd.Parameters.Add(new SqlParameter("@bigPath", bigPath));
+                        cmd.ExecuteNonQuery();
                     }
                 }
 
