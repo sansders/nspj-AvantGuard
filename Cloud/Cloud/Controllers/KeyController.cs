@@ -26,10 +26,7 @@ namespace Layout.Controllers
         {
             Console.WriteLine("Checking for keys...");
 
-            //CHANGE PATH WHEREVER NECESSARY 
-
-
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            //SQL Conenction & Queries to get path of keys from Bryan's Database
             SqlConnection con1;
             SqlCommand cmd;
             ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
@@ -41,25 +38,37 @@ namespace Layout.Controllers
             cmd = new SqlCommand(sqlQuery1, con1);
             SqlDataReader DataRead1 = cmd.ExecuteReader();
 
+
+            //Creates a FolderBrowserDialog which may or may not be used to create a new directory for key storage
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+ 
             if (DataRead1.Read())
             {
+                //If path to keys does not exist for the user, then create the path, the keys, and the IV
                 if (DataRead1.IsDBNull(0))
                 {
                     DataRead1.Close();
                     Console.WriteLine("Keys not found!");
                     Console.WriteLine("Proceeding with Key generation, please wait...");
 
+
+                    //User selects the path of where he/she wants to store his/her keys at
                     System.Windows.MessageBox.Show("Please select a directory to store your keys");
                     fbd.ShowDialog();
-                    bigPath = fbd.SelectedPath+"\\" + currentUserName;
+                    bigPath = fbd.SelectedPath + "\\" + currentUserName;
                     Directory.CreateDirectory(bigPath);
-                    //When username is obtainable, please concatenate it into these paths.
 
+
+                    //Updates the key path for the user in Bryan's database
                     sqlQuery2 = "UPDATE dbo.test SET keyPath = @bigPath WHERE UserID='" + currentUserName + "'";
                     cmd = new SqlCommand(sqlQuery2, con1);
                     cmd.Parameters.Add(new SqlParameter("@bigPath", bigPath));
                     cmd.ExecuteNonQuery();
 
+
+                    //My favourite part aka the methods I made that creates keys for the user
+                    //Keys created include Private Key, Public Key, Symmetric Key (only encrypted version is stored), and IV
                     ivCreation();
                     asymmetricKeyCreation();
                     asymmetricEncryption(symmetricKeyCreation());
@@ -67,8 +76,12 @@ namespace Layout.Controllers
                     Console.WriteLine("Commencing encryption...");
                     Console.WriteLine("");
                 }
+
+
+
+                //If path already exists, just get the path from Bryan's database
                 else
-                {
+                {             
                     bigPath = DataRead1.GetString(0);
                 }
 
@@ -140,9 +153,7 @@ namespace Layout.Controllers
             byte[] IV = Crypto.IV;
             string stringIV = Convert.ToBase64String(IV);
 
-            //Saves string of IV
-            //CHANGE PATH WHENEVER NECCESSARY
-            //System.IO.File.WriteAllText(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt", stringIV);
+            //Saves IV
             File.WriteAllBytes(@bigPath + "\\IV.txt", IV);
         }
 
@@ -198,7 +209,6 @@ namespace Layout.Controllers
 
             //Converts Public key back from String object to var(?)
             //Gets a stream from the publicKey string
-            //CHANGE PATH WHEREVER NECESSARY 
             string pubKeyReader = System.IO.File.ReadAllText(@bigPath + "\\pubKey.txt");
             var stringReader1 = new System.IO.StringReader(pubKeyReader);
             //Use a serializer
@@ -222,7 +232,6 @@ namespace Layout.Controllers
 
             //Converts Private key back from String object to var(?)           
             //Gets a stream from the privateKey string
-            //CHANGE PATH WHEREVER NECESSARY 
             string privKeyReader = System.IO.File.ReadAllText(@bigPath + "\\privKey.txt");
             var stringReader2 = new System.IO.StringReader(privKeyReader);
             //Use a serializer
@@ -233,6 +242,7 @@ namespace Layout.Controllers
             //Loads the Private Key
             csp.ImportParameters(privKey);
 
+            //Decrypts the encrypted Symmetric Key
             byte[] decryptedSymmetricKey = csp.Decrypt(encryptedSymmetricKeyBytes, false);
 
             return decryptedSymmetricKey;
@@ -277,11 +287,6 @@ namespace Layout.Controllers
                 }
 
                 plainText = bytes;
-
-                // UPDATE 31.7.2017 THESE LINES BROKEN
-
-                //.ReadToEnd returns plain text
-                //plainText = Encoding.UTF8.GetBytes(sr.ReadToEnd());
             }
             finally
             {
@@ -294,8 +299,6 @@ namespace Layout.Controllers
             }
             return plainText;
         }
-
-
 
 
 
@@ -342,7 +345,13 @@ namespace Layout.Controllers
         // Thats a huge problem :/
         // - Sean
 
-        // 31.7.2017
+        // 31.7.2017 Update
         // Problem in previous update is solved >:D
+        // - Sean
+
+        // 5.8.2017 Update
+        // All key creation & encryption/decryption methods have been finalized.
+        // I forsee some small errors here and there during integration but they won't be too hard to fix.
+        // - Sean
     }
 }

@@ -32,5 +32,7 @@ namespace NSPJProject
             //Page currentPage = new WpfApp1.ProfilePages.Page1();
             //rootBox.NavigationService.Navigate(currentPage);
         }
+
+        
     }
 }

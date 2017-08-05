@@ -178,7 +178,7 @@
             <Ellipse Name="ellipse"  Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="35 " Margin="465,3,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
             <TextBox Name="nameBox" HorizontalAlignment="Left" Height="31" Margin="375,11,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="85" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
             <Grid HorizontalAlignment="Left" Height="281" Margin="50,42,0,-0.2" VerticalAlignment="Top" Width="470">
-                <ToolBar Name="secondToolBar" Visibility="Collapsed" VerticalAlignment="Top" HorizontalAlignment="Left" Height="35" Width="525">
+                <ToolBar Visibility="Collapsed" Name="secondToolBar"  VerticalAlignment="Top" HorizontalAlignment="Left" Height="35" Width="470">
                     <Label x:Name="fileName" Width="120" FontSize="12"/>
                     <Separator />
                     <ToggleButton fa:Awesome.Content="Bold" Command="EditingCommands.ToggleBold" Name="btnBold"></ToggleButton>
@@ -223,12 +223,13 @@
                         </TextBox.Style>
                     </TextBox>
                     <TextBlock Name="inWhere" VerticalAlignment="Center" Margin="20,0,0,0">My Folders</TextBlock>
-                    <Button fa:Awesome.Content="File" Name="newFolderBtn" Click="createFolder" Margin="60,0,0,0"></Button>
+                    <Button fa:Awesome.Content="File" Name="newFolderBtn" Click="createFolder" Margin="40,0,0,0"></Button>
                     <Button fa:Awesome.Content="FileWordOutline" Name="openMSBtn" Click="openMSBtn_Click"></Button>
                     <Button fa:Awesome.Content="FilePowerpointOutline" Name="openPPTBtn" Click="openPPTBtn_Click"></Button>
                     <Button fa:Awesome.Content="FileExcelOutline" Name="openEXLBtn" Click="openEXLBtn_Click"></Button>
                     <Button fa:Awesome.Content="FileText" Name="newTextBtn" Click="newTextBtn_Click"></Button>
                     <Button fa:Awesome.Content="Download" Name="downloadBtn" Click="TestDownload"></Button>
+                    <Button fa:Awesome.Content="FileCodeOutline" Name="stegoBtn" Click="stego"></Button>
                 </ToolBar>
                 <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="listView" HorizontalAlignment="Left" Height="250" VerticalAlignment="Bottom" Width="470" MouseDoubleClick="listView_MouseDoubleClick">
                     <ListView.View>
