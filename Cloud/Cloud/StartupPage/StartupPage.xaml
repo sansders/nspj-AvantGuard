@@ -254,6 +254,7 @@
                             <MenuItem Name="unfavoriteHeader" Header="Unfavorite" Click="unfavoriteClick" Visibility="Collapsed"></MenuItem>
                             <MenuItem Header="Share" Click="shareClick"></MenuItem>
                             <MenuItem Header="Download" Click="TestDownload"></MenuItem>
+                            <MenuItem Header="Uncover" Click="stegoDecrypt"></MenuItem>
                             <MenuItem Name="deleteHeader" Header="Delete" Click="deleteClick"></MenuItem>
                             <MenuItem Name ="recoverHeader" Header="Recover" Click="recoverClick" Visibility="Collapsed"></MenuItem>
                         </ContextMenu>

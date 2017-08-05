@@ -593,8 +593,7 @@ namespace Cloud.StartupPage
 
         private void openFile(String selectedText)
         {
-            bool doThis = false;
-            String theText = "";
+            
             String ext = "";
 
             openAllConnections();
@@ -641,6 +640,40 @@ namespace Cloud.StartupPage
                 listView.ItemsSource = dt.DefaultView;
 
                 inWhere.Text = selectedText;
+
+                closeAllConnections();
+            }
+
+            if (ext == ".bmp")
+            {
+                openAllConnections();
+
+                string sqlQuery1 = "select [File] from [dbo].[UserFiles1] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
+                SqlCommand cmd1 = new SqlCommand(sqlQuery1, con1);
+                string sqlQuery2 = "select [File] from [dbo].[UserFiles3] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
+                SqlCommand cmd2 = new SqlCommand(sqlQuery2, con2);
+                string sqlQuery3 = "select [File] from [dbo].[UserFiles2] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
+                SqlCommand cmd3 = new SqlCommand(sqlQuery3, con3);
+
+                SqlDataReader Reader1 = cmd1.ExecuteReader();
+                SqlDataReader Reader2 = cmd2.ExecuteReader();
+                SqlDataReader Reader3 = cmd3.ExecuteReader();
+
+                //Cannot read data! Aku Justin Big Boi and Bryan Small Boi Tak Boleh Do this Functiono 
+                //So we tiredo, so we helpo youdo tomorrowdo! Aso!
+
+                Reader1.Read();
+                Reader2.Read();
+                Reader3.Read();
+
+                byte[] retrieve1 = ((byte[])Reader1[0]);
+                byte[] retrieve2 = ((byte[])Reader2[0]);
+                byte[] retrieve3 = ((byte[])Reader3[0]);
+
+                byte[] retrieve = retrieve1.Concat(retrieve2).Concat(retrieve3).ToArray();
+
+                File.WriteAllBytes("temp.bmp", retrieve);
+                Process.Start("temp.bmp");
 
                 closeAllConnections();
             }
@@ -1116,9 +1149,10 @@ namespace Cloud.StartupPage
 
         private void stego(object sender, RoutedEventArgs e)
         {
-            string fileName;
+            string fileName = "";
             byte[] hideThis;
             Bitmap bmp = null;
+            string fileExtension = "";
 
             while (bmp == null)
             {
@@ -1128,8 +1162,8 @@ namespace Cloud.StartupPage
                 if (dlg.ShowDialog() == true)
                 {
                     fileName = dlg.FileName;
-                    string fileExtention = fileName.Substring(fileName.Length - 3);
-                    if (!fileExtention.Equals("bmp"))
+                    fileExtension = Path.GetFileNameWithoutExtension(dlg.FileName);
+                    if (!fileExtension.Equals(".bmp"))
                     {
                         bmp = Steganography.ConvertToBitmap(fileName);
                     }
@@ -1193,7 +1227,6 @@ namespace Cloud.StartupPage
                 }
             }
 
-
             //Use a MemoryStream to get byte[] from bmp
             MemoryStream stream = new MemoryStream();
             bmp.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
@@ -1207,17 +1240,18 @@ namespace Cloud.StartupPage
             int len2 = len + len;
             byte[] toSend3 = bmpInByteArr.Skip(len2).Take(len).ToArray();
 
+            openAllConnections();
 
             //SQL Update Statements
-            string sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(bmpInByteArr.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
+            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + currentUserName + "', '" + fileName+ "', @toSend1, '" + getFileSize(bmpInByteArr.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + fileExtension + "', '')");
             cmd1 = new SqlCommand(sqlQuery1, con1);
             SqlParameter para1 = new SqlParameter("@toSend1", toSend1);
             cmd1.Parameters.Add(para1);
-            string sqlQuery2 = "update [dbo].[UserFiles2] set [File] = @toSend2, fileSize = '" + getFileSize(bmpInByteArr.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
+            string sqlQuery2 = ("insert into [dbo].[UserFiles3] values('" + currentUserName + "', '" + fileName + "', @toSend2, '" + getFileSize(bmpInByteArr.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + fileExtension + "', '')");
             cmd2 = new SqlCommand(sqlQuery2, con2);
             SqlParameter para2 = new SqlParameter("@toSend2", toSend2);
             cmd2.Parameters.Add(para2);
-            string sqlQuery3 = "update [dbo].[UserFiles3] set [File] = @toSend3, fileSize = '" + getFileSize(bmpInByteArr.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
+            string sqlQuery3 = ("insert into [dbo].[UserFiles2] values('" + currentUserName + "', '" + fileName + "', @toSend3, '" + getFileSize(bmpInByteArr.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + fileExtension + "', '')");
             cmd3 = new SqlCommand(sqlQuery3, con3);
             SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
             cmd3.Parameters.Add(para3);
@@ -1225,10 +1259,94 @@ namespace Cloud.StartupPage
             cmd1.ExecuteNonQuery();
             cmd2.ExecuteNonQuery();
             cmd3.ExecuteNonQuery();
-            
+
+            closeAllConnections();
         }
    
         
+        private void stegoDecrypt(object sender, RoutedEventArgs e)
+        {
+            String selectedText = ((DataRowView)listView.SelectedItem)["Name"].ToString();
+
+            openAllConnections();
+
+            string sqlQuery1 = "select [File] from [dbo].[UserFiles1] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
+            SqlCommand cmd1 = new SqlCommand(sqlQuery1, con1);
+            string sqlQuery2 = "select [File] from [dbo].[UserFiles3] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
+            SqlCommand cmd2 = new SqlCommand(sqlQuery2, con2);
+            string sqlQuery3 = "select [File] from [dbo].[UserFiles2] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
+            SqlCommand cmd3 = new SqlCommand(sqlQuery3, con3);
+
+            SqlDataReader Reader1 = cmd1.ExecuteReader();
+            SqlDataReader Reader2 = cmd2.ExecuteReader();
+            SqlDataReader Reader3 = cmd3.ExecuteReader();
+
+            //Cannot read data! Aku Justin Big Boi and Bryan Small Boi Tak Boleh Do this Functiono 
+            //So we tiredo, so we helpo youdo tomorrowdo! Aso!
+
+            Reader1.Read();
+            Reader2.Read();
+            Reader3.Read();
+
+            byte[] retrieve1 = ((byte[])Reader1[0]);
+            byte[] retrieve2 = ((byte[])Reader2[0]);
+            byte[] retrieve3 = ((byte[])Reader3[0]);
+
+            byte[] retrieve = retrieve1.Concat(retrieve2).Concat(retrieve3).ToArray();
+
+            string extractThis;
+            Bitmap bmp;
+            System.Drawing.Image img;
+            KeyController kc = new KeyController();
+
+            MemoryStream ms = new MemoryStream(retrieve);
+            img = System.Drawing.Image.FromStream(ms);
+
+            bmp = new Bitmap(img);
+            extractThis = Steganography.extractText(bmp);
+     
+            stegPass = Layout.Controllers.Prompt.ShowDialog3("Enter password", "Prompt");
+
+            if (stegPass.Length > 8)
+            {
+                stegPass = stegPass.Substring(0, 8);
+            }
+
+            byte[] toBytes = Convert.FromBase64String(extractThis);
+            byte[] stegByte = Convert.FromBase64String(stegPass);
+
+            while (stegByte.Length != 32)
+            {
+                stegByte = stegByte.Concat(Encoding.ASCII.GetBytes("0")).ToArray();
+                Console.WriteLine(stegByte);
+            }
+
+            openAllConnections();
+            SqlCommand cmd;
+            string sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+            cmd = new SqlCommand(sqlQuery, con);
+            SqlDataReader DataRead1 = cmd.ExecuteReader();
+            string bigPath = null;
+            while (DataRead1.Read())
+            {
+                bigPath = DataRead1.GetString(0);
+            }
+            closeAllConnections();
+
+            byte[] IV = File.ReadAllBytes(@bigPath + "\\IV.txt");
+
+            byte[] DecryptedStr = kc.symmetricDecryption(toBytes, stegByte, IV);
+            string result = System.Text.Encoding.UTF8.GetString(DecryptedStr);
+
+            System.Windows.MessageBox.Show("Select where you want to save your file");
+            System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+            fbd.ShowDialog();
+
+            System.IO.File.WriteAllText(@fbd.SelectedPath + "\\SECRET MESSAGE.txt", result);
+           
+        }
+
+
         //CANCEL 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
