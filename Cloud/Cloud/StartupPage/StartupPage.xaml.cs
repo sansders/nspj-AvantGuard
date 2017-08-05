@@ -1116,7 +1116,7 @@ namespace Cloud.StartupPage
 
         private void stego(object sender, RoutedEventArgs e)
         {
-            /*string fileName;
+            string fileName;
             byte[] hideThis;
             Bitmap bmp = null;
 
@@ -1193,23 +1193,31 @@ namespace Cloud.StartupPage
                 }
             }
 
-            Bitmap
 
-            int len = file.Length / 3;
-            byte[] toSend1 = file.Take(len).ToArray();
-            byte[] toSend2 = file.Skip(len).Take(len).ToArray();
+            //Use a MemoryStream to get byte[] from bmp
+            MemoryStream stream = new MemoryStream();
+            bmp.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+            byte[] bmpInByteArr = stream.ToArray();
+
+
+            //Slice the byte arrays into 3 parts
+            int len = bmpInByteArr.Length / 3;
+            byte[] toSend1 = bmpInByteArr.Take(len).ToArray();
+            byte[] toSend2 = bmpInByteArr.Skip(len).Take(len).ToArray();
             int len2 = len + len;
-            byte[] toSend3 = file.Skip(len2).Take(len).ToArray();
+            byte[] toSend3 = bmpInByteArr.Skip(len2).Take(len).ToArray();
 
-            sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
+
+            //SQL Update Statements
+            string sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(bmpInByteArr.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
             cmd1 = new SqlCommand(sqlQuery1, con1);
             SqlParameter para1 = new SqlParameter("@toSend1", toSend1);
             cmd1.Parameters.Add(para1);
-            sqlQuery2 = "update [dbo].[UserFiles2] set [File] = @toSend2, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
+            string sqlQuery2 = "update [dbo].[UserFiles2] set [File] = @toSend2, fileSize = '" + getFileSize(bmpInByteArr.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
             cmd2 = new SqlCommand(sqlQuery2, con2);
             SqlParameter para2 = new SqlParameter("@toSend2", toSend2);
             cmd2.Parameters.Add(para2);
-            sqlQuery3 = "update [dbo].[UserFiles3] set [File] = @toSend3, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
+            string sqlQuery3 = "update [dbo].[UserFiles3] set [File] = @toSend3, fileSize = '" + getFileSize(bmpInByteArr.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "'";
             cmd3 = new SqlCommand(sqlQuery3, con3);
             SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
             cmd3.Parameters.Add(para3);
@@ -1217,7 +1225,7 @@ namespace Cloud.StartupPage
             cmd1.ExecuteNonQuery();
             cmd2.ExecuteNonQuery();
             cmd3.ExecuteNonQuery();
-            */
+            
         }
    
         
