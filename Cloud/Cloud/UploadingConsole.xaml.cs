@@ -122,10 +122,21 @@ namespace Layout.Upload
             cmd3.Parameters.Add(new SqlParameter("@sharedBy3", sharedBy));
 
             cmd1.ExecuteNonQuery();
+
+            loading.Content = "33";
+
             cmd2.ExecuteNonQuery();
+
+            loading.Content = "66";
+
             cmd3.ExecuteNonQuery();
 
+            loading.Content = "100"; 
+
             closeAllConnections();
+
+            spinner.Spin = false;
+
         }
 
         private void openAllConnections()
