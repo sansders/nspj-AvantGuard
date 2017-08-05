@@ -83,7 +83,7 @@ namespace Layout.Controllers
                 else
                 {             
                     bigPath = DataRead1.GetString(0);
-
+                    DataRead1.Close();
 
                     //If the obtained path does not exist in current machine, get user to select the new key path
                     if (!Directory.Exists(bigPath))
@@ -94,7 +94,7 @@ namespace Layout.Controllers
                         //Path selection
                         FolderBrowserDialog fbd1 = new FolderBrowserDialog();
                         fbd1.ShowDialog();
-                        bigPath = fbd1.SelectedPath;
+                        bigPath = fbd1.SelectedPath+"\\"+currentUserName;
 
                         //Updates the key path for the user in Bryan's database
                         sqlQuery2 = "UPDATE dbo.test SET keyPath = @bigPath WHERE UserID='" + currentUserName + "'";
