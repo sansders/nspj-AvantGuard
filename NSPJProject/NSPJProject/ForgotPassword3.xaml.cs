@@ -47,7 +47,7 @@ namespace NSPJProject
                 Random r = new Random();
 
                 StringBuilder qs = new StringBuilder();
-                for (int i = 0; i < 15; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     qs.Append(_allowedCharacters.Substring(r.Next(from, to), 1));
                 }

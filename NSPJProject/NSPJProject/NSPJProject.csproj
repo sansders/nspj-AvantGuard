@@ -90,6 +90,9 @@
     <Compile Include="Authentication.xaml.cs">
       <DependentUpon>Authentication.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Authentication1.xaml.cs">
+      <DependentUpon>Authentication1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditUserInfo.xaml.cs">
       <DependentUpon>EditUserInfo.xaml</DependentUpon>
     </Compile>
@@ -119,6 +122,10 @@
       <DependentUpon>SignUp3.xaml</DependentUpon>
     </Compile>
     <Page Include="Authentication.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Authentication1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -57,6 +57,8 @@ namespace NSPJProject
                     //Navigate to Chester page
                     Page cloud = new StartupPage();
                     this.NavigationService.Navigate(cloud);
+
+                    
                 }
               
                 else
@@ -71,7 +73,7 @@ namespace NSPJProject
             {
                 MessageBox.Show("Invalid code! Please Try Again");
                 counter++;
-                if(counter > 2 )
+                if(counter > 3 )
                 {
                     MessageBox.Show("More than 3 attempts! Account will be locked now!");
                     string exist = UserModel.UserModel.checkFollowUp(userID, connectionString);
@@ -111,7 +113,7 @@ namespace NSPJProject
                 cmd.Parameters.AddWithValue("@LoginTime", loginTime);
                 cmd.Parameters.AddWithValue("@LoginDate", date.ToString());
                 cmd.Parameters.AddWithValue("@IPAddress", publicIP);
-                cmd.Parameters.AddWithValue("@MACAddress", "ABC");
+                cmd.Parameters.AddWithValue("@MACAddress", publicMAC);
                 cmd.Parameters.AddWithValue("@HostName", currentHostname);
                 cmd.ExecuteNonQuery();
 
