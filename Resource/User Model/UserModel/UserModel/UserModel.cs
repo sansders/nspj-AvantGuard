@@ -361,34 +361,155 @@ namespace UserModel
 
         public static void saveDateTimeOfUser(string userID, string connectionString, string loginTime, string date, string publicIP, string publicMAC)
         {
+
+            Boolean canSave = checkLastLogin(userID, connectionString, loginTime, date);
+            if (canSave == true)
+            {
+                SqlConnection con;
+                SqlCommand cmd;
+                con = new SqlConnection(connectionString);
+                string currentHostname = System.Environment.MachineName.ToString();
+                con.Open();
+                try
+                {
+
+
+                    cmd = new SqlCommand("INSERT INTO [dbo].[LogAnalysis] (UserID, LoginTime, LoginDate, IpAddress , MacAddress , hostname) VALUES (@UserID, @LoginTime, @LoginDate , @IPAddress , @MACAddress , @HostName)", con);
+                    cmd.Parameters.AddWithValue("@UserID", userID);
+                    cmd.Parameters.AddWithValue("@LoginTime", loginTime);
+                    cmd.Parameters.AddWithValue("@LoginDate", date.ToString());
+                    cmd.Parameters.AddWithValue("@IPAddress", publicIP);
+                    cmd.Parameters.AddWithValue("@MACAddress", publicMAC);
+                    cmd.Parameters.AddWithValue("@HostName", currentHostname);
+                    cmd.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Cannot save until 30 minutes have passed");
+            }
+
+
+        }
+
+        private static Boolean checkLastLogin(string userID, string connectionString, string loginTime, string loginDate)
+        {
             SqlConnection con;
             SqlCommand cmd;
+            SqlDataReader reader;
+            Boolean canSave = true;
+            List<String> loginTimeList = new List<string>();
             con = new SqlConnection(connectionString);
-            string currentHostname = System.Environment.MachineName.ToString();
+            // string currentHostname = System.Environment.MachineName.ToString();
             con.Open();
-            Console.WriteLine("IS THIS STUPIO FUCNTOIP ");
             try
             {
+                cmd = new SqlCommand("SELECT LoginTime FROM [dbo].[LogAnalysis] where UserID = '" + userID + "' and LoginDate = '" + loginDate + "' Order By LoginTime DESC", con);
+                reader = cmd.ExecuteReader();
+                if (reader == null)
+                {
 
+                }
+                else
+                {
+                    while (reader.Read())
+                    {
+                        loginTimeList.Add(reader.GetString(0));
+                    }
+                }
+                int counter = 0;
+                double currentLoginTime = Convert.ToDouble(loginTime);
+                if (loginTimeList.Count < 2)
+                {
+                    Console.WriteLine("List size is less than 2");
+                    for (int i = 0; i < loginTimeList.Count(); i++)
+                    {
+                        double pastLoginTime = Convert.ToDouble(loginTimeList[i]);
+                        string pastLoginTimeStr = convertTime(pastLoginTime);
+                        pastLoginTime = Convert.ToDouble(pastLoginTimeStr);
+                        Console.WriteLine(pastLoginTime);
+                        if (currentLoginTime < pastLoginTime)
+                        {
+                            counter++;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("List size is more than 2");
+                    for (int i = loginTimeList.Count - 2; i < loginTimeList.Count(); i++)
+                    {
+                        double pastLoginTime = Convert.ToDouble(loginTimeList[i]);
+                        string pastLoginTimeStr = convertTime(pastLoginTime);
+                        pastLoginTime = Convert.ToDouble(pastLoginTimeStr);
+                        Console.WriteLine(pastLoginTime);
+                        if (currentLoginTime < pastLoginTime)
+                        {
+                            counter++;
+                        }
+                    }
+                }
 
-                cmd = new SqlCommand("INSERT INTO [dbo].[LogAnalysis] (UserID, LoginTime, LoginDate, IpAddress , MacAddress , hostname) VALUES (@UserID, @LoginTime, @LoginDate , @IPAddress , @MACAddress , @HostName)", con);
-                cmd.Parameters.AddWithValue("@UserID", userID);
-                cmd.Parameters.AddWithValue("@LoginTime", loginTime);
-                cmd.Parameters.AddWithValue("@LoginDate", date.ToString());
-                cmd.Parameters.AddWithValue("@IPAddress", publicIP);
-                cmd.Parameters.AddWithValue("@MACAddress", publicMAC);
-                cmd.Parameters.AddWithValue("@HostName", currentHostname);
-                cmd.ExecuteNonQuery();
-
+                if (counter == 2)
+                {
+                    Console.WriteLine("Maximum amount of data entries in 30 minute span has been reached");
+                    canSave = false;
+                }
+                else
+                {
+                    Console.WriteLine("Proceeding with data storage");
+                    canSave = true;
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.ToString());
             }
             finally
             {
                 con.Close();
+
+
             }
+            return canSave;
+        }
+
+        private static string convertTime(double pastLoginTime)
+        {
+            double endResult = pastLoginTime + 0.30;
+            String time = endResult.ToString();
+            var data = time.Split('.');
+            string finaltime = null;
+            Console.WriteLine(endResult);
+            Console.WriteLine(data[1] + "Last");
+            if(Convert.ToDouble(data[1]) >= 60)
+            {
+                double firstSet = Convert.ToDouble(data[0]) + 1;
+                int secondSet = Convert.ToInt32(data[1]) - 60;
+                string secondSetStr = null;
+                if (secondSet < 10)
+                {
+                    secondSetStr = "0" + secondSet;
+                }
+                finaltime = firstSet + "." + secondSetStr;
+            }
+            else
+            {
+                pastLoginTime += 0.30;
+                finaltime = pastLoginTime.ToString();
+            }
+
+            return finaltime;
+
         }
 
         public static void saveFollowUp(string userID, string connectionString , string status)

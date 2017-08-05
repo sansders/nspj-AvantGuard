@@ -35,36 +35,36 @@ namespace NSPJProject
             InitializeComponent();
         }
 
-        private void saveDateTimeOfUser(string userID, string connectionString, string loginTime, string date, string publicIP, string publicMAC)
-        {
-            SqlConnection con;
-            SqlCommand cmd;
-            con = new SqlConnection(connectionString);
-            string currentHostname = System.Environment.MachineName.ToString();
-            con.Open();
-            try
-            {
+        //private void saveDateTimeOfUser(string userID, string connectionString, string loginTime, string date, string publicIP, string publicMAC)
+        //{
+        //    SqlConnection con;
+        //    SqlCommand cmd;
+        //    con = new SqlConnection(connectionString);
+        //    string currentHostname = System.Environment.MachineName.ToString();
+        //    con.Open();
+        //    try
+        //    {
 
 
-                cmd = new SqlCommand("INSERT INTO [dbo].[LogAnalysis] (UserID, LoginTime, LoginDate, IpAddress , MacAddress , hostname) VALUES (@UserID, @LoginTime, @LoginDate , @IPAddress , @MACAddress , @HostName)", con);
-                cmd.Parameters.AddWithValue("@UserID", userID);
-                cmd.Parameters.AddWithValue("@LoginTime", loginTime);
-                cmd.Parameters.AddWithValue("@LoginDate", date.ToString());
-                cmd.Parameters.AddWithValue("@IPAddress", publicIP);
-                cmd.Parameters.AddWithValue("@MACAddress", publicMAC);
-                cmd.Parameters.AddWithValue("@HostName", currentHostname);
-                cmd.ExecuteNonQuery();
+        //        cmd = new SqlCommand("INSERT INTO [dbo].[LogAnalysis] (UserID, LoginTime, LoginDate, IpAddress , MacAddress , hostname) VALUES (@UserID, @LoginTime, @LoginDate , @IPAddress , @MACAddress , @HostName)", con);
+        //        cmd.Parameters.AddWithValue("@UserID", userID);
+        //        cmd.Parameters.AddWithValue("@LoginTime", loginTime);
+        //        cmd.Parameters.AddWithValue("@LoginDate", date.ToString());
+        //        cmd.Parameters.AddWithValue("@IPAddress", publicIP);
+        //        cmd.Parameters.AddWithValue("@MACAddress", publicMAC);
+        //        cmd.Parameters.AddWithValue("@HostName", currentHostname);
+        //        cmd.ExecuteNonQuery();
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                con.Close();
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
+        //    finally
+        //    {
+        //        con.Close();
+        //    }
+        //}
 
         private void ForgotPassword3NextButton_Click(object sender, RoutedEventArgs e)
         {
@@ -80,7 +80,8 @@ namespace NSPJProject
                 string publicMAC = PredictionModel.getCurrentMAC();
                 Console.WriteLine(publicMAC + "HELLO");
 
-                saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
+                //Use the same class for saveDateTime Method - Justin Changed at 1:20 am on 6/8/2017
+                UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                 string exist = UserModel.UserModel.checkFollowUp(userID, connectionString);
 
                 Page cloud = new StartupPage();
