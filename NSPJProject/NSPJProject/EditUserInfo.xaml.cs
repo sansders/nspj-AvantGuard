@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cloud.StartupPage;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -47,8 +48,7 @@ namespace NSPJProject
                 con.Open();
 
                 UserModel.UserModel cm = UserModel.UserModel.retrieveUserFromDatabase("Demo1");
-                //cmd = new SqlCommand("select * from [dbo].[test] where UserID = '" + selected_UserID + "'", con);
-                cmd = new SqlCommand("select * from [dbo].[test] where UserID = 'Demo1'", con);
+                cmd = new SqlCommand("select * from [dbo].[test] where UserID = '" + selected_UserID + "'", con);
                 reader = cmd.ExecuteReader();
 
                 while (reader.Read())
@@ -645,6 +645,12 @@ namespace NSPJProject
                 MessageBox.Show(ex.ToString());
             }
             con.Close();
+        }
+
+        private void ConfirmAllChanges(object sender, RoutedEventArgs e)
+        {
+            Page cloud = new StartupPage();
+            this.NavigationService.Navigate(cloud);
         }
     }
 }

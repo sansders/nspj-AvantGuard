@@ -359,7 +359,7 @@
                             </StackPanel>
 
                             <Button Name="ConfirmEditProfile"
-                                        Content="Confirm Edit Profile Changes"
+                                        Content="Confirm"
                                         Width="auto"
                                         Foreground="#23aeff"
                                         Background="Transparent"
@@ -369,7 +369,17 @@
                                         FontFamily="Gulim" Click="ConfirmProfile"></Button>
 
                         </StackPanel>
-                        
+
+                        <Button Name="ConfirmChanges"
+                                        Content="Confirm All Changes"
+                                        Width="auto"
+                                        Foreground="#23aeff"
+                                        Background="Transparent"
+                                        BorderThickness="0 0 0 0"
+                                        FontSize="15"
+                                        FontWeight="Bold"
+                                        FontFamily="Gulim" Click="ConfirmAllChanges"></Button>
+
                         <!--<Button Name="ChangeInfoConfirmButton" 
                                 Content="Confirm"
                                 Foreground="#23aeff"
