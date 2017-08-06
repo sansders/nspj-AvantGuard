@@ -62,7 +62,7 @@ namespace Cloud.StartupPage
         string parent;
         string storage;
         string storage2;
-        string dtformat = "yyyy-MM-dd HH:mm:ss";
+        string dtformat = "yyyy-MM-dd HH:mm";
         DataTable dt = new DataTable();
         String currentPage = "";
 
@@ -88,8 +88,6 @@ namespace Cloud.StartupPage
 
             currentPage = "MyFolders";
 
-            cmbFontFamily.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
-            cmbFontSize.ItemsSource = new List<double>() { 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72 };
 
             inWhere.Text = currentPage;
 
@@ -593,7 +591,7 @@ namespace Cloud.StartupPage
                 newWindow.Title = "Authentication";
                 newWindow.Content = newFrame;
                 newFrame.NavigationService.Navigate(authentication);
-                newWindow.Show();
+                newWindow.ShowDialog();
                 if (IsWindowOpen<Window>("Authentication") == false)
                 {
                     MessageBox.Show("Testing");
@@ -652,11 +650,11 @@ namespace Cloud.StartupPage
 
         }
 
-        public static bool IsWindowOpen<T>(string name = "") where T : Window
+        public static bool IsWindowOpen<T>(string name = null) where T : Window
         {
             return string.IsNullOrEmpty(name)
                ? Application.Current.Windows.OfType<T>().Any()
-               : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
+               : Application.Current.Windows.OfType<T>().Any(w => w.Title.Equals(name));
         }
 
 
@@ -689,29 +687,54 @@ namespace Cloud.StartupPage
         {
             String selectedText = ((DataRowView)listView.SelectedItem)["Name"].ToString();
 
-            
-
             if (currentPage == "Bin")
             {
-                openAllConnections();
-                string sqlQuery1 = "delete from [dbo].[UserFiles1] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
-                SqlCommand cmd1 = new SqlCommand(sqlQuery1, con1);
-                string sqlQuery2 = "delete from [dbo].[UserFiles3] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
-                SqlCommand cmd2 = new SqlCommand(sqlQuery2, con2);
-                string sqlQuery3 = "delete from [dbo].[UserFiles2] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
-                SqlCommand cmd3 = new SqlCommand(sqlQuery3, con3);
+                string sqlQuery = "";
+                SqlCommand cmd;
+                string subject = "Authentication";
+                string subjectBody = "The code to do file access is ";
+                string email = currentUser.userEmail;
+                UserModel.UserModel.do2fa(subject, subjectBody, email);
+                Window newWindow = new Window();
+                Page authentication = new Authentication();
+                Frame newFrame = new Frame();
+                newWindow.Title = "Authentication";
+                newWindow.Content = newFrame;
+                newFrame.NavigationService.Navigate(authentication);
+                newWindow.Show();
 
-                cmd1.ExecuteNonQuery();
-                cmd2.ExecuteNonQuery();
-                cmd3.ExecuteNonQuery();
-                closeAllConnections();
-                sortBin();
-                openAllConnections();
-                sqlQuery1 = "delete from [dbo].[AccessControl] where FileName = '" + selectedText + "' and AccessBy = '" + currentUserName + "'";
-                cmd1 = new SqlCommand(sqlQuery1, con1);
+                if (IsWindowOpen<Window>("Authentication") == false)
+                {
+                    Console.WriteLine("CLOSED!!!!");
+                    MessageBox.Show("Testing");
+                    Boolean twoFAsucceed = UserModel.UserModel.twoFASucceed;
 
-                cmd1.ExecuteNonQuery();
-                closeAllConnections();
+                    if (twoFAsucceed == true)
+                    {
+                        Console.WriteLine("IT WORKS?????");
+                        openAllConnections();
+                        string sqlQuery1 = "delete from [dbo].[UserFiles1] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
+                        SqlCommand cmd1 = new SqlCommand(sqlQuery1, con1);
+                        string sqlQuery2 = "delete from [dbo].[UserFiles3] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
+                        SqlCommand cmd2 = new SqlCommand(sqlQuery2, con2);
+                        string sqlQuery3 = "delete from [dbo].[UserFiles2] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
+                        SqlCommand cmd3 = new SqlCommand(sqlQuery3, con3);
+
+                        cmd1.ExecuteNonQuery();
+                        cmd2.ExecuteNonQuery();
+                        cmd3.ExecuteNonQuery();
+                        closeAllConnections();
+                        sortBin();
+                        openAllConnections();
+                        sqlQuery1 = "delete from [dbo].[AccessControl] where FileName = '" + selectedText + "' and AccessBy = '" + currentUserName + "'";
+                        cmd1 = new SqlCommand(sqlQuery1, con1);
+
+                        cmd1.ExecuteNonQuery();
+                        closeAllConnections();
+
+                    }
+                }
+
             }
 
             else
@@ -800,19 +823,20 @@ namespace Cloud.StartupPage
                 cmd1 = new SqlCommand(sqlQuery1, con1);
                 reader = cmd1.ExecuteReader();
 
-                if (reader.Read() == true)
-                {
                     while (reader.Read())
                     {
                         string currentFile = reader.GetString(0);
+                    
                         list.Add(currentFile);
                     }
-                }
+                
 
                 dt.Clear();
 
                 for (int i = 0; i < list.Count; i++)
                 {
+                    closeAllConnections();
+                    openAllConnections();
                     sqlQuery = "select Name, sharedBy, lastModified, fileSize from [dbo].[UserFiles1] where Username = '" + currentUserName + "' and Name = '" + list[i] + "'";
                     cmd1 = new SqlCommand(sqlQuery, con1);
                     cmd1.ExecuteNonQuery();
@@ -827,7 +851,7 @@ namespace Cloud.StartupPage
                 closeAllConnections();
             }
 
-            if (ext == ".bmp")
+            else if (ext == ".bmp")
             {
                 openAllConnections();
 
@@ -860,8 +884,8 @@ namespace Cloud.StartupPage
 
                 closeAllConnections();
             }
-
-            if (ext == ".doc" || ext == ".docx")
+            
+            else if (ext == ".doc" || ext == ".docx")
             {
                 openAllConnections();
 
@@ -1453,67 +1477,6 @@ namespace Cloud.StartupPage
         }
 
 
-        //CREATE NEW FILE
-        private void newTextBtn_Click(object sender, RoutedEventArgs e)
-        {
-            NewFile.Visibility = System.Windows.Visibility.Visible;
-        }
-
-
-        private void OkButton_Click(object sender, RoutedEventArgs e)
-        {
-            NewFile.Visibility = System.Windows.Visibility.Collapsed;
-
-            
-
-            openAllConnections();
-
-            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.cst',  '" + currentUserName + "')");
-            cmd1 = new SqlCommand(sqlQuery1, con1);
-            cmd1.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
-            cmd1.Parameters["@Null"].Value = DBNull.Value;
-            string sqlQuery2 = ("insert into [dbo].[UserFiles3] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.cst',  '" + currentUserName + "')");
-            cmd2 = new SqlCommand(sqlQuery2, con2);
-            cmd2.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
-            cmd2.Parameters["@Null"].Value = DBNull.Value;
-            string sqlQuery3 = ("insert into [dbo].[UserFiles2] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.cst',  '" + currentUserName + "')");
-            cmd3 = new SqlCommand(sqlQuery3, con3);
-            cmd3.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
-            cmd3.Parameters["@Null"].Value = DBNull.Value;
-
-            cmd1.ExecuteNonQuery();
-            cmd2.ExecuteNonQuery();
-            cmd3.ExecuteNonQuery();
-
-            if (inWhere.Equals("My Folders") || inWhere.Equals("Recent") || inWhere.Equals("Shared") || inWhere.Equals("Favorites") || inWhere.Equals("Bin"))
-            {
-                sqlQuery1 = "insert into [dbo].[AccessControl] values('" + textbox1.Text + "', '', '" + currentUserName + "')";
-                cmd1 = new SqlCommand(sqlQuery1, con1);
-
-                cmd1.ExecuteNonQuery();
-            }
-
-            else if (!inWhere.Equals("My Folders") || !inWhere.Equals("Recent") || !inWhere.Equals("Shared") || !inWhere.Equals("Favorites") || !inWhere.Equals("Bin"))
-            {
-                sqlQuery1 = "insert into [dbo].[AccessControl] values('" + textbox1.Text + "', '" + inWhere.Text + "', '" + currentUserName + "')";
-                cmd1 = new SqlCommand(sqlQuery1, con1);
-
-                cmd1.ExecuteNonQuery();
-            }
-
-            fileName.Content = textbox1.Text;
-
-            textbox1.Text = String.Empty;
-
-            closeAllConnections();
-
-            listView.Visibility = System.Windows.Visibility.Collapsed;
-            mainToolBar.Visibility = System.Windows.Visibility.Collapsed;
-            rtbEditor.Visibility = System.Windows.Visibility.Visible;
-            secondToolBar.Visibility = System.Windows.Visibility.Visible;
-        }
-
-
         private void OkButton3_Click(object sender, RoutedEventArgs e)
         {
             string toCreate = textbox3.Text;
@@ -1782,12 +1745,6 @@ namespace Cloud.StartupPage
         }
 
 
-        //CANCEL 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            NewFile.Visibility = Visibility.Collapsed;
-            textbox1.Text = String.Empty;
-        }
 
 
         private void CancelButton2_Click(object sender, RoutedEventArgs e)
@@ -1803,160 +1760,8 @@ namespace Cloud.StartupPage
             textbox3.Text = String.Empty;
         }
 
-        //SET FONT FAMILY THINGS
-        private void cmbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cmbFontFamily.SelectedItem != null)
-                rtbEditor.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, cmbFontFamily.SelectedItem);
-        }
-
-
-        //SET FONT SIZE THINGS
-        private void cmbFontSize_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            rtbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, cmbFontSize.Text);
-        }
-
-
-        //TEXT EDITOR FUNCTIONS
-        private void rtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-            object temp = rtbEditor.Selection.GetPropertyValue(Inline.FontWeightProperty);
-            btnBold.IsChecked = (temp != DependencyProperty.UnsetValue) && (temp.Equals(FontWeights.Bold));
-            temp = rtbEditor.Selection.GetPropertyValue(Inline.FontStyleProperty);
-            btnItalic.IsChecked = (temp != DependencyProperty.UnsetValue) && (temp.Equals(FontStyles.Italic));
-            temp = rtbEditor.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
-            btnUnderline.IsChecked = (temp != DependencyProperty.UnsetValue) && (temp.Equals(TextDecorations.Underline));
-
-            temp = rtbEditor.Selection.GetPropertyValue(Inline.FontFamilyProperty);
-            cmbFontFamily.SelectedItem = temp;
-            temp = rtbEditor.Selection.GetPropertyValue(Inline.FontSizeProperty);
-            cmbFontSize.Text = temp.ToString();
-        }
-
-
-        //COLORPICKER
-        private void colorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
-        {
-            rtbEditor.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, (SolidColorBrush)(new BrushConverter().ConvertFrom(colorPicker.SelectedColor.ToString())));
-        }
-
-
-        //SAVE ANY CHANGES MADE TO DOCUMENT
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            String rtfText;
-            TextRange tr = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            using (MemoryStream ms = new MemoryStream())
-            {
-                tr.Save(ms, DataFormats.Rtf);
-                rtfText = Encoding.Unicode.GetString(ms.ToArray());
-            }
-
-            byte[] byteArray = Encoding.Unicode.GetBytes(rtfText);
-            
-            openAllConnections();
-
-            byte[] toSend1 = null;
-            byte[] toSend2 = null;
-            byte[] toSend3 = null;
-
-            if (byteArray.Length % 3 == 0)
-            {
-                int len = byteArray.Length / 3;
-                toSend1 = byteArray.Take(len).ToArray();
-                toSend2 = byteArray.Skip(len).Take(len).ToArray();
-                int len2 = len + len;
-                toSend3 = byteArray.Skip(len2).Take(len).ToArray();
-            }
-
-            else if (byteArray.Length % 3 == 1)
-            {
-                int len = (byteArray.Length / 3) + 1;
-                int len2 = byteArray.Length - len;
-                int len3 = len2 / 2;
-                toSend1 = byteArray.Take(len3).ToArray();
-                toSend2 = byteArray.Skip(len3).Take(len3).ToArray();
-                toSend3 = byteArray.Skip(len2).Take(len).ToArray();
-            }
-
-            else if (byteArray.Length % 3 == 2)
-            {
-                int len = (byteArray.Length / 3) + 2;
-                int len2 = byteArray.Length - len;
-                int len3 = len2 / 2;
-                toSend1 = byteArray.Take(len3).ToArray();
-                toSend2 = byteArray.Skip(len3).Take(len3).ToArray();
-                toSend3 = byteArray.Skip(len2).Take(len).ToArray();
-            }
-
-            string sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(byteArray.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + fileName.Content + "'";
-            cmd1 = new SqlCommand(sqlQuery1, con1);
-            SqlParameter para1 = new SqlParameter("@toSend1", toSend1);
-            cmd1.Parameters.Add(para1);
-            string sqlQuery2 = "update [dbo].[UserFiles3] set [File] = @toSend2, fileSize = '" + getFileSize(byteArray.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + fileName.Content + "'";
-            cmd2 = new SqlCommand(sqlQuery2, con2);
-            SqlParameter para2 = new SqlParameter("@toSend2", toSend2);
-            cmd2.Parameters.Add(para2);
-            string sqlQuery3 = "update [dbo].[UserFiles2] set [File] = @toSend3, fileSize = '" + getFileSize(byteArray.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + fileName.Content + "'";
-            cmd3 = new SqlCommand(sqlQuery3, con3);
-            SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
-            cmd3.Parameters.Add(para3);
-
-            cmd1.ExecuteNonQuery();
-            cmd2.ExecuteNonQuery();
-            cmd3.ExecuteNonQuery();
-
-            closeAllConnections();
-
-            MessageBox.Show("Save was done.");
-        }
-
-
-        //DOWNLOAD FILE AS MS WORD DOC
-        public void TestDownload(object sender, RoutedEventArgs e)
-        {
-            String theText = "";
-            String selectedText = ((DataRowView)listView.SelectedItem)["Name"].ToString();
-
-            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
-            object nullobject = System.Reflection.Missing.Value;
-            object start = 0;
-            Microsoft.Office.Interop.Word.Document doc = wordApp.Documents.Add(ref nullobject, ref nullobject, ref nullobject, ref nullobject);
-
-            openAllConnections();
-
-            string sqlQuery1 = "select [File] from [dbo].[UserFiles1] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
-            cmd1 = new SqlCommand(sqlQuery1, con1);
-            string sqlQuery2 = "select [File] from [dbo].[UserFiles3] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
-            cmd2 = new SqlCommand(sqlQuery2, con2);
-            string sqlQuery3 = "select [File] from [dbo].[UserFiles2] where Name = '" + selectedText + "' and Username = '" + currentUserName + "'";
-            cmd3 = new SqlCommand(sqlQuery3, con3);
-
-            SqlDataReader Reader1 = cmd1.ExecuteReader();
-            SqlDataReader Reader2 = cmd2.ExecuteReader();
-            SqlDataReader Reader3 = cmd3.ExecuteReader();
-
-            byte[] retrieve1 = ((byte[])Reader1[0]);
-            byte[] retrieve2 = ((byte[])Reader2[0]);
-            byte[] retrieve3 = ((byte[])Reader3[0]);
-
-            byte[] retrieve = retrieve1.Concat(retrieve3).Concat(retrieve2).ToArray();
-
-            theText = Encoding.Unicode.GetString(retrieve);
-
-            closeAllConnections();
-
-            Clipboard.SetText(theText, TextDataFormat.Rtf);
-            Microsoft.Office.Interop.Word.Range rng = doc.Range(ref start, ref nullobject);
-
-            wordApp.Selection.Paste();
-            String path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            object filename = path + @"\" + selectedText + ".doc";
-            doc.SaveAs2(filename);
-
-            MessageBox.Show("Downloaded.");
-        }
+       
+        
 
 
         public void createFolder(object sender, RoutedEventArgs e)
@@ -2557,8 +2362,7 @@ namespace Cloud.StartupPage
 
             listView.Visibility = Visibility.Visible;
             mainToolBar.Visibility = Visibility.Visible;
-            rtbEditor.Visibility = Visibility.Collapsed;
-            secondToolBar.Visibility = Visibility.Collapsed;
+
 
             currentPage = "MyFolders";
             inWhere.Text = currentPage;
@@ -2582,8 +2386,7 @@ namespace Cloud.StartupPage
 
             listView.Visibility = Visibility.Visible;
             mainToolBar.Visibility = Visibility.Visible;
-            rtbEditor.Visibility = Visibility.Collapsed;
-            secondToolBar.Visibility = Visibility.Collapsed;
+
 
             currentPage = "Recent";
             inWhere.Text = currentPage;
@@ -2605,12 +2408,11 @@ namespace Cloud.StartupPage
 
             listView.Visibility = Visibility.Visible;
             mainToolBar.Visibility = Visibility.Visible;
-            rtbEditor.Visibility = Visibility.Collapsed;
-            secondToolBar.Visibility = Visibility.Collapsed;
+
 
             currentPage = "Shared";
             inWhere.Text = currentPage;
-            sortNormally();
+            sortShared();
 
             MyFoldersButton.Background = (System.Windows.Media.Brush)(new BrushConverter().ConvertFrom("#8c9199"));
             RecentButton.Background = (System.Windows.Media.Brush)(new BrushConverter().ConvertFrom("#8c9199"));
@@ -2628,8 +2430,7 @@ namespace Cloud.StartupPage
 
             listView.Visibility = Visibility.Visible;
             mainToolBar.Visibility = Visibility.Visible;
-            rtbEditor.Visibility = Visibility.Collapsed;
-            secondToolBar.Visibility = Visibility.Collapsed;
+  
 
             currentPage = "Favorites";
             inWhere.Text = currentPage;
@@ -2650,8 +2451,7 @@ namespace Cloud.StartupPage
 
             listView.Visibility = Visibility.Visible;
             mainToolBar.Visibility = Visibility.Visible;
-            rtbEditor.Visibility = Visibility.Collapsed;
-            secondToolBar.Visibility = Visibility.Collapsed;
+
 
             currentPage = "Bin";
             inWhere.Text = currentPage;
@@ -2837,7 +2637,7 @@ namespace Cloud.StartupPage
         {
             openAllConnections();
 
-            string sqlQuery = "select Name, sharedBy, lastModified, fileSize from [dbo].[UserFiles1] where Username = '" + currentUserName + "' sharedBy <> '" + currentUserName + "'";
+            string sqlQuery = "select Name, sharedBy, lastModified, fileSize from [dbo].[UserFiles1] where Username = '" + currentUserName + "' and sharedBy <> '" + currentUserName + "'";
             cmd1 = new SqlCommand(sqlQuery, con1);
             cmd1.ExecuteNonQuery();
             SqlDataAdapter da = new SqlDataAdapter(cmd1);
