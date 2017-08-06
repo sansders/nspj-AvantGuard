@@ -102,7 +102,7 @@ namespace NSPJProject
                 }
                 PredictionModel.SessionRiskValue = riskLevelStatement;
                 UserModel.UserModel.twoFASucceed = true;
-                MessageBox.Show("Please Try Sharing Again");
+                
             }
             else
             {

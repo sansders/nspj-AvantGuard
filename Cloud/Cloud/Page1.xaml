@@ -153,7 +153,7 @@
                 </Button>
             </StackPanel>
             <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top" Width="525"/>
-            <TextBox Name="nameBox" HorizontalAlignment="Left" Height="16" Margin="395,13,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="70" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
+            <TextBox Name="nameBox" HorizontalAlignment="Left" Height="auto" Margin="422,16,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="93" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
             <Label HorizontalAlignment="Left" Margin="314,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.049,0.491"/>
         </Grid>
     </Viewbox>

@@ -37,7 +37,12 @@ namespace Layout.Upload
         public Page1()
         {
             InitializeComponent();
+            UserModel.UserModel cm = UserModel.UserModel.currentUserModel;
+            nameBox.Text = cm.userID;
         }
+
+        
+        
         SqlConnection con;
         SqlConnection con1;
         SqlConnection con2;
