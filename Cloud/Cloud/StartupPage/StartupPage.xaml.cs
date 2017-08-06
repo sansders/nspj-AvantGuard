@@ -732,7 +732,7 @@ namespace Cloud.StartupPage
             reader7.Read();
             string owner = reader7[0].ToString();
 
-
+            closeAllConnections();
             if (ext == ".fol")
             {
                 openAllConnections();
@@ -856,12 +856,16 @@ namespace Cloud.StartupPage
                 {
                     System.Windows.MessageBox.Show("Select owner's key path");
                     System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+                    fbd.ShowDialog();
                     string bigPath = fbd.SelectedPath + "\\" + owner;
 
                     //Gets IV & Encrypted Symmetric Key
                     byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
                     byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                    Console.WriteLine("owner is: "+ owner);
+                    Console.WriteLine(bigPath);
                     byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    Console.WriteLine("penisman2");
                     plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
                 }
                 File.WriteAllBytes("temp.doc", plainText);
