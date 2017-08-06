@@ -146,7 +146,7 @@
                     </Button.Style>
                 </Button>
             </StackPanel>
-            <TextBox Name="nameBox" IsReadOnly="True" HorizontalAlignment="Left" Height="24" Margin="428,10,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
+            <TextBox Name="nameBox" IsReadOnly="True" HorizontalAlignment="Left" Height="24" Margin="395,13,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
             <Label Content="Uploading File" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="214,42,221,213.2" Width="90"/>
 
             <fa:ImageAwesome x:Name="spinner" Icon="Spinner" Spin="True" SpinDuration="0.5" Margin="301,44,205,217.333"  />

@@ -6,26 +6,18 @@
       xmlns:local="clr-namespace:Layout.Upload"
       xmlns:fa="http://schemas.fontawesome.io/icons/"
       mc:Ignorable="d"
+      d:DesignHeight="300" d:DesignWidth="525"
       Title="Page1" Background="White">
     <Viewbox Stretch="UniformToFill">
         <Grid>
-
-            <Viewbox Margin="-7,-41,60,41" Stretch="UniformToFill">
-                <Grid Margin="60,30,-0.333,0" RenderTransformOrigin="0.592,0.546" HorizontalAlignment="Center" VerticalAlignment="Center" Height="162">
-                    <RichTextBox x:Name="userHashInput" HorizontalAlignment="Left" Height="23" Margin="99,72,0,0" VerticalAlignment="Top" Width="147" TextChanged="userHashInput_TextChanged">
-                        <FlowDocument/>
-                    </RichTextBox>
-                    <Button x:Name="uploadButton" Content="Upload" HorizontalAlignment="Left" Margin="114,112,0,0" VerticalAlignment="Top" Width="65" Height="22" Click="uploadButton_Click" Background="#FF26ADF9" Opacity="0.995" FontSize="10" FontWeight="Normal" Foreground="White" BorderBrush="#FF0079C0" />
-                    <Label Content="SHA-1 Hash:" HorizontalAlignment="Left" Margin="22,70,0,0" VerticalAlignment="Top" Height="34" Width="100" FontSize="11" FontWeight="Bold"/>
-
-
-                </Grid>
-            </Viewbox>
-
-
-            <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top" Width="520"/>
-            <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top"/>
-            <StackPanel HorizontalAlignment="Left" Margin="0,42,0,-0.2" VerticalAlignment="Top" Width="50" Background="#747577">
+            <StackPanel Orientation="Horizontal" Height="100" Width="231" Margin="30,0,0,0">
+                <Label Content="SHA-1 Hash:" HorizontalAlignment="Right" VerticalAlignment="Center" Height="24" Width="84" FontSize="11" FontWeight="Bold" Margin="0,38"/>
+                <RichTextBox x:Name="userHashInput" HorizontalAlignment="Right" Height="23" VerticalAlignment="Center" Width="147" TextChanged="userHashInput_TextChanged">
+                    <FlowDocument/>
+                </RichTextBox>
+            </StackPanel>
+            <Button x:Name="uploadButton" Content="Upload" HorizontalAlignment="Center" Margin="30,100,0,0" VerticalAlignment="Center" Width="65" Height="22" Click="uploadButton_Click" Background="#FF26ADF9" Opacity="0.995" FontSize="10" FontWeight="Normal" Foreground="White" BorderBrush="#FF0079C0" />
+            <StackPanel HorizontalAlignment="Left" Height="281" Margin="0,42,0,-0.2" VerticalAlignment="Top" Width="50" Background="#747577">
                 <Button x:Name="MyFoldersButton" Background="#23aeff" HorizontalAlignment="Left" Height="40" Width="40" FontFamily="Arial Black" Foreground="White" Margin="5,20,0,0" Click="MyFoldersButton_Click">
                     <StackPanel>
                         <fa:FontAwesome Icon="Folder"></fa:FontAwesome>
@@ -160,41 +152,9 @@
                     </Button.Style>
                 </Button>
             </StackPanel>
-            <Button fa:Awesome.Content="AngleDoubleLeft" HorizontalAlignment="Left" Height="28" Margin="5,7,0,0" VerticalAlignment="Top" Width="28" Click="Button_Click_6">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button fa:Awesome.Content="AngleDoubleRight" HorizontalAlignment="Left" Height="28" Margin="37,7,0,0" VerticalAlignment="Top" Width="28" Click="Button_Click_7">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button fa:Awesome.Content="Gear" HorizontalAlignment="Left" Height="28" Margin="69,7,0,0" VerticalAlignment="Top" Width="28" Click="changeSettings">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button fa:Awesome.Content="File" HorizontalAlignment="Left" Height="28" Margin="101,7,0,0" VerticalAlignment="Top" Width="28">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Ellipse Name="ellipse"  Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="35 " Margin="465,3,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
-            <TextBox Name="nameBox" HorizontalAlignment="Left" Height="16" Margin="383,14,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="70" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
+            <Rectangle Fill="#4d4f51" HorizontalAlignment="Left" Height="42" Stroke="Black" VerticalAlignment="Top" Width="525"/>
+            <TextBox Name="nameBox" HorizontalAlignment="Left" Height="16" Margin="395,13,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="70" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
             <Label HorizontalAlignment="Left" Margin="314,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.049,0.491"/>
-
-
-
-
         </Grid>
     </Viewbox>
 </Page>
