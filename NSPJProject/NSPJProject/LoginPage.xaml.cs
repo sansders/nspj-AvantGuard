@@ -61,7 +61,7 @@ namespace NSPJProject
 
             String allText = System.IO.File.ReadAllText(@"../../../../Resource/Algorithms/AlgorithmClass/ClassLibrary1/TextFile1.txt");
             string[][] myList = PredictionModel.readFromFile(allText);
-            string userID = "Justin";
+            string userID = "Demo2";
             string currentPublicIP = PredictionModel.getCurrentPublicIP();
             string macAddress = PredictionModel.getCurrentMAC();
             Console.WriteLine(macAddress);
@@ -72,9 +72,9 @@ namespace NSPJProject
                 new string[] { "131.23.244.105", "C00008", "4" } ,
                 new string[] { "147.120.34.99", "C00008", "1" } ,
                 new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { currentPublicIP, "D8000", "4" },
-                new string[] { currentPublicIP, macAddress, "4" },
-                new string[] { currentPublicIP, macAddress, "4" },
+                new string[] { "131.23.244.105", "D8000", "4" },
+                new string[] { "131.23.244.105", "D00008", "4" },
+                new string[] { "131.23.244.105", "D00008", "4" },
                 new string[] { "151.23.244.105", "C000324", "4" },
                 new string[] { "131.23.244.105", "D00008", "3" },
                 new string[] { "131.23.244.105", "D00008", "3" },
@@ -131,7 +131,7 @@ namespace NSPJProject
                 string ipAddress = ipAddressCollection[counter][0];
                 macAddress = ipAddressCollection[counter][1];
                 counter++;
-                //UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date , ipAddress , macAddress);
+                UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date , ipAddress , macAddress);
                 //deleteDateTimeOfUser(userID, connectionString, loginTime, date);
              
             }
@@ -349,6 +349,8 @@ namespace NSPJProject
                                     }
                                     PredictionModel.SessionRiskValue = riskStatementLevel;
                                     Console.WriteLine(riskStatement);
+                                    MessageBox.Show(riskStatement);
+
 
                                 }
 
@@ -437,6 +439,7 @@ namespace NSPJProject
                                     PredictionModel.SessionRiskValue = riskStatementLevel; 
                                     Console.WriteLine("The current Risk Level is " + riskLevel);
                                     Console.WriteLine(riskStatement);
+                                    MessageBox.Show(riskStatement);
 
 
                                 }

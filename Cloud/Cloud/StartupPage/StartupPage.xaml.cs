@@ -594,13 +594,13 @@ namespace Cloud.StartupPage
                 newWindow.ShowDialog();
                 if (IsWindowOpen<Window>("Authentication") == false)
                 {
-                    MessageBox.Show("Testing");
+                    
                     Boolean twoFAsucceed = UserModel.UserModel.twoFASucceed;
                     if (twoFAsucceed == true)
                     {
 
                         openAllConnections();
-                        MessageBox.Show("Helalscdlasd");
+                        
                         string sqlQuery1 = "select fileType from [dbo].[UserFiles1] where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
                         cmd1 = new SqlCommand(sqlQuery1, con1);
 

@@ -386,6 +386,7 @@ namespace UserModel
         {
 
             Boolean canSave = checkLastLogin(userID, connectionString, loginTime, date);
+            
             if (canSave == true)
             {
                 SqlConnection con;
