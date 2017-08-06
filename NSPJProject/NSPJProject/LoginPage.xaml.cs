@@ -158,6 +158,7 @@ namespace NSPJProject
                 {
                     //var message = Encoding.ASCII.GetBytes(strData.Insert(0, "026620758babadb008ee7b98e1bb07351f08d49228c15f6f31c4ee75cb9a26f5079b81c01f14f78cf5f9639e49d7319ee3c3fcc1f94e686b8d605c93f2ab9fb4"));
                     //byte[] currentHash = hashString.ComputeHash(message);
+                    ///currentHash = Encoding.ASCII.GetBytes(strData.Insert(2, "02662028c15f6f31c4758babadb008ee7b98e1bb07351f08d492ee75cb9a26f5079b81c01f14f78cf5f9639e49d7319ee3c3fcc1f94e686b8d605c93f2ab9fb4"));
 
                     currentHash = hashString.ComputeHash(currentHash);
                     Console.WriteLine(i + "round");

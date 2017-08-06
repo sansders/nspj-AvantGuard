@@ -296,7 +296,7 @@ namespace UserModel
             int randomNumber = rnd.Next(1000, 9999);
             string code = randomNumber.ToString();
             UserModel.twoFAcode = code;
-
+            Console.WriteLine(code);
             try
             {
                 SmtpClient client = new SmtpClient("smtp.gmail.com", 587);

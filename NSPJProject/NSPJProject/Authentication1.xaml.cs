@@ -24,7 +24,8 @@ namespace NSPJProject
     /// </summary>
     public partial class Authentication1 : Page
     {
-
+        SqlConnection con;
+        SqlCommand cmd;
         ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
         string connectionString = null;
         static int counter = 0;
@@ -84,10 +85,29 @@ namespace NSPJProject
                 UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                 string exist = UserModel.UserModel.checkFollowUp(userID, connectionString);
 
+                string selected_UserID = (App.Current as App).UserID;
+
+                try
+                {
+                    string connectionString = conSettings.ConnectionString;
+
+                    con = new SqlConnection(connectionString);
+                    con.Open();
+                    cmd = new SqlCommand("DELETE FROM[dbo].[FailedAttempt] where '" + selected_UserID + "'", con);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
+
                 Page cloud = new StartupPage();
                 this.NavigationService.Navigate(cloud);
-            }
 
+            }
             else
             {
                 MessageBox.Show("Invalid code! Please Try Again");
