@@ -59,82 +59,81 @@ namespace NSPJProject
 
 
 
-            String allText = System.IO.File.ReadAllText(@"../../../../Resource/Algorithms/AlgorithmClass/ClassLibrary1/TextFile1.txt");
-            string[][] myList = PredictionModel.readFromFile(allText);
-            string userID = "Demo2";
-            string currentPublicIP = PredictionModel.getCurrentPublicIP();
-            string macAddress = PredictionModel.getCurrentMAC();
-            Console.WriteLine(macAddress);
-            string date = PredictionModel.getCurrentDate();
-            string[][] ipAddressCollection =
-           {
-                new string[] { "131.23.244.105", "C00008", "4" } ,
-                new string[] { "131.23.244.105", "C00008", "4" } ,
-                new string[] { "147.120.34.99", "C00008", "1" } ,
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D8000", "4" },
-                new string[] { "131.23.244.105", "D00008", "4" },
-                new string[] { "131.23.244.105", "D00008", "4" },
-                new string[] { "151.23.244.105", "C000324", "4" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "151.23.244.105", "C000324", "4" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "151.23.244.105", "C000324", "4" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "151.23.244.105", "C000324", "4" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "151.23.244.105", "C000324", "4"},
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" },
-                new string[] { "131.23.244.105", "D00008", "3" }
-            };
+           // String allText = System.IO.File.ReadAllText(@"../../../../Resource/Algorithms/AlgorithmClass/ClassLibrary1/TextFile1.txt");
+           // string[][] myList = PredictionModel.readFromFile(allText);
+           // string userID = "Demo2";
+           // string currentPublicIP = PredictionModel.getCurrentPublicIP();
+           // string macAddress = PredictionModel.getCurrentMAC();
+           // Console.WriteLine(macAddress);
+           // string date = PredictionModel.getCurrentDate();
+           // string[][] ipAddressCollection =
+           //{
+           //     new string[] { "131.23.244.105", "C00008", "4" } ,
+           //     new string[] { "131.23.244.105", "C00008", "4" } ,
+           //     new string[] { "147.120.34.99", "C00008", "1" } ,
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D8000", "4" },
+           //     new string[] { "131.23.244.105", "D00008", "4" },
+           //     new string[] { "131.23.244.105", "D00008", "4" },
+           //     new string[] { "151.23.244.105", "C000324", "4" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "151.23.244.105", "C000324", "4" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "151.23.244.105", "C000324", "4" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "151.23.244.105", "C000324", "4" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "151.23.244.105", "C000324", "4"},
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" },
+           //     new string[] { "131.23.244.105", "D00008", "3" }
+           // };
 
            
-            int counter = 0;
-            Console.WriteLine(myList.Count());
-            Console.WriteLine(ipAddressCollection.Count());
-            foreach (var element in myList)
-            {
-                string loginTime = element[0];
-                date = element[1];
-                string ipAddress = ipAddressCollection[counter][0];
-                macAddress = ipAddressCollection[counter][1];
-                counter++;
+           // int counter = 0;
+           // Console.WriteLine(myList.Count());
+           // Console.WriteLine(ipAddressCollection.Count());
+           // foreach (var element in myList)
+           // {
+           //     string loginTime = element[0];
+           //     date = element[1];
+           //     string ipAddress = ipAddressCollection[counter][0];
+           //     macAddress = ipAddressCollection[counter][1];
+           //     counter++;
                 //UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date , ipAddress , macAddress);
                 //deleteDateTimeOfUser(userID, connectionString, loginTime, date);
              
-            }
             //string username = "trying";
             //deleteACertainUser(username, connectionString);
             //string test = "0";
