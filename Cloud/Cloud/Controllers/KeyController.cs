@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -19,9 +20,17 @@ namespace Layout.Controllers
             checkForKeys();
         }
 
+
+
+
         public static string bigPath = null;
         public static string currentUserName = UserModel.UserModel.currentUserID;
 
+
+
+
+
+        //Key + IV Creations
         public static void checkForKeys()
         {
             Console.WriteLine("Checking for keys...");
@@ -33,7 +42,7 @@ namespace Layout.Controllers
             string connectionString1 = conSettings.ConnectionString;
             con1 = new SqlConnection(connectionString1);
             con1.Open();
-            string sqlQuery1 = "SELECT keyPath FROM dbo.test WHERE UserID='"+currentUserName+"'";
+            string sqlQuery1 = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
             string sqlQuery2;
             cmd = new SqlCommand(sqlQuery1, con1);
             SqlDataReader DataRead1 = cmd.ExecuteReader();
@@ -42,7 +51,7 @@ namespace Layout.Controllers
             //Creates a FolderBrowserDialog which may or may not be used to create a new directory for key storage
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
- 
+
             if (DataRead1.Read())
             {
                 //If path to keys does not exist for the user, then create the path, the keys, and the IV
@@ -81,7 +90,7 @@ namespace Layout.Controllers
 
                 //If path already exists in the database, then just get it from there
                 else
-                {             
+                {
                     bigPath = DataRead1.GetString(0);
                     DataRead1.Close();
 
@@ -94,7 +103,7 @@ namespace Layout.Controllers
                         //Path selection
                         FolderBrowserDialog fbd1 = new FolderBrowserDialog();
                         fbd1.ShowDialog();
-                        bigPath = fbd1.SelectedPath+"\\"+currentUserName;
+                        bigPath = fbd1.SelectedPath + "\\" + currentUserName;
 
                         //Updates the key path for the user in Bryan's database
                         sqlQuery2 = "UPDATE dbo.test SET keyPath = @bigPath WHERE UserID='" + currentUserName + "'";
@@ -179,7 +188,7 @@ namespace Layout.Controllers
 
 
 
-
+        //Encryption + Decryption Methods
         public byte[] symmetricEncryption(byte[] plainText, byte[] Key, byte[] IV)
         {
             RijndaelManaged rm = null;
@@ -323,6 +332,91 @@ namespace Layout.Controllers
 
 
 
+        //For access controls
+
+        static ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+        static ConnectionStringSettings conSettings1 = ConfigurationManager.ConnectionStrings["connString1"];
+        static ConnectionStringSettings conSettings2 = ConfigurationManager.ConnectionStrings["connString2"];
+        static ConnectionStringSettings conSettings3 = ConfigurationManager.ConnectionStrings["connString3"];
+
+        static string connectionString = conSettings.ConnectionString;
+        static string connectionString1 = conSettings1.ConnectionString;
+        static string connectionString2 = conSettings2.ConnectionString;
+        static string connectionString3 = conSettings3.ConnectionString;
+
+        SqlConnection con = new SqlConnection(connectionString);
+        SqlConnection con1 = new SqlConnection(connectionString1);
+        SqlConnection con2 = new SqlConnection(connectionString2);
+        SqlConnection con3 = new SqlConnection(connectionString3);
+
+        private void openAllConnections()
+        {
+            if (con.State == ConnectionState.Closed)
+            {
+                con.Open();
+            }
+            if (con1.State == ConnectionState.Closed)
+            {
+                con1.Open();
+            }
+            if (con2.State == ConnectionState.Closed)
+            {
+                con2.Open();
+            }
+            if (con3.State == ConnectionState.Closed)
+            {
+                con3.Open();
+            }
+
+        }
+        private void closeAllConnections()
+        {
+            if (con.State == ConnectionState.Open)
+            {
+                con.Close();
+            }
+            if (con1.State == ConnectionState.Open)
+            {
+                con1.Close();
+            }
+            if (con2.State == ConnectionState.Open)
+            {
+                con2.Close();
+            }
+            if (con3.State == ConnectionState.Open)
+            {
+                con3.Close();
+            }
+        }
+        public byte[] sharedAsymmetricDecryption(byte[] encryptedSymmetricKeyBytes, string owner, string bigPath)
+        {
+
+
+            //Makes another csp thing with privateKey as input parameter
+            var csp = new RSACryptoServiceProvider();
+
+            //Converts Private key back from String object to var(?)           
+            //Gets a stream from the privateKey string
+            string privKeyReader = System.IO.File.ReadAllText(@bigPath + "\\privKey.txt");
+            var stringReader2 = new System.IO.StringReader(privKeyReader);
+            //Use a serializer
+            var xmlSeralize2 = new System.Xml.Serialization.XmlSerializer(typeof(RSAParameters));
+            //Gets the object back from the stream
+            var privKey = (RSAParameters)xmlSeralize2.Deserialize(stringReader2);
+
+            //Loads the Private Key
+            csp.ImportParameters(privKey);
+
+            //Decrypts the encrypted Symmetric Key
+            byte[] decryptedSymmetricKey = csp.Decrypt(encryptedSymmetricKeyBytes, false);
+
+            return decryptedSymmetricKey;
+        }
+
+
+
+
+
 
         //PROBLEM  : CANNOT CREATE MAIN METHOD TO TEST <SOLVED>
         //PROBLEM 2: NEW KEYS WILL BE GENERATED EACH TIME IT IS RUN, NEED TO CREATE A METHOD TO CHECK IF KEY-PAIR ALREADY EXISTS <SOLVED>
@@ -372,5 +466,11 @@ namespace Layout.Controllers
         // All key creation & encryption/decryption methods have been finalized.
         // I forsee some small errors here and there during integration but they won't be too hard to fix.
         // - Sean
+
+        // 6.8.2017
+        // Alas, there WERE some errors.
+        // Nothing too hard to fix though.
+        // I've created new methods to accomodate Asymmetric Decryption for Chester's Access Control feature.
+        // - Sean 
     }
 }

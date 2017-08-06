@@ -833,8 +833,7 @@ namespace Cloud.StartupPage
                 //Sean's Decryption Codes
 
                 byte[] plainText;
-
-                if (owner.Equals(currentUser))
+                if (owner.Equals(currentUserName))
                 {
                     sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
                     cmd = new SqlCommand(sqlQuery, con);
@@ -862,12 +861,12 @@ namespace Cloud.StartupPage
                     //Gets IV & Encrypted Symmetric Key
                     byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
                     byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
-                    Console.WriteLine("owner is: "+ owner);
-                    Console.WriteLine(bigPath);
-                    byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
-                    Console.WriteLine("penisman2");
+                    byte[] decryptedSymmetricKey = kc.sharedAsymmetricDecryption(encryptedSymmetricKey, owner, bigPath);
                     plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
                 }
+
+
+
                 File.WriteAllBytes("temp.doc", plainText);
                 Process process = new Process();
                 process.StartInfo.FileName = "temp.doc";
@@ -1003,23 +1002,44 @@ namespace Cloud.StartupPage
                 byte[] retrieve3 = ((byte[])Reader3[0]);
 
                 byte[] retrieve = retrieve1.Concat(retrieve2).Concat(retrieve3).ToArray();
-                
+
 
                 //Sean's Decryption Codes
-
-                sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
-                cmd = new SqlCommand(sqlQuery, con);
-                SqlDataReader DataRead1 = cmd.ExecuteReader();
-                string bigPath = null;
-                while (DataRead1.Read())
+                byte[] IV;
+                byte[] encryptedSymmetricKey;
+                byte[] decryptedSymmetricKey;
+                byte[] plainText;
+                if (owner.Equals(currentUserName))
                 {
-                    bigPath = DataRead1.GetString(0);
+                    sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                    cmd = new SqlCommand(sqlQuery, con);
+                    SqlDataReader DataRead1 = cmd.ExecuteReader();
+                    string bigPath = null;
+                    while (DataRead1.Read())
+                    {
+                        bigPath = DataRead1.GetString(0);
+                    }
+
+                    //Gets IV & Encrypted Symmetric Key
+                    IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
+                    encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                    decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
                 }
-                //Gets IV & Encrypted Symmetric Key
-                byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
-                byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
-                byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
-                byte[] plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
+
+                else
+                {
+                    System.Windows.MessageBox.Show("Select owner's key path");
+                    System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+                    fbd.ShowDialog();
+                    string bigPath = fbd.SelectedPath + "\\" + owner;
+
+                    //Gets IV & Encrypted Symmetric Key
+                    IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
+                    encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                    decryptedSymmetricKey = kc.sharedAsymmetricDecryption(encryptedSymmetricKey, owner, bigPath);
+                    plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
+                }
 
                 File.WriteAllBytes("temp.ppt", plainText);
                 Process process = new Process();
@@ -1043,7 +1063,8 @@ namespace Cloud.StartupPage
                     //Sean's encryption codes
                     sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
                     cmd = new SqlCommand(sqlQuery, con);
-                    DataRead1 = cmd.ExecuteReader();
+                    SqlDataReader DataRead1 = cmd.ExecuteReader();
+                    string bigPath = "";
                     while (DataRead1.Read())
                     {
                         bigPath = DataRead1.GetString(0);
@@ -1155,20 +1176,39 @@ namespace Cloud.StartupPage
 
                 //Sean's Decryption Codes
 
-                sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
-                cmd = new SqlCommand(sqlQuery, con);
-                SqlDataReader DataRead1 = cmd.ExecuteReader();
-                string bigPath = null;
-                while (DataRead1.Read())
+                byte[] plainText;
+                if (owner.Equals(currentUserName))
                 {
-                    bigPath = DataRead1.GetString(0);
+                    sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                    cmd = new SqlCommand(sqlQuery, con);
+                    SqlDataReader DataRead1 = cmd.ExecuteReader();
+                    string bigPath = null;
+                    while (DataRead1.Read())
+                    {
+                        bigPath = DataRead1.GetString(0);
+                    }
+
+                    //Gets IV & Encrypted Symmetric Key
+                    byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
+                    byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                    byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
                 }
 
-                //Gets IV & Encrypted Symmetric Key
-                byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
-                byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
-                byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
-                byte[] plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
+                else
+                {
+                    System.Windows.MessageBox.Show("Select owner's key path");
+                    System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+                    fbd.ShowDialog();
+                    string bigPath = fbd.SelectedPath + "\\" + owner;
+
+                    //Gets IV & Encrypted Symmetric Key
+                    byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
+                    byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                    byte[] decryptedSymmetricKey = kc.sharedAsymmetricDecryption(encryptedSymmetricKey, owner, bigPath);
+                    plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
+                }
+
 
                 File.WriteAllBytes("temp.xlsx", plainText);
                 Process process = new Process();
@@ -1192,18 +1232,19 @@ namespace Cloud.StartupPage
                     //Sean's encryption codes
                     sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
                     cmd = new SqlCommand(sqlQuery, con);
-                    DataRead1 = cmd.ExecuteReader();
+                    SqlDataReader DataRead1 = cmd.ExecuteReader();
+                    string bigPath = "";
                     while (DataRead1.Read())
                     {
                         bigPath = DataRead1.GetString(0);
                     }
 
-                    IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
+                    byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
                     Console.WriteLine("Gets bytes of IV");
-                    encryptedSymmetricKey = System.IO.File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                    byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
 
                     //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
-                    decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
                     //Encrypts plaintext with symmetric key
                     byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
 
