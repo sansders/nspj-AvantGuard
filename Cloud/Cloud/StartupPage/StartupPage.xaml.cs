@@ -649,7 +649,7 @@ namespace Cloud.StartupPage
                 closeAllConnections();
                 sortBin();
                 openAllConnections();
-                sqlQuery1 = "delete from [dbo].[AccessControl] where FileName = '" + selectedText + "'";
+                sqlQuery1 = "delete from [dbo].[AccessControl] where FileName = '" + selectedText + "' and AccessBy = '" + currentUserName + "'";
                 cmd1 = new SqlCommand(sqlQuery1, con1);
 
                 cmd1.ExecuteNonQuery();
@@ -1292,7 +1292,7 @@ namespace Cloud.StartupPage
                 closeAllConnections();
                 openAllConnections();
 
-                sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + toShare + "'. '" + storage + "', @toSend1, '" + getFileSize(retrieve.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + storage2 + "', '" + currentUserName + "')");
+                sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + toShare + "', '" + storage + "', @toSend1, '" + getFileSize(retrieve.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + storage2 + "', '" + currentUserName + "')");
                 cmd1 = new SqlCommand(sqlQuery1, con1);
                 SqlParameter para1 = new SqlParameter("@toSend1", retrieve1);
                 cmd1.Parameters.Add(para1);
@@ -1311,7 +1311,7 @@ namespace Cloud.StartupPage
 
                 closeAllConnections();
                 openAllConnections();
-                sqlQuery1 = "insert into [dbo].[AccessControl] values('" + storage + "', '', '" + toShare + "'";
+                sqlQuery1 = "insert into [dbo].[AccessControl] values('" + storage + "', '', '" + toShare + "')";
                 cmd1 = new SqlCommand(sqlQuery1, con1);
                 cmd1.ExecuteNonQuery();
                 closeAllConnections();
