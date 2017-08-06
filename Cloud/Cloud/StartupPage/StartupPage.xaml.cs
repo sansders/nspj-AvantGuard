@@ -2876,10 +2876,10 @@ namespace Cloud.StartupPage
 
         private void editProfile(object sender, MouseEventArgs e)
         {
-
+            this.NavigationService.Navigate(new Uri(@"EditUserInfo.xaml", UriKind.RelativeOrAbsolute));
         }
-        
-             private void moveTo(object sender, RoutedEventArgs e)
+
+        private void moveTo(object sender, RoutedEventArgs e)
         {
 
         }
