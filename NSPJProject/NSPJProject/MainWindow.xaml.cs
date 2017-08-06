@@ -27,8 +27,8 @@ namespace NSPJProject
         {
             InitializeComponent();
             //this.AddChild(new WpfApp1.ProfilePages.Page1());
-            //rootBox.Source = new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute);
-            rootBox.Source = new Uri(@"EditUserInfo.xaml" , UriKind.RelativeOrAbsolute);
+            rootBox.Source = new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute);
+            //rootBox.Source = new Uri(@"EditUserInfo.xaml" , UriKind.RelativeOrAbsolute);
             //CurrentPageModel currentModel = new CurrentPageModel();
             //Page currentPage = new WpfApp1.ProfilePages.Page1();
             //rootBox.NavigationService.Navigate(currentPage);
