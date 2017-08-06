@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NSPJProject"
         mc:Ignorable="d"
-       Title="MainWindow" Height="500" Width="500" WindowState="Maximized">
+       Title="MainWindow" Height="500" Width="500" ResizeMode="NoResize" WindowState="Maximized">
     <Frame x:Name="rootBox" NavigationUIVisibility="Hidden">
 
     </Frame>
