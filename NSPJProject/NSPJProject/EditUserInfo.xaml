@@ -5,11 +5,12 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:NSPJProject"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="300" d:DesignWidth="525"
       Title="EditUserInfo">
+   
     <Border>
-        <Grid Background="Black" Opacity="0.75">
-            <Border Background="#747577"
+        <Grid Background="White" Opacity="0.75">
+            <Border Background="White"
                     BorderBrush="Black"
                     BorderThickness="1"
                     CornerRadius="6"
@@ -174,7 +175,7 @@
                                        FontFamily="Gulim"
                                        FontWeight="Bold"
                                        FontSize="15"
-                                       Visibility="Hidden"></Label>
+                                       Visibility="Collapsed"></Label>
 
                                 <PasswordBox Name="ChangeInfoCurrentPassword"
                                              FontSize="10"
@@ -182,7 +183,7 @@
                                              Width="300"
                                              HorizontalAlignment="Left"
                                              Margin="0 -5 0 20 "
-                                             Visibility="Hidden">
+                                             Visibility="Collapsed">
                                 </PasswordBox>
 
                                 <Label Name="NewPasswordLabel" 
@@ -190,7 +191,7 @@
                                        FontFamily="Gulim"
                                        FontWeight="Bold"
                                        FontSize="15"
-                                       Visibility="Hidden"></Label>
+                                       Visibility="Collapsed"></Label>
 
                                     <PasswordBox Name="ChangeInfoNewPassword"
                                                  FontSize="10"
@@ -198,7 +199,7 @@
                                                  Width="300"
                                                  HorizontalAlignment="Left"
                                                  Margin="0 -5 0 20 "
-                                                 Visibility="Hidden">
+                                                 Visibility="Collapsed">
                                     </PasswordBox>
                                 
                                 <Label Name="ReNewPasswordLabel" 
@@ -206,7 +207,7 @@
                                        FontFamily="Gulim"
                                        FontWeight="Bold"
                                        FontSize="15"
-                                       Visibility="Hidden"></Label>
+                                       Visibility="Collapsed"></Label>
 
                                 <StackPanel Orientation="Horizontal">
                                     <PasswordBox Name="ChangeInfoReNewPassword"
@@ -215,7 +216,7 @@
                                                  Width="300"
                                                  HorizontalAlignment="Left"
                                                  Margin="0 -5 0 20 "
-                                                 Visibility="Hidden">
+                                                 Visibility="Collapsed">
                                     </PasswordBox>
 
                                     <Button Name="ChangePasswordButton"
@@ -226,21 +227,157 @@
                                         BorderThickness="0 0 0 0"
                                         FontSize="10"
                                         FontFamily="Gulim" 
-                                        Visibility="Hidden"
+                                        Visibility="Collapsed"
                                         Click="ChangePasswordButton_Click"></Button>
                                 </StackPanel>
                             </StackPanel>
+                            
+                            
 
                         </StackPanel>
                         
-                        <Button Name="ChangeInfoConfirmButton" 
+                            <!--Edit Profile-->
+                            <Button Name="EditProfileCreation"
+                                    Content="Edit Profile Creation Details"
+                                    FontFamily="Gulim"
+                                    FontWeight="Bold"
+                                    FontSize="15"
+                                    Background="Transparent"
+                                    BorderThickness="0 0 0 0"
+                                    HorizontalAlignment="Left"
+                                    Foreground="Black"
+                                    Opacity="0.75"
+                                    Margin="-9 0 0 0"
+                                    Click="EditProfileCreation_Click">
+                            </Button>
+                        <StackPanel x:Name="profilePanel"  Visibility="Collapsed">
+                            <Label Name="Profile1Question" 
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Height="auto"
+                                       Width="400"
+                                       Margin="0 10 0 20 "
+                                       Visibility="Collapsed"
+                                       >
+                                <Label.Content>
+                                    <AccessText TextWrapping="Wrap" Text="Q1: How long do you think you will stay logged in to the application on average?"/>
+                                </Label.Content>
+                            </Label>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <RadioButton x:Name ="option1a" GroupName="One"  Grid.Row="2" Content ="Less Than 15 Minutes" IsChecked="False" Visibility="Collapsed" Click="ToggleCheckOption1 " Style="{StaticResource choiceButtonDesign1}" RenderTransformOrigin="2.168,1.165"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <RadioButton x:Name ="option2a" GroupName="One" Grid.Row="2" Content="Around 30 Minutes" IsChecked="False" Visibility="Collapsed" Click="ToggleCheckOption1" Style="{StaticResource choiceButtonDesign1}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <RadioButton x:Name ="option3a" GroupName="One" Grid.Row="2" Content="More than an Hour" IsChecked="False" Visibility="Collapsed" Click="ToggleCheckOption1 " Style="{StaticResource choiceButtonDesign1}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <RadioButton x:Name ="option4a" GroupName="One" Grid.Row="2" Content="For as long as my workstation is operational" IsChecked="False"  Visibility="Collapsed" Click="ToggleCheckOption1" Style="{StaticResource choiceButtonDesign1}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                            </StackPanel>
+
+                            <Label Name="Profile2Question" 
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Height="auto"
+                                       Width="400"
+                                       Margin="0 10 0 20 "
+                                       Visibility="Collapsed"
+                                       >
+                                <Label.Content>
+                                    <AccessText TextWrapping="Wrap" Text="Q2: On Average, how often do you log out of your account?"/>
+                                </Label.Content>
+                            </Label>
+
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <RadioButton x:Name="option1b" GroupName="Two" Grid.Row="2" Content ="Everytime" IsChecked="False"  Visibility="Collapsed" Click="ToggleCheckOption2" Style="{StaticResource choiceButtonDesign1}" RenderTransformOrigin="2.168,1.165"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <RadioButton x:Name="option2b" GroupName="Two" Grid.Row="2" Content="Most of the time" IsChecked="False" Visibility="Collapsed" Click="ToggleCheckOption2" Style="{StaticResource choiceButtonDesign1}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <RadioButton x:Name="option3b" GroupName="Two" Grid.Row="2" Content="Sometimes" IsChecked="False" Visibility="Collapsed" Click="ToggleCheckOption2" Style="{StaticResource choiceButtonDesign1}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <RadioButton x:Name="option4b" GroupName="Two" Grid.Row="2" Content="Not to sure / Never " IsChecked="False" Visibility="Collapsed" Click="ToggleCheckOption2" Style="{StaticResource choiceButtonDesign1}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                            </StackPanel>
+
+                            <Label Name="Profile3Question" 
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Height="auto"
+                                       Width="400"
+                                       Margin="0 10 0 20 "
+                                       Visibility="Collapsed"
+                                       >
+                                <Label.Content>
+                                    <AccessText TextWrapping="Wrap" Text="Q3: Is your current computer the primary workstation in which you will access this application most of the time?"/>
+                                </Label.Content>
+                            </Label>
+
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <RadioButton x:Name="option1c" GroupName="Three" Grid.Row="2" Content ="Yes" IsChecked="False" Visibility="Collapsed" Click="ToggleCheckOption3" Style="{StaticResource choiceButtonDesign1}" RenderTransformOrigin="2.168,1.165"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <RadioButton x:Name="option2c" GroupName="Three" Grid.Row="2" Content="No" IsChecked="False" Visibility="Collapsed" Click="ToggleCheckOption3" Style="{StaticResource choiceButtonDesign1}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <RadioButton x:Name="option3c" GroupName="Three" Grid.Row="2" Content="Maybe" IsChecked="False"  Visibility="Collapsed" Click="ToggleCheckOption3" Style="{StaticResource choiceButtonDesign1}"  RenderTransformOrigin="2.168,1.165"></RadioButton>
+                            </StackPanel>
+
+                            <Label Name="Profile4Question" 
+                                       FontFamily="Gulim"
+                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       Height="auto"
+                                       Width="400"
+                                       Margin="0 10 0 20 "
+                                       Visibility="Collapsed"
+                                       >
+                                <Label.Content>
+                                    <AccessText TextWrapping="Wrap" Text="Q4: What time of the day will you be accessing this application usually?"/>
+                                </Label.Content>
+                            </Label>
+
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <CheckBox x:Name="option1d" Grid.Row="2" Content ="Early Morning (12am - 6am)" IsChecked="False" Click="ToggleCheckOption4" Style="{StaticResource checkButtonDesign1}" RenderTransformOrigin="2.168,1.165" Visibility="Collapsed"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <CheckBox x:Name="option2d" Grid.Row="2" Content="Morning (6am - 12pm)" IsChecked="False" Click="ToggleCheckOption4" Style="{StaticResource checkButtonDesign1}"  RenderTransformOrigin="2.168,1.165" Visibility="Collapsed"></CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <CheckBox x:Name="option3d" Grid.Row="2" Content="Afternoon (12pm-6pm)" IsChecked="False" Click="ToggleCheckOption4" Style="{StaticResource checkButtonDesign1}"  RenderTransformOrigin="2.168,1.165" Visibility="Collapsed"></CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <CheckBox x:Name="option4d" Grid.Row="2" Content="Night (6pm-12am)" IsChecked="False" Click="ToggleCheckOption4" Style="{StaticResource checkButtonDesign1}"  RenderTransformOrigin="2.168,1.165" Visibility="Collapsed"></CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="30">
+                                <CheckBox  x:Name="option5d" Grid.Row="2" Content="Anytime of the day" IsChecked="False" Click="ToggleCheckOption4" Style="{StaticResource checkButtonDesign1}"  RenderTransformOrigin="2.168,1.165" Visibility="Collapsed"></CheckBox>
+                            </StackPanel>
+
+                            <Button Name="ConfirmEditProfile"
+                                        Content="Confirm Edit Profile Changes"
+                                        Width="auto"
+                                        Foreground="#23aeff"
+                                        Background="Transparent"
+                                        BorderThickness="0 0 0 0"
+                                        FontSize="15"
+                                        FontWeight="Bold"
+                                        FontFamily="Gulim" Click="ConfirmProfile"></Button>
+
+                        </StackPanel>
+                        
+                        <!--<Button Name="ChangeInfoConfirmButton" 
                                 Content="Confirm"
                                 Foreground="#23aeff"
                                 Background="Transparent"
                                 BorderThickness="0 0 0 0"
                                 FontSize="20"
                                 FontFamily="Gulim"
-                                Click="ChangeInfoConfirmButton_Click"></Button>
+                                Click="ChangeInfoConfirmButton_Click"></Button>-->
                       
                     </StackPanel>
                 </ScrollViewer>
@@ -250,4 +387,5 @@
             </Border>
         </Grid>
     </Border>
+ 
 </Page>
