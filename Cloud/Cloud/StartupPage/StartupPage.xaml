@@ -147,36 +147,8 @@
                     </Button.Style>
                 </Button>
             </StackPanel>
-            <Button fa:Awesome.Content="AngleDoubleLeft" HorizontalAlignment="Left" Height="28" Margin="5,7,0,0" VerticalAlignment="Top" Width="28" Click="Button_Click_6">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button fa:Awesome.Content="AngleDoubleRight" HorizontalAlignment="Left" Height="28" Margin="37,7,0,0" VerticalAlignment="Top" Width="28" Click="Button_Click_7">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button fa:Awesome.Content="Gear" HorizontalAlignment="Left" Height="28" Margin="69,7,0,0" VerticalAlignment="Top" Width="28" Click="changeSettings">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button fa:Awesome.Content="File" HorizontalAlignment="Left" Height="28" Margin="101,7,0,0" VerticalAlignment="Top" Width="28">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
             <Ellipse Name="ellipse"  Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="35 " Margin="465,3,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
-            <TextBox Name="nameBox" HorizontalAlignment="Left" Height="31" Margin="375,11,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="85" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
+            <TextBox Name="nameBox" IsReadOnly="True" MouseDoubleClick="editProfile" HorizontalAlignment="Left" Height="16" Margin="376,13,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="85" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
             <Grid HorizontalAlignment="Left" Height="281" Margin="50,42,0,-0.2" VerticalAlignment="Top" Width="470">
                 <ToolBar Visibility="Collapsed" Name="secondToolBar"  VerticalAlignment="Top" HorizontalAlignment="Left" Height="35" Width="470">
                     <Label x:Name="fileName" Width="120" FontSize="12"/>

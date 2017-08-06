@@ -407,6 +407,7 @@ namespace UserModel
             SqlCommand cmd;
             SqlDataReader reader;
             Boolean canSave = true;
+            Console.WriteLine(connectionString);
             List<String> loginTimeList = new List<string>();
             con = new SqlConnection(connectionString);
             // string currentHostname = System.Environment.MachineName.ToString();
