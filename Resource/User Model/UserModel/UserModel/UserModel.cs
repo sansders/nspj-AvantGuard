@@ -30,6 +30,8 @@ namespace UserModel
         public static String _twoFACode;
         public static UserModel _currentUserModel;
         public static string _currentUserID;
+        public static string _currentUserLogInTime;
+        public static string _currentUserLogInDate;
         public UserModel()
         {
 
@@ -166,6 +168,20 @@ namespace UserModel
             get { return _currentUserID; }
             set { _currentUserID = value; }
         }
+
+        public static string currentUserTime
+        {
+            get { return _currentUserLogInTime; }
+            set { _currentUserLogInTime = value; }
+        }
+
+        public static string currentUserDate
+        {
+            get { return _currentUserLogInDate; }
+            set { _currentUserLogInDate = value; }
+        }
+
+
 
         public static string twoFAcode
         {

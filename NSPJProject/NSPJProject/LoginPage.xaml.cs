@@ -324,6 +324,8 @@ namespace NSPJProject
                                         UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                                         MessageBox.Show("Entry Saved");
                                         riskLevelStatement = "Medium";
+                                        UserModel.UserModel.currentUserTime = loginTime;
+                                        UserModel.UserModel.currentUserDate = date; 
                                         //UserModel.UserModel.deleteDateTimeOfUser(userID, connectionString, loginTime, date);
                                         //MessageBox.Show("Entry Deleted");
                                         this.NavigationService.Navigate(cloud);
@@ -412,6 +414,8 @@ namespace NSPJProject
                                         //MessageBox.Show("Entry Deleted");
                                         this.NavigationService.Navigate(cloud);
                                         riskLevelStatement = "Medium";
+                                        UserModel.UserModel.currentUserTime = loginTime;
+                                        UserModel.UserModel.currentUserDate = date;
                                         //Remove Access Control 
 
                                     }
