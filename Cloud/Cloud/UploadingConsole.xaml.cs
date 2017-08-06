@@ -57,7 +57,9 @@ namespace Layout.Upload
         public Page2()
         {
 
-
+            byte[] toSend1 = null;
+            byte[] toSend2 = null; 
+            byte[] toSend3 = null;
 
             InitializeComponent();
             //Added this
@@ -78,11 +80,34 @@ namespace Layout.Upload
 
             nameBox.Text = id;
 
-            int len = fileBytes.Length / 3;
-            byte[] toSend1 = fileBytes.Take(len).ToArray();
-            byte[] toSend2 = fileBytes.Skip(len).Take(len).ToArray();
-            int len2 = len + len;
-            byte[] toSend3 = fileBytes.Skip(len2).Take(len).ToArray();
+            if (fileBytes.Length % 3 == 0)
+            {
+                int len = fileBytes.Length / 3;
+                toSend1 = fileBytes.Take(len).ToArray();
+                toSend2 = fileBytes.Skip(len).Take(len).ToArray();
+                int len2 = len + len;
+                toSend3 = fileBytes.Skip(len2).Take(len).ToArray();
+            }
+
+            else if (fileBytes.Length % 3 == 1) 
+            {
+                int len = (fileBytes.Length / 3) + 1;
+                int len2 = fileBytes.Length - len;
+                int len3 = len2 / 2;
+                toSend1 = fileBytes.Take(len3).ToArray();
+                toSend2 = fileBytes.Skip(len3).Take(len3).ToArray();
+                toSend3 = fileBytes.Skip(len2).Take(len).ToArray();
+            }
+            
+            else if (fileBytes.Length % 3 == 2)
+            {
+                int len = (fileBytes.Length / 3) + 2;
+                int len2 = fileBytes.Length - len;
+                int len3 = len2 / 2;
+                toSend1 = fileBytes.Take(len3).ToArray();
+                toSend2 = fileBytes.Skip(len3).Take(len3).ToArray();
+                toSend3 = fileBytes.Skip(len2).Take(len).ToArray();
+            }
 
             openAllConnections();
             //loading.Content = "33%";

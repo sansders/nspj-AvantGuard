@@ -173,11 +173,38 @@ namespace Cloud.StartupPage
                             //Encrypts plaintext with symmetric key
                             byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
 
-                            int len = cipherText.Length / 3;
-                            byte[] toSend1 = cipherText.Take(len).ToArray();
-                            byte[] toSend2 = cipherText.Skip(len).Take(len).ToArray();
-                            int len2 = len + len;
-                            byte[] toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                            byte[] toSend1 = null;
+                            byte[] toSend2 = null;
+                            byte[] toSend3 = null;
+
+                            if (cipherText.Length % 3 == 0)
+                            {
+                                int len = cipherText.Length / 3;
+                                toSend1 = cipherText.Take(len).ToArray();
+                                toSend2 = cipherText.Skip(len).Take(len).ToArray();
+                                int len2 = len + len;
+                                toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                            }
+
+                            else if (cipherText.Length % 3 == 1)
+                            {
+                                int len = (cipherText.Length / 3) + 1;
+                                int len2 = cipherText.Length - len;
+                                int len3 = len2 / 2;
+                                toSend1 = cipherText.Take(len3).ToArray();
+                                toSend2 = cipherText.Skip(len3).Take(len3).ToArray();
+                                toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                            }
+
+                            else if (cipherText.Length % 3 == 2)
+                            {
+                                int len = (cipherText.Length / 3) + 2;
+                                int len2 = cipherText.Length - len;
+                                int len3 = len2 / 2;
+                                toSend1 = cipherText.Take(len3).ToArray();
+                                toSend2 = cipherText.Skip(len3).Take(len3).ToArray();
+                                toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                            }
 
                             String sqlQuery1 = ("update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + filename + "'");
                             cmd1 = new SqlCommand(sqlQuery1, con1);
@@ -192,11 +219,15 @@ namespace Cloud.StartupPage
                             SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
                             cmd3.Parameters.Add(para3);
 
+                            MessageBox.Show("Saving, please don't close...");
+
                             cmd1.ExecuteNonQuery();
                             cmd2.ExecuteNonQuery();
                             cmd3.ExecuteNonQuery();
 
                             File.Delete("temp.ppt");
+
+                            MessageBox.Show("Saved.");
                         };
                     }
 
@@ -259,11 +290,38 @@ namespace Cloud.StartupPage
                             //Encrypts plaintext with symmetric key
                             byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
 
-                            int len = cipherText.Length / 3;
-                            byte[] toSend1 = cipherText.Take(len).ToArray();
-                            byte[] toSend2 = cipherText.Skip(len).Take(len).ToArray();
-                            int len2 = len + len;
-                            byte[] toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                            byte[] toSend1 = null;
+                            byte[] toSend2 = null;
+                            byte[] toSend3 = null;
+
+                            if (cipherText.Length % 3 == 0)
+                            {
+                                int len = cipherText.Length / 3;
+                                toSend1 = cipherText.Take(len).ToArray();
+                                toSend2 = cipherText.Skip(len).Take(len).ToArray();
+                                int len2 = len + len;
+                                toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                            }
+
+                            else if (cipherText.Length % 3 == 1)
+                            {
+                                int len = (cipherText.Length / 3) + 1;
+                                int len2 = cipherText.Length - len;
+                                int len3 = len2 / 2;
+                                toSend1 = cipherText.Take(len3).ToArray();
+                                toSend2 = cipherText.Skip(len3).Take(len3).ToArray();
+                                toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                            }
+
+                            else if (cipherText.Length % 3 == 2)
+                            {
+                                int len = (cipherText.Length / 3) + 2;
+                                int len2 = cipherText.Length - len;
+                                int len3 = len2 / 2;
+                                toSend1 = cipherText.Take(len3).ToArray();
+                                toSend2 = cipherText.Skip(len3).Take(len3).ToArray();
+                                toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                            }
 
                             String sqlQuery1 = ("update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + filename + "'");
                             cmd1 = new SqlCommand(sqlQuery1, con1);
@@ -278,11 +336,15 @@ namespace Cloud.StartupPage
                             SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
                             cmd3.Parameters.Add(para3);
 
+                            MessageBox.Show("Saving, please don't close...");
+
                             cmd1.ExecuteNonQuery();
                             cmd2.ExecuteNonQuery();
                             cmd3.ExecuteNonQuery();
 
                             File.Delete("temp.ppt");
+
+                            MessageBox.Show("Saved.");
                         };
                     }
 
@@ -347,11 +409,38 @@ namespace Cloud.StartupPage
                             //Encrypts plaintext with symmetric key
                             byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
 
-                            int len = cipherText.Length / 3;
-                            byte[] toSend1 = cipherText.Take(len).ToArray();
-                            byte[] toSend2 = cipherText.Skip(len).Take(len).ToArray();
-                            int len2 = len + len;
-                            byte[] toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                            byte[] toSend1 = null;
+                            byte[] toSend2 = null;
+                            byte[] toSend3 = null;
+
+                            if (cipherText.Length % 3 == 0)
+                            {
+                                int len = cipherText.Length / 3;
+                                toSend1 = cipherText.Take(len).ToArray();
+                                toSend2 = cipherText.Skip(len).Take(len).ToArray();
+                                int len2 = len + len;
+                                toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                            }
+
+                            else if (cipherText.Length % 3 == 1)
+                            {
+                                int len = (cipherText.Length / 3) + 1;
+                                int len2 = cipherText.Length - len;
+                                int len3 = len2 / 2;
+                                toSend1 = cipherText.Take(len3).ToArray();
+                                toSend2 = cipherText.Skip(len3).Take(len3).ToArray();
+                                toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                            }
+
+                            else if (cipherText.Length % 3 == 2)
+                            {
+                                int len = (cipherText.Length / 3) + 2;
+                                int len2 = cipherText.Length - len;
+                                int len3 = len2 / 2;
+                                toSend1 = cipherText.Take(len3).ToArray();
+                                toSend2 = cipherText.Skip(len3).Take(len3).ToArray();
+                                toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                            }
 
                             String sqlQuery1 = ("update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + filename + "'");
                             cmd1 = new SqlCommand(sqlQuery1, con1);
@@ -366,11 +455,15 @@ namespace Cloud.StartupPage
                             SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
                             cmd3.Parameters.Add(para3);
 
+                            MessageBox.Show("Saving, please don't close...");
+
                             cmd1.ExecuteNonQuery();
                             cmd2.ExecuteNonQuery();
                             cmd3.ExecuteNonQuery();
 
                             File.Delete("temp.ppt");
+
+                            MessageBox.Show("Saved.");
                         };
                     }
                     
@@ -467,7 +560,7 @@ namespace Cloud.StartupPage
 
             openAllConnections();
 
-            string sqlQuery1 = "select fileType from [dbo].[UserFiles1] where where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
+            string sqlQuery1 = "select fileType from [dbo].[UserFiles1] where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
             cmd1 = new SqlCommand(sqlQuery1, con1);
 
             SqlDataReader reader1 = cmd1.ExecuteReader();
@@ -738,6 +831,8 @@ namespace Cloud.StartupPage
                         }
                     }
 
+                    openAllConnections();
+
                     //Sean's encryption codes
                     sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
                     cmd = new SqlCommand(sqlQuery, con);
@@ -756,30 +851,62 @@ namespace Cloud.StartupPage
                     //Encrypts plaintext with symmetric key
                     byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
 
-                    int len = file.Length / 3;
-                    byte[] toSend1 = file.Take(len).ToArray();
-                    byte[] toSend2 = file.Skip(len).Take(len).ToArray();
-                    int len2 = len + len;
-                    byte[] toSend3 = file.Skip(len2).Take(len).ToArray();
+                    byte[] toSend1 = null;
+                    byte[] toSend2 = null;
+                    byte[] toSend3 = null;
+
+                    if (cipherText.Length % 3 == 0)
+                    {
+                        int len = cipherText.Length / 3;
+                        toSend1 = cipherText.Take(len).ToArray();
+                        toSend2 = cipherText.Skip(len).Take(len).ToArray();
+                        int len2 = len + len;
+                        toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                    }
+
+                    else if (cipherText.Length % 3 == 1)
+                    {
+                        int len = (cipherText.Length / 3) + 1;
+                        int len2 = cipherText.Length - len;
+                        int len3 = len2 / 2;
+                        toSend1 = cipherText.Take(len3).ToArray();
+                        toSend2 = cipherText.Skip(len3).Take(len3).ToArray();
+                        toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                    }
+
+                    else if (cipherText.Length % 3 == 2)
+                    {
+                        int len = (cipherText.Length / 3) + 2;
+                        int len2 = cipherText.Length - len;
+                        int len3 = len2 / 2;
+                        toSend1 = cipherText.Take(len3).ToArray();
+                        toSend2 = cipherText.Skip(len3).Take(len3).ToArray();
+                        toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                    }
 
                     sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
                     cmd1 = new SqlCommand(sqlQuery1, con1);
                     SqlParameter para1 = new SqlParameter("@toSend1", toSend1);
                     cmd1.Parameters.Add(para1);
-                    sqlQuery2 = "update [dbo].[UserFiles2] set [File] = @toSend3, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
+                    sqlQuery2 = "update [dbo].[UserFiles3] set [File] = @toSend3, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
                     cmd2 = new SqlCommand(sqlQuery2, con2);
                     SqlParameter para2 = new SqlParameter("@toSend3", toSend2);
                     cmd2.Parameters.Add(para2);
-                    sqlQuery3 = "update [dbo].[UserFiles3] set [File] = @toSend2, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
+                    sqlQuery3 = "update [dbo].[UserFiles2] set [File] = @toSend2, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
                     cmd3 = new SqlCommand(sqlQuery3, con3);
                     SqlParameter para3 = new SqlParameter("@toSend2", toSend3);
                     cmd3.Parameters.Add(para3);
+
+                    MessageBox.Show("Saving, please don't close...");
 
                     cmd1.ExecuteNonQuery();
                     cmd2.ExecuteNonQuery();
                     cmd3.ExecuteNonQuery();
 
                     File.Delete("temp.doc");
+
+                    MessageBox.Show("Saved.");
+                    closeAllConnections();
                 };
             
                 closeAllConnections();
@@ -867,11 +994,38 @@ namespace Cloud.StartupPage
                     //Encrypts plaintext with symmetric key
                     byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
 
-                    int len = file.Length / 3;
-                    byte[] toSend1 = file.Take(len).ToArray();
-                    byte[] toSend2 = file.Skip(len).Take(len).ToArray();
-                    int len2 = len + len;
-                    byte[] toSend3 = file.Skip(len2).Take(len).ToArray();
+                    byte[] toSend1 = null;
+                    byte[] toSend2 = null;
+                    byte[] toSend3 = null;
+
+                    if (cipherText.Length % 3 == 0)
+                    {
+                        int len = cipherText.Length / 3;
+                        toSend1 = cipherText.Take(len).ToArray();
+                        toSend2 = cipherText.Skip(len).Take(len).ToArray();
+                        int len2 = len + len;
+                        toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                    }
+
+                    else if (cipherText.Length % 3 == 1)
+                    {
+                        int len = (cipherText.Length / 3) + 1;
+                        int len2 = cipherText.Length - len;
+                        int len3 = len2 / 2;
+                        toSend1 = cipherText.Take(len3).ToArray();
+                        toSend2 = cipherText.Skip(len3).Take(len3).ToArray();
+                        toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                    }
+
+                    else if (cipherText.Length % 3 == 2)
+                    {
+                        int len = (cipherText.Length / 3) + 2;
+                        int len2 = cipherText.Length - len;
+                        int len3 = len2 / 2;
+                        toSend1 = cipherText.Take(len3).ToArray();
+                        toSend2 = cipherText.Skip(len3).Take(len3).ToArray();
+                        toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                    }
 
                     sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
                     cmd1 = new SqlCommand(sqlQuery1, con1);
@@ -886,6 +1040,8 @@ namespace Cloud.StartupPage
                     SqlParameter para3 = new SqlParameter("@toSend2", toSend3);
                     cmd3.Parameters.Add(para3);
 
+                    MessageBox.Show("Saving, please don't close...");
+
                     cmd1.ExecuteNonQuery();
                     cmd2.ExecuteNonQuery();
                     cmd3.ExecuteNonQuery();
@@ -893,6 +1049,8 @@ namespace Cloud.StartupPage
                     closeAllConnections();
 
                     File.Delete("temp.ppt");
+
+                    MessageBox.Show("Saved.");
                 };
                 closeAllConnections();
             }   
@@ -977,11 +1135,38 @@ namespace Cloud.StartupPage
                     //Encrypts plaintext with symmetric key
                     byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
 
-                    int len = file.Length / 3;
-                    byte[] toSend1 = file.Take(len).ToArray();
-                    byte[] toSend2 = file.Skip(len).Take(len).ToArray();
-                    int len2 = len + len;
-                    byte[] toSend3 = file.Skip(len2).Take(len).ToArray();
+                    byte[] toSend1 = null;
+                    byte[] toSend2 = null;
+                    byte[] toSend3 = null;
+
+                    if (cipherText.Length % 3 == 0)
+                    {
+                        int len = cipherText.Length / 3;
+                        toSend1 = cipherText.Take(len).ToArray();
+                        toSend2 = cipherText.Skip(len).Take(len).ToArray();
+                        int len2 = len + len;
+                        toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                    }
+
+                    else if (cipherText.Length % 3 == 1)
+                    {
+                        int len = (cipherText.Length / 3) + 1;
+                        int len2 = cipherText.Length - len;
+                        int len3 = len2 / 2;
+                        toSend1 = cipherText.Take(len3).ToArray();
+                        toSend2 = cipherText.Skip(len3).Take(len3).ToArray();
+                        toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                    }
+
+                    else if (cipherText.Length % 3 == 2)
+                    {
+                        int len = (cipherText.Length / 3) + 2;
+                        int len2 = cipherText.Length - len;
+                        int len3 = len2 / 2;
+                        toSend1 = cipherText.Take(len3).ToArray();
+                        toSend2 = cipherText.Skip(len3).Take(len3).ToArray();
+                        toSend3 = cipherText.Skip(len2).Take(len).ToArray();
+                    }
 
                     sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(file.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
                     cmd1 = new SqlCommand(sqlQuery1, con1);
@@ -996,6 +1181,8 @@ namespace Cloud.StartupPage
                     SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
                     cmd3.Parameters.Add(para3);
 
+                    MessageBox.Show("Saving, please don't close...");
+
                     cmd1.ExecuteNonQuery();
                     cmd2.ExecuteNonQuery();
                     cmd3.ExecuteNonQuery();
@@ -1003,6 +1190,8 @@ namespace Cloud.StartupPage
                     closeAllConnections();
 
                     File.Delete("temp.xlsx");
+
+                    MessageBox.Show("Saved.");
                 };
                 closeAllConnections();
             }
@@ -1093,15 +1282,15 @@ namespace Cloud.StartupPage
 
             openAllConnections();
 
-            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.doc',  '')");
+            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.cst',  '" + currentUserName + "')");
             cmd1 = new SqlCommand(sqlQuery1, con1);
             cmd1.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
             cmd1.Parameters["@Null"].Value = DBNull.Value;
-            string sqlQuery2 = ("insert into [dbo].[UserFiles3] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.doc',  '')");
+            string sqlQuery2 = ("insert into [dbo].[UserFiles3] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.cst',  '" + currentUserName + "')");
             cmd2 = new SqlCommand(sqlQuery2, con2);
             cmd2.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
             cmd2.Parameters["@Null"].Value = DBNull.Value;
-            string sqlQuery3 = ("insert into [dbo].[UserFiles2] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.doc',  '')");
+            string sqlQuery3 = ("insert into [dbo].[UserFiles2] values('" + currentUserName + "', '" + textbox1.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.cst',  '" + currentUserName + "')");
             cmd3 = new SqlCommand(sqlQuery3, con3);
             cmd3.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
             cmd3.Parameters["@Null"].Value = DBNull.Value;
@@ -1145,15 +1334,15 @@ namespace Cloud.StartupPage
 
             openAllConnections();
 
-            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + currentUserName + "', '" + textbox3.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.fol',  '')");
+            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + currentUserName + "', '" + textbox3.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.fol',  '" + currentUserName + "')");
             cmd1 = new SqlCommand(sqlQuery1, con1);
             cmd1.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
             cmd1.Parameters["@Null"].Value = DBNull.Value;
-            string sqlQuery2 = ("insert into [dbo].[UserFiles3] values('" + currentUserName + "', '" + textbox3.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.fol',  '')");
+            string sqlQuery2 = ("insert into [dbo].[UserFiles3] values('" + currentUserName + "', '" + textbox3.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.fol',  '" + currentUserName + "')");
             cmd2 = new SqlCommand(sqlQuery2, con2);
             cmd2.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
             cmd2.Parameters["@Null"].Value = DBNull.Value;
-            string sqlQuery3 = ("insert into [dbo].[UserFiles2] values('" + currentUserName + "', '" + textbox3.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.fol',  '')");
+            string sqlQuery3 = ("insert into [dbo].[UserFiles2] values('" + currentUserName + "', '" + textbox3.Text + "', @Null, '', '" + getCurrent() + "', 'no', 'no', '.fol',  '" + currentUserName + "')");
             cmd3 = new SqlCommand(sqlQuery3, con3);
             cmd3.Parameters.Add("@Null", SqlDbType.VarBinary, -1);
             cmd3.Parameters["@Null"].Value = DBNull.Value;
@@ -1254,24 +1443,51 @@ namespace Cloud.StartupPage
 
 
             //Slice the byte arrays into 3 parts
-            int len = bmpInByteArr.Length / 3;
-            byte[] toSend1 = bmpInByteArr.Take(len).ToArray();
-            byte[] toSend2 = bmpInByteArr.Skip(len).Take(len).ToArray();
-            int len2 = len + len;
-            byte[] toSend3 = bmpInByteArr.Skip(len2).Take(len).ToArray();
+            byte[] toSend1 = null;
+            byte[] toSend2 = null;
+            byte[] toSend3 = null;
+
+            if (bmpInByteArr.Length % 3 == 0)
+            {
+                int len = bmpInByteArr.Length / 3;
+                toSend1 = bmpInByteArr.Take(len).ToArray();
+                toSend2 = bmpInByteArr.Skip(len).Take(len).ToArray();
+                int len2 = len + len;
+                toSend3 = bmpInByteArr.Skip(len2).Take(len).ToArray();
+            }
+
+            else if (bmpInByteArr.Length % 3 == 1)
+            {
+                int len = (bmpInByteArr.Length / 3) + 1;
+                int len2 = bmpInByteArr.Length - len;
+                int len3 = len2 / 2;
+                toSend1 = bmpInByteArr.Take(len3).ToArray();
+                toSend2 = bmpInByteArr.Skip(len3).Take(len3).ToArray();
+                toSend3 = bmpInByteArr.Skip(len2).Take(len).ToArray();
+            }
+
+            else if (bmpInByteArr.Length % 3 == 2)
+            {
+                int len = (bmpInByteArr.Length / 3) + 2;
+                int len2 = bmpInByteArr.Length - len;
+                int len3 = len2 / 2;
+                toSend1 = bmpInByteArr.Take(len3).ToArray();
+                toSend2 = bmpInByteArr.Skip(len3).Take(len3).ToArray();
+                toSend3 = bmpInByteArr.Skip(len2).Take(len).ToArray();
+            }
 
             openAllConnections();
 
             //SQL Update Statements
-            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + currentUserName + "', '" + fileName+ "', @toSend1, '" + getFileSize(bmpInByteArr.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + fileExtension + "', '')");
+            string sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + currentUserName + "', '" + fileName+ "', @toSend1, '" + getFileSize(bmpInByteArr.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + fileExtension + "', '" + currentUserName + "')");
             cmd1 = new SqlCommand(sqlQuery1, con1);
             SqlParameter para1 = new SqlParameter("@toSend1", toSend1);
             cmd1.Parameters.Add(para1);
-            string sqlQuery2 = ("insert into [dbo].[UserFiles3] values('" + currentUserName + "', '" + fileName + "', @toSend2, '" + getFileSize(bmpInByteArr.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + fileExtension + "', '')");
+            string sqlQuery2 = ("insert into [dbo].[UserFiles3] values('" + currentUserName + "', '" + fileName + "', @toSend2, '" + getFileSize(bmpInByteArr.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + fileExtension + "', '" + currentUserName + "')");
             cmd2 = new SqlCommand(sqlQuery2, con2);
             SqlParameter para2 = new SqlParameter("@toSend2", toSend2);
             cmd2.Parameters.Add(para2);
-            string sqlQuery3 = ("insert into [dbo].[UserFiles2] values('" + currentUserName + "', '" + fileName + "', @toSend3, '" + getFileSize(bmpInByteArr.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + fileExtension + "', '')");
+            string sqlQuery3 = ("insert into [dbo].[UserFiles2] values('" + currentUserName + "', '" + fileName + "', @toSend3, '" + getFileSize(bmpInByteArr.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + fileExtension + "', '" + currentUserName + "')");
             cmd3 = new SqlCommand(sqlQuery3, con3);
             SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
             cmd3.Parameters.Add(para3);
@@ -1443,15 +1659,41 @@ namespace Cloud.StartupPage
             }
 
             byte[] byteArray = Encoding.Unicode.GetBytes(rtfText);
-            double fileSize = byteArray.Length;
-
+            
             openAllConnections();
 
-            int len = byteArray.Length / 3;
-            byte[] toSend1 = byteArray.Take(len).ToArray();
-            byte[] toSend2 = byteArray.Skip(len).Take(len).ToArray();
-            int len2 = len + len;
-            byte[] toSend3 = byteArray.Skip(len2).Take(len).ToArray();
+            byte[] toSend1 = null;
+            byte[] toSend2 = null;
+            byte[] toSend3 = null;
+
+            if (byteArray.Length % 3 == 0)
+            {
+                int len = byteArray.Length / 3;
+                toSend1 = byteArray.Take(len).ToArray();
+                toSend2 = byteArray.Skip(len).Take(len).ToArray();
+                int len2 = len + len;
+                toSend3 = byteArray.Skip(len2).Take(len).ToArray();
+            }
+
+            else if (byteArray.Length % 3 == 1)
+            {
+                int len = (byteArray.Length / 3) + 1;
+                int len2 = byteArray.Length - len;
+                int len3 = len2 / 2;
+                toSend1 = byteArray.Take(len3).ToArray();
+                toSend2 = byteArray.Skip(len3).Take(len3).ToArray();
+                toSend3 = byteArray.Skip(len2).Take(len).ToArray();
+            }
+
+            else if (byteArray.Length % 3 == 2)
+            {
+                int len = (byteArray.Length / 3) + 2;
+                int len2 = byteArray.Length - len;
+                int len3 = len2 / 2;
+                toSend1 = byteArray.Take(len3).ToArray();
+                toSend2 = byteArray.Skip(len3).Take(len3).ToArray();
+                toSend3 = byteArray.Skip(len2).Take(len).ToArray();
+            }
 
             string sqlQuery1 = "update [dbo].[UserFiles1] set [File] = @toSend1, fileSize = '" + getFileSize(byteArray.Length) + "', lastModified = '" + getCurrent() + "' where Username = '" + currentUserName + "' and Name = '" + fileName.Content + "'";
             cmd1 = new SqlCommand(sqlQuery1, con1);
@@ -1684,7 +1926,7 @@ namespace Cloud.StartupPage
                         //Encrypts plaintext with symmetric key
                         byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
 
-                        FileModel fm = new FileModel(currentUserName, filename, cipherText, getFileSize(cipherText.Length), getCurrent(), "no", "no", extension, "");
+                        FileModel fm = new FileModel(currentUserName, filename, cipherText, getFileSize(cipherText.Length), getCurrent(), "no", "no", extension, "" + currentUserName + "");
                         fm.setShow(true);
                         FileModel.setFileModel(fm);
 
@@ -1716,13 +1958,6 @@ namespace Cloud.StartupPage
                         Page UploadingConsole = new Layout.Upload.Page2();
                         NavigationService.Navigate(UploadingConsole);
                     }
-
-                    /*int len = file.Length / 3;
-                    byte[] toSend1 = file.Take(len).ToArray();
-                    byte[] toSend2 = file.Skip(len).Take(len).ToArray();
-                    int len2 = len + len;
-                    byte[] toSend3 = file.Skip(len2).Take(len).ToArray();*/
-                    
                     
                     closeAllConnections();
                 
@@ -1886,7 +2121,7 @@ namespace Cloud.StartupPage
                         //Encrypts plaintext with symmetric key
                         byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
 
-                        FileModel fm = new FileModel(currentUserName, filename, cipherText, getFileSize(cipherText.Length), getCurrent(), "no", "no", extension, "");
+                        FileModel fm = new FileModel(currentUserName, filename, cipherText, getFileSize(cipherText.Length), getCurrent(), "no", "no", extension, "" + currentUserName + "");
                         fm.setShow(true);
                         FileModel.setFileModel(fm);
 
@@ -1917,13 +2152,6 @@ namespace Cloud.StartupPage
                         Page UploadingConsole = new Layout.Upload.Page2();
                         NavigationService.Navigate(UploadingConsole);
                     }
-
-                    /*int len = file.Length / 3;
-                    byte[] toSend1 = file.Take(len).ToArray();
-                    byte[] toSend2 = file.Skip(len).Take(len).ToArray();
-                    int len2 = len + len;
-                    byte[] toSend3 = file.Skip(len2).Take(len).ToArray();*/
-
 
                     closeAllConnections();
                 }
@@ -2087,7 +2315,7 @@ namespace Cloud.StartupPage
                         //Encrypts plaintext with symmetric key
                         byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
 
-                        FileModel fm = new FileModel(currentUserName, filename, cipherText, getFileSize(cipherText.Length), getCurrent(), "no", "no", extension, "");
+                        FileModel fm = new FileModel(currentUserName, filename, cipherText, getFileSize(cipherText.Length), getCurrent(), "no", "no", extension, "" + currentUserName + "");
                         fm.setShow(true);
                         FileModel.setFileModel(fm);
 
@@ -2119,13 +2347,6 @@ namespace Cloud.StartupPage
                         Page UploadingConsole = new Layout.Upload.Page2();
                         NavigationService.Navigate(UploadingConsole);
                     }
-
-                    /*int len = file.Length / 3;
-                    byte[] toSend1 = file.Take(len).ToArray();
-                    byte[] toSend2 = file.Skip(len).Take(len).ToArray();
-                    int len2 = len + len;
-                    byte[] toSend3 = file.Skip(len2).Take(len).ToArray();*/
-
 
                     closeAllConnections();
 
@@ -2417,6 +2638,25 @@ namespace Cloud.StartupPage
         }
 
 
+        private void sortShared()
+        {
+            openAllConnections();
+
+            string sqlQuery = "select Name, sharedBy, lastModified, fileSize from [dbo].[UserFiles1] where Username = '" + currentUserName + "' sharedBy <> '" + currentUserName + "'";
+            cmd1 = new SqlCommand(sqlQuery, con1);
+            cmd1.ExecuteNonQuery();
+            SqlDataAdapter da = new SqlDataAdapter(cmd1);
+            dt.Clear();
+            da.Fill(dt);
+            listView.ItemsSource = dt.DefaultView;
+
+            closeAllConnections();
+
+            ICollectionView view = CollectionViewSource.GetDefaultView(listView.ItemsSource);
+            view.SortDescriptions.Clear();
+        }
+
+
         private void sortBin()
         {
             openAllConnections();
@@ -2497,7 +2737,7 @@ namespace Cloud.StartupPage
             return fileSizeDisplayed;
         }
 
-        private void changeSettings(object sender, RoutedEventArgs e)
+        private void editProfile(object sender, MouseEventArgs e)
         {
 
         }
@@ -2507,15 +2747,7 @@ namespace Cloud.StartupPage
 
         }
 
-        private void Button_Click_6(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click_7(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 }
 
