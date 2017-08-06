@@ -147,7 +147,7 @@
                     </Button.Style>
                 </Button>
             </StackPanel>
-            <TextBox Name="nameBox" IsReadOnly="True" MouseDoubleClick="editProfile" HorizontalAlignment="Left" Height="18" Margin="395,9,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="84" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
+            <TextBox Name="nameBox" IsReadOnly="True" MouseDoubleClick="editProfile" HorizontalAlignment="Left" Height="Auto" Margin="395,9,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="84" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
             <Grid HorizontalAlignment="Left" Height="281" Margin="50,36,0,-0.2" VerticalAlignment="Top" Width="470">
                 <ToolBar Name="mainToolBar" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" Width="470">
                     <TextBox x:Name="searchBar" HorizontalAlignment="Left" Height="23" Margin="0,3,0,0" TextWrapping="Wrap" TextChanged="TextBox_TextChanged" VerticalAlignment="Top" Width="199" Foreground="DarkGray">
