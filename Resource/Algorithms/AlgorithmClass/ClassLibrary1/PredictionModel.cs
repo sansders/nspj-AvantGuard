@@ -15,6 +15,7 @@ namespace AlgorithmLibary
     {
         private string _logInRisk, _logInOutput;
         private string _ipRisk, _ipOutput;
+        public static  string _riskValue;
         public PredictionModel(double logInTime, double logInDay, string[][] logInCollection)
         {
            
@@ -50,6 +51,12 @@ namespace AlgorithmLibary
             set { _ipOutput = value; }
         }
 
+        public static string SessionRiskValue
+        {
+            get { return _riskValue; }
+            set { _riskValue = value; }
+        }
+        
 
         public void startLogInPrediction(double logInTime, double logInDay , string[][] logInCollection)
         {
@@ -608,6 +615,8 @@ namespace AlgorithmLibary
             return Convert.ToString(value);
         }
 
+       
+        
 
     }
 }

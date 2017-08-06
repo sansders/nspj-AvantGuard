@@ -30,7 +30,7 @@
                     </TextDecoration>
                 </TextBlock.TextDecorations>
             </TextBlock>
-            <TextBlock x:Name="page1" x:FieldModifier="public" Text="Q1: How long do you think you will stay logged in to the application on average?" Grid.Row="1" Style="{StaticResource QuestionDesign}" Margin="20,0,-0.8,0"/>
+            <TextBlock x:Name="page1" x:FieldModifier="public" Text="Q1: How long do you think you will stay logged in to the application on average?" Grid.Row="1" Style="{StaticResource QuestionDesign}" Margin="20,0,-0.6,22" VerticalAlignment="Stretch"/>
             <StackPanel Grid.Row="2" Margin="0,0,0,0">
                 <StackPanel Orientation="Horizontal" Height="30">
                     <RadioButton x:Name ="option1" GroupName="One"  Grid.Row="2" Content ="Less Than 15 Minutes" IsChecked="False" Click="ToggleCheckOption " Style="{StaticResource choiceButtonDesign}" RenderTransformOrigin="2.168,1.165"/>

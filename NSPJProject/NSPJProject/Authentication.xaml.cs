@@ -54,6 +54,8 @@ namespace NSPJProject
                 string exist = UserModel.UserModel.checkFollowUp(userID, connectionString);
                 SqlConnection con;
                 SqlCommand cmd;
+                string riskLevelStatement = null;
+                riskLevelStatement = "Low";
                 con = new SqlConnection(connectionString);
                 try
                 {
@@ -75,6 +77,8 @@ namespace NSPJProject
                 if(exist != null)
                 {
                     UserModel.UserModel.updateFollowUp(userID, connectionString, "False");
+                    
+                   
                     //Navigate to Chester page
                     Page cloud = new StartupPage();
                     this.NavigationService.Navigate(cloud);
@@ -89,6 +93,7 @@ namespace NSPJProject
                     Page cloud = new StartupPage();
                     this.NavigationService.Navigate(cloud);
                 }
+                PredictionModel.SessionRiskValue = riskLevelStatement;
             }
             else
             {

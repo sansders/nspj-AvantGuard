@@ -304,13 +304,15 @@ namespace NSPJProject
                                     Console.WriteLine(userHostRisk + " HOSTNAME");
                                     Console.WriteLine(logInRisk + "LOG IN RISK");
                                     Console.WriteLine(totalRisk);
+                                    PredictionModel.SessionRiskValue = totalRisk.ToString();
+                                    string riskLevelStatement = null;
                                     string riskStatement = null;
                                     if (totalRisk <= 0.4)
                                     {
                                         riskStatement = "The risk level is low";
                                         UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                                         Page cloud = new StartupPage();
-
+                                        riskLevelStatement = "Low";
                                         this.NavigationService.Navigate(cloud);
                                     }
 
@@ -321,6 +323,7 @@ namespace NSPJProject
                                         Page cloud = new StartupPage();
                                         UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                                         MessageBox.Show("Entry Saved");
+                                        riskLevelStatement = "Medium";
                                         //UserModel.UserModel.deleteDateTimeOfUser(userID, connectionString, loginTime, date);
                                         //MessageBox.Show("Entry Deleted");
                                         this.NavigationService.Navigate(cloud);
@@ -340,9 +343,11 @@ namespace NSPJProject
                                         UserModel.UserModel.do2fa(subject, subjectBody, email);
                                         Page authentication = new Authentication();
                                         this.NavigationService.Navigate(authentication);
+                                        riskLevelStatement = "High";
                                         MessageBox.Show("2FA has been sent to your email");
 
                                     }
+                                    PredictionModel.SessionRiskValue = riskLevelStatement;
                                     Console.WriteLine(riskStatement);
 
                                 }
@@ -382,6 +387,8 @@ namespace NSPJProject
                                     Console.WriteLine(logInPercentage);
                                     Console.WriteLine(ipRisk);
                                     Console.WriteLine(riskLevel);
+                                    string riskLevelStatement = "null";
+                                    
                                     string riskStatement = null;
                                     //Can do anything 
                                     if (riskLevel <= 0.4)
@@ -390,6 +397,7 @@ namespace NSPJProject
                                         UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                                         //Navigate To Chester
                                         Page cloud = new StartupPage();
+                                        riskLevelStatement = "Low";
                                         this.NavigationService.Navigate(cloud);
                                     }
 
@@ -403,6 +411,7 @@ namespace NSPJProject
                                         //UserModel.UserModel.deleteDateTimeOfUser(userID, connectionString, loginTime, date);
                                         //MessageBox.Show("Entry Deleted");
                                         this.NavigationService.Navigate(cloud);
+                                        riskLevelStatement = "Medium";
                                         //Remove Access Control 
 
                                     }
@@ -420,12 +429,13 @@ namespace NSPJProject
                                         UserModel.UserModel.do2fa(subject, subjectBody, email);
                                         Page authentication = new Authentication();
                                         this.NavigationService.Navigate(authentication);
+                                        riskLevelStatement = "High";
                                         MessageBox.Show("2FA has been sent to your email");
                                     }
 
                                     Console.WriteLine("The current Risk Level is " + riskLevel);
                                     Console.WriteLine(riskStatement);
-
+                                    PredictionModel.SessionRiskValue = riskLevelStatement;
 
                                 }
                             }

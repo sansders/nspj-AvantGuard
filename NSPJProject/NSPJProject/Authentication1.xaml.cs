@@ -81,7 +81,7 @@ namespace NSPJProject
                 string publicIP = PredictionModel.getCurrentPublicIP();
                 string publicMAC = PredictionModel.getCurrentMAC();
                 Console.WriteLine(publicMAC + "HELLO");
-
+                string riskLevelStatement = "Low";
                 //Use the same class for saveDateTime Method - Justin Changed at 1:20 am on 6/8/2017
                 UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                 string exist = UserModel.UserModel.checkFollowUp(userID, connectionString);
@@ -116,6 +116,7 @@ namespace NSPJProject
                 }
 
                 Page cloud = new StartupPage();
+                PredictionModel.SessionRiskValue = riskLevelStatement;
                 this.NavigationService.Navigate(cloud);
 
             }
