@@ -131,7 +131,7 @@ namespace NSPJProject
                 string ipAddress = ipAddressCollection[counter][0];
                 macAddress = ipAddressCollection[counter][1];
                 counter++;
-                UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date , ipAddress , macAddress);
+                //UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date , ipAddress , macAddress);
                 //deleteDateTimeOfUser(userID, connectionString, loginTime, date);
              
             }
