@@ -33,6 +33,7 @@ namespace NSPJProject
         {
             MessageBox.Show("HI");
             InitializeComponent();
+            connectionString = conSettings.ConnectionString;
         }
 
         //private void saveDateTimeOfUser(string userID, string connectionString, string loginTime, string date, string publicIP, string publicMAC)
