@@ -38,7 +38,27 @@ namespace NSPJProject
         {
             InitializeComponent();
             connectionString = conSettings.ConnectionString;
-            
+     
+            try
+            {
+                string connectionString = conSettings.ConnectionString;
+
+                con = new SqlConnection(connectionString);
+                con.Open();
+                cmd = new SqlCommand("DELETE FROM [dbo].[FailedAttempt] where Date <> '" + DateTime.Now.ToShortDateString() + "'", con);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+
+
+
             String allText = System.IO.File.ReadAllText(@"../../../../Resource/Algorithms/AlgorithmClass/ClassLibrary1/TextFile1.txt");
             string[][] myList = PredictionModel.readFromFile(allText);
             string userID = "Justin";
@@ -158,7 +178,6 @@ namespace NSPJProject
                 {
                     //var message = Encoding.ASCII.GetBytes(strData.Insert(0, "026620758babadb008ee7b98e1bb07351f08d49228c15f6f31c4ee75cb9a26f5079b81c01f14f78cf5f9639e49d7319ee3c3fcc1f94e686b8d605c93f2ab9fb4"));
                     //byte[] currentHash = hashString.ComputeHash(message);
-                    ///currentHash = Encoding.ASCII.GetBytes(strData.Insert(2, "02662028c15f6f31c4758babadb008ee7b98e1bb07351f08d492ee75cb9a26f5079b81c01f14f78cf5f9639e49d7319ee3c3fcc1f94e686b8d605c93f2ab9fb4"));
 
                     currentHash = hashString.ComputeHash(currentHash);
                     Console.WriteLine(i + "round");
@@ -206,13 +225,16 @@ namespace NSPJProject
                     UserModel.UserModel um = UserModel.UserModel.retrieveUserFromDatabase(currentUser);
                     Console.WriteLine(um.userPassword);
                     string checkForFollowUp = UserModel.UserModel.checkFollowUp(userID, connectionString);
+
+                    (App.Current as App).LoginUserID = UserIDTextBox.Text;
+
                     try
                     {
                         con = new SqlConnection(connectionString);
                         con.Open();
                         cmd = new SqlCommand("select count(*) from [dbo].[FailedAttempt] where UserID = '" + UserIDTextBox.Text + "'", con);
                         Int32 noOfFailedLoginAttempt = (Int32)cmd.ExecuteScalar();
-                        MessageBox.Show(noOfFailedLoginAttempt.ToString());
+                        MessageBox.Show(noOfFailedLoginAttempt.ToString() + " unsuccessful login attempt(s)");
                         if (noOfFailedLoginAttempt > 3)
                         {
                             MessageBox.Show("Account is locked , please complete TWO FA");
@@ -288,7 +310,7 @@ namespace NSPJProject
                                         riskStatement = "The risk level is low";
                                         UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                                         Page cloud = new StartupPage();
-                                        
+
                                         this.NavigationService.Navigate(cloud);
                                     }
 
@@ -413,24 +435,7 @@ namespace NSPJProject
                     finally
                     {
                         con.Close();
-                    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                
-                 
-
+                    }                     
                 }
 
 
@@ -457,16 +462,18 @@ namespace NSPJProject
                             {
                                 con = new SqlConnection(connectionString);
                                 con.Open();
-                                cmd = new SqlCommand("INSERT INTO[dbo].[FailedAttempt](UserID) VALUES (@UserID)", con);
+                                cmd = new SqlCommand("INSERT INTO[dbo].[FailedAttempt](UserID, Date) VALUES (@UserID, @Date)", con);
                                 cmd.Parameters.AddWithValue("@UserID", UserIDTextBox.Text);
+                                cmd.Parameters.AddWithValue("@Date", DateTime.Now.ToShortDateString());
                                 cmd.ExecuteNonQuery();
+
                                 try
                                 {
                                     con = new SqlConnection(connectionString);
                                     con.Open();
                                     cmd = new SqlCommand("select count(*) from [dbo].[FailedAttempt] where UserID = '" + UserIDTextBox.Text + "'", con);
                                     Int32 noOfFailedLoginAttempt = (Int32)cmd.ExecuteScalar();
-                                    MessageBox.Show(noOfFailedLoginAttempt.ToString());
+                                    MessageBox.Show(noOfFailedLoginAttempt.ToString() + " unsuccessful login attempt(s)");
 
                                 }
                                 catch (Exception ex)

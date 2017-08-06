@@ -32,7 +32,7 @@ namespace NSPJProject
 
         public Authentication1()
         {
-            MessageBox.Show("HI");
+            MessageBox.Show("Account locked due to multiple failed login attempts.");
             InitializeComponent();
             connectionString = conSettings.ConnectionString;
         }
@@ -86,7 +86,7 @@ namespace NSPJProject
                 UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                 string exist = UserModel.UserModel.checkFollowUp(userID, connectionString);
 
-                string selected_UserID = (App.Current as App).UserID;
+                string selected_UserID = (App.Current as App).LoginUserID;
 
                 try
                 {
@@ -94,7 +94,8 @@ namespace NSPJProject
 
                     con = new SqlConnection(connectionString);
                     con.Open();
-                    cmd = new SqlCommand("DELETE FROM[dbo].[FailedAttempt] where '" + selected_UserID + "'", con);
+                    cmd = new SqlCommand("DELETE FROM [dbo].[FailedAttempt] where UserID = '" + selected_UserID + "'", con);
+                    cmd.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {
