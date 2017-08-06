@@ -701,7 +701,7 @@ namespace Cloud.StartupPage
                 newWindow.Title = "Authentication";
                 newWindow.Content = newFrame;
                 newFrame.NavigationService.Navigate(authentication);
-                newWindow.Show();
+                newWindow.ShowDialog();
 
                 if (IsWindowOpen<Window>("Authentication") == false)
                 {
