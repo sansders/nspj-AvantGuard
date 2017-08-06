@@ -649,7 +649,7 @@ namespace Cloud.StartupPage
                 closeAllConnections();
                 sortBin();
                 openAllConnections();
-                sqlQuery1 = "delete from [dbo].[AccessControl] where FileName = '" + selectedText + "'";
+                sqlQuery1 = "delete from [dbo].[AccessControl] where FileName = '" + selectedText + "' and AccessBy = '" + currentUserName + "'";
                 cmd1 = new SqlCommand(sqlQuery1, con1);
 
                 cmd1.ExecuteNonQuery();
@@ -705,6 +705,7 @@ namespace Cloud.StartupPage
             sortBin();
         }
 
+       
 
         private void openFile(String selectedText)
         {
@@ -722,6 +723,15 @@ namespace Cloud.StartupPage
             ext = (reader[0].ToString());
 
             closeAllConnections();
+
+            //Gets name of username of SharedBy
+            openAllConnections();
+            string sqlQuery7 = "select sharedBy from [dbo].[UserFiles1] where Name = '" + selectedText + "'";
+            SqlCommand cmd7 = new SqlCommand(sqlQuery7, con1);
+            SqlDataReader reader7 = cmd7.ExecuteReader();
+            reader7.Read();
+            string owner = reader7[0].ToString();
+
 
             if (ext == ".fol")
             {
@@ -818,23 +828,42 @@ namespace Cloud.StartupPage
 
                 byte[] retrieve = retrieve1.Concat(retrieve2).Concat(retrieve3).ToArray();
 
+
+
                 //Sean's Decryption Codes
 
-                sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
-                cmd = new SqlCommand(sqlQuery, con);
-                SqlDataReader DataRead1 = cmd.ExecuteReader();
-                string bigPath = null;
-                while (DataRead1.Read())
+                byte[] plainText;
+
+                if (owner.Equals(currentUser))
                 {
-                    bigPath = DataRead1.GetString(0);
+                    sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+                    cmd = new SqlCommand(sqlQuery, con);
+                    SqlDataReader DataRead1 = cmd.ExecuteReader();
+                    string bigPath = null;
+                    while (DataRead1.Read())
+                    {
+                        bigPath = DataRead1.GetString(0);
+                    }
+
+                    //Gets IV & Encrypted Symmetric Key
+                    byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
+                    byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                    byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
                 }
 
-                //Gets IV & Encrypted Symmetric Key
-                byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
-                byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
-                byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
-                byte[] plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
+                else
+                {
+                    System.Windows.MessageBox.Show("Select owner's key path");
+                    System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+                    string bigPath = fbd.SelectedPath + "\\" + owner;
 
+                    //Gets IV & Encrypted Symmetric Key
+                    byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
+                    byte[] encryptedSymmetricKey = File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                    byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    plainText = kc.symmetricDecryption(retrieve, decryptedSymmetricKey, IV);
+                }
                 File.WriteAllBytes("temp.doc", plainText);
                 Process process = new Process();
                 process.StartInfo.FileName = "temp.doc";
@@ -857,18 +886,19 @@ namespace Cloud.StartupPage
                     //Sean's encryption codes
                     sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
                     cmd = new SqlCommand(sqlQuery, con);
-                    DataRead1 = cmd.ExecuteReader();
+                    SqlDataReader DataRead1 = cmd.ExecuteReader();
+                    string bigPath = "";
                     while (DataRead1.Read())
                     {
                         bigPath = DataRead1.GetString(0);
                     }
 
-                    IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
+                    byte[] IV = System.IO.File.ReadAllBytes(@bigPath + "\\IV.txt");
                     Console.WriteLine("Gets bytes of IV");
-                    encryptedSymmetricKey = System.IO.File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
+                    byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@bigPath + "\\encryptedSymmetricKey.txt");
 
                     //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
-                    decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
+                    byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
                     //Encrypts plaintext with symmetric key
                     byte[] cipherText = kc.symmetricEncryption(file, decryptedSymmetricKey, IV);
 
@@ -1292,7 +1322,7 @@ namespace Cloud.StartupPage
                 closeAllConnections();
                 openAllConnections();
 
-                sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + toShare + "'. '" + storage + "', @toSend1, '" + getFileSize(retrieve.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + storage2 + "', '" + currentUserName + "')");
+                sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + toShare + "', '" + storage + "', @toSend1, '" + getFileSize(retrieve.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + storage2 + "', '" + currentUserName + "')");
                 cmd1 = new SqlCommand(sqlQuery1, con1);
                 SqlParameter para1 = new SqlParameter("@toSend1", retrieve1);
                 cmd1.Parameters.Add(para1);
@@ -1311,7 +1341,7 @@ namespace Cloud.StartupPage
 
                 closeAllConnections();
                 openAllConnections();
-                sqlQuery1 = "insert into [dbo].[AccessControl] values('" + storage + "', '', '" + toShare + "'";
+                sqlQuery1 = "insert into [dbo].[AccessControl] values('" + storage + "', '', '" + toShare + "')";
                 cmd1 = new SqlCommand(sqlQuery1, con1);
                 cmd1.ExecuteNonQuery();
                 closeAllConnections();
@@ -1628,7 +1658,16 @@ namespace Cloud.StartupPage
 
             byte[] IV = File.ReadAllBytes(@bigPath + "\\IV.txt");
 
-            byte[] DecryptedStr = kc.symmetricDecryption(toBytes, stegByte, IV);
+            byte[] DecryptedStr;
+
+            try
+            {
+                DecryptedStr = kc.symmetricDecryption(toBytes, stegByte, IV);
+            }
+            catch
+            {
+                DecryptedStr = new byte[69];
+            }
             string result = System.Text.Encoding.UTF8.GetString(DecryptedStr);
 
             System.Windows.MessageBox.Show("Select where you want to save your file");
