@@ -219,14 +219,21 @@ namespace Cloud.StartupPage
                             SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
                             cmd3.Parameters.Add(para3);
 
-                            MessageBox.Show("Saving, please don't close...");
+                            Dispatcher.Invoke(() =>
+                            {
+                                loading.Visibility = Visibility.Visible;
+                            });
 
                             cmd1.ExecuteNonQuery();
                             cmd2.ExecuteNonQuery();
                             cmd3.ExecuteNonQuery();
 
-                            File.Delete("temp.ppt");
+                            File.Delete("temp.doc");
 
+                            Dispatcher.Invoke(() =>
+                            {
+                                loading.Visibility = Visibility.Collapsed;
+                            });
                             MessageBox.Show("Saved.");
                         };
                     }
@@ -336,7 +343,10 @@ namespace Cloud.StartupPage
                             SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
                             cmd3.Parameters.Add(para3);
 
-                            MessageBox.Show("Saving, please don't close...");
+                            Dispatcher.Invoke(() =>
+                            {
+                                loading.Visibility = Visibility.Visible;
+                            });
 
                             cmd1.ExecuteNonQuery();
                             cmd2.ExecuteNonQuery();
@@ -344,6 +354,10 @@ namespace Cloud.StartupPage
 
                             File.Delete("temp.ppt");
 
+                            Dispatcher.Invoke(() =>
+                            {
+                                loading.Visibility = Visibility.Collapsed;
+                            });
                             MessageBox.Show("Saved.");
                         };
                     }
@@ -455,14 +469,21 @@ namespace Cloud.StartupPage
                             SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
                             cmd3.Parameters.Add(para3);
 
-                            MessageBox.Show("Saving, please don't close...");
+                            Dispatcher.Invoke(() =>
+                            {
+                                loading.Visibility = Visibility.Visible;
+                            });
 
                             cmd1.ExecuteNonQuery();
                             cmd2.ExecuteNonQuery();
                             cmd3.ExecuteNonQuery();
 
-                            File.Delete("temp.ppt");
+                            File.Delete("temp.xlsx");
 
+                            Dispatcher.Invoke(() =>
+                            {
+                                loading.Visibility = Visibility.Collapsed;
+                            });
                             MessageBox.Show("Saved.");
                         };
                     }
@@ -897,13 +918,22 @@ namespace Cloud.StartupPage
                     SqlParameter para3 = new SqlParameter("@toSend2", toSend3);
                     cmd3.Parameters.Add(para3);
 
-                    MessageBox.Show("Saving, please don't close...");
+                    Dispatcher.Invoke(() =>
+                    {
+                        loading.Visibility = Visibility.Visible;
+                    });
+                
 
                     cmd1.ExecuteNonQuery();
                     cmd2.ExecuteNonQuery();
                     cmd3.ExecuteNonQuery();
 
                     File.Delete("temp.doc");
+
+                    Dispatcher.Invoke(() =>
+                    {
+                        loading.Visibility = Visibility.Collapsed;
+                    });
 
                     MessageBox.Show("Saved.");
                     closeAllConnections();
@@ -1040,7 +1070,10 @@ namespace Cloud.StartupPage
                     SqlParameter para3 = new SqlParameter("@toSend2", toSend3);
                     cmd3.Parameters.Add(para3);
 
-                    MessageBox.Show("Saving, please don't close...");
+                    Dispatcher.Invoke(() =>
+                    {
+                        loading.Visibility = Visibility.Visible;
+                    });
 
                     cmd1.ExecuteNonQuery();
                     cmd2.ExecuteNonQuery();
@@ -1050,6 +1083,11 @@ namespace Cloud.StartupPage
 
                     File.Delete("temp.ppt");
 
+                    Dispatcher.Invoke(() =>
+                    {
+                        loading.Visibility = Visibility.Collapsed;
+                    });
+                    
                     MessageBox.Show("Saved.");
                 };
                 closeAllConnections();
@@ -1181,7 +1219,10 @@ namespace Cloud.StartupPage
                     SqlParameter para3 = new SqlParameter("@toSend3", toSend3);
                     cmd3.Parameters.Add(para3);
 
-                    MessageBox.Show("Saving, please don't close...");
+                    Dispatcher.Invoke(() =>
+                    {
+                        loading.Visibility = Visibility.Visible;
+                    });
 
                     cmd1.ExecuteNonQuery();
                     cmd2.ExecuteNonQuery();
@@ -1191,6 +1232,10 @@ namespace Cloud.StartupPage
 
                     File.Delete("temp.xlsx");
 
+                    Dispatcher.Invoke(() =>
+                    {
+                        loading.Visibility = Visibility.Collapsed;
+                    });
                     MessageBox.Show("Saved.");
                 };
                 closeAllConnections();
@@ -1234,12 +1279,18 @@ namespace Cloud.StartupPage
                 SqlDataReader Reader2 = cmd2.ExecuteReader();
                 SqlDataReader Reader3 = cmd3.ExecuteReader();
 
+                Reader1.Read();
+                Reader2.Read();
+                Reader3.Read();
+
                 byte[] retrieve1 = ((byte[])Reader1[0]);
                 byte[] retrieve2 = ((byte[])Reader2[0]);
                 byte[] retrieve3 = ((byte[])Reader3[0]);
 
                 byte[] retrieve = retrieve1.Concat(retrieve2).Concat(retrieve3).ToArray();
 
+                closeAllConnections();
+                openAllConnections();
 
                 sqlQuery1 = ("insert into [dbo].[UserFiles1] values('" + toShare + "'. '" + storage + "', @toSend1, '" + getFileSize(retrieve.Length) + "', '" + getCurrent() + "', 'no', 'no', '" + storage2 + "', '" + currentUserName + "')");
                 cmd1 = new SqlCommand(sqlQuery1, con1);
@@ -1258,10 +1309,12 @@ namespace Cloud.StartupPage
                 cmd2.ExecuteNonQuery();
                 cmd3.ExecuteNonQuery();
 
+                closeAllConnections();
+                openAllConnections();
                 sqlQuery1 = "insert into [dbo].[AccessControl] values('" + storage + "', '', '" + toShare + "'";
                 cmd1 = new SqlCommand(sqlQuery1, con1);
                 cmd1.ExecuteNonQuery();
-
+                closeAllConnections();
                 userField.Visibility = Visibility.Collapsed;
             }
         }
