@@ -1516,6 +1516,7 @@ namespace Cloud.StartupPage
                 System.Windows.MessageBox.Show("Select an image carrier");
 
                 OpenFileDialog dlg = new OpenFileDialog();
+                dlg.Filter = "Image Files (JPEG,BMP,PNG)|*.jpg;*.jpeg;*.bmp;*.png;";
                 if (dlg.ShowDialog() == true)
                 {
                     fileName = dlg.FileName;
