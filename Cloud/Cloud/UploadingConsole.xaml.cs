@@ -223,7 +223,7 @@ namespace Layout.Upload
             }
             else if (value == 66)
             {
-                spinner.SpinDuration = 0.1;
+                spinner.SpinDuration = 0.3;
                 upload.Content = "File is Being Uploaded to the database....";
                 upload.Visibility = Visibility.Visible;
             }
@@ -238,6 +238,7 @@ namespace Layout.Upload
             loading.Content = value.ToString() + "%";
             if (value == 99)
             {
+                
                 value += 1;
                 loading.Content = value.ToString() + "%";
                 spinner.Spin = false;

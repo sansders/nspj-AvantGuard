@@ -146,43 +146,15 @@
                     </Button.Style>
                 </Button>
             </StackPanel>
-            <Button fa:Awesome.Content="AngleDoubleLeft" HorizontalAlignment="Left" Height="28" Margin="5,7,0,0" VerticalAlignment="Top" Width="28" Click="Button_Click_6">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button fa:Awesome.Content="AngleDoubleRight" HorizontalAlignment="Left" Height="28" Margin="37,7,0,0" VerticalAlignment="Top" Width="28" Click="Button_Click_7">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button fa:Awesome.Content="Gear" HorizontalAlignment="Left" Height="28" Margin="69,7,0,0" VerticalAlignment="Top" Width="28" Click="changeSettings">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button fa:Awesome.Content="File" HorizontalAlignment="Left" Height="28" Margin="101,7,0,0" VerticalAlignment="Top" Width="28">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <TextBox Name="nameBox" IsReadOnly="True" HorizontalAlignment="Left" Height="24" Margin="395,13,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Width="84" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
+            <TextBox Name="nameBox" IsReadOnly="True" HorizontalAlignment="Left" Height="24" Margin="428,10,0,0" TextWrapping="Wrap" Text="Alvin Teo" VerticalAlignment="Top" Background="#4d4f51" FontFamily="Arial Black" Foreground="White" BorderBrush="#4d4f51"/>
             <Label Content="Uploading File" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="214,42,221,213.2" Width="90"/>
 
-            <fa:ImageAwesome x:Name="spinner" Icon="Spinner" Spin="True" SpinDuration="0.5" Margin="301,43,205,218.2"  />
+            <fa:ImageAwesome x:Name="spinner" Icon="Spinner" Spin="True" SpinDuration="0.5" Margin="301,44,205,217.333"  />
 
             <ToggleButton  x:Name="toggle" HorizontalAlignment="Left"  Margin="401,55,0,0" VerticalAlignment="Top" Unchecked="ToggleButton_unChecked" Checked="ToggleButton_Checked" Height="17" Width="43"/>
-            <Border x:Name="console" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="130" Margin="50,10,0,0" VerticalAlignment="Center" Width="353" Visibility="Hidden">
+            <Border x:Name="console" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="130" Margin="91,99,71,54.333" VerticalAlignment="Center" Width="363" RenderTransformOrigin="0.425,0.549" Visibility="Hidden">
 
-                <RichTextBox x:Name="paragraphBox" IsReadOnly="True" Focusable="False" Style="{StaticResource paragraphDesign}">
+                <RichTextBox x:Name="paragraphBox" IsReadOnly="True" Focusable="False" Style="{StaticResource paragraphDesign}" Margin="0,0,-0.667,-1" Background="White" BorderBrush="{x:Null}">
                     <FlowDocument>
                         <Paragraph>
                             <InlineUIContainer>
@@ -203,9 +175,9 @@
                 </RichTextBox>
             </Border>
             <Label HorizontalAlignment="Left" Margin="314,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.049,0.491"/>
-            <Button x:Name="exit" Content="Exit" Background="AliceBlue" HorizontalAlignment="Left" Margin="247,221,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Visibility="Hidden"/>
-            <Label MouseLeftButtonUp="consoleClicked" Content="Console" FontSize="10px"  HorizontalAlignment="Left" Margin="350,50,0,0" VerticalAlignment="Top" Height="26"/>
-            <Label x:Name="loading" Content="0%" HorizontalAlignment="Center" VerticalAlignment="Center" Margin ="247,58,242,197.2" RenderTransformOrigin="-0.324,-0.727" Width="36"/>
+            <Button x:Name="exit" Content="Exit" Background="AliceBlue" HorizontalAlignment="Left" Margin="240,243,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Visibility="Hidden"/>
+            <Label MouseLeftButtonUp="consoleClicked" Content="Console" FontSize="10px"  HorizontalAlignment="Left" Margin="359,50,0,0" VerticalAlignment="Top" Height="26"/>
+            <Label x:Name="loading" Content="0%" HorizontalAlignment="Center" VerticalAlignment="Center" Margin ="259,64,221,193.333" RenderTransformOrigin="-0.324,-0.727" Width="45"/>
 
 
         </Grid>
