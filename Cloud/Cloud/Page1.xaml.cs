@@ -23,6 +23,8 @@ using System.Collections;
 using System.IO.Compression;
 using Layout.Models;
 using System.Globalization;
+using Cloud.StartupPage;
+using System.Data;
 
 namespace Layout.Upload
 {
@@ -45,6 +47,9 @@ namespace Layout.Upload
         SqlCommand cmd1;
         SqlCommand cmd2;
         SqlCommand cmd3;
+        static ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
+        static string connectionString = conSettings.ConnectionString;
+        string sqlQuery;
         string path = "";
         String fullAdd = "";
         String updatedAdd = "";
@@ -78,14 +83,34 @@ namespace Layout.Upload
 
         private void uploadButton_Click(object sender, RoutedEventArgs e)
         {
-        
+
+            con = new SqlConnection(connectionString);
+            if (con.State == ConnectionState.Closed)
+            {
+               con.Open();
+            }
+            sqlQuery = "SELECT keyPath FROM dbo.test WHERE UserID='" + currentUserName + "'";
+            cmd = new SqlCommand(sqlQuery, con);
+            SqlDataReader DataRead1 = cmd.ExecuteReader();
+            string bigPath = null;
+            while (DataRead1.Read())
+            {
+                bigPath = DataRead1.GetString(0);
+            }           
+            if (con.State == ConnectionState.Open)
+            {
+                con.Close();
+            }
+
+            
+
             OpenFileDialog dlg = new OpenFileDialog();
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 Controllers.KeyController kc = new Controllers.KeyController();
                              
                 string fileName;
-                fileName = dlg.FileName; //Will be useful in the future when selecting files
+                fileName = dlg.FileName;
                 filename1 = fileName;
                 byte[] byteFormatOfFile = File.ReadAllBytes(@fileName);
 
@@ -123,26 +148,23 @@ namespace Layout.Upload
                     userHashInput.Document.Blocks.Clear();
                 }
                 
+                //If both hashes match, start encryption & slicing processes
                 else
                 {
-                    byte[] IV = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\IV.txt");
+                    byte[] IV = System.IO.File.ReadAllBytes(@bigPath+"\\IV.txt");
                     Console.WriteLine("Gets bytes of IV");
-                    byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\keys\\encryptedSymmetricKey.txt");
+                    byte[] encryptedSymmetricKey = System.IO.File.ReadAllBytes(@bigPath+"\\encryptedSymmetricKey.txt");
 
                     //Gets the symmetric key by decrypting the encrypted symmetric key with the decryption (private) key
                     byte[] decryptedSymmetricKey = kc.asymmetricDecryption(encryptedSymmetricKey);
                     //Encrypts plaintext with symmetric key
                     byte[] cipherText = kc.symmetricEncryption(byteFormatOfFile, decryptedSymmetricKey, IV);
 
-                    //For debugging purposes
-                    fileName = System.IO.Path.GetFileNameWithoutExtension(fileName);
-                    byte[] testOutput = cipherText;
-                    System.IO.File.WriteAllBytes(@"C:\\Users\\SengokuMedaru\\Desktop\\EncryptedText\\encrypted_" + fileName, testOutput);
-                    Console.WriteLine(fileName + " has successfully been encrypted!");
-                    Console.WriteLine("");
+
+
+
 
                     //Bryan code below
-
                     ConnectionStringSettings conSettings = ConfigurationManager.ConnectionStrings["connString"];
                     string connectionString = conSettings.ConnectionString;
                     string VirusName;

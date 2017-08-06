@@ -8,15 +8,15 @@
       mc:Ignorable="d"
       Title="Page1" Background="White">
     <Viewbox Stretch="UniformToFill">
-        <Grid Background="LightPink">
+        <Grid>
 
             <Viewbox Margin="-7,-41,60,41" Stretch="UniformToFill">
-                <Grid Margin="60,30,-0.333,0" RenderTransformOrigin="0.592,0.546" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <RichTextBox x:Name="userHashInput" HorizontalAlignment="Left" Height="23" Margin="105,107,0,0" VerticalAlignment="Top" Width="200" TextChanged="userHashInput_TextChanged">
+                <Grid Margin="60,30,-0.333,0" RenderTransformOrigin="0.592,0.546" HorizontalAlignment="Center" VerticalAlignment="Center" Height="162">
+                    <RichTextBox x:Name="userHashInput" HorizontalAlignment="Left" Height="23" Margin="99,72,0,0" VerticalAlignment="Top" Width="147" TextChanged="userHashInput_TextChanged">
                         <FlowDocument/>
                     </RichTextBox>
-                    <Button x:Name="uploadButton" Content="Upload" HorizontalAlignment="Left" Margin="118,140,0,0" VerticalAlignment="Top" Width="65" Height="22" Click="uploadButton_Click" Background="#FF26ADF9" Opacity="0.995" FontSize="10" FontWeight="Normal" Foreground="White" BorderBrush="#FF0079C0" />
-                    <Label Content="SHA-1 Hash:" HorizontalAlignment="Left" Margin="0,102,0,0" VerticalAlignment="Top" Height="34" Width="100" FontSize="14" FontWeight="Bold"/>
+                    <Button x:Name="uploadButton" Content="Upload" HorizontalAlignment="Left" Margin="114,112,0,0" VerticalAlignment="Top" Width="65" Height="22" Click="uploadButton_Click" Background="#FF26ADF9" Opacity="0.995" FontSize="10" FontWeight="Normal" Foreground="White" BorderBrush="#FF0079C0" />
+                    <Label Content="SHA-1 Hash:" HorizontalAlignment="Left" Margin="22,70,0,0" VerticalAlignment="Top" Height="34" Width="100" FontSize="11" FontWeight="Bold"/>
 
 
                 </Grid>
