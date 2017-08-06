@@ -1,7 +1,8 @@
-﻿using Layout.Controllers;
+﻿using AlgorithmLibary;
+using Layout.Controllers;
 using Layout.Models;
-using Layout.Upload;
 using Microsoft.Win32;
+using NSPJProject;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -577,28 +578,85 @@ namespace Cloud.StartupPage
         //RIGHTCLICK -> SHARE
         private void shareClick(object sender, RoutedEventArgs e)
         {
+
             String selectedText = ((DataRowView)listView.SelectedItem)["Name"].ToString();
-
-            openAllConnections();
-
-            string sqlQuery1 = "select fileType from [dbo].[UserFiles1] where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
-            cmd1 = new SqlCommand(sqlQuery1, con1);
-
-            SqlDataReader reader1 = cmd1.ExecuteReader();
-            reader1.Read();
-            string ext = (reader1[0].ToString());
-
-            closeAllConnections();
-
-            if (ext == ".fol")
+            string currentRiskLevel = PredictionModel.SessionRiskValue;
+            if (currentRiskLevel == "Medium")
             {
-                MessageBox.Show("You cannot share a folder.");
+                string subject = "Authentication";
+                string subjectBody = "The code to do file access is ";
+                string email = currentUser.userEmail;
+                UserModel.UserModel.do2fa(subject, subjectBody, email);
+                Window newWindow = new Window();
+                Page authentication = new Authentication();
+                Frame newFrame = new Frame();
+                newWindow.Title = "Authentication";
+                newWindow.Content = newFrame;
+                newFrame.NavigationService.Navigate(authentication);
+                newWindow.Show();
+                if (IsWindowOpen<Window>("Authentication") == false)
+                {
+                    MessageBox.Show("Testing");
+                    Boolean twoFAsucceed = UserModel.UserModel.twoFASucceed;
+                    if (twoFAsucceed == true)
+                    {
+
+                        openAllConnections();
+                        MessageBox.Show("Helalscdlasd");
+                        string sqlQuery1 = "select fileType from [dbo].[UserFiles1] where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
+                        cmd1 = new SqlCommand(sqlQuery1, con1);
+
+                        SqlDataReader reader1 = cmd1.ExecuteReader();
+                        reader1.Read();
+                        string ext = (reader1[0].ToString());
+
+                        closeAllConnections();
+
+                        if (ext == ".fol")
+                        {
+                            MessageBox.Show("You cannot share a folder.");
+                        }
+
+                        userField.Visibility = System.Windows.Visibility.Visible;
+                        shareWith.Text = "Share " + selectedText + ext + " with:";
+                        storage = selectedText;
+                        storage2 = ext;
+                    }
+
+                }
+
+            }
+            else
+            {
+                openAllConnections();
+
+                string sqlQuery1 = "select fileType from [dbo].[UserFiles1] where Username = '" + currentUserName + "' and Name = '" + selectedText + "'";
+                cmd1 = new SqlCommand(sqlQuery1, con1);
+
+                SqlDataReader reader1 = cmd1.ExecuteReader();
+                reader1.Read();
+                string ext = (reader1[0].ToString());
+
+                closeAllConnections();
+
+                if (ext == ".fol")
+                {
+                    MessageBox.Show("You cannot share a folder.");
+                }
+
+                userField.Visibility = System.Windows.Visibility.Visible;
+                shareWith.Text = "Share " + selectedText + ext + " with:";
+                storage = selectedText;
+                storage2 = ext;
             }
 
-            userField.Visibility = System.Windows.Visibility.Visible;
-            shareWith.Text = "Share " + selectedText + ext + " with:";
-            storage = selectedText;
-            storage2 = ext;
+        }
+
+        public static bool IsWindowOpen<T>(string name = "") where T : Window
+        {
+            return string.IsNullOrEmpty(name)
+               ? Application.Current.Windows.OfType<T>().Any()
+               : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
         }
 
 

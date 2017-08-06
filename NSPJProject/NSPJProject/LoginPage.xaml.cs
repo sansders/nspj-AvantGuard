@@ -305,18 +305,21 @@ namespace NSPJProject
                                     Console.WriteLine(logInRisk + "LOG IN RISK");
                                     Console.WriteLine(totalRisk);
                                     string riskStatement = null;
+                                    string riskStatementLevel = null;
                                     if (totalRisk <= 0.4)
                                     {
+                                        riskStatementLevel = "Low";
                                         riskStatement = "The risk level is low";
                                         UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                                         Page cloud = new StartupPage();
-
+                                        
                                         this.NavigationService.Navigate(cloud);
                                     }
 
                                     // Removing access control and giving access control
                                     else if (totalRisk <= 0.70)
                                     {
+                                        riskStatementLevel = "Medium";
                                         riskStatement = "The risk level is medium";
                                         Page cloud = new StartupPage();
                                         UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
@@ -331,6 +334,7 @@ namespace NSPJProject
                                     //Instantly Re authenticate
                                     else if (totalRisk > 0.70)
                                     {
+                                        riskStatementLevel = "High";
                                         riskStatement = "The risk level is high";
                                         string subject = "Authentication Message";
                                         string subjectBody = "Authentication Code is ";
@@ -343,6 +347,7 @@ namespace NSPJProject
                                         MessageBox.Show("2FA has been sent to your email");
 
                                     }
+                                    PredictionModel.SessionRiskValue = riskStatementLevel;
                                     Console.WriteLine(riskStatement);
 
                                 }
@@ -383,9 +388,12 @@ namespace NSPJProject
                                     Console.WriteLine(ipRisk);
                                     Console.WriteLine(riskLevel);
                                     string riskStatement = null;
+                                    string riskStatementLevel = null;
+                                    
                                     //Can do anything 
                                     if (riskLevel <= 0.4)
                                     {
+                                        riskStatementLevel = "Low";
                                         riskStatement = "The risk level is low";
                                         UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                                         //Navigate To Chester
@@ -396,6 +404,7 @@ namespace NSPJProject
                                     // Removing access control and giving access control
                                     else if (riskLevel <= 0.70)
                                     {
+                                        riskStatementLevel = "Medium";
                                         riskStatement = "The risk level is medium";
                                         Page cloud = new StartupPage();
                                         UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
@@ -410,6 +419,7 @@ namespace NSPJProject
                                     //Instantly Re authenticate
                                     else if (riskLevel > 0.70)
                                     {
+                                        riskStatementLevel = "High";
                                         riskStatement = "The risk level is high";
                                         //Do 2FA
 
@@ -419,10 +429,12 @@ namespace NSPJProject
                                         string email = cm.userEmail;
                                         UserModel.UserModel.do2fa(subject, subjectBody, email);
                                         Page authentication = new Authentication();
+                                        
                                         this.NavigationService.Navigate(authentication);
                                         MessageBox.Show("2FA has been sent to your email");
                                     }
 
+                                    PredictionModel.SessionRiskValue = riskStatementLevel; 
                                     Console.WriteLine("The current Risk Level is " + riskLevel);
                                     Console.WriteLine(riskStatement);
 

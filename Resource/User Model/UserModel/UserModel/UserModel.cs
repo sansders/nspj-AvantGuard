@@ -32,6 +32,7 @@ namespace UserModel
         public static string _currentUserID;
         public static string _currentUserLogInTime;
         public static string _currentUserLogInDate;
+        public static Boolean _twoFAStatus;
         public UserModel()
         {
 
@@ -187,6 +188,12 @@ namespace UserModel
         {
             get { return _twoFACode; }
             set { _twoFACode = value; }
+        }
+
+        public static Boolean twoFASucceed
+        {
+            get { return _twoFAStatus; }
+            set { _twoFAStatus = value; }
         }
 
     public static UserModel retrieveUserFromDatabase(string userID)

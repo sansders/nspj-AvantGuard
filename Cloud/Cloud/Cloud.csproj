@@ -111,6 +111,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Authentication.xaml.cs">
+      <DependentUpon>Authentication.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\HashController.cs" />
     <Compile Include="Controllers\KeyController.cs" />
     <Compile Include="Controllers\Prompt.cs" />
@@ -133,6 +136,10 @@
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
+    <Page Include="Authentication.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -273,6 +280,14 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Resource\2FA Page\2FAPage\2FA\twoFA.csproj">
+      <Project>{330fcc54-101b-412d-bbd5-92e3d76ceb19}</Project>
+      <Name>twoFA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Resource\Algorithms\AlgorithmClass\ClassLibrary1\AlgorithmLibary.csproj">
+      <Project>{068596fc-3efc-419a-ac3e-b081d5854aab}</Project>
+      <Name>AlgorithmLibary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Resource\User Model\UserModel\UserModel\UserModel.csproj">
       <Project>{be36de03-71d7-44c6-a6c6-d6b8af6c6f61}</Project>
       <Name>UserModel</Name>
