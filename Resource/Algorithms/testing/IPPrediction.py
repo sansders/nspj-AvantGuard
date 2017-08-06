@@ -954,6 +954,8 @@ for i in range (len(data1)):
         ax2.set_xticklabels(mytickers, fontsize=10)
         ax3.bar(i , df.ix[i][3])
         ax3.set_xticklabels(mytickers , fontsize=10)
+       
+        
 
 ipcount = 0
 maccount= 0

@@ -197,7 +197,7 @@ namespace NSPJProject
         private void ButtonNext_Click(object sender, RoutedEventArgs e)
         {
             PasswordTextBox.Password = GetSha512FromString(PasswordTextBox.Password);
-            MessageBox.Show(PasswordTextBox.Password);         
+            //MessageBox.Show(PasswordTextBox.Password);         
            
             try
             {
@@ -221,7 +221,7 @@ namespace NSPJProject
                     string[][] userList = checkUserEligibility(userID, connectionString);
                     UserModel.UserModel.currentUserID = userID;
                     string currentUser = UserModel.UserModel.currentUserID;
-                    MessageBox.Show(currentUser + "is thios");
+                    //MessageBox.Show(currentUser + "is thios");
                     UserModel.UserModel um = UserModel.UserModel.retrieveUserFromDatabase(currentUser);
                     Console.WriteLine(um.userPassword);
                     string checkForFollowUp = UserModel.UserModel.checkFollowUp(userID, connectionString);
@@ -234,7 +234,7 @@ namespace NSPJProject
                         con.Open();
                         cmd = new SqlCommand("select count(*) from [dbo].[FailedAttempt] where UserID = '" + UserIDTextBox.Text + "'", con);
                         Int32 noOfFailedLoginAttempt = (Int32)cmd.ExecuteScalar();
-                        MessageBox.Show(noOfFailedLoginAttempt.ToString() + " unsuccessful login attempt(s)");
+                        //MessageBox.Show(noOfFailedLoginAttempt.ToString() + " unsuccessful login attempt(s)");
                         if (noOfFailedLoginAttempt > 3)
                         {
                             MessageBox.Show("Account is locked , please complete TWO FA");
@@ -254,7 +254,7 @@ namespace NSPJProject
                             
                             if (checkForFollowUp == "True")
                             {
-                                MessageBox.Show("Account is locked , please complete TWO FA");
+                                //MessageBox.Show("Account is locked , please complete TWO FA");
                                 string subject = "Authentication Message";
                                 string subjectBody = "Authentication Code is ";
                                 UserModel.UserModel cm = UserModel.UserModel.currentUserModel;
@@ -266,7 +266,7 @@ namespace NSPJProject
                             }
                             else
                             {
-                                MessageBox.Show("Account not locked.");
+                                //MessageBox.Show("Account not locked.");
                                 if (userList.Count() < 30)
                                 {
 
@@ -323,7 +323,7 @@ namespace NSPJProject
                                         riskStatement = "The risk level is medium";
                                         Page cloud = new StartupPage();
                                         UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
-                                        MessageBox.Show("Entry Saved");
+                                        //MessageBox.Show("Entry Saved");
                                         //UserModel.UserModel.deleteDateTimeOfUser(userID, connectionString, loginTime, date);
                                         //MessageBox.Show("Entry Deleted");
                                         this.NavigationService.Navigate(cloud);
@@ -408,7 +408,7 @@ namespace NSPJProject
                                         riskStatement = "The risk level is medium";
                                         Page cloud = new StartupPage();
                                         UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
-                                        MessageBox.Show("Entry Saved");
+                                        //MessageBox.Show("Entry Saved");
                                         //UserModel.UserModel.deleteDateTimeOfUser(userID, connectionString, loginTime, date);
                                         //MessageBox.Show("Entry Deleted");
                                         this.NavigationService.Navigate(cloud);
@@ -443,7 +443,7 @@ namespace NSPJProject
                             }
 
                             (App.Current as App).LoginUserID = UserIDTextBox.Text;
-                            MessageBox.Show("Successful Login.");
+                            //MessageBox.Show("Successful Login.");
                             //this.NavigationService.Navigate(new Uri(@"EditUserInfo.xaml", UriKind.RelativeOrAbsolute));
                         }
 
@@ -1079,13 +1079,13 @@ namespace NSPJProject
             SqlDataReader reader;
             con = new SqlConnection(connectionString);
             con.Open();
-            MessageBox.Show(userID);
+            //MessageBox.Show(userID);
             cmd = new SqlCommand("select * from [dbo].[LogAnalysis] where UserID = '" + userID + "'", con);
             reader = cmd.ExecuteReader();
             List<String[]> userList = new List<String[]>();
             if(reader == null)
             {
-                MessageBox.Show("JACSIcnm");
+                //MessageBox.Show("JACSIcnm");
             }
             else { 
             while(reader.Read())

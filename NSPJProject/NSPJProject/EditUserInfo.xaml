@@ -9,7 +9,9 @@
       Title="EditUserInfo">
    
     <Border>
+        
         <Grid Background="White" Opacity="0.75">
+            
             <Border Background="White"
                     BorderBrush="Black"
                     BorderThickness="1"
@@ -17,11 +19,29 @@
                     Height="600"
                     Width="450"
                     Padding="15 50 15 15"
-                    Margin="50 50 50 0">
+                    Margin="50 50 50 0"
+                    >
+                
                 <ScrollViewer VerticalScrollBarVisibility="Auto"
                               HorizontalScrollBarVisibility="Auto">
+                    
                     <StackPanel>
+                        <Button
+                            Width="70"
+                            Content="Back"
+                            FontFamily="Gulim"
+                            FontWeight="Bold"
+                            FontSize="15"
+                            Background="White"
+                            BorderThickness="0 0 0 0"
+                            HorizontalAlignment="Left"
+                            Foreground="#23aeff"
+                            Opacity="0.75"
+                            Margin="20 0 360 0"
+                            Click="ConfirmAllChanges"
+                            >
 
+                        </Button>
                         <!-- Name -->
                         <StackPanel>
                             <Label Content="Name:"
@@ -370,7 +390,7 @@
 
                         </StackPanel>
 
-                        <Button Name="ConfirmChanges"
+                        <!--<Button Name="ConfirmChanges"
                                         Content="Confirm All Changes"
                                         Width="auto"
                                         Foreground="#23aeff"
@@ -378,7 +398,7 @@
                                         BorderThickness="0 0 0 0"
                                         FontSize="15"
                                         FontWeight="Bold"
-                                        FontFamily="Gulim" Click="ConfirmAllChanges"></Button>
+                                        FontFamily="Gulim" Click="ConfirmAllChanges"></Button>-->
 
                         <!--<Button Name="ChangeInfoConfirmButton" 
                                 Content="Confirm"
