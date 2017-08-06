@@ -560,6 +560,29 @@ namespace UserModel
           
         }
 
+        public static void deleteDateTimeOfUser(string userID , string connectionString , string loginTime , string date)
+        {
+            SqlConnection con;
+            SqlCommand cmd;
+            con = new SqlConnection(connectionString);
+            // string currentHostname = System.Environment.MachineName.ToString();
+            con.Open();
+            try
+            {
+               
+               cmd = new SqlCommand("DELETE FROM [dbo].[LogAnalysis] where UserID = '" + userID + "' and LoginTime = '" + loginTime + "' and LoginDate = '" + date + "'", con);
+               cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
         public static string checkFollowUp(string userID, string connectionString)
         {
             SqlConnection con;
