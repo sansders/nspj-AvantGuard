@@ -52,6 +52,26 @@ namespace NSPJProject
                
                 UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
                 string exist = UserModel.UserModel.checkFollowUp(userID, connectionString);
+                SqlConnection con;
+                SqlCommand cmd;
+                con = new SqlConnection(connectionString);
+                try
+                {
+                    string connectionString = conSettings.ConnectionString;
+
+                    con = new SqlConnection(connectionString);
+                    con.Open();
+                    cmd = new SqlCommand("DELETE FROM [dbo].[FailedAttempt] where UserID = '" + userID + "'", con);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
                 if(exist != null)
                 {
                     UserModel.UserModel.updateFollowUp(userID, connectionString, "False");
@@ -76,7 +96,7 @@ namespace NSPJProject
                 counter++;
                 if(counter > 3 )
                 {
-                    MessageBox.Show("More than 3 attempts! Account will be locked now!");
+                    MessageBox.Show("More than 3  Failed attempts! Account will be locked now!");
                     string exist = UserModel.UserModel.checkFollowUp(userID, connectionString);
                     if (exist != null)
                     {

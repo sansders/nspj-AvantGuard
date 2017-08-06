@@ -251,7 +251,7 @@ namespace NSPJProject
 
                         else
                         {
-                            MessageBox.Show("Account not locked.");
+                            
                             if (checkForFollowUp == "True")
                             {
                                 MessageBox.Show("Account is locked , please complete TWO FA");
@@ -266,7 +266,7 @@ namespace NSPJProject
                             }
                             else
                             {
-
+                                MessageBox.Show("Account not locked.");
                                 if (userList.Count() < 30)
                                 {
 
@@ -319,6 +319,10 @@ namespace NSPJProject
                                     {
                                         riskStatement = "The risk level is medium";
                                         Page cloud = new StartupPage();
+                                        UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
+                                        MessageBox.Show("Entry Saved");
+                                        //UserModel.UserModel.deleteDateTimeOfUser(userID, connectionString, loginTime, date);
+                                        //MessageBox.Show("Entry Deleted");
                                         this.NavigationService.Navigate(cloud);
                                         //Remove Access Control 
 
@@ -394,6 +398,10 @@ namespace NSPJProject
                                     {
                                         riskStatement = "The risk level is medium";
                                         Page cloud = new StartupPage();
+                                        UserModel.UserModel.saveDateTimeOfUser(userID, connectionString, loginTime, date, publicIP, publicMAC);
+                                        MessageBox.Show("Entry Saved");
+                                        //UserModel.UserModel.deleteDateTimeOfUser(userID, connectionString, loginTime, date);
+                                        //MessageBox.Show("Entry Deleted");
                                         this.NavigationService.Navigate(cloud);
                                         //Remove Access Control 
 

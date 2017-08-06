@@ -106,6 +106,15 @@ namespace NSPJProject
                     con.Close();
                 }
 
+                if (exist != null)
+                {
+                    UserModel.UserModel.updateFollowUp(userID, connectionString, "False");
+                }
+                else
+                {
+                    UserModel.UserModel.saveFollowUp(userID, connectionString, "False");
+                }
+
                 Page cloud = new StartupPage();
                 this.NavigationService.Navigate(cloud);
 
@@ -113,8 +122,9 @@ namespace NSPJProject
             else
             {
                 MessageBox.Show("Invalid code! Please Try Again");
+                //Remove the statement below because it will conflict with my fe
                 counter++;
-                if (counter > 2)
+                if (counter > 3)
                 {
                     MessageBox.Show("More than 3 attempts! Account will be locked now!");
                     string exist = UserModel.UserModel.checkFollowUp(userID, connectionString);
