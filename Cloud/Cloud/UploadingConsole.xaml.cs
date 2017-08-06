@@ -219,6 +219,7 @@ namespace Layout.Upload
             {
                 server.Content = "Waiting For Server....Done";
                 //  upload.Visibility = Visibility.Visible;
+
             }
             else if (value == 66)
             {
@@ -240,6 +241,7 @@ namespace Layout.Upload
                 value += 1;
                 loading.Content = value.ToString() + "%";
                 spinner.Spin = false;
+                exit.Visibility = Visibility.Visible;
             }
         }
 

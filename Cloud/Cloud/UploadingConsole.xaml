@@ -203,7 +203,7 @@
                 </RichTextBox>
             </Border>
             <Label HorizontalAlignment="Left" Margin="314,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.049,0.491"/>
-            <Button Content="Exit" Background="AliceBlue" HorizontalAlignment="Left" Margin="288,279,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" />
+            <Button x:Name="exit" Content="Exit" Background="AliceBlue" HorizontalAlignment="Left" Margin="288,279,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Visibility="Hidden" />
             <Label MouseLeftButtonUp="consoleClicked" Content="Console" FontSize="10px"  HorizontalAlignment="Left" Margin="530,51,0,0" VerticalAlignment="Top" Height="26"/>
             <Label x:Name="loading" Content="0%" HorizontalAlignment="Left" Margin="314,74,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.324,-0.727"/>
             
