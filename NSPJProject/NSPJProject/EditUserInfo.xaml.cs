@@ -47,7 +47,7 @@ namespace NSPJProject
                 con = new SqlConnection(connectionString);
                 con.Open();
 
-                UserModel.UserModel cm = UserModel.UserModel.retrieveUserFromDatabase("Demo1");
+                UserModel.UserModel cm = UserModel.UserModel.retrieveUserFromDatabase(selected_UserID);
                 cmd = new SqlCommand("select * from [dbo].[test] where UserID = '" + selected_UserID + "'", con);
                 reader = cmd.ExecuteReader();
 
