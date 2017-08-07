@@ -221,14 +221,14 @@
                             <TextBlock Margin="5" Foreground="White" Text="New Folder Name:"/>
                             <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="textbox3"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Width="30" x:Name="OkButton3" Margin="5" Content="Ok" Background="White" Click="OkButton3_Click">
+                                <Button Width="60" x:Name="OkButton3" Margin="5" Content="Ok" Background="White" Click="OkButton3_Click">
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="3"/>
                                         </Style>
                                     </Button.Resources>
                                 </Button>
-                                <Button Width="50" x:Name="CancelButton3" Margin="5" Content="Cancel" Background="White" Click="CancelButton3_Click">
+                                <Button Width="60" x:Name="CancelButton3" Margin="5" Content="Cancel" Background="White" Click="CancelButton3_Click">
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="3"/>
@@ -246,14 +246,14 @@
                             <TextBlock Name="shareWith" Margin="5" Foreground="White" Text="Share file with: "/>
                             <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="textbox2"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Width="30" x:Name="OkButton2" Margin="5" Content="Ok" Background="White" Click="OkButton2_Click">
+                                <Button Width="60" x:Name="OkButton2" Margin="5" Content="Ok" Background="White" Click="OkButton2_Click">
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="3"/>
                                         </Style>
                                     </Button.Resources>
                                 </Button>
-                                <Button Width="50" x:Name="CancelButton2" Margin="5" Content="Cancel" Background="White" Click="CancelButton2_Click">
+                                <Button Width="60" x:Name="CancelButton2" Margin="5" Content="Cancel" Background="White" Click="CancelButton2_Click">
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="3"/>
