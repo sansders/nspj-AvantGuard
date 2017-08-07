@@ -267,7 +267,7 @@ namespace Layout.Upload
                     if (virus == 0)
                     {
 
-                        FileModel fm = new FileModel(currentUserName, filename, cipherText, getFileSize(cipherText.Length), getCurrent(), "no", "no", extension, "");
+                        FileModel fm = new FileModel(currentUserName, filename, cipherText, getFileSize(cipherText.Length), getCurrent(), "no", "no", extension, currentUserName);
                         fm.setShow(true);
                         FileModel.setFileModel(fm);
                         //FileModel fm = FileModel.getFileModel();
