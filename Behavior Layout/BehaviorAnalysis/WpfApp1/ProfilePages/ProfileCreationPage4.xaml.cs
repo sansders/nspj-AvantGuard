@@ -66,11 +66,11 @@ namespace WpfApp1.ProfilePages
                 CurrentPageModel.fourthValidation == true 
                 )
             {
-                MessageBox.Show(currentUserModel.userName);
-                MessageBox.Show(currentUserModel.profile1);
-                MessageBox.Show(currentUserModel.profile2);
-                MessageBox.Show(currentUserModel.profile3);
-                MessageBox.Show(currentUserModel.profile4);
+                //MessageBox.Show(currentUserModel.userName);
+                //MessageBox.Show(currentUserModel.profile1);
+                //MessageBox.Show(currentUserModel.profile2);
+                //MessageBox.Show(currentUserModel.profile3);
+                //MessageBox.Show(currentUserModel.profile4);
                 currentUserModel.saveToDatabase();
                 MessageBox.Show("Successfully Completed Profiling Survey");
                 this.NavigationService.Navigate(new Uri(@"LoginPage.xaml", UriKind.RelativeOrAbsolute));
